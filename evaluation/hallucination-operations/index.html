@@ -1,0 +1,3733 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/evaluation/hallucination-operations/">
+      
+      
+        <link rel="prev" href="../hallucination-vendors/">
+      
+      
+        <link rel="next" href="../instruction-following/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Evaluation and Production Operations - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#evaluating-and-operating-factual-llm-systems" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Evaluation and Production Operations
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-reference-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Reference architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Reference architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-0-define-the-truth-and-authority-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 0 — Define the truth and authority contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-1-normalize-and-route-the-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1 — Normalize and route the request
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-2-acquire-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2 — Acquire evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-3-score-evidence-sufficiency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3 — Score evidence sufficiency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-4-construct-a-bounded-evidence-packet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4 — Construct a bounded evidence packet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-5-generate-an-auditable-draft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 5 — Generate an auditable draft
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-6-verify-independently" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 6 — Verify independently
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-7-apply-a-decision-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 7 — Apply a decision policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-8-render-provenance-honestly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 8 — Render provenance honestly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-9-trace-monitor-and-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 9 — Trace, monitor, and learn
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Threat model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-evaluation-dataset-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Evaluation dataset design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Evaluation dataset design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-build-from-the-deployment-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Build from the deployment distribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-include-cases-that-expose-guessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Include cases that expose guessing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-use-benchmark-suites-for-components-not-as-deployment-proof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Use benchmark suites for components, not as deployment proof
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-metrics-by-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Metrics by stage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Metrics by stage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-retrieval-and-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Retrieval and evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-claim-factuality-and-grounding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Claim factuality and grounding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-citation-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Citation quality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-calibration-and-selective-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Calibration and selective prediction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-tools-and-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Tools and actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-operational-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Operational metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-label-and-judge-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Label and judge protocol
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Label and judge protocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#human-annotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Human annotation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm-judges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM judges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#independent-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Independent audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-experiment-matrix-and-ablations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Experiment matrix and ablations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-release-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Release gates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Release gates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-gate-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example gate structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-incident-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Incident response
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-cost-tiered-deployment-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Cost-tiered deployment patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Cost-tiered deployment patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#low-stakes-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Low-stakes assistant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-knowledge-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal knowledge assistant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-web-research-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open-web research system
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structured-decision-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structured decision support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-stakes-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-stakes domain
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-clean-acceptance-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Clean acceptance checklist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Clean acceptance checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scope-and-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope and evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-reference-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Reference architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Reference architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-0-define-the-truth-and-authority-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 0 — Define the truth and authority contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-1-normalize-and-route-the-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1 — Normalize and route the request
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-2-acquire-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2 — Acquire evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-3-score-evidence-sufficiency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3 — Score evidence sufficiency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-4-construct-a-bounded-evidence-packet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4 — Construct a bounded evidence packet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-5-generate-an-auditable-draft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 5 — Generate an auditable draft
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-6-verify-independently" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 6 — Verify independently
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-7-apply-a-decision-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 7 — Apply a decision policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-8-render-provenance-honestly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 8 — Render provenance honestly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-9-trace-monitor-and-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 9 — Trace, monitor, and learn
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Threat model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-evaluation-dataset-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Evaluation dataset design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Evaluation dataset design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-build-from-the-deployment-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Build from the deployment distribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-include-cases-that-expose-guessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Include cases that expose guessing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-use-benchmark-suites-for-components-not-as-deployment-proof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Use benchmark suites for components, not as deployment proof
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-metrics-by-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Metrics by stage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Metrics by stage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-retrieval-and-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Retrieval and evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-claim-factuality-and-grounding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Claim factuality and grounding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-citation-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Citation quality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-calibration-and-selective-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Calibration and selective prediction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-tools-and-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Tools and actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-operational-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Operational metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-label-and-judge-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Label and judge protocol
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Label and judge protocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#human-annotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Human annotation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm-judges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM judges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#independent-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Independent audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-experiment-matrix-and-ablations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Experiment matrix and ablations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-release-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Release gates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Release gates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-gate-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example gate structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-incident-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Incident response
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-cost-tiered-deployment-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Cost-tiered deployment patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Cost-tiered deployment patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#low-stakes-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Low-stakes assistant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-knowledge-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal knowledge assistant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-web-research-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open-web research system
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structured-decision-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structured decision support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-stakes-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-stakes domain
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-clean-acceptance-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Clean acceptance checklist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Clean acceptance checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scope-and-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope and evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="evaluating-and-operating-factual-llm-systems">Evaluating and Operating Factual LLM Systems<a class="headerlink" href="#evaluating-and-operating-factual-llm-systems" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23.</p>
+<p>This chapter is a production runbook. It assumes the failure taxonomy and
+method families in the
+<a href="../hallucination/">hallucination mitigation map</a>, then defines the contracts,
+metrics, traces, and release gates needed to make a factuality claim auditable.</p>
+<p>The objective is not “zero hallucinations” as an unmeasured slogan. It is a
+versioned risk target for a named distribution:</p>
+<ul>
+<li>which claims the system may make;</li>
+<li>which evidence is authoritative;</li>
+<li>which error severities are acceptable;</li>
+<li>when the system asks, abstains, or escalates;</li>
+<li>what answer coverage, latency, and cost are required; and</li>
+<li>how residual errors are detected and corrected.</li>
+</ul>
+<h2 id="1-reference-architecture">1. Reference architecture<a class="headerlink" href="#1-reference-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="stage-0-define-the-truth-and-authority-contract">Stage 0 — Define the truth and authority contract<a class="headerlink" href="#stage-0-define-the-truth-and-authority-contract" title="Permanent link">&para;</a></h3>
+<p>Before model selection, record:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Example decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>task</td>
+<td>answer employee policy questions, not give legal advice</td>
+</tr>
+<tr>
+<td>claim types</td>
+<td>policy rule, eligibility, effective date, calculation, recommendation</td>
+</tr>
+<tr>
+<td>authority</td>
+<td>signed current policy document outranks wiki and email</td>
+</tr>
+<tr>
+<td>freshness</td>
+<td>effective version at the requested date; ingestion delay below one hour</td>
+</tr>
+<tr>
+<td>evidence requirement</td>
+<td>every policy rule and date needs a source span</td>
+</tr>
+<tr>
+<td>allowed inference</td>
+<td>arithmetic from cited inputs is allowed and labeled</td>
+</tr>
+<tr>
+<td>conflict rule</td>
+<td>show unresolved conflict; do not silently choose</td>
+</tr>
+<tr>
+<td>answer outcomes</td>
+<td>answer, partial answer, clarify, abstain, escalate</td>
+</tr>
+<tr>
+<td>error severity</td>
+<td>wrong eligibility is critical; missing optional background is minor</td>
+</tr>
+<tr>
+<td>human boundary</td>
+<td>benefits specialist approves high-impact or disputed cases</td>
+</tr>
+</tbody>
+</table>
+<p>Without this contract, “grounded” can mean faithful to a document that the
+organization does not consider authoritative.</p>
+<h3 id="stage-1-normalize-and-route-the-request">Stage 1 — Normalize and route the request<a class="headerlink" href="#stage-1-normalize-and-route-the-request" title="Permanent link">&para;</a></h3>
+<p>Extract or clarify:</p>
+<ul>
+<li>user intent and requested output;</li>
+<li>entity and identifiers;</li>
+<li>time or effective date;</li>
+<li>jurisdiction, organization, product, or repository;</li>
+<li>units and precision;</li>
+<li>factual versus creative mode;</li>
+<li>freshness and external-evidence need;</li>
+<li>security classification and access scope; and</li>
+<li>consequence if the answer is wrong.</li>
+</ul>
+<p>Route among parametric answer, supplied-document analysis, internal retrieval,
+web research, structured API/database, executable calculation, or human
+review. A false-premise and ambiguity detector should run before an answer is
+committed.</p>
+<h3 id="stage-2-acquire-evidence">Stage 2 — Acquire evidence<a class="headerlink" href="#stage-2-acquire-evidence" title="Permanent link">&para;</a></h3>
+<p>For retrieval:</p>
+<ol>
+<li>enforce access control;</li>
+<li>apply entity, date, locale, and version filters;</li>
+<li>use sparse and dense recall;</li>
+<li>fuse and rerank;</li>
+<li>expand the necessary parent/neighbor context;</li>
+<li>deduplicate shared origins;</li>
+<li>retain provenance and exact content;</li>
+<li>flag extraction or parser errors; and</li>
+<li>snapshot volatile external sources when policy permits.</li>
+</ol>
+<p>For tools:</p>
+<ol>
+<li>choose an authoritative typed interface;</li>
+<li>validate arguments and permissions;</li>
+<li>execute once or idempotently;</li>
+<li>preserve result, status, time, and version;</li>
+<li>normalize units and missing values; and</li>
+<li>verify the resulting external state when an action occurred.</li>
+</ol>
+<h3 id="stage-3-score-evidence-sufficiency">Stage 3 — Score evidence sufficiency<a class="headerlink" href="#stage-3-score-evidence-sufficiency" title="Permanent link">&para;</a></h3>
+<p>Evaluate each requested subclaim, not only the query as a whole.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>requested claim
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  -&gt; direct supporting evidence?
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -&gt; correct entity, time, unit, jurisdiction, and version?
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  -&gt; authoritative and permitted source?
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -&gt; conflicts or missing dependencies?
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  -&gt; enough evidence to answer at the allowed risk?
+</code></pre></div>
+<p>Possible transitions are:</p>
+<ul>
+<li>generate from the evidence packet;</li>
+<li>reformulate or decompose the query;</li>
+<li>retrieve another source;</li>
+<li>use a database, calculator, or specialist tool;</li>
+<li>ask the user;</li>
+<li>return a partial answer with explicit gaps;</li>
+<li>abstain; or</li>
+<li>escalate.</li>
+</ul>
+<p>Do not use the generator's willingness to answer as the sufficiency test.</p>
+<h3 id="stage-4-construct-a-bounded-evidence-packet">Stage 4 — Construct a bounded evidence packet<a class="headerlink" href="#stage-4-construct-a-bounded-evidence-packet" title="Permanent link">&para;</a></h3>
+<p>The packet should include:</p>
+<ul>
+<li>stable source and chunk identifiers;</li>
+<li>title, owner, URL or record key;</li>
+<li>effective, publication, and retrieval dates;</li>
+<li>authority class;</li>
+<li>exact supporting text or structured value;</li>
+<li>surrounding context needed for qualifiers;</li>
+<li>permitted claim types;</li>
+<li>conflicts and missing fields; and</li>
+<li>untrusted-content markers.</li>
+</ul>
+<p>Keep system instructions outside untrusted retrieved content. Context
+compression must preserve negation, tables, units, exceptions, dates, and
+source boundaries.</p>
+<h3 id="stage-5-generate-an-auditable-draft">Stage 5 — Generate an auditable draft<a class="headerlink" href="#stage-5-generate-an-auditable-draft" title="Permanent link">&para;</a></h3>
+<p>Ask for:</p>
+<ul>
+<li>atomic material claims;</li>
+<li>source IDs adjacent to supported claims;</li>
+<li>explicit separation of fact, calculation, inference, and recommendation;</li>
+<li>nullable fields rather than invented values;</li>
+<li>named conflicts and limitations;</li>
+<li>no claim about a tool or external state without its event ID; and</li>
+<li>an output schema compatible with deterministic validation.</li>
+</ul>
+<p>A useful internal draft representation is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;claims&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The policy became effective on 2026-04-01.&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;retrieved_fact&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="nt">&quot;materiality&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;high&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="nt">&quot;evidence_ids&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;policy-v7-page-2-sentence-4&quot;</span><span class="p">],</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="nt">&quot;effective_date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-04-01&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="nt">&quot;confidence_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;evidence_and_verifier&quot;</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="nt">&quot;gaps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="nt">&quot;conflicts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="nt">&quot;recommended_outcome&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;answer&quot;</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="p">}</span>
+</code></pre></div>
+<p>This structure is a trace boundary. It does not make the claim true.</p>
+<h3 id="stage-6-verify-independently">Stage 6 — Verify independently<a class="headerlink" href="#stage-6-verify-independently" title="Permanent link">&para;</a></h3>
+<p>Run claim-type-specific checks:</p>
+<ol>
+<li>source and span exist;</li>
+<li>cited span entails the claim;</li>
+<li>every material external claim has evidence;</li>
+<li>authority, date, entity, jurisdiction, and units match;</li>
+<li>calculations reproduce from cited inputs;</li>
+<li>tool claims bind to real events;</li>
+<li>required caveats and conflicts are present;</li>
+<li>output schema and business invariants pass; and</li>
+<li>an independent or human audit is triggered for high-risk cases.</li>
+</ol>
+<p>Use at least one audit signal that was not optimized directly during training or
+prompt tuning. A generator and verifier from the same family with the same
+context may share errors.</p>
+<h3 id="stage-7-apply-a-decision-policy">Stage 7 — Apply a decision policy<a class="headerlink" href="#stage-7-apply-a-decision-policy" title="Permanent link">&para;</a></h3>
+<p>Do not collapse all verifier scores into a vague confidence number.</p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>all material claims supported and policy passes</td>
+<td>answer</td>
+</tr>
+<tr>
+<td>evidence supports only part of the request</td>
+<td>partial answer plus named gaps</td>
+</tr>
+<tr>
+<td>entity, time, or scope is ambiguous</td>
+<td>ask a targeted clarification</td>
+</tr>
+<tr>
+<td>sources conflict but conflict is decision-relevant</td>
+<td>present the conflict or escalate</td>
+</tr>
+<tr>
+<td>evidence absent, stale, unauthorized, or below threshold</td>
+<td>abstain</td>
+</tr>
+<tr>
+<td>high-impact decision or unresolved critical check</td>
+<td>qualified human review</td>
+</tr>
+<tr>
+<td>tool/action result cannot be verified</td>
+<td>report failure; never narrate success</td>
+</tr>
+</tbody>
+</table>
+<p>Error thresholds should be stricter for material claims. A long response with
+twenty correct background facts and one wrong dosage, price, deadline, or
+permission is not “95% good.”</p>
+<h3 id="stage-8-render-provenance-honestly">Stage 8 — Render provenance honestly<a class="headerlink" href="#stage-8-render-provenance-honestly" title="Permanent link">&para;</a></h3>
+<p>Display:</p>
+<ul>
+<li>citations adjacent to claims;</li>
+<li>source owner, date, and version;</li>
+<li>a short evidence preview;</li>
+<li>the difference between quotation, synthesis, inference, and recommendation;</li>
+<li>partial-search and inaccessible-source notices;</li>
+<li>conflicts and abstentions without euphemism; and</li>
+<li>a way to report a specific claim-level error.</li>
+</ul>
+<p>Do not show a probability unless it was calibrated for the current version,
+domain, and outcome definition.</p>
+<h3 id="stage-9-trace-monitor-and-learn">Stage 9 — Trace, monitor, and learn<a class="headerlink" href="#stage-9-trace-monitor-and-learn" title="Permanent link">&para;</a></h3>
+<p>Persist enough to reproduce a failure without storing prohibited user data:</p>
+<ul>
+<li>request and normalized task class;</li>
+<li>model, prompt, policy, router, retriever, corpus, index, and tool versions;</li>
+<li>queries, retrieved IDs and ranks, source hashes, and sufficiency decisions;</li>
+<li>model sampling settings and complete candidate IDs;</li>
+<li>atomic claims, evidence links, verifier outputs, and final gate;</li>
+<li>answer/ask/abstain/escalate outcome;</li>
+<li>latency and cost by stage;</li>
+<li>user correction and downstream impact; and</li>
+<li>retention, redaction, and access metadata.</li>
+</ul>
+<p>Log rejected evidence and failed checks as well as successful paths. Otherwise
+the retained trace hides selection bias.</p>
+<h2 id="2-threat-model">2. Threat model<a class="headerlink" href="#2-threat-model" title="Permanent link">&para;</a></h2>
+<p>A factual system should be tested against failures in every component.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Accidental failure</th>
+<th>Adversarial failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>request</td>
+<td>ambiguity, typo, missing attachment</td>
+<td>false premise or instruction conflict</td>
+</tr>
+<tr>
+<td>corpus</td>
+<td>stale or contradictory record</td>
+<td>poisoned document or malicious metadata</td>
+</tr>
+<tr>
+<td>parser/OCR</td>
+<td>lost table cell or negation</td>
+<td>layout crafted to hide instructions</td>
+</tr>
+<tr>
+<td>retriever</td>
+<td>semantic near-match, wrong entity</td>
+<td>keyword stuffing or retrieval manipulation</td>
+</tr>
+<tr>
+<td>reranker</td>
+<td>popular source outranks authority</td>
+<td>prompt injection in candidate text</td>
+</tr>
+<tr>
+<td>context builder</td>
+<td>truncates exception or citation boundary</td>
+<td>untrusted text becomes system-like instruction</td>
+</tr>
+<tr>
+<td>generator</td>
+<td>unsupported synthesis or omission</td>
+<td>follows injected instructions</td>
+</tr>
+<tr>
+<td>tool layer</td>
+<td>timeout, wrong unit, stale cache</td>
+<td>unauthorized call or forged result</td>
+</tr>
+<tr>
+<td>citation layer</td>
+<td>wrong span or incomplete support</td>
+<td>citation laundering</td>
+</tr>
+<tr>
+<td>verifier</td>
+<td>judge bias, number/negation error</td>
+<td>prompt injection or reward hacking</td>
+</tr>
+<tr>
+<td>UI</td>
+<td>hides source date or conflict</td>
+<td>trust badge implies endorsement</td>
+</tr>
+<tr>
+<td>feedback loop</td>
+<td>corrected cases are not learned</td>
+<td>attackers steer labels or evaluation</td>
+</tr>
+</tbody>
+</table>
+<p>Prompt-injection protection and factuality interact. A poisoned source can be
+relevant and factually phrased while instructing the model to ignore its
+evidence policy. Relevance filtering alone is insufficient.</p>
+<h2 id="3-evaluation-dataset-design">3. Evaluation dataset design<a class="headerlink" href="#3-evaluation-dataset-design" title="Permanent link">&para;</a></h2>
+<h3 id="31-build-from-the-deployment-distribution">3.1 Build from the deployment distribution<a class="headerlink" href="#31-build-from-the-deployment-distribution" title="Permanent link">&para;</a></h3>
+<p>Stratify by:</p>
+<ul>
+<li>task and claim type;</li>
+<li>domain, language, locale, and jurisdiction;</li>
+<li>entity popularity and long-tail rarity;</li>
+<li>current versus historical date;</li>
+<li>answer length and number of atomic claims;</li>
+<li>number and kind of required sources;</li>
+<li>single-hop versus multi-hop synthesis;</li>
+<li>structured, prose, table, image, audio, video, or code evidence;</li>
+<li>user expertise and ambiguity;</li>
+<li>risk severity; and</li>
+<li>expected outcome: answer, partial, ask, abstain, or escalate.</li>
+</ul>
+<p>Preserve a frozen representative set, a recent-traffic set, a targeted
+regression set, and a hidden adversarial set. Do not tune prompts or thresholds
+against the final audit set.</p>
+<h3 id="32-include-cases-that-expose-guessing">3.2 Include cases that expose guessing<a class="headerlink" href="#32-include-cases-that-expose-guessing" title="Permanent link">&para;</a></h3>
+<p>Every suite should contain:</p>
+<ul>
+<li>unanswerable questions;</li>
+<li>nonexistent entities and events;</li>
+<li>false premises;</li>
+<li>insufficient but topically relevant context;</li>
+<li>stale versus current versions;</li>
+<li>conflicting authoritative sources;</li>
+<li>same-name entities;</li>
+<li>negation and exceptions;</li>
+<li>swapped units or populations;</li>
+<li>plausible fabricated citations;</li>
+<li>evidence located near the middle or end of long context;</li>
+<li>poisoned retrieval documents;</li>
+<li>tool timeout, empty result, partial result, and malformed result;</li>
+<li>repeated runs of the same request; and</li>
+<li>questions for which clarification is the only safe response.</li>
+</ul>
+<p>If every benchmark question has one short known answer, it trains and measures
+guessing rather than real-world selective reliability.</p>
+<h3 id="33-use-benchmark-suites-for-components-not-as-deployment-proof">3.3 Use benchmark suites for components, not as deployment proof<a class="headerlink" href="#33-use-benchmark-suites-for-components-not-as-deployment-proof" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Benchmark / method</th>
+<th>Surface</th>
+<th>Useful role</th>
+<th>Important limitation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://arxiv.org/abs/2109.07958">TruthfulQA</a></td>
+<td>misconceptions and imitative falsehoods</td>
+<td>tests truthfulness under adversarially selected questions</td>
+<td>narrow and public; not current web or grounding</td>
+</tr>
+<tr>
+<td><a href="https://openai.com/index/introducing-simpleqa/">SimpleQA</a></td>
+<td>short-form parametric fact recall</td>
+<td>separates correct, incorrect, and not-attempted answers</td>
+<td>label noise and short-answer scope</td>
+</tr>
+<tr>
+<td><a href="https://deepmind.google/research/evals/">SimpleQA Verified</a></td>
+<td>curated short-form parametric knowledge</td>
+<td>cleaner factual recall instrument</td>
+<td>no tools, long synthesis, or citations</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2305.14251">FActScore</a></td>
+<td>long-form atomic factual precision</td>
+<td>claim decomposition and support checking</td>
+<td>depends on knowledge source and automated judge</td>
+</tr>
+<tr>
+<td><a href="https://deepmind.google/research/publications/85420/">LongFact / SAFE</a></td>
+<td>open-domain long-form factuality</td>
+<td>search-augmented claim evaluation</td>
+<td>search and evaluator errors remain</td>
+</tr>
+<tr>
+<td><a href="https://deepmind.google/blog/facts-benchmark-suite-systematically-evaluating-the-factuality-of-large-language-models/">FACTS suite</a></td>
+<td>parametric, search, grounding, multimodal</td>
+<td>separates four factuality surfaces</td>
+<td>leaderboard protocols are not a private application</td>
+</tr>
+<tr>
+<td><a href="https://deepmind.google/blog/facts-grounding-a-new-benchmark-for-evaluating-the-factuality-of-large-language-models/">FACTS Grounding</a></td>
+<td>long-context document grounding</td>
+<td>detailed, fully grounded response tests</td>
+<td>automated frontier-model judges need audit</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2305.14627">ALCE</a></td>
+<td>correctness and citation quality</td>
+<td>citation entailment/completeness evaluation</td>
+<td>retrieval corpus and tasks are controlled</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2401.00396">RAGTruth</a></td>
+<td>RAG hallucination spans</td>
+<td>detector development and error taxonomy</td>
+<td>does not represent every corpus or generator</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2305.11747">HaluEval</a></td>
+<td>generated and human-annotated hallucinations</td>
+<td>broad detection experiments</td>
+<td>synthetic construction can create artifacts</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2305.10355">POPE</a> and <a href="https://arxiv.org/abs/1809.02156">CHAIR</a></td>
+<td>visual object hallucination</td>
+<td>object existence in VLM answers/captions</td>
+<td>not OCR, charts, spatial, or video completeness</td>
+</tr>
+</tbody>
+</table>
+<p>A release needs private, dated, application-specific evaluation even when all
+public benchmark results are strong.</p>
+<h2 id="4-metrics-by-stage">4. Metrics by stage<a class="headerlink" href="#4-metrics-by-stage" title="Permanent link">&para;</a></h2>
+<h3 id="41-retrieval-and-evidence">4.1 Retrieval and evidence<a class="headerlink" href="#41-retrieval-and-evidence" title="Permanent link">&para;</a></h3>
+<p>Measure:</p>
+<ul>
+<li>recall at <span class="arithmatex">\(k\)</span> for all necessary evidence;</li>
+<li>first-support rank and normalized discounted cumulative gain;</li>
+<li>authority-weighted recall;</li>
+<li>entity/date/version match rate;</li>
+<li>evidence sufficiency precision and recall;</li>
+<li>duplicate-origin rate;</li>
+<li>stale or unauthorized retrieval rate;</li>
+<li>parser/OCR/table extraction error; and</li>
+<li>poison/injection retrieval success.</li>
+</ul>
+<p>Answer correctness cannot diagnose whether a wrong response came from missing
+evidence or failure to use present evidence.</p>
+<h3 id="42-claim-factuality-and-grounding">4.2 Claim factuality and grounding<a class="headerlink" href="#42-claim-factuality-and-grounding" title="Permanent link">&para;</a></h3>
+<p>Report:</p>
+<ul>
+<li>weighted atomic-claim precision;</li>
+<li>contradiction and unsupported-claim rates;</li>
+<li>material-claim error rate;</li>
+<li>answer completeness against the required claim set;</li>
+<li>correct partial-answer rate;</li>
+<li>false-premise challenge rate;</li>
+<li>correct clarification rate; and</li>
+<li>error severity, not only count.</li>
+</ul>
+<p>Use micro and macro averages. A long answer otherwise dominates a short
+critical answer, or each response hides how many claims it made.</p>
+<h3 id="43-citation-quality">4.3 Citation quality<a class="headerlink" href="#43-citation-quality" title="Permanent link">&para;</a></h3>
+<p>Measure separately:</p>
+<ul>
+<li>source validity;</li>
+<li>claim–citation entailment precision;</li>
+<li>material-claim citation recall;</li>
+<li>citation placement;</li>
+<li>authority and freshness;</li>
+<li>source independence;</li>
+<li>quote accuracy; and</li>
+<li>unsupported claims that appear near unrelated citations.</li>
+</ul>
+<h3 id="44-calibration-and-selective-prediction">4.4 Calibration and selective prediction<a class="headerlink" href="#44-calibration-and-selective-prediction" title="Permanent link">&para;</a></h3>
+<p>Track:</p>
+<ul>
+<li>correct, incorrect, abstain, ask, and escalate rates;</li>
+<li>error rate among answered cases;</li>
+<li>coverage at target error thresholds;</li>
+<li>risk–coverage curve and area;</li>
+<li>expected calibration error and Brier score where probabilities are valid;</li>
+<li>accuracy by confidence bin;</li>
+<li>severe-error rate by confidence bin;</li>
+<li>over-refusal on answerable cases; and</li>
+<li>under-refusal on unanswerable or insufficient-evidence cases.</li>
+</ul>
+<p>Do not present lower raw accuracy from a cautious system without its much lower
+error rate, and do not present higher accuracy from an aggressive guesser
+without its abstention and severe-error rates.</p>
+<h3 id="45-tools-and-actions">4.5 Tools and actions<a class="headerlink" href="#45-tools-and-actions" title="Permanent link">&para;</a></h3>
+<p>Measure:</p>
+<ul>
+<li>tool-selection and argument correctness;</li>
+<li>schema validity;</li>
+<li>execution success and timeout;</li>
+<li>result-use faithfulness;</li>
+<li>fabricated tool-result rate;</li>
+<li>read-after-write state correctness;</li>
+<li>authorization and policy violations;</li>
+<li>recovery from controlled failure; and</li>
+<li>claims of completion without backend confirmation.</li>
+</ul>
+<h3 id="46-operational-metrics">4.6 Operational metrics<a class="headerlink" href="#46-operational-metrics" title="Permanent link">&para;</a></h3>
+<p>Reliability controls consume resources. Report:</p>
+<ul>
+<li>p50/p95/p99 latency by stage;</li>
+<li>tokens, searches, tool calls, and verifier calls;</li>
+<li>cost per successful answer and per prevented severe error;</li>
+<li>clarification and human-escalation load;</li>
+<li>cache hit and stale-cache rate;</li>
+<li>retry and loop-depth distributions;</li>
+<li>corpus/index lag; and</li>
+<li>availability when a dependency fails.</li>
+</ul>
+<h2 id="5-label-and-judge-protocol">5. Label and judge protocol<a class="headerlink" href="#5-label-and-judge-protocol" title="Permanent link">&para;</a></h2>
+<h3 id="human-annotation">Human annotation<a class="headerlink" href="#human-annotation" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Give reviewers exact sources and claim spans.</li>
+<li>Separate correctness, grounding, attribution, completeness, and usefulness.</li>
+<li>Allow <code>supported</code>, <code>contradicted</code>, <code>insufficient</code>, <code>disputed</code>,
+   <code>unverifiable</code>, and <code>not material</code>.</li>
+<li>Blind model identity and randomize answer order.</li>
+<li>Train with anchor examples and adjudicate high-impact disagreement.</li>
+<li>Record expertise, language, and source-access limitations.</li>
+<li>Measure agreement by slice rather than forcing consensus.</li>
+</ol>
+<h3 id="llm-judges">LLM judges<a class="headerlink" href="#llm-judges" title="Permanent link">&para;</a></h3>
+<p>Use structured rubrics, randomize order, freeze the judge version, and include
+<code>both bad</code> and <code>unjudgeable</code>. Validate each judge against qualified humans,
+especially for numbers, negation, citations, source conflicts, and adversarial
+retrieved text. Use a different model family or multiple judges when
+self-preference is plausible.</p>
+<p>The verifier should receive only the information required for its check.
+Giving it the generator's persuasive rationale can increase correlated error.</p>
+<h3 id="independent-audit">Independent audit<a class="headerlink" href="#independent-audit" title="Permanent link">&para;</a></h3>
+<p>Maintain three signals:</p>
+<ol>
+<li>training or prompt-optimization reward;</li>
+<li>validation metric used for selection; and</li>
+<li>hidden audit metric reviewed only at a gate.</li>
+</ol>
+<p>If the same model and rubric produce all three, there is no independent
+evidence against reward hacking.</p>
+<h2 id="6-experiment-matrix-and-ablations">6. Experiment matrix and ablations<a class="headerlink" href="#6-experiment-matrix-and-ablations" title="Permanent link">&para;</a></h2>
+<p>Compare matched versions under the same request set:</p>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Baseline</th>
+<th>Treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>checkpoint</td>
+<td>prior model</td>
+<td>candidate model</td>
+</tr>
+<tr>
+<td>retrieval</td>
+<td>none or current</td>
+<td>new corpus/retriever/reranker</td>
+</tr>
+<tr>
+<td>sufficiency</td>
+<td>no gate</td>
+<td>answerability gate</td>
+</tr>
+<tr>
+<td>prompt</td>
+<td>current</td>
+<td>evidence contract</td>
+</tr>
+<tr>
+<td>tools</td>
+<td>unavailable</td>
+<td>authoritative typed tool</td>
+</tr>
+<tr>
+<td>decoding</td>
+<td>standard</td>
+<td>constrained or candidate selection</td>
+</tr>
+<tr>
+<td>verification</td>
+<td>none/current</td>
+<td>claim and citation verifier</td>
+</tr>
+<tr>
+<td>abstention</td>
+<td>forced answer</td>
+<td>calibrated selective policy</td>
+</tr>
+<tr>
+<td>UI</td>
+<td>source list</td>
+<td>claim-local evidence</td>
+</tr>
+<tr>
+<td>human review</td>
+<td>current</td>
+<td>severity-triggered review</td>
+</tr>
+</tbody>
+</table>
+<p>Run factorial subsets where affordable. A bundled improvement cannot establish
+whether the checkpoint, search index, longer context, hidden retry, or verifier
+caused the gain.</p>
+<p>Repeat stochastic requests and report distributions. For research agents,
+match search, token, time, and tool budgets. A system that searches ten times
+more may be better, but it is a different cost–reliability point.</p>
+<h2 id="7-release-gates">7. Release gates<a class="headerlink" href="#7-release-gates" title="Permanent link">&para;</a></h2>
+<p>Set thresholds before reading candidate results.</p>
+<h3 id="example-gate-structure">Example gate structure<a class="headerlink" href="#example-gate-structure" title="Permanent link">&para;</a></h3>
+<ul>
+<li>no regression in critical material-claim error;</li>
+<li>zero unauthorized or fabricated tool-success events in the release suite;</li>
+<li>citation entailment and completeness above domain thresholds;</li>
+<li>unanswerable and insufficient-context error below threshold;</li>
+<li>required coverage at the target selective-risk level;</li>
+<li>no subgroup, language, or long-tail slice below its floor;</li>
+<li>poison/injection suite passes;</li>
+<li>p95 latency, cost, and escalation load within budget;</li>
+<li>source/index freshness service-level objective met;</li>
+<li>human audit confidence interval excludes the unacceptable error rate;</li>
+<li>rollback, incident trace, and prior-version routing are tested.</li>
+</ul>
+<p>Do not average away a critical failure with thousands of easy correct cases.
+Use hard blockers for authorization, fabricated execution, dangerous domain
+claims, and provenance integrity.</p>
+<h2 id="8-incident-response">8. Incident response<a class="headerlink" href="#8-incident-response" title="Permanent link">&para;</a></h2>
+<p>When a material false or unsupported answer is found:</p>
+<ol>
+<li>preserve the request, response, sources, trace, and all component versions;</li>
+<li>classify the failed reference and severity;</li>
+<li>determine whether the source was absent, wrong, ignored, transformed, or
+   mis-cited;</li>
+<li>identify affected versions, tenants, languages, and time range;</li>
+<li>disable or narrow the risky path, source, or claim type when necessary;</li>
+<li>correct downstream state and notify affected owners under the incident
+   policy;</li>
+<li>add a minimized regression case and neighboring counterexamples;</li>
+<li>fix the earliest reliable layer rather than only adding a prompt;</li>
+<li>rerun the complete gate, including unrelated capability regressions; and</li>
+<li>record why monitoring failed to detect the issue earlier.</li>
+</ol>
+<p>Possible fixes include a source correction, parser repair, authority rule,
+retrieval filter, tool binding, prompt change, verifier rule, threshold change,
+model update, UI change, or human-review boundary. Do not assume every incident
+requires model retraining.</p>
+<h2 id="9-cost-tiered-deployment-patterns">9. Cost-tiered deployment patterns<a class="headerlink" href="#9-cost-tiered-deployment-patterns" title="Permanent link">&para;</a></h2>
+<h3 id="low-stakes-assistant">Low-stakes assistant<a class="headerlink" href="#low-stakes-assistant" title="Permanent link">&para;</a></h3>
+<ul>
+<li>strong base model;</li>
+<li>explicit uncertainty and clarification prompt;</li>
+<li>low-variance decoding for factual tasks;</li>
+<li>optional search;</li>
+<li>source display;</li>
+<li>sampled offline factuality evaluation.</li>
+</ul>
+<p>Residual risk remains too high for unreviewed consequential decisions.</p>
+<h3 id="internal-knowledge-assistant">Internal knowledge assistant<a class="headerlink" href="#internal-knowledge-assistant" title="Permanent link">&para;</a></h3>
+<ul>
+<li>permission-aware versioned corpus;</li>
+<li>hybrid retrieval plus reranking;</li>
+<li>sufficiency gate;</li>
+<li>evidence-only draft with claim citations;</li>
+<li>claim/citation verifier;</li>
+<li>calibrated abstention;</li>
+<li>feedback and regression trace.</li>
+</ul>
+<h3 id="open-web-research-system">Open-web research system<a class="headerlink" href="#open-web-research-system" title="Permanent link">&para;</a></h3>
+<ul>
+<li>query planner and iterative search/read loop;</li>
+<li>source authority, diversity, date, and conflict policy;</li>
+<li>snapshots or stable locators;</li>
+<li>atomic-claim search verification;</li>
+<li>citation completeness and entailment;</li>
+<li>budget and loop controls;</li>
+<li>human audit for consequential reports.</li>
+</ul>
+<h3 id="structured-decision-support">Structured decision support<a class="headerlink" href="#structured-decision-support" title="Permanent link">&para;</a></h3>
+<ul>
+<li>authoritative database/API as the truth source;</li>
+<li>typed calculations and business-rule engine;</li>
+<li>model used for intent and explanation, not silent value invention;</li>
+<li>state and authorization validation;</li>
+<li>severity-based abstention/escalation;</li>
+<li>qualified decision owner.</li>
+</ul>
+<h3 id="high-stakes-domain">High-stakes domain<a class="headerlink" href="#high-stakes-domain" title="Permanent link">&para;</a></h3>
+<ul>
+<li>approved domain corpus and explicit scope;</li>
+<li>stringent material-claim gate;</li>
+<li>out-of-distribution and false-premise detection;</li>
+<li>calibrated abstention with conservative coverage;</li>
+<li>specialist tools and independent checks;</li>
+<li>qualified human decision and source review;</li>
+<li>post-deployment surveillance and incident reporting.</li>
+</ul>
+<h2 id="10-clean-acceptance-checklist">10. Clean acceptance checklist<a class="headerlink" href="#10-clean-acceptance-checklist" title="Permanent link">&para;</a></h2>
+<h3 id="scope-and-evidence">Scope and evidence<a class="headerlink" href="#scope-and-evidence" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Each claim type has a named authority, date rule, and allowed inference.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Answer, partial, ask, abstain, and escalate are explicit outcomes.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Permissions and untrusted-content boundaries are enforced before model use.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Every volatile source retains date, version, and provenance.</li>
+</ul>
+<h3 id="system">System<a class="headerlink" href="#system" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Retrieval recall and evidence sufficiency are evaluated separately.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Tool results are cryptographically or structurally bound to real events.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Material claims are atomic and linked to exact evidence.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Citation existence, entailment, completeness, quality, and freshness pass.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Numerical and executable claims are recomputed or run.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Verifier and generator failures are not assumed independent.</li>
+</ul>
+<h3 id="evaluation">Evaluation<a class="headerlink" href="#evaluation" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> The private set represents production tasks and risk slices.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Unanswerable, false-premise, insufficient, conflicting, stale, and poisoned cases exist.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Repeated-run variance and confidence intervals are reported.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Accuracy, error, abstention, coverage, and severity are separate.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Human labels and LLM judges are calibrated and versioned.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Cost, latency, availability, and human load meet the target.</li>
+</ul>
+<h3 id="operations">Operations<a class="headerlink" href="#operations" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Full component versions and traces permit failure reproduction.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Monitoring detects corpus/index staleness and material claim errors.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Correction, rollback, and incident workflows were exercised.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Release gates were fixed before candidate evaluation.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Public claims name the evaluated system, date, tools, and limitations.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

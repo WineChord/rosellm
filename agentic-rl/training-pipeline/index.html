@@ -1,0 +1,3446 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/agentic-rl/training-pipeline/">
+      
+      
+        <link rel="prev" href="../data-and-environments/">
+      
+      
+        <link rel="next" href="../systems/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>End-to-End Training Pipeline - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#end-to-end-training-pipeline" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              End-to-End Training Pipeline
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-pipeline-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The pipeline at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-stage-0-write-the-learning-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Stage 0 — Write the learning contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-stage-1-freeze-interfaces-and-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Stage 1 — Freeze interfaces and artifacts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-stage-2-build-an-initial-policy-with-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Stage 2 — Build an initial policy with support
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-stage-3-configure-rollout-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Stage 3 — Configure rollout sampling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-stage-4-select-and-launch-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Stage 4 — Select and launch tasks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-stage-5-execute-the-agent-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Stage 5 — Execute the agent loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-stage-6-validate-and-compute-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Stage 6 — Validate and compute reward
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Stage 6 — Validate and compute reward">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#outcome-verifiable-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outcome-verifiable tasks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learned-reward-or-judge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learned reward or judge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kl-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KL reward
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-stage-7-accept-filter-and-quarantine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Stage 7 — Accept, filter, and quarantine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-stage-8-construct-returns-and-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Stage 8 — Construct returns and advantages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Stage 8 — Construct returns and advantages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#actorcritic-ppo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actor–critic / PPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rloo-grpo-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RLOO / GRPO-like
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-turn-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-turn decomposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-stage-9-reconstruct-the-training-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Stage 9 — Reconstruct the training sequence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-stage-10-compute-current-and-auxiliary-log-probabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Stage 10 — Compute current and auxiliary log-probabilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-stage-11-form-the-policy-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Stage 11 — Form the policy objective
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-stage-12-optimize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Stage 12 — Optimize
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-stage-13-synchronize-rollout-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Stage 13 — Synchronize rollout weights
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Stage 13 — Synchronize rollout weights">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stop-and-synchronize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stop-and-synchronize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asynchronous-versioned-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asynchronous versioned refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-stage-14-evaluate-during-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Stage 14 — Evaluate during training
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-stage-15-decide-promote-continue-rollback-or-stop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Stage 15 — Decide: promote, continue, rollback, or stop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-scaling-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Scaling gates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. Scaling gates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gate-a-single-process-tiny-model-deterministic-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate A: single process, tiny model, deterministic environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-b-multi-process-cpu-environment-one-training-gpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate B: multi-process CPU environment + one training GPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-c-multi-gpu-synchronous" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate C: multi-GPU synchronous
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-d-inferencetraining-disaggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate D: inference/training disaggregation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-e-asynchronous-and-multi-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate E: asynchronous and multi-node
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-minimal-synchronous-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Minimal synchronous loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-run-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Run dashboard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20. Run dashboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#capability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning dynamics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Systems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safety-and-integrity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safety and integrity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-common-pipeline-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. Common pipeline failures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-pipeline-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The pipeline at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-stage-0-write-the-learning-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Stage 0 — Write the learning contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-stage-1-freeze-interfaces-and-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Stage 1 — Freeze interfaces and artifacts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-stage-2-build-an-initial-policy-with-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Stage 2 — Build an initial policy with support
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-stage-3-configure-rollout-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Stage 3 — Configure rollout sampling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-stage-4-select-and-launch-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Stage 4 — Select and launch tasks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-stage-5-execute-the-agent-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Stage 5 — Execute the agent loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-stage-6-validate-and-compute-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Stage 6 — Validate and compute reward
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Stage 6 — Validate and compute reward">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#outcome-verifiable-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outcome-verifiable tasks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learned-reward-or-judge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learned reward or judge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kl-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KL reward
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-stage-7-accept-filter-and-quarantine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Stage 7 — Accept, filter, and quarantine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-stage-8-construct-returns-and-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Stage 8 — Construct returns and advantages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Stage 8 — Construct returns and advantages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#actorcritic-ppo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actor–critic / PPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rloo-grpo-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RLOO / GRPO-like
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-turn-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-turn decomposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-stage-9-reconstruct-the-training-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Stage 9 — Reconstruct the training sequence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-stage-10-compute-current-and-auxiliary-log-probabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Stage 10 — Compute current and auxiliary log-probabilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-stage-11-form-the-policy-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Stage 11 — Form the policy objective
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-stage-12-optimize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Stage 12 — Optimize
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-stage-13-synchronize-rollout-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Stage 13 — Synchronize rollout weights
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Stage 13 — Synchronize rollout weights">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stop-and-synchronize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stop-and-synchronize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asynchronous-versioned-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asynchronous versioned refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-stage-14-evaluate-during-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Stage 14 — Evaluate during training
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-stage-15-decide-promote-continue-rollback-or-stop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Stage 15 — Decide: promote, continue, rollback, or stop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-scaling-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Scaling gates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. Scaling gates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gate-a-single-process-tiny-model-deterministic-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate A: single process, tiny model, deterministic environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-b-multi-process-cpu-environment-one-training-gpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate B: multi-process CPU environment + one training GPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-c-multi-gpu-synchronous" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate C: multi-GPU synchronous
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-d-inferencetraining-disaggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate D: inference/training disaggregation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-e-asynchronous-and-multi-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate E: asynchronous and multi-node
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-minimal-synchronous-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Minimal synchronous loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-run-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Run dashboard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20. Run dashboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#capability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning dynamics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Systems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safety-and-integrity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safety and integrity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-common-pipeline-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. Common pipeline failures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="end-to-end-training-pipeline">End-to-End Training Pipeline<a class="headerlink" href="#end-to-end-training-pipeline" title="Permanent link">&para;</a></h1>
+<p>This chapter follows one <strong>Agentic Reinforcement Learning (Agentic RL)</strong> run from task specification to a promoted
+checkpoint. It describes the operational pipeline that an optimizer equation
+leaves out: data lineage, exact token handling, environment execution, reward,
+advantage construction, distributed updates, evaluation, and rollback.</p>
+<p>The diagram uses <strong>Supervised Fine-Tuning (SFT)</strong> for demonstration imitation.
+Later online stages may use <strong>Proximal Policy Optimization (PPO)</strong> with a critic
+or <strong>Group Relative Policy Optimization (GRPO)</strong> with a response-group baseline.</p>
+<h2 id="1-the-pipeline-at-a-glance">1. The pipeline at a glance<a class="headerlink" href="#1-the-pipeline-at-a-glance" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task sources + environment snapshots
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>              |
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>              v
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>      task/version registry ---------&gt; hidden evaluation registry
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>              |
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>              v
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a> demonstrations / teacher rollouts --&gt; tool-format + behavior SFT
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>              |                              |
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>              |                              v
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>              +------------------------ initial policy
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>                                             |
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>                         +-------------------+-------------------+
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>                         |                                       |
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>                         v                                       |
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>                rollout inference servers                        |
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>                         | exact tokens + logprobs                |
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>                         v                                       |
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a> agent loops &lt;--&gt; versioned environments/tools                    |
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>                         | event trajectories                     |
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>                         v                                       |
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>             validators / reward models / judges                  |
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>                         | reward components                      |
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>                         v                                       |
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>          filtering + returns + advantages + packing              |
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>                         | training tensors                       |
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>                         v                                       |
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>      policy update (+ critic/reference/reward as configured)     |
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>                         | new checkpoint                         |
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>                         +-------------------+-------------------+
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>                                             |
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>                                   fixed + interactive eval
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>                                             |
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>                           promote / continue / rollback / stop
+</code></pre></div>
+<p>The arrows are versioned data products. If a model score cannot be traced back
+through each arrow, the experiment is not reproducible.</p>
+<h2 id="2-stage-0-write-the-learning-contract">2. Stage 0 — Write the learning contract<a class="headerlink" href="#2-stage-0-write-the-learning-contract" title="Permanent link">&para;</a></h2>
+<p>Before selecting PPO or GRPO, fix the experiment's meaning.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">objective</span><span class="p">:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">target_distribution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">agent_tasks_v4</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">primary_metric</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">verified_success_rate</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">constraints</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">unsafe_action_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">p95_episode_cost_usd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.20</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nt">p95_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">regression_floors</span><span class="p">:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">base_knowledge_eval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.98_of_initial</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nt">tool_schema_holdout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.75</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nt">budgets</span><span class="p">:</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="nt">rollout_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0e9</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="nt">optimizer_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0e9</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="nt">environment_hours</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50000</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="nt">accelerator_hours</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12000</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="nt">stop_rules</span><span class="p">:</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">safety_violation</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no_validation_gain_for_5_evals</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kl_above_limit_for_3_updates</span>
+</code></pre></div>
+<p>Specify target task mixture, success, costs, hard constraints, regression floors,
+compute/data budgets, and stop rules. Otherwise dynamic curricula and reward
+weights silently redefine success during the run.</p>
+<h2 id="3-stage-1-freeze-interfaces-and-artifacts">3. Stage 1 — Freeze interfaces and artifacts<a class="headerlink" href="#3-stage-1-freeze-interfaces-and-artifacts" title="Permanent link">&para;</a></h2>
+<p>Assign immutable identifiers to:</p>
+<ul>
+<li>base/SFT policy checkpoint;</li>
+<li>tokenizer, vocabulary, and chat template;</li>
+<li>tool schemas and structured-output grammar;</li>
+<li>task corpus and split manifest;</li>
+<li>environment image, snapshot, and validator;</li>
+<li>reward-model/judge checkpoint and rubric;</li>
+<li>training code revision and resolved configuration;</li>
+<li>dependency/container image and hardware topology.</li>
+</ul>
+<p>Run conformance tests between the SFT data formatter, rollout server, agent
+parser, and trainer. The same assistant/tool boundary must produce identical
+token IDs and loss masks everywhere.</p>
+<h2 id="4-stage-2-build-an-initial-policy-with-support">4. Stage 2 — Build an initial policy with support<a class="headerlink" href="#4-stage-2-build-an-initial-policy-with-support" title="Permanent link">&para;</a></h2>
+<p>Pure RL from a base model is scientifically interesting but operationally
+expensive when most trajectories are invalid. A typical bootstrap is:</p>
+<ol>
+<li><strong>format SFT:</strong> valid chat roles, action delimiters, and JSON/tool schemas;</li>
+<li><strong>single-step SFT:</strong> when and how to call each tool;</li>
+<li><strong>trajectory SFT:</strong> planning, observation use, recovery, and termination;</li>
+<li><strong>negative/recovery coverage:</strong> examples from malformed calls, tool failures,
+   ambiguous instructions, permission denial, and unsafe requests;</li>
+<li><strong>optional distillation/rejection sampling:</strong> execute teacher samples and
+   retain independently verified trajectories.</li>
+</ol>
+<p>Train only policy-authored target spans. If a tool result becomes a target token,
+the model is rewarded for predicting the environment rather than choosing the
+next action.</p>
+<p>Evaluate the SFT policy before RL. Record validity, success, entropy, trajectory
+length, tool-use distribution, and safety. This checkpoint is both baseline and
+often the KL reference.</p>
+<h2 id="5-stage-3-configure-rollout-sampling">5. Stage 3 — Configure rollout sampling<a class="headerlink" href="#5-stage-3-configure-rollout-sampling" title="Permanent link">&para;</a></h2>
+<p>The behavior distribution is defined by more than model weights:</p>
+<ul>
+<li>temperature, top-p/top-k/min-p;</li>
+<li>repetition and presence penalties;</li>
+<li>maximum tokens per action and episode;</li>
+<li>constrained-decoding grammar and token masks;</li>
+<li>stop sequences and end-of-turn rules;</li>
+<li>number of trajectories per task/group;</li>
+<li>environment seed and user-simulator policy;</li>
+<li>tool retry, timeout, and error policy;</li>
+<li>context truncation, summarization, and memory retrieval.</li>
+</ul>
+<p>Record the resolved sampler with every trajectory. For policy-gradient training,
+store log-probabilities under the <strong>actual behavior distribution after masks and
+sampling transformations</strong>, or recompute them using an exactly equivalent
+frozen behavior policy.</p>
+<p>Temperature changes the behavior logits. If base logits are <span class="arithmatex">\(z\)</span>, sampling
+uses <span class="arithmatex">\(z/T\)</span>; the behavior log-probability is derived from the scaled and masked
+distribution, not the unscaled training logits.</p>
+<h2 id="6-stage-4-select-and-launch-tasks">6. Stage 4 — Select and launch tasks<a class="headerlink" href="#6-stage-4-select-and-launch-tasks" title="Permanent link">&para;</a></h2>
+<p>A curriculum sampler emits <code>(task_id, environment_version, seed, group_id)</code>.
+For group-relative algorithms, all <span class="arithmatex">\(G\)</span> trajectories in a group normally share
+the task but use independent policy/environment sampling seeds.</p>
+<p>The dispatcher should:</p>
+<ol>
+<li>reject evaluation IDs through an enforced denylist;</li>
+<li>enforce desired task weights and per-domain quotas;</li>
+<li>reserve group membership before dispatch;</li>
+<li>attach the behavior policy version;</li>
+<li>account for launched, completed, failed, timed-out, and filtered attempts;</li>
+<li>retry infrastructure failures without converting them into task failures;</li>
+<li>avoid retrying a state-changing action unless idempotency is known.</li>
+</ol>
+<p>If only completed fast episodes reach the trainer, asynchronous collection
+creates latency-based selection bias. Preserve the attempt census and define
+what happens to stragglers at update boundaries.</p>
+<h2 id="7-stage-5-execute-the-agent-loop">7. Stage 5 — Execute the agent loop<a class="headerlink" href="#7-stage-5-execute-the-agent-loop" title="Permanent link">&para;</a></h2>
+<p>Conceptual pseudocode:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">env_seed</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">state</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">for</span> <span class="n">turn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_turns</span><span class="p">):</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">prompt</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">sample</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">generate_tokens</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">sampler</span><span class="p">,</span> <span class="n">policy_version</span><span class="p">)</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">token_ids</span><span class="p">)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">log_policy_event</span><span class="p">(</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="n">prompt_ids</span><span class="o">=</span><span class="n">prompt</span><span class="o">.</span><span class="n">token_ids</span><span class="p">,</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="n">token_ids</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">token_ids</span><span class="p">,</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="n">old_logprobs</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">logprobs</span><span class="p">,</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="n">policy_version</span><span class="o">=</span><span class="n">policy_version</span><span class="p">,</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="n">parser_version</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">parser_version</span><span class="p">,</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="p">)</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">action</span><span class="o">.</span><span class="n">valid</span><span class="p">:</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="n">transition</span> <span class="o">=</span> <span class="n">invalid_action_transition</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    <span class="k">elif</span> <span class="ow">not</span> <span class="n">authorizer</span><span class="o">.</span><span class="n">allows</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>        <span class="n">transition</span> <span class="o">=</span> <span class="n">denied_action_transition</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>        <span class="n">transition</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>    <span class="n">log_transition</span><span class="p">(</span><span class="n">transition</span><span class="p">)</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>    <span class="n">state</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">transition</span><span class="o">.</span><span class="n">observation</span><span class="p">)</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>    <span class="k">if</span> <span class="n">transition</span><span class="o">.</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">transition</span><span class="o">.</span><span class="n">truncated</span><span class="p">:</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>        <span class="k">break</span>
+</code></pre></div>
+<p>The policy server should return token IDs and log-probabilities directly. Text
+is retained for analysis and parsing, not decoded then re-tokenized for
+training. This exact-token constraint is emphasized in veRL's
+<a href="https://github.com/verl-project/verl/blob/main/docs/start/agentic_rl.rst">agentic RL design</a>.</p>
+<h2 id="8-stage-6-validate-and-compute-reward">8. Stage 6 — Validate and compute reward<a class="headerlink" href="#8-stage-6-validate-and-compute-reward" title="Permanent link">&para;</a></h2>
+<p>Compute reward after the complete event log is immutable. Keep components
+separate:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>R = success
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  + progress_shaping
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  + process_quality
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  + user_preference
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  - tool_cost
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  - latency_cost
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  - invalid_action_cost
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  - safety_violation_cost
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  - KL_regularization
+</code></pre></div>
+<p>For every component store:</p>
+<ul>
+<li>name and version;</li>
+<li>raw score before scaling/clipping;</li>
+<li>weight and transformation;</li>
+<li>turn/span/trajectory scope;</li>
+<li>evidence used by the evaluator;</li>
+<li>evaluator model/validator version;</li>
+<li>error and uncertainty metadata.</li>
+</ul>
+<p>Hard safety or permission violations should usually terminate/quarantine the
+episode and trigger an incident path, not merely subtract a reward that task
+success can outweigh.</p>
+<h3 id="outcome-verifiable-tasks">Outcome-verifiable tasks<a class="headerlink" href="#outcome-verifiable-tasks" title="Permanent link">&para;</a></h3>
+<p>Run the trusted validator in a separate context. Do not expose hidden tests,
+expected outputs, or evaluator traces to the policy. Distinguish validator
+failure from agent failure.</p>
+<h3 id="learned-reward-or-judge">Learned reward or judge<a class="headerlink" href="#learned-reward-or-judge" title="Permanent link">&para;</a></h3>
+<p>Batch scoring may reduce cost, but preserve the exact rubric and input view.
+Calibrate score/ranking against humans or verifiers on held-out data. Freeze the
+judge during a policy comparison unless the experiment studies co-evolution.</p>
+<h3 id="kl-reward">KL reward<a class="headerlink" href="#kl-reward" title="Permanent link">&para;</a></h3>
+<p>If KL is included as a per-token shaped reward, compute reference log-probability
+on exactly the sampled tokens and prefixes. Make clear whether the KL enters the
+reward/return, the policy loss, or both; double application is a common bug.</p>
+<h2 id="9-stage-7-accept-filter-and-quarantine">9. Stage 7 — Accept, filter, and quarantine<a class="headerlink" href="#9-stage-7-accept-filter-and-quarantine" title="Permanent link">&para;</a></h2>
+<p>Separate three classes:</p>
+<ol>
+<li><strong>statistically valid training episode:</strong> environment and logging succeeded;
+   task success may be zero;</li>
+<li><strong>infrastructure-invalid episode:</strong> corrupt snapshot, missing tokens, server
+   crash, reward failure, duplicate event, irrecoverable version mismatch;</li>
+<li><strong>safety incident:</strong> unauthorized or unexpected behavior requiring review.</li>
+</ol>
+<p>Do not drop ordinary failed trajectories merely because reward is low. That
+changes the behavior distribution and eliminates negative advantages. Dynamic
+sampling may drop all-equal groups by design, but it must log the acceptance
+rule and denominator.</p>
+<p>Validate:</p>
+<ul>
+<li>token/log-probability lengths and finite values;</li>
+<li>policy, tokenizer, template, parser, environment, and reward versions;</li>
+<li>event ordering and action-to-observation pairing;</li>
+<li>group completeness or declared partial-group policy;</li>
+<li>termination versus truncation;</li>
+<li>reward ranges and component availability;</li>
+<li>duplicate trajectory/action delivery;</li>
+<li>evaluator leakage and sandbox incidents.</li>
+</ul>
+<h2 id="10-stage-8-construct-returns-and-advantages">10. Stage 8 — Construct returns and advantages<a class="headerlink" href="#10-stage-8-construct-returns-and-advantages" title="Permanent link">&para;</a></h2>
+<p>Choose the credit unit explicitly.</p>
+<h3 id="actorcritic-ppo">Actor–critic / PPO<a class="headerlink" href="#actorcritic-ppo" title="Permanent link">&para;</a></h3>
+<ol>
+<li>map reward events to decision steps;</li>
+<li>obtain value predictions for each history/turn;</li>
+<li>bootstrap only for configured nonterminal truncations;</li>
+<li>compute TD residuals and GAE;</li>
+<li>optionally normalize advantages over a defined population;</li>
+<li>broadcast each turn advantage to its policy-token span, unless token-level
+   values/rewards are modeled.</li>
+</ol>
+<h3 id="rloo-grpo-like">RLOO / GRPO-like<a class="headerlink" href="#rloo-grpo-like" title="Permanent link">&para;</a></h3>
+<ol>
+<li>group trajectories by task instance;</li>
+<li>compute scalar or turn-aligned return for each sample;</li>
+<li>form leave-one-out or group-standardized advantages;</li>
+<li>handle zero-variance groups according to the declared algorithm;</li>
+<li>record group statistics before filtering/normalization;</li>
+<li>map trajectory/turn advantages to policy tokens.</li>
+</ol>
+<h3 id="multi-turn-decomposition">Multi-turn decomposition<a class="headerlink" href="#multi-turn-decomposition" title="Permanent link">&para;</a></h3>
+<p>If reward is attached at each turn, compute reward-to-go per turn. If a process
+model assigns span rewards, document whether they are additive rewards, direct
+advantages, value targets, or sample weights; these choices are not equivalent.</p>
+<h2 id="11-stage-9-reconstruct-the-training-sequence">11. Stage 9 — Reconstruct the training sequence<a class="headerlink" href="#11-stage-9-reconstruct-the-training-sequence" title="Permanent link">&para;</a></h2>
+<p>For each trajectory, create a token stream with roles/segments:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>[system][user][assistant action 0][tool observation 0]
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>[assistant action 1][tool observation 1]...[assistant final]
+</code></pre></div>
+<p>Build:</p>
+<ul>
+<li>causal <code>input_ids</code> and position metadata;</li>
+<li>attention structure that prevents cross-example leakage when packed;</li>
+<li><code>action_mask</code> selecting only tokens sampled by the trained policy;</li>
+<li>old behavior log-probabilities aligned to next-token targets;</li>
+<li>reference log-probabilities if required;</li>
+<li>turn IDs and advantage per action token;</li>
+<li>value targets and masks for the critic;</li>
+<li>sample/task/group weights;</li>
+<li>policy and environment metadata outside model tensors.</li>
+</ul>
+<p>The last input token predicts the next token, so logits at position <span class="arithmatex">\(i\)</span> align
+with target <code>input_ids[i+1]</code>. Unit-test this shift with a hand-built sequence.</p>
+<p>Context overflow is not solved by silently dropping early observations. Define
+whether examples are rejected, truncated, summarized, memory-compressed, or
+split—and whether old log-probabilities remain valid under the transformed
+prefix.</p>
+<h2 id="12-stage-10-compute-current-and-auxiliary-log-probabilities">12. Stage 10 — Compute current and auxiliary log-probabilities<a class="headerlink" href="#12-stage-10-compute-current-and-auxiliary-log-probabilities" title="Permanent link">&para;</a></h2>
+<p>Run the current actor on the exact stored sequence. Gather log-softmax at each
+sampled target token:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">shifted_logits</span> <span class="o">=</span> <span class="n">logits</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">targets</span> <span class="o">=</span> <span class="n">input_ids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">current_logprobs</span> <span class="o">=</span> <span class="n">log_softmax</span><span class="p">(</span><span class="n">shifted_logits</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">targets</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>Apply <code>action_mask</code> only after the target shift is aligned. For tensor-parallel
+vocabularies, use a numerically equivalent distributed log-softmax/gather.</p>
+<p>Compute reference log-probabilities with a frozen checkpoint or reuse immutable
+precomputed values only when prefixes and reference version are identical.
+Compute critic values at the declared boundary (token, turn-end, or separate
+state token).</p>
+<h2 id="13-stage-11-form-the-policy-objective">13. Stage 11 — Form the policy objective<a class="headerlink" href="#13-stage-11-form-the-policy-objective" title="Permanent link">&para;</a></h2>
+<p>For a PPO/GRPO-style token surrogate:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">log_ratio</span> <span class="o">=</span> <span class="n">current_logprobs</span> <span class="o">-</span> <span class="n">old_logprobs</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">ratio</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">log_ratio</span><span class="p">)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">unclipped</span> <span class="o">=</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">advantages</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">clipped</span> <span class="o">=</span> <span class="n">clamp</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">clip_low</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">clip_high</span><span class="p">)</span> <span class="o">*</span> <span class="n">advantages</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">policy_terms</span> <span class="o">=</span> <span class="n">minimum</span><span class="p">(</span><span class="n">unclipped</span><span class="p">,</span> <span class="n">clipped</span><span class="p">)</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">global_masked_reduce</span><span class="p">(</span><span class="n">policy_terms</span><span class="p">,</span> <span class="n">action_mask</span><span class="p">)</span>
+</code></pre></div>
+<p>Production details that change the objective:</p>
+<ul>
+<li>symmetric versus asymmetric clipping;</li>
+<li>token- versus sequence-level ratio;</li>
+<li>token, sequence, turn, or task normalization;</li>
+<li>multiple optimizer epochs and minibatch order;</li>
+<li>maximum log-ratio or numerical clamp;</li>
+<li>KL to old versus reference policy;</li>
+<li>entropy bonus and its mask;</li>
+<li>per-task and importance weights;</li>
+<li>overlong or invalid samples;</li>
+<li>gradient accumulation and distributed denominator.</li>
+</ul>
+<p>Log the fraction clipped separately for positive and negative advantages and
+the ratio distribution by policy lag.</p>
+<h2 id="14-stage-12-optimize">14. Stage 12 — Optimize<a class="headerlink" href="#14-stage-12-optimize" title="Permanent link">&para;</a></h2>
+<p>A typical update:</p>
+<ol>
+<li>zero or accumulate gradients according to a declared global batch;</li>
+<li>forward actor (and critic if present) under mixed precision;</li>
+<li>compute policy, value, entropy, KL, and auxiliary losses;</li>
+<li>globally normalize using true valid-token/sample denominators;</li>
+<li>backpropagate with activation checkpointing as configured;</li>
+<li>unscale gradients if loss scaling is used;</li>
+<li>compute and all-reduce the intended global gradient norm;</li>
+<li>clip once under the chosen sharding semantics;</li>
+<li>optimizer step and schedule step;</li>
+<li>update adaptive KL controller/target models if configured;</li>
+<li>increment immutable policy version;</li>
+<li>checkpoint model, optimizer, scheduler, RNG, curriculum, and data cursors.</li>
+</ol>
+<p>For multiple epochs over a rollout batch, samples become increasingly off-policy
+relative to the current actor. Monitor divergence by epoch; “PPO” does not make
+arbitrary reuse statistically safe.</p>
+<h2 id="15-stage-13-synchronize-rollout-weights">15. Stage 13 — Synchronize rollout weights<a class="headerlink" href="#15-stage-13-synchronize-rollout-weights" title="Permanent link">&para;</a></h2>
+<p>Two common designs:</p>
+<h3 id="stop-and-synchronize">Stop-and-synchronize<a class="headerlink" href="#stop-and-synchronize" title="Permanent link">&para;</a></h3>
+<p>Pause collectors, finish an update, convert/shard weights, load every inference
+worker, then resume with a new version. This minimizes version ambiguity but
+creates idle time.</p>
+<h3 id="asynchronous-versioned-refresh">Asynchronous versioned refresh<a class="headerlink" href="#asynchronous-versioned-refresh" title="Permanent link">&para;</a></h3>
+<p>Collectors continue under older checkpoints while new weights are published.
+Each trajectory retains its behavior version. The trainer admits samples only
+within a lag/divergence policy and uses the corresponding old log-probabilities.</p>
+<p>A robust publication protocol writes a complete checkpoint to a temporary
+version, verifies hashes, atomically marks it ready, and requires workers to
+acknowledge the exact version. Never let a server sample while some tensors have
+new weights and others old weights.</p>
+<h2 id="16-stage-14-evaluate-during-training">16. Stage 14 — Evaluate during training<a class="headerlink" href="#16-stage-14-evaluate-during-training" title="Permanent link">&para;</a></h2>
+<p>Use at least four suites:</p>
+<ol>
+<li><strong>training-distribution validation:</strong> detects optimization progress;</li>
+<li><strong>held-out task/state generalization:</strong> detects overfitting;</li>
+<li><strong>base capability regressions:</strong> knowledge, instruction following, language,
+   and non-agent tasks;</li>
+<li><strong>safety/adversarial evaluation:</strong> permission, prompt injection, data
+   exfiltration, reward tampering, and denial/abstention.</li>
+</ol>
+<p>Freeze task IDs, environment versions, budgets, sampler, scaffold, tools, and
+judges across checkpoint comparisons. Run repeated seeds for stochastic
+environments and use confidence intervals. Keep evaluation workers and artifacts
+isolated from training.</p>
+<h2 id="17-stage-15-decide-promote-continue-rollback-or-stop">17. Stage 15 — Decide: promote, continue, rollback, or stop<a class="headerlink" href="#17-stage-15-decide-promote-continue-rollback-or-stop" title="Permanent link">&para;</a></h2>
+<p>Promotion is a gate, not “latest checkpoint wins.” Require:</p>
+<ul>
+<li>statistically supported primary-metric improvement;</li>
+<li>all hard constraints and regression floors;</li>
+<li>acceptable cost/latency/length distribution;</li>
+<li>no unresolved safety incidents;</li>
+<li>reward–evaluation agreement on independent metrics;</li>
+<li>reproducible checkpoint and data lineage;</li>
+<li>review of qualitative failures, not only averages.</li>
+</ul>
+<p>Rollback to a known checkpoint and curriculum/reward version when reward
+hacking, collapse, infrastructure corruption, or safety regression occurs.
+Preserve the failed run; it is diagnostic data.</p>
+<h2 id="18-scaling-gates">18. Scaling gates<a class="headerlink" href="#18-scaling-gates" title="Permanent link">&para;</a></h2>
+<p>Increase scale only after the previous gate passes.</p>
+<h3 id="gate-a-single-process-tiny-model-deterministic-environment">Gate A: single process, tiny model, deterministic environment<a class="headerlink" href="#gate-a-single-process-tiny-model-deterministic-environment" title="Permanent link">&para;</a></h3>
+<ul>
+<li>exact trajectory replay;</li>
+<li>hand-calculated returns and advantages;</li>
+<li>finite-difference or autograd gradient checks;</li>
+<li>overfit a tiny set and observe expected direction.</li>
+</ul>
+<h3 id="gate-b-multi-process-cpu-environment-one-training-gpu">Gate B: multi-process CPU environment + one training GPU<a class="headerlink" href="#gate-b-multi-process-cpu-environment-one-training-gpu" title="Permanent link">&para;</a></h3>
+<ul>
+<li>RPC retry/idempotency tests;</li>
+<li>queue backpressure and cancellation;</li>
+<li>no lost/duplicate events;</li>
+<li>identical loss to offline replay.</li>
+</ul>
+<h3 id="gate-c-multi-gpu-synchronous">Gate C: multi-GPU synchronous<a class="headerlink" href="#gate-c-multi-gpu-synchronous" title="Permanent link">&para;</a></h3>
+<ul>
+<li>single-GPU parity on the same global batch;</li>
+<li>correct global denominators and gradient norms;</li>
+<li>checkpoint resume equality within tolerance.</li>
+</ul>
+<h3 id="gate-d-inferencetraining-disaggregation">Gate D: inference/training disaggregation<a class="headerlink" href="#gate-d-inferencetraining-disaggregation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>exact policy-version/log-probability audit;</li>
+<li>weight publication atomicity;</li>
+<li>tokenizer/template/parser parity;</li>
+<li>throughput and GPU-bubble trace.</li>
+</ul>
+<h3 id="gate-e-asynchronous-and-multi-node">Gate E: asynchronous and multi-node<a class="headerlink" href="#gate-e-asynchronous-and-multi-node" title="Permanent link">&para;</a></h3>
+<ul>
+<li>lag-stratified ratio/KL metrics;</li>
+<li>straggler and selection-bias accounting;</li>
+<li>worker/node failure injection;</li>
+<li>bounded replay and recovery;</li>
+<li>end-to-end cost and safety load test.</li>
+</ul>
+<h2 id="19-minimal-synchronous-loop">19. Minimal synchronous loop<a class="headerlink" href="#19-minimal-synchronous-loop" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">policy</span> <span class="o">=</span> <span class="n">load_policy</span><span class="p">(</span><span class="n">sft_checkpoint</span><span class="p">)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">reference</span> <span class="o">=</span> <span class="n">load_frozen_reference</span><span class="p">(</span><span class="n">sft_checkpoint</span><span class="p">)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">policy_version</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">while</span> <span class="ow">not</span> <span class="n">stop_condition</span><span class="p">():</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">tasks</span> <span class="o">=</span> <span class="n">curriculum</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">batch_tasks</span><span class="p">)</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">trajectories</span> <span class="o">=</span> <span class="n">collect_groups</span><span class="p">(</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="n">policy</span><span class="o">=</span><span class="n">policy</span><span class="p">,</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>        <span class="n">policy_version</span><span class="o">=</span><span class="n">policy_version</span><span class="p">,</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>        <span class="n">tasks</span><span class="o">=</span><span class="n">tasks</span><span class="p">,</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        <span class="n">group_size</span><span class="o">=</span><span class="n">group_size</span><span class="p">,</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    <span class="p">)</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    <span class="n">valid</span><span class="p">,</span> <span class="n">incidents</span> <span class="o">=</span> <span class="n">validate_trajectory_records</span><span class="p">(</span><span class="n">trajectories</span><span class="p">)</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    <span class="n">quarantine</span><span class="p">(</span><span class="n">incidents</span><span class="p">)</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    <span class="n">rewards</span> <span class="o">=</span> <span class="n">reward_pipeline</span><span class="p">(</span><span class="n">valid</span><span class="p">)</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    <span class="n">advantages</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">rewards</span><span class="p">)</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    <span class="n">batch</span> <span class="o">=</span> <span class="n">pack_exact_tokens</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">advantages</span><span class="p">)</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">update_epochs</span><span class="p">):</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>        <span class="k">for</span> <span class="n">minibatch</span> <span class="ow">in</span> <span class="n">batch</span><span class="o">.</span><span class="n">iter_minibatches</span><span class="p">():</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>            <span class="n">current</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">logprobs</span><span class="p">(</span><span class="n">minibatch</span><span class="p">)</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>            <span class="n">reference_lp</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">logprobs</span><span class="p">(</span><span class="n">minibatch</span><span class="p">)</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>            <span class="n">loss</span><span class="p">,</span> <span class="n">metrics</span> <span class="o">=</span> <span class="n">policy_objective</span><span class="p">(</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>                <span class="n">current</span><span class="o">=</span><span class="n">current</span><span class="p">,</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>                <span class="n">old</span><span class="o">=</span><span class="n">minibatch</span><span class="o">.</span><span class="n">old_logprobs</span><span class="p">,</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>                <span class="n">reference</span><span class="o">=</span><span class="n">reference_lp</span><span class="p">,</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>                <span class="n">advantages</span><span class="o">=</span><span class="n">minibatch</span><span class="o">.</span><span class="n">advantages</span><span class="p">,</span>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>                <span class="n">action_mask</span><span class="o">=</span><span class="n">minibatch</span><span class="o">.</span><span class="n">action_mask</span><span class="p">,</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>            <span class="p">)</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>            <span class="n">optimizer_step</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>
+<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>    <span class="n">policy_version</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a>    <span class="n">checkpoint</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">policy_version</span><span class="p">,</span> <span class="n">data_cursors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a>    <span class="n">evaluate_and_gate</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">policy_version</span><span class="p">)</span>
+</code></pre></div>
+<p>This loop omits performance machinery but not the logical data dependencies. An
+asynchronous design must preserve equivalent provenance while allowing stages
+to overlap.</p>
+<h2 id="20-run-dashboard">20. Run dashboard<a class="headerlink" href="#20-run-dashboard" title="Permanent link">&para;</a></h2>
+<p>Monitor by task, policy version, and rollout lag:</p>
+<h3 id="capability">Capability<a class="headerlink" href="#capability" title="Permanent link">&para;</a></h3>
+<ul>
+<li>verified success and partial progress;</li>
+<li>pass@1/pass@k under fixed sample budgets;</li>
+<li>tool/action validity, recovery, and termination accuracy;</li>
+<li>held-out and regression metrics.</li>
+</ul>
+<h3 id="learning-dynamics">Learning dynamics<a class="headerlink" href="#learning-dynamics" title="Permanent link">&para;</a></h3>
+<ul>
+<li>raw reward components, returns, group variance, advantages;</li>
+<li>current/old ratios, clip fractions, approximate KL;</li>
+<li>reference KL, entropy, response/episode length;</li>
+<li>critic explained variance and value calibration;</li>
+<li>gradient/parameter norms and optimizer statistics.</li>
+</ul>
+<h3 id="systems">Systems<a class="headerlink" href="#systems" title="Permanent link">&para;</a></h3>
+<ul>
+<li>generation and training tokens/s;</li>
+<li>policy GPU model-forward utilization;</li>
+<li>environment latency distribution and failure types;</li>
+<li>queue depth, backpressure, stragglers, accepted-token yield;</li>
+<li>weight-sync time, policy lag, checkpoint/restart time;</li>
+<li>accelerator, environment, tool/API, and annotation cost.</li>
+</ul>
+<h3 id="safety-and-integrity">Safety and integrity<a class="headerlink" href="#safety-and-integrity" title="Permanent link">&para;</a></h3>
+<ul>
+<li>authorization denials and attempted violations;</li>
+<li>prompt-injection success;</li>
+<li>validator/judge errors and suspicious reward outliers;</li>
+<li>evaluation ID access attempts;</li>
+<li>non-replayable state and artifact/hash failures.</li>
+</ul>
+<h2 id="21-common-pipeline-failures">21. Common pipeline failures<a class="headerlink" href="#21-common-pipeline-failures" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely causes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reward rises, verified success flat</td>
+<td>judge/reward exploitation, curriculum shift, leakage</td>
+</tr>
+<tr>
+<td>KL instantly large</td>
+<td>wrong reference/template, shifted token alignment, stale behavior logprobs</td>
+</tr>
+<tr>
+<td>Ratio is not one before first update</td>
+<td>sampling/training distribution mismatch or reconstruction bug</td>
+</tr>
+<tr>
+<td>Model emits tool observations</td>
+<td>SFT/RL mask trained environment spans</td>
+</tr>
+<tr>
+<td>Longer responses dominate</td>
+<td>token-sum objective, reward-length correlation, truncation policy</td>
+</tr>
+<tr>
+<td>Multi-GPU differs from one GPU</td>
+<td>local denominator averaging, packing leakage, gradient clipping semantics</td>
+</tr>
+<tr>
+<td>Async training unstable</td>
+<td>policy lag, completion-time selection bias, mixed versions, duplicate samples</td>
+</tr>
+<tr>
+<td>All groups give zero advantage</td>
+<td>curriculum too easy/hard, verifier broken, grouping wrong</td>
+</tr>
+<tr>
+<td>Tool syntax improves but task success falls</td>
+<td>proxy reward overweighted or parser/scaffold changed</td>
+</tr>
+<tr>
+<td>Resume diverges immediately</td>
+<td>RNG, optimizer, scheduler, curriculum, queue, or environment cursor missing</td>
+</tr>
+</tbody>
+</table>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Long Ouyang et al.,
+   <a href="https://arxiv.org/abs/2203.02155">“Training language models to follow instructions with human feedback”</a>,
+   2022.</li>
+<li>Zhihong Shao et al.,
+   <a href="https://arxiv.org/abs/2402.03300">“DeepSeekMath”</a>, 2024.</li>
+<li>Daya Guo et al.,
+   <a href="https://arxiv.org/abs/2501.12948">“DeepSeek-R1”</a>, 2025.</li>
+<li>Guangming Sheng et al.,
+   <a href="https://arxiv.org/abs/2409.19256">“HybridFlow: A Flexible and Efficient RLHF Framework”</a>,
+   2024/2025.</li>
+<li>Shangchun Fu et al.,
+   <a href="https://arxiv.org/abs/2505.24298">“AReaL: A Large-Scale Asynchronous Reinforcement Learning System for Language Reasoning”</a>,
+   2025.</li>
+<li>veRL,
+   <a href="https://github.com/verl-project/verl/blob/main/docs/start/agentic_rl.rst">“Agentic RL Training”</a>,
+   documentation, accessed through the linked moving branch; pin a revision for
+   an experiment.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,4160 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/multimodal/kimi-k3/">
+      
+      
+        <link rel="prev" href="../kimi/">
+      
+      
+        <link rel="next" href="../deepseek/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Kimi K3 Architecture and Systems - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kimi-k3-architecture-systems-evaluation-and-disclosure-boundary" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kimi K3 Architecture and Systems
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-executive-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Executive reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-evidence-ledger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Evidence ledger
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Evidence ledger">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-what-the-size-and-scaling-charts-actually-say" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 What the size and scaling charts actually say
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-reading-the-architecture-figure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Reading the architecture figure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kimi-delta-attention-the-sequence-memory-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Kimi Delta Attention: the sequence-memory path
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Kimi Delta Attention: the sequence-memory path">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-from-linear-attention-to-a-gated-delta-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 From linear attention to a gated delta rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-neural-parameterization-established-by-kimi-linear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Neural parameterization established by Kimi Linear
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-why-it-can-train-in-parallel-and-decode-recurrently" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Why it can train in parallel and decode recurrently
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-why-k3-still-has-periodic-full-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Why K3 still has periodic full attention
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-attention-residuals-attention-over-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Attention Residuals: attention over depth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Attention Residuals: attention over depth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-the-problem-with-the-usual-residual-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 The problem with the usual residual stream
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-full-attnres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Full AttnRes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-block-attnres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Block AttnRes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-why-the-system-implementation-is-nontrivial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Why the system implementation is nontrivial
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-stable-latentmoe-capacity-without-proportional-routed-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Stable LatentMoE: capacity without proportional routed cost
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Stable LatentMoE: capacity without proportional routed cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-canonical-latentmoe-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Canonical LatentMoE topology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-what-16-of-896-does-and-does-not-mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 What 16 of 896 does and does not mean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-quantile-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Quantile Balancing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-optimizer-and-activation-control-disclosures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Optimizer and activation-control disclosures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Optimizer and activation-control disclosures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-per-head-muon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Per-Head Muon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-situ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 SiTU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-gated-mla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Gated MLA
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-quantization-aware-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Quantization-aware training
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-distributed-training-and-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Distributed training and inference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Distributed training and inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-fully-balanced-expert-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Fully balanced expert parallelism
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-why-moonshot-recommends-a-64-accelerator-supernode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Why Moonshot recommends a 64-accelerator supernode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-kda-prefix-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 KDA prefix caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-mooncake-and-the-price-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 Mooncake and the price claim
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-native-vision-and-video-what-is-actually-known" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Native vision and video: what is actually known
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-agent-behavior-and-product-system-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Agent behavior and product-system composition
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Agent behavior and product-system composition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preserved-thinking-is-an-api-state-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preserved thinking is an API state contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-the-launch-demonstrations-establish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. What the launch demonstrations establish
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-complete-launch-benchmark-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Complete launch benchmark table
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Complete launch benchmark table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131-coding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 Coding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#132-productivity-and-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 Productivity and agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#133-reasoning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 Reasoning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#134-vision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 Vision
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-benchmark-methodology-and-comparability-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Benchmark methodology and comparability limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-disclosed-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Disclosed limitations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-availability-at-the-cutoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Availability at the cutoff
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-questions-the-technical-report-and-weights-must-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Questions the technical report and weights must answer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-executive-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Executive reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-evidence-ledger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Evidence ledger
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Evidence ledger">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-what-the-size-and-scaling-charts-actually-say" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 What the size and scaling charts actually say
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-reading-the-architecture-figure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Reading the architecture figure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kimi-delta-attention-the-sequence-memory-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Kimi Delta Attention: the sequence-memory path
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Kimi Delta Attention: the sequence-memory path">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-from-linear-attention-to-a-gated-delta-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 From linear attention to a gated delta rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-neural-parameterization-established-by-kimi-linear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Neural parameterization established by Kimi Linear
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-why-it-can-train-in-parallel-and-decode-recurrently" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Why it can train in parallel and decode recurrently
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-why-k3-still-has-periodic-full-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Why K3 still has periodic full attention
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-attention-residuals-attention-over-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Attention Residuals: attention over depth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Attention Residuals: attention over depth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-the-problem-with-the-usual-residual-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 The problem with the usual residual stream
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-full-attnres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Full AttnRes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-block-attnres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Block AttnRes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-why-the-system-implementation-is-nontrivial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Why the system implementation is nontrivial
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-stable-latentmoe-capacity-without-proportional-routed-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Stable LatentMoE: capacity without proportional routed cost
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Stable LatentMoE: capacity without proportional routed cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-canonical-latentmoe-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Canonical LatentMoE topology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-what-16-of-896-does-and-does-not-mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 What 16 of 896 does and does not mean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-quantile-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Quantile Balancing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-optimizer-and-activation-control-disclosures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Optimizer and activation-control disclosures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Optimizer and activation-control disclosures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-per-head-muon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Per-Head Muon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-situ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 SiTU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-gated-mla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Gated MLA
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-quantization-aware-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Quantization-aware training
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-distributed-training-and-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Distributed training and inference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Distributed training and inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-fully-balanced-expert-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Fully balanced expert parallelism
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-why-moonshot-recommends-a-64-accelerator-supernode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Why Moonshot recommends a 64-accelerator supernode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-kda-prefix-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 KDA prefix caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-mooncake-and-the-price-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 Mooncake and the price claim
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-native-vision-and-video-what-is-actually-known" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Native vision and video: what is actually known
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-agent-behavior-and-product-system-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Agent behavior and product-system composition
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Agent behavior and product-system composition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preserved-thinking-is-an-api-state-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preserved thinking is an API state contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-the-launch-demonstrations-establish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. What the launch demonstrations establish
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-complete-launch-benchmark-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Complete launch benchmark table
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Complete launch benchmark table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131-coding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 Coding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#132-productivity-and-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 Productivity and agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#133-reasoning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 Reasoning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#134-vision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 Vision
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-benchmark-methodology-and-comparability-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Benchmark methodology and comparability limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-disclosed-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Disclosed limitations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-availability-at-the-cutoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Availability at the cutoff
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-questions-the-technical-report-and-weights-must-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Questions the technical report and weights must answer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="kimi-k3-architecture-systems-evaluation-and-disclosure-boundary">Kimi K3: Architecture, Systems, Evaluation, and Disclosure Boundary<a class="headerlink" href="#kimi-k3-architecture-systems-evaluation-and-disclosure-boundary" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-22. Kimi K3 was announced on 2026-07-16. The
+full weights were scheduled for release by 2026-07-27, and the technical report
+was not public at this cutoff. This chapter therefore separates facts disclosed
+in Moonshot's launch material from mechanisms established in earlier primary
+papers and from hypotheses that remain unverified.</p>
+<h2 id="1-executive-reading">1. Executive reading<a class="headerlink" href="#1-executive-reading" title="Permanent link">&para;</a></h2>
+<p>Kimi K3 is a 2.8-trillion-total-parameter sparse Mixture-of-Experts (MoE)
+model with a one-million-token context window and documented text, image, and
+video input. Its disclosed architecture combines four largely orthogonal axes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sequence axis:    3 x Kimi Delta Attention -&gt; 1 x Gated MLA
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>channel axis:     every token-mixing sublayer -&gt; Stable LatentMoE
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>depth axis:       Block Attention Residuals selects earlier representations
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>deployment axis: MXFP4 weights, MXFP8 activations, balanced expert parallelism
+</code></pre></div>
+<p>This is more precise than calling K3 either “a 2.8T MoE” or “a linear-attention
+model.” Kimi Delta Attention (KDA) compresses most sequence history into a
+fixed-size recurrent state. Periodic global Multi-head Latent Attention (MLA)
+layers retain exact content-addressable access. Attention Residuals (AttnRes)
+learns which earlier depth representations a later sublayer should read.
+Stable LatentMoE moves routed expert computation into a lower-dimensional
+latent space so that many more experts can be offered and selected without a
+proportional communication penalty.</p>
+<p>The launch blog is not a technical report. It does <strong>not</strong> disclose K3's layer
+count, hidden width, head count, KDA state dimensions, latent expert dimension,
+shared-expert count, active parameter count, visual encoder, visual projector,
+frame policy, training-token count, data mixture, compute, reinforcement
+learning recipe, or most component equations. Claims about these fields from
+secondary launch analyses are not confirmed K3 facts.</p>
+<h2 id="2-evidence-ledger">2. Evidence ledger<a class="headerlink" href="#2-evidence-ledger" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Evidence at the cutoff</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.8T total parameters; 1M context</td>
+<td>launch blog and current API guide</td>
+<td>disclosed</td>
+</tr>
+<tr>
+<td>896 experts; effectively 16 active</td>
+<td>launch blog</td>
+<td>disclosed, but active parameters unknown</td>
+</tr>
+<tr>
+<td>3 KDA layers to 1 Gated MLA layer</td>
+<td>K3 architecture figure</td>
+<td>disclosed diagram</td>
+</tr>
+<tr>
+<td>Stable LatentMoE topology</td>
+<td>K3 figure plus the LatentMoE paper</td>
+<td>topology disclosed; K3 dimensions unknown</td>
+</tr>
+<tr>
+<td>Block AttnRes backbone</td>
+<td>K3 figure plus the AttnRes report</td>
+<td>family disclosed; K3 block count unknown</td>
+</tr>
+<tr>
+<td>Quantile Balancing, Per-Head Muon, SiTU</td>
+<td>launch prose</td>
+<td>names and intended roles only</td>
+</tr>
+<tr>
+<td>MXFP4 weights and MXFP8 activations from SFT onward</td>
+<td>launch prose</td>
+<td>disclosed; quantization recipe unknown</td>
+</tr>
+<tr>
+<td>native vision and image/video API input</td>
+<td>launch blog and API guide</td>
+<td>disclosed interface; visual internals unknown</td>
+</tr>
+<tr>
+<td>approximately 2.5x scaling efficiency over K2</td>
+<td>launch blog</td>
+<td>vendor claim without a published metric or curve</td>
+</tr>
+<tr>
+<td>open weights by 2026-07-27</td>
+<td>launch schedule</td>
+<td>future commitment at this cutoff</td>
+</tr>
+</tbody>
+</table>
+<p>“First open 3T-class model” refers to <strong>total parameter scale and intended open
+weight release</strong>, not to three trillion parameters being evaluated for every
+token. It is also not an evaluation result. Moonshot's accompanying size chart
+uses a 2026-07-16 cutoff and a vendor-selected set of flagship open models.</p>
+<h3 id="21-what-the-size-and-scaling-charts-actually-say">2.1 What the size and scaling charts actually say<a class="headerlink" href="#21-what-the-size-and-scaling-charts-actually-say" title="Permanent link">&para;</a></h3>
+<p>The launch chart's last disclosed point for each included company is:</p>
+<table>
+<thead>
+<tr>
+<th>Company</th>
+<th>Flagship point in the chart</th>
+<th style="text-align: right;">Total parameters</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Moonshot AI</td>
+<td>Kimi K3</td>
+<td style="text-align: right;">2,800B</td>
+<td>2026-07-16</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>DeepSeek V4 Pro</td>
+<td style="text-align: right;">1,600B</td>
+<td>2026-04-22</td>
+</tr>
+<tr>
+<td>Xiaomi</td>
+<td>MiMo V2.5 Pro</td>
+<td style="text-align: right;">1,020B</td>
+<td>2026-04-27</td>
+</tr>
+<tr>
+<td>Thinking Machines</td>
+<td>Inkling</td>
+<td style="text-align: right;">975B</td>
+<td>2026-07-15</td>
+</tr>
+<tr>
+<td>Z.AI</td>
+<td>GLM-5</td>
+<td style="text-align: right;">744B</td>
+<td>2026-02-11</td>
+</tr>
+<tr>
+<td>MiniMax</td>
+<td>MiniMax M3</td>
+<td style="text-align: right;">428B</td>
+<td>2026-06-01</td>
+</tr>
+<tr>
+<td>Alibaba</td>
+<td>Qwen 3.5</td>
+<td style="text-align: right;">397B</td>
+<td>2026-02-16</td>
+</tr>
+</tbody>
+</table>
+<p>K2's 1,040B point led this selected chart from 2025-07-11 until DeepSeek V4
+Pro's 1,600B point on 2026-04-22, which explains the “nine of twelve months”
+language. K3 then retook the total-parameter frontier in July. This is a
+parameter-count timeline, not a quality, active-compute, memory, latency, data,
+or training-compute comparison. “Only open and flagship models” leaves model
+selection and the meaning of flagship under the chart author's control.</p>
+<p>K3 has 2.692x K2's total parameters. The disclosed routed-expert pool grows
+from K2's 384 to K3's 896, or 2.333x, while routed top-<span class="arithmatex">\(k\)</span> grows from 8 to 16.
+K2 disclosed 32.6B active parameters; K3 does not disclose an active count, so
+per-token compute growth cannot be derived from the launch numbers.</p>
+<p>The separate “approximately 2.5x overall scaling efficiency” statement is not
+defined. The blog attributes it jointly to architecture, training methods, and
+data recipes but supplies no loss-vs-FLOPs curve, scaling-law equation, token
+budget, active FLOPs, baseline, or task aggregation. It must not be translated
+into “2.5x faster,” “2.5x fewer active parameters,” or “2.5x cheaper.” It is a
+currently unreproducible vendor scaling claim.</p>
+<h2 id="3-reading-the-architecture-figure">3. Reading the architecture figure<a class="headerlink" href="#3-reading-the-architecture-figure" title="Permanent link">&para;</a></h2>
+<p>The right side of the official figure depicts a repeating hybrid backbone:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>embedding
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  -&gt; [KDA -&gt; Stable LatentMoE] x 3
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  -&gt; [Gated MLA -&gt; Stable LatentMoE] x 1
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  -&gt; repeat through depth
+</code></pre></div>
+<p>The red side buses do not depict ordinary token attention. They carry the token
+embedding and completed block representations to an AttnRes operator before
+each token-mixing or channel-mixing sublayer. Each operator has its own learned
+pseudo-query <span class="arithmatex">\(w\)</span> and produces depth-selection weights <span class="arithmatex">\(\alpha\)</span>.</p>
+<p>The left side contains two module enlargements:</p>
+<ul>
+<li>KDA projects queries, keys, and values, applies short convolutions, normalizes
+  queries and keys, and uses learned decay, delta-update, and output gates.</li>
+<li>Stable LatentMoE keeps the router and shared expert path at model width,
+  down-projects the routed path, dispatches only the latent representation to
+  selected experts, then normalizes and up-projects the combined routed output.</li>
+</ul>
+<p>The drawn number of experts is schematic. It must not be used to infer the
+number of shared experts, the hidden sizes, or whether every K3 MoE layer has an
+identical expert layout.</p>
+<h2 id="4-kimi-delta-attention-the-sequence-memory-path">4. Kimi Delta Attention: the sequence-memory path<a class="headerlink" href="#4-kimi-delta-attention-the-sequence-memory-path" title="Permanent link">&para;</a></h2>
+<h3 id="41-from-linear-attention-to-a-gated-delta-rule">4.1 From linear attention to a gated delta rule<a class="headerlink" href="#41-from-linear-attention-to-a-gated-delta-rule" title="Permanent link">&para;</a></h3>
+<p>Ordinary linear attention can be read as an online associative memory:</p>
+<div class="arithmatex">\[
+S_t = S_{t-1} + k_t v_t^\top,
+\qquad
+o_t = S_t^\top q_t.
+\]</div>
+<p><span class="arithmatex">\(S_t\)</span> accumulates key-value associations, but the unbounded sum has no rule for
+correcting stale or conflicting entries. DeltaNet instead performs an online
+gradient step on the reconstruction loss
+<span class="arithmatex">\(\tfrac12\operatorname{norm}(S^\top k_t-v_t)^2\)</span>:</p>
+<div class="arithmatex">\[
+S_t = (I-\beta_t k_tk_t^\top)S_{t-1}
+      +\beta_t k_tv_t^\top.
+\]</div>
+<p>The rank-one term first erases or corrects the state's prediction along the
+current key direction, then writes the new association. Gated DeltaNet adds one
+scalar forget factor per head. KDA makes the forget factor channel-wise:</p>
+<div class="arithmatex">\[
+S_t = (I-\beta_t k_tk_t^\top)
+      \operatorname{Diag}(\alpha_t)S_{t-1}
+      +\beta_t k_tv_t^\top,
+\qquad
+o_t=S_t^\top q_t.
+\]</div>
+<p>The distinction is important. A scalar gate gives an entire head one memory
+lifetime; <span class="arithmatex">\(\operatorname{Diag}(\alpha_t)\)</span> lets different key channels forget
+at different rates. The Kimi Linear report interprets this learned,
+data-dependent decay as both memory management and an implicit positional or
+recency mechanism.</p>
+<h3 id="42-neural-parameterization-established-by-kimi-linear">4.2 Neural parameterization established by Kimi Linear<a class="headerlink" href="#42-neural-parameterization-established-by-kimi-linear" title="Permanent link">&para;</a></h3>
+<p>The precursor Kimi Linear model uses, per head,</p>
+<div class="arithmatex">\[
+q_t,k_t = \operatorname{L2Norm}
+  (\operatorname{Swish}(\operatorname{ShortConv}(W_{q/k}x_t))),
+\]</div>
+<div class="arithmatex">\[
+v_t = \operatorname{Swish}(\operatorname{ShortConv}(W_vx_t)),
+\quad
+\alpha_t=f(W_{\alpha,\mathrm{up}}W_{\alpha,\mathrm{down}}x_t),
+\quad
+\beta_t=\sigma(W_\beta x_t).
+\]</div>
+<p>Its output path applies head-wise RMSNorm and a data-dependent low-rank gate
+before the output projection. K3's module drawing is consistent with this
+family, but K3's exact ranks, dimensions, activation <span class="arithmatex">\(f\)</span>, convolution width,
+and gate placement remain undisclosed.</p>
+<h3 id="43-why-it-can-train-in-parallel-and-decode-recurrently">4.3 Why it can train in parallel and decode recurrently<a class="headerlink" href="#43-why-it-can-train-in-parallel-and-decode-recurrently" title="Permanent link">&para;</a></h3>
+<p>The token-by-token equation looks sequential. Kimi Linear derives a chunkwise
+form using a compact WY-style representation of the rank-one updates. The
+implementation is recurrent <strong>between</strong> chunks and parallel <strong>within</strong> a chunk,
+turning most work into dense Tensor Core matrix multiplications.</p>
+<p>KDA is also a constrained Diagonal-Plus-Low-Rank (DPLR) transition:</p>
+<div class="arithmatex">\[
+D-a_tb_t^\top,
+\qquad
+D=\operatorname{Diag}(\alpha_t),\quad
+a_t=\beta_tk_t,\quad
+b_t=\operatorname{Diag}(\alpha_t)k_t.
+\]</div>
+<p>Tying the low-rank factors to the same key removes secondary chunking and
+several matrix multiplications needed by a general DPLR operator. In the Kimi
+Linear experiments, the bespoke kernel was nearly twice as fast as the compared
+DPLR kernel through 64K sequence length.</p>
+<p>For a fixed chunk size <span class="arithmatex">\(C\)</span> and head dimension <span class="arithmatex">\(d_h\)</span>, the precursor report gives
+the per-head KDA attention work as</p>
+<div class="arithmatex">\[
+6Td_h^2+3TCd_h+TC^2,
+\]</div>
+<p>which is linear in sequence length <span class="arithmatex">\(T\)</span> for fixed <span class="arithmatex">\(C\)</span> and <span class="arithmatex">\(d_h\)</span>. Full attention
+has a dominant <span class="arithmatex">\(2T^2d_h\)</span> term. During autoregressive decoding, a KDA layer keeps
+a fixed <span class="arithmatex">\(d_k\times d_v\)</span> matrix state instead of a key/value entry for every
+past token.</p>
+<h3 id="44-why-k3-still-has-periodic-full-attention">4.4 Why K3 still has periodic full attention<a class="headerlink" href="#44-why-k3-still-has-periodic-full-attention" title="Permanent link">&para;</a></h3>
+<p>Finite-state linear attention compresses history and can lose exact random
+access or collide associations. The official K3 figure retains the precursor's
+uniform 3:1 pattern: three KDA token-mixing layers followed by one Gated MLA
+layer. The global layer periodically restores exact content-addressable access;
+MLA compresses the cached keys and values into a latent representation.</p>
+<p>Kimi Linear reported up to 75% KV-cache reduction and up to roughly 6x decoding
+throughput at one-million-token context for its 48B-total/3B-active research
+model. Those are <strong>not K3 measurements</strong>. The 3:1 topology transfers; the
+earlier benchmark numbers do not.</p>
+<p>The exact equation for K3's <strong>Gated MLA</strong> is not published. “Gated” could refer
+to an output, head, latent, or residual gate. The safe conclusion is only that
+the periodic global-attention contribution has learned selectivity. It should
+not be equated with similarly named third-party MLA variants.</p>
+<h2 id="5-attention-residuals-attention-over-depth">5. Attention Residuals: attention over depth<a class="headerlink" href="#5-attention-residuals-attention-over-depth" title="Permanent link">&para;</a></h2>
+<h3 id="51-the-problem-with-the-usual-residual-stream">5.1 The problem with the usual residual stream<a class="headerlink" href="#51-the-problem-with-the-usual-residual-stream" title="Permanent link">&para;</a></h3>
+<p>In a PreNorm transformer, repeatedly adding sublayer outputs yields a hidden
+state of the schematic form</p>
+<div class="arithmatex">\[
+h_l=h_0+\sum_{i&lt;l}F_i(h_i).
+\]</div>
+<p>Every earlier contribution has coefficient one. As depth grows, the residual
+norm can grow and each individual representation can become diluted. AttnRes
+replaces uniform accumulation with learned, token-dependent selection over
+earlier <strong>depths</strong>.</p>
+<h3 id="52-full-attnres">5.2 Full AttnRes<a class="headerlink" href="#52-full-attnres" title="Permanent link">&para;</a></h3>
+<p>For source representations <span class="arithmatex">\(v_i\)</span>, Full AttnRes uses a learned pseudo-query
+<span class="arithmatex">\(w_l\)</span> for layer <span class="arithmatex">\(l\)</span> and normalized source representations as keys:</p>
+<div class="arithmatex">\[
+\alpha_{i\to l}=
+\frac{\exp(w_l^\top\operatorname{RMSNorm}(v_i))}
+{\sum_{j&lt;l}\exp(w_l^\top\operatorname{RMSNorm}(v_j))},
+\qquad
+h_l=\sum_{i&lt;l}\alpha_{i\to l}v_i.
+\]</div>
+<p>The pseudo-query is a layer parameter, but the keys depend on each token's
+earlier representations. The resulting depth weights are therefore
+input-dependent. This is not another pass over sequence positions: for each
+token position, it asks which earlier <strong>layer output</strong> should be read.</p>
+<p>Full AttnRes stores <span class="arithmatex">\(O(Ld)\)</span> representations per token and performs <span class="arithmatex">\(O(L^2d)\)</span>
+depth mixing. Arithmetic is modest because depth <span class="arithmatex">\(L\)</span> is far smaller than
+sequence length, but activation recomputation and pipeline parallelism make
+storage and cross-stage communication expensive.</p>
+<h3 id="53-block-attnres">5.3 Block AttnRes<a class="headerlink" href="#53-block-attnres" title="Permanent link">&para;</a></h3>
+<p>Block AttnRes partitions <span class="arithmatex">\(L\)</span> sublayers into <span class="arithmatex">\(N\)</span> groups. Inside block <span class="arithmatex">\(n\)</span>, it
+maintains a normal residual partial sum</p>
+<div class="arithmatex">\[
+b_n^i=\sum_{j\in B_n,\,j\le i}F_j(h_j).
+\]</div>
+<p>Across completed blocks, it attends over the embedding <span class="arithmatex">\(b_0\)</span>, completed block
+representations <span class="arithmatex">\(b_1,\ldots,b_{n-1}\)</span>, and, after the first sublayer, the current
+partial sum <span class="arithmatex">\(b_n^{i-1}\)</span>. This compresses depth history from individual layer
+outputs to block summaries and reduces storage and communication from <span class="arithmatex">\(O(Ld)\)</span>
+to <span class="arithmatex">\(O(Nd)\)</span>. <span class="arithmatex">\(N=L\)</span> recovers Full AttnRes; <span class="arithmatex">\(N=1\)</span> approaches an ordinary residual
+stream with the embedding kept as a separate source.</p>
+<p>The AttnRes report found that about eight blocks recovered most of Full
+AttnRes's benefit in its experiments. It reported a validation-loss point
+equivalent to a baseline trained with 1.25x more compute, less than 4% measured
+training overhead under pipeline parallelism, and less than 2% typical inference
+latency overhead. These are <strong>AttnRes research-model results</strong>, not a disclosure
+of K3's block count or an explanation of K3's separate 2.5x scaling claim.</p>
+<h3 id="54-why-the-system-implementation-is-nontrivial">5.4 Why the system implementation is nontrivial<a class="headerlink" href="#54-why-the-system-implementation-is-nontrivial" title="Permanent link">&para;</a></h3>
+<p>The AttnRes report uses two main optimizations:</p>
+<ol>
+<li>Cross-stage caches retain block representations already received by a
+   physical pipeline rank. Later virtual stages send only newly completed
+   blocks instead of retransmitting the full history; the peak transition cost
+   falls by the virtual-pipeline factor in the report's schedule.</li>
+<li>A two-phase inference algorithm batches all pseudo-queries in one block
+   against completed block representations, then processes the evolving
+   intra-block partial sum sequentially and merges the two results with exact
+   online-softmax statistics.</li>
+</ol>
+<p>For long prefill, block representations are sequence-sharded across
+tensor-parallel devices. The paper's 128K-token, eight-block example falls from
+15 GB total block-state storage to about 1.9 GB per device with eight-way
+sharding, and below 0.3 GB per device with 16K chunked prefill. These figures
+explain the feasibility technique; they do not reveal K3's hidden width or its
+actual memory footprint.</p>
+<h2 id="6-stable-latentmoe-capacity-without-proportional-routed-cost">6. Stable LatentMoE: capacity without proportional routed cost<a class="headerlink" href="#6-stable-latentmoe-capacity-without-proportional-routed-cost" title="Permanent link">&para;</a></h2>
+<h3 id="61-canonical-latentmoe-topology">6.1 Canonical LatentMoE topology<a class="headerlink" href="#61-canonical-latentmoe-topology" title="Permanent link">&para;</a></h3>
+<p>For model width <span class="arithmatex">\(d\)</span> and routed latent width <span class="arithmatex">\(\ell&lt;d\)</span>, canonical LatentMoE keeps
+the router on the full token <span class="arithmatex">\(x\)</span> but sends a shared down-projection to routed
+experts:</p>
+<div class="arithmatex">\[
+y_{\text{routed}}=
+W_{\mathrm{up}}
+\left(
+\sum_{i\in\operatorname{TopK}(r(x))}
+p_iE_i(W_{\mathrm{down}}x;\ell)
+\right).
+\]</div>
+<p>Shared experts, when present, operate at full model width and are added outside
+that routed latent path. Dispatch and combine communicate <span class="arithmatex">\(\ell\)</span>-dimensional
+rather than <span class="arithmatex">\(d\)</span>-dimensional activations. Routed expert input/output matrices are
+also narrower. If <span class="arithmatex">\(\alpha=d/\ell\)</span>, the paper's cost model reduces routed
+all-to-all payload and expert-weight bandwidth by approximately <span class="arithmatex">\(\alpha\)</span>.</p>
+<p>The saved budget can be spent in two ways:</p>
+<ul>
+<li>increase the number of experts while keeping top-<span class="arithmatex">\(k\)</span> unchanged to improve
+  efficiency; or</li>
+<li>increase both expert count and top-<span class="arithmatex">\(k\)</span> by <span class="arithmatex">\(\alpha\)</span> to increase expert-mixture
+  diversity at approximately unchanged routed communication and weight-loading
+  cost.</li>
+</ul>
+<p>The K3 figure matches this topology. It does not disclose <span class="arithmatex">\(d\)</span>, <span class="arithmatex">\(\ell\)</span>,
+<span class="arithmatex">\(d/\ell\)</span>, expert intermediate width, shared-expert count, or which LatentMoE
+variant K3 uses. “Stable” denotes K3-specific additions whose complete recipe
+is still pending.</p>
+<h3 id="62-what-16-of-896-does-and-does-not-mean">6.2 What 16 of 896 does and does not mean<a class="headerlink" href="#62-what-16-of-896-does-and-does-not-mean" title="Permanent link">&para;</a></h3>
+<p>The routed selection rate is</p>
+<div class="arithmatex">\[
+\frac{16}{896}=1.7857\%,
+\]</div>
+<p>so 98.2143% of routed experts are inactive for one token. The possible unordered
+top-16 subsets number <span class="arithmatex">\(\binom{896}{16}\approx10^{33.86}\)</span>, illustrating the
+combinatorial capacity, although real routers use a highly non-uniform fraction
+of those combinations.</p>
+<p>It is invalid to estimate active parameters as <span class="arithmatex">\(2.8\text{T}\times16/896\)</span>.
+Embeddings, attention/KDA, projections, norms, routers, shared experts, and the
+latent up/down projections are not multiplied by that fraction, and routed
+experts may not dominate total parameters in the same ratio. Moonshot has not
+published K3's active parameter count. Secondary estimates such as “30B,”
+“50B,” or “16/896 of 2.8T” are therefore unsupported at this cutoff.</p>
+<h3 id="63-quantile-balancing">6.3 Quantile Balancing<a class="headerlink" href="#63-quantile-balancing" title="Permanent link">&para;</a></h3>
+<p>Extreme sparsity turns routing imbalance into both an optimization problem and
+a systems straggler problem. The K3 blog says Quantile Balancing derives expert
+allocation directly from router-score quantiles, eliminating heuristic bias
+updates and a sensitive balancing hyperparameter.</p>
+<p>A public mathematical reconstruction by Jianlin Su frames balanced top-<span class="arithmatex">\(k\)</span>
+routing as maximizing router scores subject to approximately equal expert
+loads. With token thresholds <span class="arithmatex">\(a_i\)</span> and expert offsets <span class="arithmatex">\(b_j\)</span>, an alternating
+quantile procedure has the form:</p>
+<ol>
+<li>select the token's top-<span class="arithmatex">\(k\)</span> experts from adjusted scores <span class="arithmatex">\(s_{ij}-b_j\)</span>;</li>
+<li>update each token threshold from its relevant order statistic;</li>
+<li>update each expert offset from the required score quantile over tokens; and</li>
+<li>carry the offsets forward rather than applying a hand-tuned sign update.</li>
+</ol>
+<p>This explains the launch phrase, but it is not yet a confirmed K3 algorithm.
+The report must still specify the batch/domain over which quantiles are taken,
+distributed approximation, causality, tie handling, capacity, router weights,
+and whether the offset affects selection only or also combine weights.</p>
+<p>Quantile balancing is not free of trade-offs. Exact balance can force some
+lower-score routes, while weak balance permits hot experts and stragglers. The
+technical question is how K3 trades semantic specialization against hardware
+regularity.</p>
+<h2 id="7-optimizer-and-activation-control-disclosures">7. Optimizer and activation-control disclosures<a class="headerlink" href="#7-optimizer-and-activation-control-disclosures" title="Permanent link">&para;</a></h2>
+<h3 id="71-per-head-muon">7.1 Per-Head Muon<a class="headerlink" href="#71-per-head-muon" title="Permanent link">&para;</a></h3>
+<p>Muon maintains gradient momentum for a matrix and approximately applies its
+polar factor, commonly through Newton-Schulz iterations. If
+<span class="arithmatex">\(M=UDV^\top\)</span>, the idealized update direction is <span class="arithmatex">\(UV^\top\)</span>: singular
+directions are equalized rather than scaled in proportion to their raw gradient
+singular values. Moonshot's scalable Muon work added weight decay and
+shape-aware update-RMS matching; its scaling-law experiments reported matching
+AdamW loss with about 52% of the compute.</p>
+<p>K3's new phrase “Per-Head Muon” says attention heads are optimized
+independently. Conceptually, a fused attention projection gradient is reshaped
+into head matrices and orthogonalized per head, avoiding one singular spectrum
+coupling otherwise specialized heads. The blog does not disclose which of
+Q/K/V/O, KDA, MLA, or low-rank matrices use this treatment, how rectangular
+matrices are oriented, the Newton-Schulz polynomial and iteration count, or the
+per-head learning-rate/RMS rule. It should not be described as a published
+K3 optimizer equation yet.</p>
+<h3 id="72-situ">7.2 SiTU<a class="headerlink" href="#72-situ" title="Permanent link">&para;</a></h3>
+<p>The only official expansion is <strong>Sigmoid Tanh Unit</strong>, and the only official
+role is better activation control. No equation or placement is published. The
+name is compatible with a sigmoid-gated tanh family, but it does not prove
+<span class="arithmatex">\(\sigma(a)\times\operatorname{tanh}(b)\)</span>, a replacement for SwiGLU, or an
+expert-specific gate.
+Claims that SiTU replaces a particular K3 activation are hypotheses until the
+report or weights expose the module.</p>
+<h3 id="73-gated-mla">7.3 Gated MLA<a class="headerlink" href="#73-gated-mla" title="Permanent link">&para;</a></h3>
+<p>The figure places Gated MLA in every fourth token-mixing position and says it
+improves attention selectivity. MLA itself compresses the key/value path into a
+latent representation to reduce cache and bandwidth. The precise K3 gate is
+unknown; it may gate heads, values, the latent path, the output, or the residual
+contribution. Only its macro placement and stated purpose are disclosed.</p>
+<h2 id="8-quantization-aware-training">8. Quantization-aware training<a class="headerlink" href="#8-quantization-aware-training" title="Permanent link">&para;</a></h2>
+<p>Moonshot says K3 applies Quantization-Aware Training (QAT) <strong>from supervised
+fine-tuning onward</strong>, using MXFP4 weights and MXFP8 activations.</p>
+<p>The Open Compute Project MX specification defines a 32-element microscaling
+block with one shared eight-bit E8M0 power-of-two scale. MXFP4 elements use an
+E2M1 four-bit format; MXFP8 supports E4M3 or E5M2 eight-bit elements. Compared
+with one scale for a whole tensor, the local scale reduces the effect of
+outliers while retaining compact elements.</p>
+<p>“From SFT onward” does not say that the entire pretraining run used four-bit
+weights. In a typical QAT pipeline, the forward pass simulates or uses target
+rounding, clipping, and scales while higher-precision master weights and
+optimizer state may still be retained. K3's exact master precision, scale
+calculation, rounding, accumulators, excluded layers, router precision,
+KDA-state precision, MLA/KV-cache precision, and measured quality delta are
+unknown.</p>
+<p>At the raw element level, 2.8T weights require about 5.6 TB in BF16 and 1.4 TB
+at four bits. The latter is only a lower bound: MX scales, packing, metadata,
+unquantized parameters, runtime workspaces, states, and replication add memory.
+The OCP format is vendor-neutral, which supports portability, but not every
+accelerator has equally efficient native MXFP4 instructions.</p>
+<h2 id="9-distributed-training-and-inference">9. Distributed training and inference<a class="headerlink" href="#9-distributed-training-and-inference" title="Permanent link">&para;</a></h2>
+<h3 id="91-fully-balanced-expert-parallelism">9.1 Fully balanced expert parallelism<a class="headerlink" href="#91-fully-balanced-expert-parallelism" title="Permanent link">&para;</a></h3>
+<p>With expert parallelism, experts are sharded across accelerators and each token
+is dispatched by all-to-all communication to the owners of its selected
+experts. A hot expert makes its rank the step's straggler. Variable token counts
+also create dynamic buffer shapes that hinder preallocation, graph capture, and
+kernel fusion.</p>
+<p>K3's launch says its method maintains fully balanced expert-parallel execution
+with static shapes and no host synchronization on the critical path. The likely
+systems consequences are fixed communication sizes, device-side coordination,
+and predictable kernels. The exact mechanism—capacity slots, padding, token
+reordering, dropping, replication, or a combination—has not been published.
+Quantile Balancing and static-shape execution complement one another, but they
+are not necessarily the same algorithm.</p>
+<h3 id="92-why-moonshot-recommends-a-64-accelerator-supernode">9.2 Why Moonshot recommends a 64-accelerator supernode<a class="headerlink" href="#92-why-moonshot-recommends-a-64-accelerator-supernode" title="Permanent link">&para;</a></h3>
+<p>Top-16 routing across 896 experts generates many destinations. LatentMoE makes
+each routed message narrower, but it does not eliminate all-to-all traffic.
+Keeping expert ranks inside one large high-bandwidth fabric avoids turning
+inter-node links into the dominant latency.</p>
+<p>At raw MXFP4 element size, the 1.4 TB lower-bound weight payload averages about
+21.9 GB across 64 accelerators; BF16 would average 87.5 GB. Real deployments
+need more memory for scales, non-quantized tensors, cache/state, buffers,
+runtime, and possibly expert replication. Thus 64 is an operationally sensible
+recommendation, not proof that every 64-device topology will serve K3 well and
+not a formal minimum for every offload configuration.</p>
+<h3 id="93-kda-prefix-caching">9.3 KDA prefix caching<a class="headerlink" href="#93-kda-prefix-caching" title="Permanent link">&para;</a></h3>
+<p>Conventional prefix caching reuses the key/value tensors produced by an
+identical token prefix. A KDA layer instead ends the prefix with a recurrent
+matrix state. A hybrid K3 cache must preserve both:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>KDA layers:       recurrent/chunk boundary state
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Gated MLA layers: latent key/value prefix blocks
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>AttnRes:          required block representations and metadata
+</code></pre></div>
+<p>Branching, block hashing, chunk boundaries, state composition, eviction, and
+transfer between prefill and decode workers therefore differ from a pure KV
+cache. Moonshot says it contributed a KDA prefix-cache implementation to vLLM,
+scheduled for release with the model. The implementation was not available at
+this cutoff, so its state layout and reuse granularity cannot yet be described
+as fact.</p>
+<h3 id="94-mooncake-and-the-price-claim">9.4 Mooncake and the price claim<a class="headerlink" href="#94-mooncake-and-the-price-claim" title="Permanent link">&para;</a></h3>
+<p>Mooncake separates compute-heavy long-prompt prefill from memory-bandwidth-heavy
+autoregressive decode. Its scheduler chooses prefill and decode workers using
+cache locality, load, and time-to-first-token/time-between-token service goals.
+The original system stores reusable cache blocks across GPU memory, host DRAM,
+and SSD, and transfers cache layer by layer so transfer can overlap compute.</p>
+<p>K3's API launch price is $0.30 per million cache-hit input tokens, $3.00 per
+million cache-miss input tokens, and $15.00 per million output tokens. The input
+cache-hit discount is 10x. At exactly a 90% hit rate, the weighted input price
+would be</p>
+<div class="arithmatex">\[
+0.9(0.30)+0.1(3.00)=\$0.57/\text{MTok},
+\]</div>
+<p>81% below the all-miss input price; output cost remains separate. Moonshot says
+its coding workload exceeds 90% cache hits, which is plausible because agents
+repeatedly resend stable system prompts, repository context, tool definitions,
+and conversation prefixes. It is a provider workload statistic, not a
+guarantee for arbitrary applications.</p>
+<p>The current API automatically attempts prefix caching when the previous prompt
+exceeds 256 tokens; users do not supply a cache ID or TTL. Prefix identity and
+stable ordering therefore matter economically as well as computationally.</p>
+<h2 id="10-native-vision-and-video-what-is-actually-known">10. Native vision and video: what is actually known<a class="headerlink" href="#10-native-vision-and-video-what-is-actually-known" title="Permanent link">&para;</a></h2>
+<p>The launch says K3's native multimodal architecture understands text, images,
+and video “within the same model.” The API accepts an image as base64 or an
+uploaded <code>ms://</code> media identifier, and video through an uploaded media ID.
+Public internet image URLs are not accepted by the current guide.</p>
+<p>This establishes first-class visual input and a shared model endpoint. It does
+not answer the internal representation questions:</p>
+<ul>
+<li>visual encoder family and size;</li>
+<li>image patch size, tiling, resolution limits, and resampler/projector;</li>
+<li>video decode rate, scene-aware sampling, temporal tubelets, pooling, and
+  audio handling;</li>
+<li>number and placement of visual positions in the one-million-token context;</li>
+<li>whether visual tokens pass through every K3 block or modality-specific
+  experts;</li>
+<li>pretraining image/video quantity, ordering mixture, SFT, RL, and rewards.</li>
+</ul>
+<p>K2.5's disclosed MoonViT-3D plus MLP projector is a useful predecessor but
+cannot be copied into K3 as fact. A modality-specific vision encoder would also
+not contradict “native”: native multimodality ordinarily means first-class
+joint training and backbone integration, not raw pixels entering a text
+embedding table without a visual front end.</p>
+<p>K3's output contract remains text, code, structured output, and tool calls. The
+blog does not disclose a visual codebook, diffusion/flow decoder, Variational
+Autoencoder, or video decoder. Its image/video editing demonstrations may use
+code, renderers, media tools, and iterative visual feedback; they are not proof
+that the K3 checkpoint directly samples image or video latents.</p>
+<h2 id="11-agent-behavior-and-product-system-composition">11. Agent behavior and product-system composition<a class="headerlink" href="#11-agent-behavior-and-product-system-composition" title="Permanent link">&para;</a></h2>
+<p>Long-horizon coding and knowledge work are not just single-pass checkpoint
+properties. The demonstrated system combines the model with a harness, terminal
+and browser tools, sandboxes, artifact renderers, context management, Kimi Work
+or Kimi Code orchestration, and sometimes concurrent subagents.</p>
+<p>K3's current API features include:</p>
+<ul>
+<li>always-on reasoning with <code>reasoning_effort</code> set to <code>low</code>, <code>high</code>, or <code>max</code>;</li>
+<li>streamed <code>reasoning_content</code> before final <code>content</code>;</li>
+<li>strict JSON Schema output and partial-prefix continuation;</li>
+<li>custom tool calls and tool-choice constraints;</li>
+<li>tool definitions inserted dynamically through a system message; and</li>
+<li>one-million-token context with automatic prefix caching.</li>
+</ul>
+<p>The maximum completion-token field defaults to 131,072 and can be set as high
+as 1,048,576. The service fixes temperature at 1.0, top-p at 0.95, <code>n=1</code>, and
+both frequency and presence penalties at zero.</p>
+<h3 id="preserved-thinking-is-an-api-state-contract">Preserved thinking is an API state contract<a class="headerlink" href="#preserved-thinking-is-an-api-state-contract" title="Permanent link">&para;</a></h3>
+<p>K3 was trained with preserved thinking history. Every later request in a
+multi-turn or tool loop must return the complete previous assistant message,
+including <code>reasoning_content</code>, not merely the final <code>content</code>. This does not
+mean hidden neural state is transferred magically between calls: the harness
+serializes the previous reasoning into the next model input. It consumes context
+and billable tokens.</p>
+<p>Dropping or rewriting that history, or switching an existing session from a
+different model into K3, creates a prompt distribution different from the one
+used in training. Moonshot explicitly warns that output can become highly
+unstable. This is why a benchmark score is partly a model-plus-harness result.</p>
+<h2 id="12-what-the-launch-demonstrations-establish">12. What the launch demonstrations establish<a class="headerlink" href="#12-what-the-launch-demonstrations-establish" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Demonstration</th>
+<th>Disclosed result</th>
+<th>Correct evidential reading</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPU kernel optimization</td>
+<td>four tasks, identical sandbox, up to 24 hours</td>
+<td>best trajectory under a long tool loop, not one-shot coding accuracy</td>
+</tr>
+<tr>
+<td>MiniTriton compiler</td>
+<td>DSL, tile IR over MLIR, passes, PTX, runtime; nanoGPT convergence</td>
+<td>coherent end-to-end artifact claim; code and independent reproduction absent</td>
+</tr>
+<tr>
+<td>game/front-end/CAD</td>
+<td>code iterated from live screenshots and visual inputs</td>
+<td>evidence for vision-in-the-loop agent use, not pixel generation</td>
+</tr>
+<tr>
+<td>chip design</td>
+<td>48-hour run, Nangate 45 nm, &lt;=4 mm2, 100 MHz, simulated &gt;8,700 token/s</td>
+<td>simulated proof of concept on an old open library, not fabricated silicon</td>
+</tr>
+<tr>
+<td>I-Love-Q research</td>
+<td>20+ papers, 300+ equations of state, 3,000+ Python lines, about two hours</td>
+<td>curated case without released artifact/rubric at the cutoff</td>
+</tr>
+<tr>
+<td>AI-ASIC report</td>
+<td>120+ refinement rounds, 2.8K+ searches/fetches, 1.1K+ terminal pulls, 11K+ pages</td>
+<td>activity and system-scale counts, not direct correctness metrics</td>
+</tr>
+<tr>
+<td>GWTC-5 analysis</td>
+<td>391 events, 20+ concurrent subagents, 7 visualizations, 2 tables</td>
+<td>Kimi Work orchestration plus K3, not a bare checkpoint test</td>
+</tr>
+<tr>
+<td>video editing</td>
+<td>56 source clips, motion-matched cuts, beat sync, audio processing, revisions</td>
+<td>multimodal planning/tool use; internal video tokenizer and editor tools undisclosed</td>
+</tr>
+</tbody>
+</table>
+<p>The kernel chart contains four panes. The exact values are:</p>
+<table>
+<thead>
+<tr>
+<th>Task/metric</th>
+<th style="text-align: right;">K3</th>
+<th style="text-align: right;">Fable 5</th>
+<th style="text-align: right;">Opus 4.8</th>
+<th style="text-align: right;">GPT 5.6 Sol</th>
+<th style="text-align: right;">GPT 5.5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AttnRes speedup over FLA Triton</td>
+<td style="text-align: right;">59.66</td>
+<td style="text-align: right;">57.12</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">17.34</td>
+<td style="text-align: right;">30.76</td>
+</tr>
+<tr>
+<td>DSA speedup over FLA Triton</td>
+<td style="text-align: right;">55.13</td>
+<td style="text-align: right;">57.34</td>
+<td style="text-align: right;">43.61</td>
+<td style="text-align: right;">48.86</td>
+<td style="text-align: right;">38.23</td>
+</tr>
+<tr>
+<td>MLA-512 achieved TFLOPS</td>
+<td style="text-align: right;">517.8</td>
+<td style="text-align: right;">492.7</td>
+<td style="text-align: right;">393.6</td>
+<td style="text-align: right;">361.5</td>
+<td style="text-align: right;">386.2</td>
+</tr>
+<tr>
+<td>KDA-GPGPU speedup over FLA Triton</td>
+<td style="text-align: right;">73.56</td>
+<td style="text-align: right;">56.46</td>
+<td style="text-align: right;">56.99</td>
+<td style="text-align: right;">66.66</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table>
+<p>The prose does not expand the chart label <code>DSA</code>; reading it as DeepSeek Sparse
+Attention is plausible but remains an inference. Fable 5 was evaluated by a
+third party and may include fallback. Some trajectories used small precision
+shortcuts within the evaluator's numerical tolerance.</p>
+<h2 id="13-complete-launch-benchmark-table">13. Complete launch benchmark table<a class="headerlink" href="#13-complete-launch-benchmark-table" title="Permanent link">&para;</a></h2>
+<p>The following reproduces all 35 rows in the launch table. A dash means the
+blog did not report a result. These are vendor-collected or vendor-assembled
+numbers, not an independent reproduction.</p>
+<h3 id="131-coding">13.1 Coding<a class="headerlink" href="#131-coding" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th style="text-align: right;">K3</th>
+<th style="text-align: right;">Fable 5</th>
+<th style="text-align: right;">GPT 5.6 Sol</th>
+<th style="text-align: right;">Opus 4.8</th>
+<th style="text-align: right;">GPT 5.5</th>
+<th style="text-align: right;">GLM-5.2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSWE</td>
+<td style="text-align: right;">67.5</td>
+<td style="text-align: right;">70.0</td>
+<td style="text-align: right;">73.0</td>
+<td style="text-align: right;">59.0</td>
+<td style="text-align: right;">67.0</td>
+<td style="text-align: right;">46.2</td>
+</tr>
+<tr>
+<td>Program Bench</td>
+<td style="text-align: right;">77.8</td>
+<td style="text-align: right;">76.8</td>
+<td style="text-align: right;">77.6</td>
+<td style="text-align: right;">71.9</td>
+<td style="text-align: right;">70.8</td>
+<td style="text-align: right;">63.7</td>
+</tr>
+<tr>
+<td>Terminal-Bench 2.1</td>
+<td style="text-align: right;">88.3</td>
+<td style="text-align: right;">84.6</td>
+<td style="text-align: right;">88.8</td>
+<td style="text-align: right;">84.6</td>
+<td style="text-align: right;">83.4</td>
+<td style="text-align: right;">82.7</td>
+</tr>
+<tr>
+<td>FrontierSWE</td>
+<td style="text-align: right;">81.2</td>
+<td style="text-align: right;">86.6</td>
+<td style="text-align: right;">71.3</td>
+<td style="text-align: right;">66.7</td>
+<td style="text-align: right;">64.9</td>
+<td style="text-align: right;">67.3</td>
+</tr>
+<tr>
+<td>SWE Marathon</td>
+<td style="text-align: right;">42.0</td>
+<td style="text-align: right;">35.0</td>
+<td style="text-align: right;">39.0</td>
+<td style="text-align: right;">40.0</td>
+<td style="text-align: right;">14.0</td>
+<td style="text-align: right;">13.0</td>
+</tr>
+<tr>
+<td>PostTrain Bench</td>
+<td style="text-align: right;">36.6</td>
+<td style="text-align: right;">41.4</td>
+<td style="text-align: right;">34.6</td>
+<td style="text-align: right;">34.1</td>
+<td style="text-align: right;">28.4</td>
+<td style="text-align: right;">34.3</td>
+</tr>
+<tr>
+<td>MLS Bench Lite</td>
+<td style="text-align: right;">48.3</td>
+<td style="text-align: right;">49.9</td>
+<td style="text-align: right;">46.2</td>
+<td style="text-align: right;">42.8</td>
+<td style="text-align: right;">35.5</td>
+<td style="text-align: right;">40.4</td>
+</tr>
+<tr>
+<td>KCB 2.0, internal</td>
+<td style="text-align: right;">72.9</td>
+<td style="text-align: right;">76.9</td>
+<td style="text-align: right;">64.8</td>
+<td style="text-align: right;">71.7</td>
+<td style="text-align: right;">69.0</td>
+<td style="text-align: right;">64.2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="132-productivity-and-agents">13.2 Productivity and agents<a class="headerlink" href="#132-productivity-and-agents" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th style="text-align: right;">K3</th>
+<th style="text-align: right;">Fable 5</th>
+<th style="text-align: right;">GPT 5.6 Sol</th>
+<th style="text-align: right;">Opus 4.8</th>
+<th style="text-align: right;">GPT 5.5</th>
+<th style="text-align: right;">GLM-5.2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GDPval-AA, Elo</td>
+<td style="text-align: right;">1668</td>
+<td style="text-align: right;">1760</td>
+<td style="text-align: right;">1748</td>
+<td style="text-align: right;">1600</td>
+<td style="text-align: right;">1494</td>
+<td style="text-align: right;">1514</td>
+</tr>
+<tr>
+<td>BrowseComp</td>
+<td style="text-align: right;">91.2</td>
+<td style="text-align: right;">88.0</td>
+<td style="text-align: right;">90.4</td>
+<td style="text-align: right;">84.3</td>
+<td style="text-align: right;">84.4</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>DeepSearchQA, F1</td>
+<td style="text-align: right;">95.0</td>
+<td style="text-align: right;">94.2</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">93.1</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>Toolathlon</td>
+<td style="text-align: right;">73.2</td>
+<td style="text-align: right;">77.9</td>
+<td style="text-align: right;">74.9</td>
+<td style="text-align: right;">76.2</td>
+<td style="text-align: right;">73.5</td>
+<td style="text-align: right;">59.9</td>
+</tr>
+<tr>
+<td>MCP Atlas</td>
+<td style="text-align: right;">84.2</td>
+<td style="text-align: right;">84.7</td>
+<td style="text-align: right;">83.6</td>
+<td style="text-align: right;">83.6</td>
+<td style="text-align: right;">82.8</td>
+<td style="text-align: right;">82.6</td>
+</tr>
+<tr>
+<td>AutomationBench</td>
+<td style="text-align: right;">30.8</td>
+<td style="text-align: right;">29.1</td>
+<td style="text-align: right;">29.7</td>
+<td style="text-align: right;">27.2</td>
+<td style="text-align: right;">22.7</td>
+<td style="text-align: right;">12.9</td>
+</tr>
+<tr>
+<td>JobBench</td>
+<td style="text-align: right;">52.9</td>
+<td style="text-align: right;">57.4</td>
+<td style="text-align: right;">46.5</td>
+<td style="text-align: right;">48.4</td>
+<td style="text-align: right;">38.3</td>
+<td style="text-align: right;">43.4</td>
+</tr>
+<tr>
+<td>AA-Briefcase, Elo</td>
+<td style="text-align: right;">1548</td>
+<td style="text-align: right;">1583</td>
+<td style="text-align: right;">1495</td>
+<td style="text-align: right;">1354</td>
+<td style="text-align: right;">1158</td>
+<td style="text-align: right;">1260</td>
+</tr>
+<tr>
+<td>APEX-Agents</td>
+<td style="text-align: right;">41.0</td>
+<td style="text-align: right;">43.3</td>
+<td style="text-align: right;">39.9</td>
+<td style="text-align: right;">39.4</td>
+<td style="text-align: right;">38.5</td>
+<td style="text-align: right;">35.6</td>
+</tr>
+<tr>
+<td>OfficeQA Pro</td>
+<td style="text-align: right;">63.3</td>
+<td style="text-align: right;">69.9*</td>
+<td style="text-align: right;">63.2*</td>
+<td style="text-align: right;">63.9*</td>
+<td style="text-align: right;">60.9*</td>
+<td style="text-align: right;">41.4</td>
+</tr>
+<tr>
+<td>SpreadsheetBench 2</td>
+<td style="text-align: right;">34.8</td>
+<td style="text-align: right;">34.7*</td>
+<td style="text-align: right;">32.4*</td>
+<td style="text-align: right;">31.55*</td>
+<td style="text-align: right;">29.05*</td>
+<td style="text-align: right;">28.12</td>
+</tr>
+<tr>
+<td>DECK Bench, internal</td>
+<td style="text-align: right;">73.5</td>
+<td style="text-align: right;">73.0</td>
+<td style="text-align: right;">74.7</td>
+<td style="text-align: right;">66.9</td>
+<td style="text-align: right;">68.2</td>
+<td style="text-align: right;">68.6</td>
+</tr>
+</tbody>
+</table>
+<h3 id="133-reasoning">13.3 Reasoning<a class="headerlink" href="#133-reasoning" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th style="text-align: right;">K3</th>
+<th style="text-align: right;">Fable 5</th>
+<th style="text-align: right;">GPT 5.6 Sol</th>
+<th style="text-align: right;">Opus 4.8</th>
+<th style="text-align: right;">GPT 5.5</th>
+<th style="text-align: right;">GLM-5.2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPQA Diamond</td>
+<td style="text-align: right;">93.5</td>
+<td style="text-align: right;">92.6</td>
+<td style="text-align: right;">94.1</td>
+<td style="text-align: right;">91.0</td>
+<td style="text-align: right;">93.5</td>
+<td style="text-align: right;">91.2</td>
+</tr>
+<tr>
+<td>Humanity's Last Exam</td>
+<td style="text-align: right;">43.5</td>
+<td style="text-align: right;">53.3</td>
+<td style="text-align: right;">44.5</td>
+<td style="text-align: right;">49.8*</td>
+<td style="text-align: right;">41.4*</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>Humanity's Last Exam, tools</td>
+<td style="text-align: right;">56.0</td>
+<td style="text-align: right;">63.0</td>
+<td style="text-align: right;">58.0</td>
+<td style="text-align: right;">57.9*</td>
+<td style="text-align: right;">52.2*</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="134-vision">13.4 Vision<a class="headerlink" href="#134-vision" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th style="text-align: right;">K3</th>
+<th style="text-align: right;">Fable 5</th>
+<th style="text-align: right;">GPT 5.6 Sol</th>
+<th style="text-align: right;">Opus 4.8</th>
+<th style="text-align: right;">GPT 5.5</th>
+<th style="text-align: right;">GLM-5.2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MMMU-Pro</td>
+<td style="text-align: right;">81.6</td>
+<td style="text-align: right;">81.2</td>
+<td style="text-align: right;">83.0</td>
+<td style="text-align: right;">78.9</td>
+<td style="text-align: right;">81.2</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>MMMU-Pro with Python</td>
+<td style="text-align: right;">83.4</td>
+<td style="text-align: right;">86.5</td>
+<td style="text-align: right;">84.6</td>
+<td style="text-align: right;">82.7</td>
+<td style="text-align: right;">83.2</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>CharXiv-RQ</td>
+<td style="text-align: right;">84.8</td>
+<td style="text-align: right;">88.9</td>
+<td style="text-align: right;">84.6</td>
+<td style="text-align: right;">80.5</td>
+<td style="text-align: right;">84.1</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>CharXiv with Python</td>
+<td style="text-align: right;">91.3</td>
+<td style="text-align: right;">93.5</td>
+<td style="text-align: right;">89.1</td>
+<td style="text-align: right;">89.9</td>
+<td style="text-align: right;">89.0</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>MathVision</td>
+<td style="text-align: right;">94.3</td>
+<td style="text-align: right;">94.8</td>
+<td style="text-align: right;">95.8</td>
+<td style="text-align: right;">86.7</td>
+<td style="text-align: right;">92.2</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>MathVision with Python</td>
+<td style="text-align: right;">97.8</td>
+<td style="text-align: right;">98.6</td>
+<td style="text-align: right;">97.8</td>
+<td style="text-align: right;">97.1</td>
+<td style="text-align: right;">96.8</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>BabyVision with Python</td>
+<td style="text-align: right;">85.7</td>
+<td style="text-align: right;">90.5</td>
+<td style="text-align: right;">88.9</td>
+<td style="text-align: right;">81.2</td>
+<td style="text-align: right;">83.6</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>ZeroBench, pass@5</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>ZeroBench with Python, pass@5</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>WorldVQA, ForceAnswer</td>
+<td style="text-align: right;">51.0</td>
+<td style="text-align: right;">56.7</td>
+<td style="text-align: right;">41.8</td>
+<td style="text-align: right;">39.1</td>
+<td style="text-align: right;">38.5</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>OmniDoc</td>
+<td style="text-align: right;">91.1</td>
+<td style="text-align: right;">89.8</td>
+<td style="text-align: right;">85.8</td>
+<td style="text-align: right;">87.9</td>
+<td style="text-align: right;">89.4</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>PerceptionBench, internal</td>
+<td style="text-align: right;">58.5</td>
+<td style="text-align: right;">57.2</td>
+<td style="text-align: right;">59.7</td>
+<td style="text-align: right;">47.2</td>
+<td style="text-align: right;">55.8</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table>
+<p>The asterisk is reproduced from Moonshot's table. The accessible launch text
+does not define it globally, so it should not be silently interpreted as one
+uniform provenance class.</p>
+<h2 id="14-benchmark-methodology-and-comparability-limits">14. Benchmark methodology and comparability limits<a class="headerlink" href="#14-benchmark-methodology-and-comparability-limits" title="Permanent link">&para;</a></h2>
+<p>All K3 results use maximum reasoning effort, temperature 1.0, and top-p 1.0.
+Depending on the benchmark, Moonshot used KimiCode, Claude Code, or Codex. This
+creates several important qualifications:</p>
+<ul>
+<li>K3 uses KimiCode on DeepSWE, Terminal-Bench, Program Bench, FrontierSWE, MLS
+  Bench Lite, and at least one KCB run. Competitors sometimes use their best
+  reported harness rather than the same harness.</li>
+<li>The official DeepSWE leaderboard gives K3 67.3 under mini-SWE-agent; the table
+  gives 67.5 under KimiCode.</li>
+<li>SWE Marathon uses Moonshot's H20-calibrated branch. Correctness and anti-cheat
+  checks remain, but GPU images, performance gates, and reference oracles differ
+  from the official hardware setting. Fable 5 fell back on 35% of these tasks.</li>
+<li>PostTrain Bench uses three-run averages on H20 rather than the official H100,
+  with different model-specific harnesses.</li>
+<li>FrontierSWE dominance was recomputed from raw scores on 2026-07-16.</li>
+<li>KCB 2.0, DECK Bench, and PerceptionBench are internal. Their samples and full
+  rubrics are unavailable; 10% of KCB tasks triggered GPT 5.6 Sol's cyber guard.</li>
+<li>OfficeQA Pro provides complete PDF corpora rendered as images, with no
+  machine-readable text. Model+harness OCR and visual navigation are therefore
+  part of the result.</li>
+<li>MCP Atlas uses the 500-task public subset, a 100-turn limit, and Gemini 3.1 Pro
+  as judge. AutomationBench uses the 600-task public subset.</li>
+<li>BrowseComp uses context compaction at 300K tokens for the reported 91.2. With
+  the raw 1M window and no context management, K3 scores 90.4.</li>
+<li>Vision scores are three-run averages except ZeroBench, which is run five
+  times. MMMU-Pro preserves original ordering and prepends images to text.</li>
+<li>GDPval-AA, AA-Briefcase, and APEX scores are cited from Artificial Analysis,
+  while several other competitor scores come from vendor pages or leaderboards.</li>
+</ul>
+<p>The launch benchmark's top-p 1.0 also differs from the current public API
+guide, which fixes top-p at 0.95. That implies a separate evaluation path or a
+documentation/configuration difference and is another reason not to assume the
+public endpoint reproduces every launch score bit-for-bit.</p>
+<p>The table therefore supports “K3 is broadly frontier-competitive and usually
+behind the strongest proprietary models overall,” which Moonshot itself states.
+It does not support a clean single-model ranking independent of harness,
+reasoning budget, tool policy, safety policy, hardware, context management, and
+provenance.</p>
+<h2 id="15-disclosed-limitations">15. Disclosed limitations<a class="headerlink" href="#15-disclosed-limitations" title="Permanent link">&para;</a></h2>
+<p>Moonshot names three limitations:</p>
+<ol>
+<li><strong>Thinking-history sensitivity.</strong> Omitting historical reasoning or switching
+   models mid-session can make generation highly unstable.</li>
+<li><strong>Excessive proactivity.</strong> Training emphasizes difficult long-horizon work,
+   so K3 may resolve small ambiguities or make decisions on the user's behalf.
+   Production systems should use explicit behavioral constraints, tool
+   allowlists, permissions, budgets, and confirmation before irreversible
+   actions.</li>
+<li><strong>User-experience gap.</strong> Moonshot says overall conversational/product
+   experience still noticeably trails Claude Fable 5 and GPT 5.6 Sol despite
+   competitive benchmarks.</li>
+</ol>
+<p>These admissions expose a general lesson: capability, instruction following,
+calibrated initiative, harness compatibility, and user experience are distinct
+axes. Long-horizon task-completion training can improve persistence while
+worsening the tendency to over-act under ambiguity.</p>
+<h2 id="16-availability-at-the-cutoff">16. Availability at the cutoff<a class="headerlink" href="#16-availability-at-the-cutoff" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Kimi.com and mobile apps on iOS, Android, and HarmonyOS;</li>
+<li>Kimi Work 3.1.0 or later on Windows and Apple silicon Macs;</li>
+<li>Kimi Code through the <code>/model</code> selector;</li>
+<li>API model identifier <code>kimi-k3</code>; and</li>
+<li>enterprise account separation and member management.</li>
+</ul>
+<p>The launch initially advertised maximum thinking only, with lower efforts to
+follow. By 2026-07-22, the current API guide documented <code>low</code>, <code>high</code>, and <code>max</code>,
+with <code>max</code> as default. This is a useful example of why launch prose and current
+API behavior need separate dates.</p>
+<h2 id="17-questions-the-technical-report-and-weights-must-answer">17. Questions the technical report and weights must answer<a class="headerlink" href="#17-questions-the-technical-report-and-weights-must-answer" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Exact layer count, model width, attention/KDA heads and state dimensions.</li>
+<li>Total versus active parameter accounting and shared-expert structure.</li>
+<li>Stable LatentMoE's latent width, expert width, stability additions, capacity,
+   overflow, and router equations.</li>
+<li>Exact Quantile Balancing and fully balanced expert-parallel algorithms.</li>
+<li>Per-Head Muon parameter grouping and hyperparameters; SiTU and Gated MLA
+   equations and ablations.</li>
+<li>Pretraining tokens, modalities, data composition, curriculum, compute, and
+   the definition of the claimed 2.5x scaling efficiency.</li>
+<li>Visual/video encoder, sampling, projector/resampler, token budget, joint
+   training stages, and visual RL.</li>
+<li>MX quantization block/scaling details, exception layers, accumulator and
+   state/cache precision, plus quality and throughput ablations.</li>
+<li>KDA/MLA/AttnRes cache serialization, hashing, branching, composition, and
+   vLLM implementation.</li>
+<li>Reproducible artifacts and judging protocols for the launch cases and
+    internal evaluations.</li>
+</ol>
+<h2 id="primary-sources">Primary sources<a class="headerlink" href="#primary-sources" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Moonshot AI, <a href="https://www.kimi.com/de/blog/kimi-k3">Kimi K3 launch blog</a>,
+  <a href="https://platform.kimi.com/docs/guide/kimi-k3-quickstart">K3 API guide</a>,
+  <a href="https://platform.kimi.com/docs/guide/use-kimi-k2-thinking-model">thinking-mode guide</a>,
+  and <a href="https://platform.kimi.com/docs/guide/use-kimi-vision-model">visual-input guide</a>.</li>
+<li>Moonshot AI, <a href="https://arxiv.org/abs/2510.26692">Kimi Linear</a> and
+  <a href="https://github.com/MoonshotAI/Kimi-Linear">official implementation</a>.</li>
+<li>Kimi Team, <a href="https://arxiv.org/abs/2603.15031">Attention Residuals</a> and
+  <a href="https://github.com/MoonshotAI/Attention-Residuals">official implementation</a>.</li>
+<li>NVIDIA and collaborators,
+  <a href="https://arxiv.org/abs/2601.18089">LatentMoE</a>.</li>
+<li>Moonshot AI, <a href="https://arxiv.org/abs/2502.16982">Muon is Scalable for LLM Training</a>
+  and <a href="https://github.com/MoonshotAI/Moonlight">Moonlight implementation</a>.</li>
+<li>Moonshot AI and Tsinghua University,
+  <a href="https://arxiv.org/abs/2407.00079">Mooncake</a>.</li>
+<li>Open Compute Project,
+  <a href="https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf">Microscaling Formats specification</a>.</li>
+<li>Jianlin Su, <a href="https://kexue.fm/archives/11619">MoE journey: quantile balancing</a>,
+  used only as a public mathematical reconstruction while K3's official
+  algorithm remains unpublished.</li>
+</ul>
+<p>Continue with <a href="../kimi/">Kimi model lineage and native vision</a> for the K2 to K3
+history and <a href="../architecture/">representation and fusion</a> for the cross-vendor
+meaning of native multimodality.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

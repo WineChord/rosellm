@@ -1,0 +1,4007 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/evaluation/hallucination/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../hallucination-vendors/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>LLM Hallucination and Mitigation - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#llm-hallucination-failure-taxonomy-and-mitigation-map" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LLM Hallucination and Mitigation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-first-define-the-failed-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. First define the failed reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. First define the failed reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factuality-faithfulness-and-attribution-are-not-interchangeable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factuality, faithfulness, and attribution are not interchangeable
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-why-unsupported-generation-occurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Why unsupported generation occurs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Why unsupported generation occurs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-the-learning-objective-rewards-plausible-continuation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 The learning objective rewards plausible continuation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-knowledge-is-incomplete-compressed-conflicting-and-time-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Knowledge is incomplete, compressed, conflicting, and time-bound
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-post-training-optimizes-imperfect-proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Post-training optimizes imperfect proxies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-context-can-be-missing-noisy-conflicting-or-ignored" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Context can be missing, noisy, conflicting, or ignored
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-decoding-exposes-uncertainty-and-compounds-earlier-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Decoding exposes uncertainty and compounds earlier tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-the-surrounding-system-can-fail-independently" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 The surrounding system can fail independently
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-ambiguous-adversarial-or-impossible-requests-induce-guessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Ambiguous, adversarial, or impossible requests induce guessing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-data-model-and-training-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Data, model, and training controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Data, model, and training controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#knowledge-editing-is-a-patch-not-a-live-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge editing is a patch, not a live database
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-retrieval-and-grounding-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Retrieval and grounding controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Retrieval and grounding controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-build-the-corpus-as-an-evidence-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Build the corpus as an evidence system
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-retrieve-for-recall-then-rerank-for-precision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Retrieve for recall, then rerank for precision
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-decide-whether-the-evidence-is-sufficient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Decide whether the evidence is sufficient
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-use-adaptive-and-corrective-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Use adaptive and corrective retrieval
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-ground-generation-at-claim-granularity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Ground generation at claim granularity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-rag-still-hallucinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why RAG still hallucinates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-structured-data-and-executable-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Structured data and executable tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-prompt-and-context-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Prompt and context controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Prompt and context controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strong-prompt-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Strong prompt patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weak-prompt-patterns-when-used-alone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weak prompt patterns when used alone
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-decoding-and-candidate-selection-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Decoding and candidate-selection controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Decoding and candidate-selection controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#temperature-and-deterministic-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temperature and deterministic decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constrained-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constrained decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sampling-consensus-and-ranking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sampling, consensus, and ranking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contrastive-factuality-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contrastive factuality decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-verification-and-post-generation-repair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Verification and post-generation repair
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Verification and post-generation repair">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-decompose-before-judging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Decompose before judging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-match-the-verifier-to-the-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Match the verifier to the claim
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-verify-citations-along-multiple-axes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Verify citations along multiple axes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-revise-only-from-verified-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Revise only from verified evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-uncertainty-calibration-and-abstention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Uncertainty, calibration, and abstention
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Uncertainty, calibration, and abstention">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#five-valid-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Five valid outcomes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-product-and-human-interface-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Product and human-interface controls
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-multimodal-code-and-agent-specific-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Multimodal, code, and agent-specific extensions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Multimodal, code, and agent-specific extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multimodal-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multimodal systems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code systems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-commonly-fails-when-used-as-a-silver-bullet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. What commonly fails when used as a silver bullet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-a-practical-method-selection-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. A practical method-selection rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-source-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary-source index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-first-define-the-failed-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. First define the failed reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. First define the failed reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factuality-faithfulness-and-attribution-are-not-interchangeable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factuality, faithfulness, and attribution are not interchangeable
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-why-unsupported-generation-occurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Why unsupported generation occurs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Why unsupported generation occurs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-the-learning-objective-rewards-plausible-continuation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 The learning objective rewards plausible continuation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-knowledge-is-incomplete-compressed-conflicting-and-time-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Knowledge is incomplete, compressed, conflicting, and time-bound
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-post-training-optimizes-imperfect-proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Post-training optimizes imperfect proxies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-context-can-be-missing-noisy-conflicting-or-ignored" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Context can be missing, noisy, conflicting, or ignored
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-decoding-exposes-uncertainty-and-compounds-earlier-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Decoding exposes uncertainty and compounds earlier tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-the-surrounding-system-can-fail-independently" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 The surrounding system can fail independently
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-ambiguous-adversarial-or-impossible-requests-induce-guessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Ambiguous, adversarial, or impossible requests induce guessing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-data-model-and-training-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Data, model, and training controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Data, model, and training controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#knowledge-editing-is-a-patch-not-a-live-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge editing is a patch, not a live database
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-retrieval-and-grounding-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Retrieval and grounding controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Retrieval and grounding controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-build-the-corpus-as-an-evidence-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Build the corpus as an evidence system
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-retrieve-for-recall-then-rerank-for-precision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Retrieve for recall, then rerank for precision
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-decide-whether-the-evidence-is-sufficient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Decide whether the evidence is sufficient
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-use-adaptive-and-corrective-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Use adaptive and corrective retrieval
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-ground-generation-at-claim-granularity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Ground generation at claim granularity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-rag-still-hallucinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why RAG still hallucinates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-structured-data-and-executable-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Structured data and executable tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-prompt-and-context-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Prompt and context controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Prompt and context controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strong-prompt-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Strong prompt patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weak-prompt-patterns-when-used-alone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weak prompt patterns when used alone
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-decoding-and-candidate-selection-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Decoding and candidate-selection controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Decoding and candidate-selection controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#temperature-and-deterministic-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temperature and deterministic decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constrained-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constrained decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sampling-consensus-and-ranking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sampling, consensus, and ranking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contrastive-factuality-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contrastive factuality decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-verification-and-post-generation-repair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Verification and post-generation repair
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Verification and post-generation repair">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-decompose-before-judging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Decompose before judging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-match-the-verifier-to-the-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Match the verifier to the claim
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-verify-citations-along-multiple-axes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Verify citations along multiple axes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-revise-only-from-verified-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Revise only from verified evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-uncertainty-calibration-and-abstention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Uncertainty, calibration, and abstention
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Uncertainty, calibration, and abstention">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#five-valid-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Five valid outcomes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-product-and-human-interface-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Product and human-interface controls
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-multimodal-code-and-agent-specific-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Multimodal, code, and agent-specific extensions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Multimodal, code, and agent-specific extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multimodal-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multimodal systems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code systems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-what-commonly-fails-when-used-as-a-silver-bullet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. What commonly fails when used as a silver bullet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-a-practical-method-selection-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. A practical method-selection rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-source-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary-source index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="llm-hallucination-failure-taxonomy-and-mitigation-map">LLM Hallucination: Failure Taxonomy and Mitigation Map<a class="headerlink" href="#llm-hallucination-failure-taxonomy-and-mitigation-map" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23.</p>
+<p>There is no single “hallucination switch.” The practical solution is a layered
+system that decides when external evidence is required, acquires and checks that
+evidence, constrains what may be asserted, verifies each material claim, and
+abstains or escalates when the remaining risk is too high.</p>
+<p>The strongest general production pattern is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task and evidence contract
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  -&gt; answerability / freshness / risk routing
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -&gt; retrieval, database, or executable tool
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  -&gt; evidence-sufficiency gate
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -&gt; evidence-bound generation
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  -&gt; atomic-claim and citation verification
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  -&gt; answer, qualify, ask, abstain, or escalate
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  -&gt; trace, audit, evaluate, and improve
+</code></pre></div>
+<p>Model training, a better retriever, lower temperature, citations, and
+self-checking can each help one part of this path. None proves end-to-end
+truthfulness.</p>
+<h2 id="1-first-define-the-failed-reference">1. First define the failed reference<a class="headerlink" href="#1-first-define-the-failed-reference" title="Permanent link">&para;</a></h2>
+<p>The word <em>hallucination</em> is often applied to every undesirable generation. That
+collapses failures with different causes and fixes.</p>
+<table>
+<thead>
+<tr>
+<th>Failure class</th>
+<th>Operational definition</th>
+<th>Example</th>
+<th>Correct reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Open-world factual error</strong></td>
+<td>a claim conflicts with the best available evidence about the world</td>
+<td>a wrong office holder or release date</td>
+<td>dated authoritative sources</td>
+</tr>
+<tr>
+<td><strong>Unsupported factual claim</strong></td>
+<td>evidence is absent or insufficient even when the claim might happen to be true</td>
+<td>a biography detail with no support</td>
+<td>source corpus plus evidence policy</td>
+</tr>
+<tr>
+<td><strong>Intrinsic unfaithfulness</strong></td>
+<td>output contradicts the supplied context</td>
+<td>a summary reverses a study result</td>
+<td>the supplied document</td>
+</tr>
+<tr>
+<td><strong>Extrinsic addition</strong></td>
+<td>output introduces material not licensed by the context</td>
+<td>a meeting summary invents an owner</td>
+<td>the supplied record and task contract</td>
+</tr>
+<tr>
+<td><strong>Citation fabrication</strong></td>
+<td>the source, title, author, identifier, or URL does not exist</td>
+<td>a nonexistent court case</td>
+<td>source registry or resolver</td>
+</tr>
+<tr>
+<td><strong>Citation misattribution</strong></td>
+<td>the source exists but does not entail the attached claim</td>
+<td>a paper is cited for a result it never reports</td>
+<td>exact source span</td>
+</tr>
+<tr>
+<td><strong>Citation incompleteness</strong></td>
+<td>material claims have no supporting citation</td>
+<td>only easy background claims are sourced</td>
+<td>required claim set</td>
+</tr>
+<tr>
+<td><strong>Reasoning or calculation error</strong></td>
+<td>correct premises lead to a wrong conclusion</td>
+<td>arithmetic, unit, or logical mistake</td>
+<td>calculator, program, proof, or rubric</td>
+</tr>
+<tr>
+<td><strong>Tool hallucination</strong></td>
+<td>a call, result, file state, database row, or test outcome is invented or altered</td>
+<td>“all tests passed” without a run</td>
+<td>immutable tool trace and resulting state</td>
+</tr>
+<tr>
+<td><strong>Temporal error</strong></td>
+<td>a formerly correct claim is stale or its valid date is missing</td>
+<td>an old price is presented as current</td>
+<td>effective date and freshness policy</td>
+</tr>
+<tr>
+<td><strong>Entity or relation error</strong></td>
+<td>attributes from similar entities are blended</td>
+<td>two researchers' affiliations are merged</td>
+<td>entity-resolved records</td>
+</tr>
+<tr>
+<td><strong>Visual or audio grounding error</strong></td>
+<td>an object, attribute, relation, text span, speaker, frame, or time is misperceived</td>
+<td>an absent object is described</td>
+<td>pixels, regions, frames, transcript, or sensor data</td>
+</tr>
+<tr>
+<td><strong>Code hallucination</strong></td>
+<td>an API, symbol, dependency, behavior, or environment assumption is invented</td>
+<td>a nonexistent library method</td>
+<td>pinned source, compiler, tests, and runtime</td>
+</tr>
+<tr>
+<td><strong>False-premise compliance</strong></td>
+<td>the system accepts an invalid premise instead of challenging it</td>
+<td>explains why a nonexistent event occurred</td>
+<td>premise verification</td>
+</tr>
+<tr>
+<td><strong>Overclaim or omission</strong></td>
+<td>wording is stronger than evidence, or a decisive limitation is left out</td>
+<td>association is reported as causation</td>
+<td>evidence class and coverage rubric</td>
+</tr>
+<tr>
+<td><strong>Uncalibrated guess</strong></td>
+<td>the system answers when its evidence or competence is below the allowed threshold</td>
+<td>confident answer to an unanswerable question</td>
+<td>selective-risk policy</td>
+</tr>
+</tbody>
+</table>
+<p>Not every creative invention is a failure. Fiction, brainstorming, hypothetical
+examples, and role-play permit invented content when it is clearly framed and
+does not masquerade as fact. Safety refusal, deception, bias, instruction
+failure, and low usefulness also deserve separate labels even when they overlap
+with factual errors.</p>
+<h3 id="factuality-faithfulness-and-attribution-are-not-interchangeable">Factuality, faithfulness, and attribution are not interchangeable<a class="headerlink" href="#factuality-faithfulness-and-attribution-are-not-interchangeable" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Factuality</strong> asks whether a claim is true in the world.</li>
+<li><strong>Faithfulness</strong> asks whether a claim follows from the supplied evidence.</li>
+<li><strong>Attribution</strong> asks whether the cited source exists, is correctly located,
+  and supports the nearby claim.</li>
+</ul>
+<p>A response can be factually true but unfaithful to the requested document. It
+can be faithful to a false document. It can cite a real, high-quality source
+that does not support the sentence. Production evaluation must score all three
+when they matter.</p>
+<h2 id="2-why-unsupported-generation-occurs">2. Why unsupported generation occurs<a class="headerlink" href="#2-why-unsupported-generation-occurs" title="Permanent link">&para;</a></h2>
+<h3 id="21-the-learning-objective-rewards-plausible-continuation">2.1 The learning objective rewards plausible continuation<a class="headerlink" href="#21-the-learning-objective-rewards-plausible-continuation" title="Permanent link">&para;</a></h3>
+<p>Autoregressive pretraining observes text, not a universal true/false label on
+every sentence. Frequent and patterned strings are easier to learn than rare,
+arbitrary facts. OpenAI's 2025
+<a href="https://openai.com/index/why-language-models-hallucinate/">analysis of hallucination incentives</a>
+adds a second mechanism: accuracy-only evaluation rewards a lucky guess while
+an abstention is guaranteed no credit. The model can therefore become a better
+test taker without becoming appropriately cautious.</p>
+<p>This does <strong>not</strong> mean every generated token is false, or that abstention is the
+only solution. It means fluency probability is not a truth certificate and
+that evaluation incentives must distinguish correct answers, errors, and
+justified abstentions.</p>
+<h3 id="22-knowledge-is-incomplete-compressed-conflicting-and-time-bound">2.2 Knowledge is incomplete, compressed, conflicting, and time-bound<a class="headerlink" href="#22-knowledge-is-incomplete-compressed-conflicting-and-time-bound" title="Permanent link">&para;</a></h3>
+<p>Training corpora contain mistakes, duplicated claims, unresolved disagreement,
+long-tail entities, missing private facts, and facts that change after the
+cutoff. Model parameters are not a lossless database with record-level
+provenance and transactional updates. Increasing scale improves many averages
+but does not turn arbitrary rare facts into deterministic lookup.</p>
+<h3 id="23-post-training-optimizes-imperfect-proxies">2.3 Post-training optimizes imperfect proxies<a class="headerlink" href="#23-post-training-optimizes-imperfect-proxies" title="Permanent link">&para;</a></h3>
+<p>Human and AI raters can prefer confidence, detail, agreement, polished prose,
+or longer answers over cautious factuality. A reward model can inherit those
+preferences. Optimizing one judge too far can exploit its blind spots. A broad
+helpfulness objective may teach the model to complete an answer even when the
+correct response is “the evidence is insufficient.”</p>
+<h3 id="24-context-can-be-missing-noisy-conflicting-or-ignored">2.4 Context can be missing, noisy, conflicting, or ignored<a class="headerlink" href="#24-context-can-be-missing-noisy-conflicting-or-ignored" title="Permanent link">&para;</a></h3>
+<p>Retrieval may return no answer, a stale version, a near-duplicate about the
+wrong entity, or an adversarial passage. Even when the answer is present, long
+or distractor-heavy contexts can cause the generator to overlook it. Google
+Research's
+<a href="https://research.google/blog/deeper-insights-into-retrieval-augmented-generation-the-role-of-sufficient-context/">sufficient-context study</a>
+shows why “some retrieved text exists” is not an answerability guarantee:
+insufficient context can increase confidence and wrong answers rather than
+induce abstention.</p>
+<h3 id="25-decoding-exposes-uncertainty-and-compounds-earlier-tokens">2.5 Decoding exposes uncertainty and compounds earlier tokens<a class="headerlink" href="#25-decoding-exposes-uncertainty-and-compounds-earlier-tokens" title="Permanent link">&para;</a></h3>
+<p>Sampling can select a low-probability wrong continuation; greedy decoding can
+select the same high-probability misconception every time. Once an early entity
+or number is wrong, later tokens are conditioned on it and may build a coherent
+story around the error. Lowering temperature reduces variation but does not
+repair a consistently wrong distribution.</p>
+<h3 id="26-the-surrounding-system-can-fail-independently">2.6 The surrounding system can fail independently<a class="headerlink" href="#26-the-surrounding-system-can-fail-independently" title="Permanent link">&para;</a></h3>
+<p>Query rewriting, search, chunking, optical character recognition, database
+mapping, reranking, context truncation, tool execution, caching, routing, and
+UI citation attachment can each create or conceal an error. A production answer
+is evidence about the whole deployed stack, not only the named checkpoint.</p>
+<h3 id="27-ambiguous-adversarial-or-impossible-requests-induce-guessing">2.7 Ambiguous, adversarial, or impossible requests induce guessing<a class="headerlink" href="#27-ambiguous-adversarial-or-impossible-requests-induce-guessing" title="Permanent link">&para;</a></h3>
+<p>An underspecified entity, impossible date, false premise, missing attachment,
+conflicting instruction, or unknowable private fact needs clarification or
+abstention. If the interface demands an answer and the evaluation never rewards
+questions, the system learns the wrong behavior.</p>
+<h2 id="3-data-model-and-training-controls">3. Data, model, and training controls<a class="headerlink" href="#3-data-model-and-training-controls" title="Permanent link">&para;</a></h2>
+<p>These methods change what the model stores or how it behaves before a specific
+request arrives. They reduce baseline risk but cannot supply fresh, private, or
+transactional truth on their own.</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Mechanism</th>
+<th>Best use</th>
+<th>Residual failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source curation and provenance</td>
+<td>prefer authoritative, licensed, dated sources and retain origin metadata</td>
+<td>improving the factual prior</td>
+<td>authority can be wrong; mixture details are usually undisclosed</td>
+</tr>
+<tr>
+<td>Quality, contradiction, and entity filtering</td>
+<td>remove spam, resolve duplicates/entities, flag incompatible claims</td>
+<td>reducing noisy supervision</td>
+<td>filters introduce coverage and cultural bias</td>
+</tr>
+<tr>
+<td>Exact and semantic deduplication</td>
+<td>limit repeated errors and benchmark leakage</td>
+<td>cleaner training/evaluation</td>
+<td>deduplication is not fact verification</td>
+</tr>
+<tr>
+<td>Temporal snapshots and effective dates</td>
+<td>preserve when a claim was valid</td>
+<td>time-sensitive domains</td>
+<td>the checkpoint still becomes stale</td>
+</tr>
+<tr>
+<td>Domain continued pretraining</td>
+<td>increase exposure to specialist language and knowledge</td>
+<td>stable domain concepts</td>
+<td>can overwrite capabilities; still lacks record-level provenance</td>
+</tr>
+<tr>
+<td>Retrieval-augmented pretraining</td>
+<td>train a model to consult non-parametric memory</td>
+<td>knowledge-intensive tasks</td>
+<td>retriever and index become part of the failure surface</td>
+</tr>
+<tr>
+<td>Grounded supervised fine-tuning</td>
+<td>imitate answers that quote, cite, use tools, challenge premises, and abstain</td>
+<td>teaching the desired response protocol</td>
+<td>imitation does not verify unseen claims</td>
+</tr>
+<tr>
+<td>Unanswerable and negative examples</td>
+<td>explicitly train “insufficient evidence,” clarification, and refusal</td>
+<td>selective answering</td>
+<td>over-refusal and domain shift</td>
+</tr>
+<tr>
+<td>Human-feedback alignment</td>
+<td>reward honest, helpful, evidence-sensitive answers</td>
+<td>broad behavioral improvement</td>
+<td>rater preference is not an oracle</td>
+</tr>
+<tr>
+<td>AI-feedback or constitutional training</td>
+<td>use written principles and model critiques/preferences at scale</td>
+<td>scalable norms such as honesty</td>
+<td>judge correlation, principle gaps, reward hacking</td>
+</tr>
+<tr>
+<td>Factuality preference optimization</td>
+<td>rank atomic claims or complete answers with external factuality signals</td>
+<td>open-ended truthfulness</td>
+<td>verifier errors become training signal</td>
+</tr>
+<tr>
+<td>Verifiable-reward RL</td>
+<td>score math, code, database, search, or proof outcomes with executable checks</td>
+<td>domains with hard validators</td>
+<td>open-world claims rarely have a perfect verifier</td>
+</tr>
+<tr>
+<td>Process supervision</td>
+<td>reward valid intermediate actions, evidence collection, and checks</td>
+<td>multi-step research and tools</td>
+<td>correct-looking process can still end incorrectly</td>
+</tr>
+<tr>
+<td>Rejection sampling / best-of-<span class="arithmatex">\(N\)</span> distillation</td>
+<td>generate several candidates and retain verified or highly scored ones</td>
+<td>higher-quality training and serving</td>
+<td>selection cost and correlated candidates</td>
+</tr>
+<tr>
+<td>Knowledge editing</td>
+<td>change selected parameterized associations without full retraining</td>
+<td>narrow corrections to open weights</td>
+<td>locality, paraphrase, multi-hop, and scale remain fragile</td>
+</tr>
+<tr>
+<td>Multimodal counterfactual training</td>
+<td>pair images with hard negatives, false premises, regions, and grounded preferences</td>
+<td>object/attribute/relation hallucination</td>
+<td>perception and language priors remain entangled</td>
+</tr>
+</tbody>
+</table>
+<p>Classic evidence that post-training can improve truthfulness comes from
+<a href="https://arxiv.org/abs/2203.02155">InstructGPT</a>: on its disclosed evaluation,
+human-feedback training reduced additions on closed-domain tasks relative to
+GPT-3 and improved TruthfulQA. This is a result for specific checkpoints and
+data, not proof that generic preference optimization always improves facts.</p>
+<p><a href="https://arxiv.org/abs/2311.08401">Fine-tuning Language Models for Factuality</a>
+demonstrates a research pipeline that constructs factuality preferences with
+retrieval or model confidence and optimizes them with Direct Preference
+Optimization. <a href="https://arxiv.org/abs/2311.09677">R-Tuning</a> instead constructs
+refusal-aware examples so a model learns to distinguish questions inside and
+outside its knowledge. Both illustrate the central design choice: training must
+reward the desired answer-versus-abstain policy, not only fluent completion.</p>
+<h3 id="knowledge-editing-is-a-patch-not-a-live-database">Knowledge editing is a patch, not a live database<a class="headerlink" href="#knowledge-editing-is-a-patch-not-a-live-database" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2202.05262">ROME</a> and
+<a href="https://arxiv.org/abs/2210.07229">MEMIT</a> show that selected factual
+associations in open models can be edited. Before using this operationally,
+test:</p>
+<ul>
+<li>paraphrase generalization;</li>
+<li>neighboring facts that must remain unchanged;</li>
+<li>multi-hop consequences;</li>
+<li>conflicting and repeated edits;</li>
+<li>cross-language expressions;</li>
+<li>long-form generation rather than one-token completion; and</li>
+<li>rollback and checkpoint lineage.</li>
+</ul>
+<p>When facts change frequently or require auditable access control, retrieval from
+a versioned source of truth is usually easier to govern than repeated weight
+editing.</p>
+<h2 id="4-retrieval-and-grounding-controls">4. Retrieval and grounding controls<a class="headerlink" href="#4-retrieval-and-grounding-controls" title="Permanent link">&para;</a></h2>
+<p><a href="https://arxiv.org/abs/2005.11401">Retrieval-Augmented Generation (RAG)</a>
+combines parametric generation with retrieved non-parametric memory. It improves
+updateability and provenance, but “RAG” names a family, not a complete
+reliability design.</p>
+<h3 id="41-build-the-corpus-as-an-evidence-system">4.1 Build the corpus as an evidence system<a class="headerlink" href="#41-build-the-corpus-as-an-evidence-system" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Define which repositories, databases, websites, and document versions are
+   authoritative for each claim type.</li>
+<li>Preserve source ID, title, owner, effective date, ingestion time, access
+   policy, language, and immutable content hash.</li>
+<li>Parse headings, tables, lists, page numbers, code symbols, and document
+   relationships rather than flattening everything into anonymous text.</li>
+<li>Keep superseded records discoverable but clearly lower their authority for
+   current-state questions.</li>
+<li>Quarantine extraction failures and measure optical character recognition,
+   table, and metadata quality.</li>
+<li>Enforce permissions before retrieval; post-filtering an already exposed
+   passage is too late.</li>
+</ol>
+<h3 id="42-retrieve-for-recall-then-rerank-for-precision">4.2 Retrieve for recall, then rerank for precision<a class="headerlink" href="#42-retrieve-for-recall-then-rerank-for-precision" title="Permanent link">&para;</a></h3>
+<p>Useful components include:</p>
+<ul>
+<li>sparse lexical search for names, identifiers, and exact phrases;</li>
+<li>dense retrieval for paraphrase and semantic similarity;</li>
+<li>metadata and date filters;</li>
+<li>entity-aware lookup;</li>
+<li>reciprocal-rank or learned fusion;</li>
+<li>cross-encoder or LLM reranking;</li>
+<li>multi-query retrieval for ambiguous wording;</li>
+<li>query decomposition for multi-hop claims;</li>
+<li>neighboring-section and parent-document expansion; and</li>
+<li>diversity controls so ten near-duplicates do not masquerade as ten sources.</li>
+</ul>
+<p>Chunk size is a trade-off. Small chunks improve localization but lose context;
+large chunks retain context but add distractors. Anthropic's disclosed
+<a href="https://www.anthropic.com/engineering/contextual-retrieval">Contextual Retrieval</a>
+prepends a short document-specific explanation to each chunk before both dense
+and lexical indexing. It is one tested retrieval technique, not evidence about
+every Claude production request.</p>
+<h3 id="43-decide-whether-the-evidence-is-sufficient">4.3 Decide whether the evidence is sufficient<a class="headerlink" href="#43-decide-whether-the-evidence-is-sufficient" title="Permanent link">&para;</a></h3>
+<p>A separate answerability gate should ask:</p>
+<ul>
+<li>Is there a passage that directly addresses the question?</li>
+<li>Are the entity, time, jurisdiction, version, and unit matched?</li>
+<li>Does a multi-part question have evidence for every part?</li>
+<li>Do sources conflict, and if so can the conflict be explained?</li>
+<li>Is the source allowed and authoritative for this claim?</li>
+<li>Is the evidence fresh enough for the requested decision?</li>
+<li>Does the question require an external tool instead of prose retrieval?</li>
+</ul>
+<p>The gate can route to another query, a structured database, broader search,
+clarification, abstention, or human review. A similarity score alone is not an
+answerability probability.</p>
+<h3 id="44-use-adaptive-and-corrective-retrieval">4.4 Use adaptive and corrective retrieval<a class="headerlink" href="#44-use-adaptive-and-corrective-retrieval" title="Permanent link">&para;</a></h3>
+<p>Fixed top-<span class="arithmatex">\(k\)</span> retrieval wastes context on easy questions and fails silently on
+hard ones.</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2310.11511">Self-RAG</a> trains a model to decide when to
+  retrieve and to emit reflection tokens about relevance and support.</li>
+<li><a href="https://arxiv.org/abs/2401.15884">Corrective RAG</a> evaluates retrieval quality,
+  triggers different actions, extends weak results with web search, and filters
+  documents before generation.</li>
+<li><a href="https://arxiv.org/abs/2210.03629">ReAct</a> interleaves reasoning with actions so
+  search or a knowledge base can resolve uncertainty during a trajectory.</li>
+<li>Agentic research systems iterate query planning, browsing, reading,
+  calculation, contradiction resolution, and backtracking rather than treating
+  retrieval as one pre-generation call.</li>
+</ul>
+<p>These approaches expand the control surface: loops need tool budgets, stop
+conditions, source-quality policy, prompt-injection defense, replay, and
+complete traces.</p>
+<h3 id="45-ground-generation-at-claim-granularity">4.5 Ground generation at claim granularity<a class="headerlink" href="#45-ground-generation-at-claim-granularity" title="Permanent link">&para;</a></h3>
+<p>High-value patterns include:</p>
+<ol>
+<li>extract evidence spans before drafting;</li>
+<li>organize an evidence packet by requested claim;</li>
+<li>tell the model which sources are authoritative and which are contextual;</li>
+<li>require material claims to carry a source identifier;</li>
+<li>make unsupported fields explicitly nullable;</li>
+<li>separate sourced facts, calculations, interpretation, and recommendations;</li>
+<li>preserve source dates and units;</li>
+<li>generate short atomic statements that can be checked; and</li>
+<li>verify after generation instead of assuming the prompt was obeyed.</li>
+</ol>
+<p>Long context is useful only when the relevant evidence is present and used.
+Dumping an entire corpus into a context window is not equivalent to retrieval,
+answerability assessment, or verification.</p>
+<h3 id="why-rag-still-hallucinates">Why RAG still hallucinates<a class="headerlink" href="#why-rag-still-hallucinates" title="Permanent link">&para;</a></h3>
+<p>The retriever can miss the answer; retrieved text can be insufficient, stale,
+poisoned, or about the wrong entity; the model can ignore or distort it; and
+the citation layer can attach the wrong passage. The manually annotated
+<a href="https://arxiv.org/abs/2401.00396">RAGTruth</a> corpus exists precisely because
+retrieval-augmented responses can remain unsupported or contradictory.</p>
+<h2 id="5-structured-data-and-executable-tools">5. Structured data and executable tools<a class="headerlink" href="#5-structured-data-and-executable-tools" title="Permanent link">&para;</a></h2>
+<p>When a claim has a deterministic source or operation, ask a tool to produce the
+value rather than asking the language model to remember or simulate it.</p>
+<table>
+<thead>
+<tr>
+<th>Claim type</th>
+<th>Preferred authority</th>
+<th>Required validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>current account, inventory, or order state</td>
+<td>transactional API or database</td>
+<td>identity, authorization, timestamp, row/version</td>
+</tr>
+<tr>
+<td>arithmetic, unit, or date calculation</td>
+<td>typed calculator or code</td>
+<td>input units, precision, overflow, executable result</td>
+</tr>
+<tr>
+<td>market, weather, schedule, or other live data</td>
+<td>versioned provider API</td>
+<td>source time, market/location, missing-data handling</td>
+</tr>
+<tr>
+<td>code behavior</td>
+<td>checked-out source, compiler, linter, test, runtime</td>
+<td>revision, command, exit status, logs, environment</td>
+</tr>
+<tr>
+<td>theorem or symbolic claim</td>
+<td>proof assistant, solver, or domain checker</td>
+<td>formal statement, assumptions, kernel result</td>
+</tr>
+<tr>
+<td>workflow completion</td>
+<td>backend state and audit event</td>
+<td>object ID, before/after state, idempotency</td>
+</tr>
+<tr>
+<td>policy conformance</td>
+<td>deterministic rules plus reviewed classifier</td>
+<td>policy version, matched rule, false-positive audit</td>
+</tr>
+</tbody>
+</table>
+<p>The system must bind every narrated result to a real tool event. Store a
+tool-call ID, arguments, tool version, result hash, time, status, and resulting
+state. Do not allow a free-text model message to impersonate a tool result.
+Schema validation prevents malformed calls; it does not make a valid argument
+factually correct or an authorized action safe.</p>
+<h2 id="6-prompt-and-context-controls">6. Prompt and context controls<a class="headerlink" href="#6-prompt-and-context-controls" title="Permanent link">&para;</a></h2>
+<p>Prompting is cheap and useful, especially when it defines a verifiable
+contract. It is not a hard guarantee.</p>
+<h3 id="strong-prompt-patterns">Strong prompt patterns<a class="headerlink" href="#strong-prompt-patterns" title="Permanent link">&para;</a></h3>
+<ul>
+<li>State the allowed evidence boundary: supplied documents only, approved
+  databases, or named public sources.</li>
+<li>Instruct the system to challenge false premises and ask when the entity,
+  time, jurisdiction, version, or desired standard is ambiguous.</li>
+<li>Define the allowed outcomes: answer, qualify, ask, abstain, or escalate.</li>
+<li>Require <code>not found</code>, <code>conflicting</code>, or <code>insufficient evidence</code> instead of
+  filling a missing field.</li>
+<li>Separate quotations/evidence from synthesis and label inference explicitly.</li>
+<li>Require dates, units, source IDs, and exact citation placement.</li>
+<li>Use a fixed output schema with nullable fields and an evidence array.</li>
+<li>Provide examples of correct abstention, source conflict, and partial answer,
+  not only successful complete answers.</li>
+<li>Treat retrieved pages, emails, documents, and tool output as untrusted data
+  that cannot replace higher-priority instructions.</li>
+</ul>
+<h3 id="weak-prompt-patterns-when-used-alone">Weak prompt patterns when used alone<a class="headerlink" href="#weak-prompt-patterns-when-used-alone" title="Permanent link">&para;</a></h3>
+<ul>
+<li>“Do not hallucinate.”</li>
+<li>“Be 100% accurate.”</li>
+<li>“Think step by step.”</li>
+<li>“Double-check your answer.”</li>
+<li>“Always provide citations.”</li>
+<li>“Answer as an expert.”</li>
+</ul>
+<p>These statements do not supply missing evidence or an independent verifier.
+They can alter style and caution, but must be measured on the target
+distribution.</p>
+<h2 id="7-decoding-and-candidate-selection-controls">7. Decoding and candidate-selection controls<a class="headerlink" href="#7-decoding-and-candidate-selection-controls" title="Permanent link">&para;</a></h2>
+<h3 id="temperature-and-deterministic-decoding">Temperature and deterministic decoding<a class="headerlink" href="#temperature-and-deterministic-decoding" title="Permanent link">&para;</a></h3>
+<p>Lower temperature or greedy decoding reduces sample variance and is appropriate
+for many extraction and analytical tasks. It cannot fix a high-probability
+falsehood, stale knowledge, bad context, or a wrong tool result. Some hosted
+systems may remain nondeterministic because routing, kernels, mixtures, or
+server-side processing change.</p>
+<h3 id="constrained-decoding">Constrained decoding<a class="headerlink" href="#constrained-decoding" title="Permanent link">&para;</a></h3>
+<p>A grammar, finite-state machine, typed tool schema, or enumerated choice can
+make invalid output strings impossible. Use it for:</p>
+<ul>
+<li>JSON/XML structure;</li>
+<li>identifiers and enums;</li>
+<li>dates, units, and bounded numeric formats;</li>
+<li>valid function-call syntax;</li>
+<li>extractive spans or allowed labels; and</li>
+<li>workflows whose next action comes from a finite authorized set.</li>
+</ul>
+<p>It guarantees membership in the allowed language, not semantic correctness.
+<code>{"case_id":"A123"}</code> can be perfectly valid JSON and still identify the wrong
+case.</p>
+<h3 id="sampling-consensus-and-ranking">Sampling, consensus, and ranking<a class="headerlink" href="#sampling-consensus-and-ranking" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Self-consistency</strong> samples several reasoning paths and selects a consensus;
+  it is effective when independent paths tend to converge on a checkable answer.</li>
+<li><strong>Best-of-<span class="arithmatex">\(N\)</span></strong> uses a reward model or verifier to select among full
+  candidates.</li>
+<li><strong>Ensembles</strong> combine different model families, prompts, or retrievers.</li>
+<li><strong>Debate/critique</strong> exposes disagreements for a verifier or human.</li>
+</ul>
+<p>These methods trade compute for reliability only when the selector is better
+than the candidates on the target error. Correlated models can repeat the same
+misconception, and majority vote can confidently select it.</p>
+<h3 id="contrastive-factuality-decoding">Contrastive factuality decoding<a class="headerlink" href="#contrastive-factuality-decoding" title="Permanent link">&para;</a></h3>
+<p>Research methods modify token scores without updating weights:</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2305.14739">Context-Aware Decoding</a> contrasts output
+  probabilities with and without the supplied context to emphasize evidence.</li>
+<li><a href="https://arxiv.org/abs/2309.03883">DoLa</a> contrasts later and earlier
+  Transformer-layer logits to surface factual knowledge.</li>
+<li>Google's 2025
+  <a href="https://research.google/blog/making-llms-more-accurate-by-using-all-of-their-layers/">SLED</a>
+  aggregates layer information during decoding.</li>
+</ul>
+<p>These are promising checkpoint-level controls with model- and task-dependent
+costs. They do not provide freshness, source provenance, or a general
+production truth guarantee.</p>
+<h2 id="8-verification-and-post-generation-repair">8. Verification and post-generation repair<a class="headerlink" href="#8-verification-and-post-generation-repair" title="Permanent link">&para;</a></h2>
+<h3 id="81-decompose-before-judging">8.1 Decompose before judging<a class="headerlink" href="#81-decompose-before-judging" title="Permanent link">&para;</a></h3>
+<p>Split a response into atomic, independently checkable claims. Preserve:</p>
+<ul>
+<li>the exact answer span;</li>
+<li>claim type, entity, time, unit, and modality;</li>
+<li>attached citations and evidence spans;</li>
+<li>whether it is quotation, calculation, inference, recommendation, or
+  uncertainty statement; and</li>
+<li>materiality, because a wrong caveat may matter more than ten correct
+  background facts.</li>
+</ul>
+<p><a href="https://arxiv.org/abs/2305.14251">FActScore</a> operationalizes long-form factual
+precision as the fraction of atomic claims supported by a knowledge source.
+<a href="https://deepmind.google/research/publications/85420/">LongFact and SAFE</a> use a
+search-augmented evaluator to decompose and check long-form claims. Automated
+decomposition and search are themselves fallible, so retain evidence and audit
+a stratified human sample.</p>
+<h3 id="82-match-the-verifier-to-the-claim">8.2 Match the verifier to the claim<a class="headerlink" href="#82-match-the-verifier-to-the-claim" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Verification method</th>
+<th>Important caveat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>supported by supplied text</td>
+<td>natural-language inference plus exact span</td>
+<td>entailment models fail on numbers, negation, and long context</td>
+</tr>
+<tr>
+<td>open-world factual claim</td>
+<td>search and source-resolution agent</td>
+<td>search ranking and source quality are not truth</td>
+</tr>
+<tr>
+<td>citation</td>
+<td>existence, location, entailment, completeness, quality</td>
+<td>a real URL is insufficient</td>
+</tr>
+<tr>
+<td>number or date</td>
+<td>typed recomputation from cited inputs</td>
+<td>source units and effective dates must match</td>
+</tr>
+<tr>
+<td>code</td>
+<td>compile, execute, hidden/property/mutation tests</td>
+<td>weak tests can certify wrong code</td>
+</tr>
+<tr>
+<td>database or workflow state</td>
+<td>backend query and invariant check</td>
+<td>read-after-write and eventual consistency matter</td>
+</tr>
+<tr>
+<td>visual claim</td>
+<td>region/frame evidence, OCR, specialist detector</td>
+<td>detectors and OCR also hallucinate or miss</td>
+</tr>
+<tr>
+<td>medical/legal/scientific interpretation</td>
+<td>domain rubric and qualified human review</td>
+<td>authoritative sources may disagree or change</td>
+</tr>
+</tbody>
+</table>
+<h3 id="83-verify-citations-along-multiple-axes">8.3 Verify citations along multiple axes<a class="headerlink" href="#83-verify-citations-along-multiple-axes" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2305.14627">ALCE</a> separates answer quality from citation
+quality. A production citation audit should measure at least:</p>
+<ol>
+<li><strong>validity:</strong> the source and location exist;</li>
+<li><strong>entailment / precision:</strong> the cited span supports the nearby claim;</li>
+<li><strong>completeness / recall:</strong> every material externally verifiable claim has
+   support;</li>
+<li><strong>placement:</strong> the citation is attached to the right clause;</li>
+<li><strong>source quality:</strong> the source is appropriate and authoritative;</li>
+<li><strong>diversity / independence:</strong> multiple citations are not copies of one
+   unsupported origin;</li>
+<li><strong>freshness:</strong> the source is valid for the claimed date; and</li>
+<li><strong>faithful transformation:</strong> units, qualifiers, populations, and causal
+   wording survive synthesis.</li>
+</ol>
+<h3 id="84-revise-only-from-verified-evidence">8.4 Revise only from verified evidence<a class="headerlink" href="#84-revise-only-from-verified-evidence" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://arxiv.org/abs/2210.08726">RARR</a> searches for attribution and
+  minimally revises unsupported output.</li>
+<li><a href="https://arxiv.org/abs/2309.11495">Chain-of-Verification</a> drafts, creates
+  verification questions, answers them independently, and produces a revised
+  response.</li>
+<li>Program repair can use compiler/test feedback; research agents can reopen
+  sources and repair only failed claims.</li>
+</ul>
+<p>The verifier, evidence, and revision policy must be independent enough to add
+information. A generic “reflect again” prompt can preserve or amplify the same
+error. The study
+<a href="https://arxiv.org/abs/2310.01798">Large Language Models Cannot Self-Correct Reasoning Yet</a>
+found that intrinsic self-correction without external feedback can degrade
+reasoning. Other work finds gains under particular prompts and temperatures.
+The correct production conclusion is to test self-revision as a component, not
+assume it is an oracle.</p>
+<h2 id="9-uncertainty-calibration-and-abstention">9. Uncertainty, calibration, and abstention<a class="headerlink" href="#9-uncertainty-calibration-and-abstention" title="Permanent link">&para;</a></h2>
+<p>The system should optimize a risk–coverage frontier:</p>
+<ul>
+<li><strong>coverage:</strong> the fraction of requests it answers;</li>
+<li><strong>selective risk:</strong> the error rate among answered requests;</li>
+<li><strong>abstention quality:</strong> whether withheld cases are actually the dangerous
+  ones; and</li>
+<li><strong>utility:</strong> the asymmetric cost of a wrong answer, missing answer, delay, and
+  human escalation.</li>
+</ul>
+<p>Useful uncertainty signals include:</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>What it observes</th>
+<th>Limitation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>token log probability / margin</td>
+<td>local decoder confidence</td>
+<td>length/tokenization sensitive; fluent falsehoods can be high probability</td>
+</tr>
+<tr>
+<td>verbal confidence</td>
+<td>model's stated uncertainty</td>
+<td>wording can be uncalibrated or persuasive</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(P(\mathrm{True})\)</span> / <span class="arithmatex">\(P(\mathrm{IK})\)</span></td>
+<td>self-evaluation of an answer or whether it knows</td>
+<td>task transfer and prompt calibration vary</td>
+</tr>
+<tr>
+<td>sample disagreement</td>
+<td>answer instability across repeated draws</td>
+<td>misses consistent misconceptions</td>
+</tr>
+<tr>
+<td>semantic entropy</td>
+<td>uncertainty over meanings rather than wordings</td>
+<td>requires multiple samples and semantic clustering</td>
+</tr>
+<tr>
+<td>hidden-state probe</td>
+<td>internal representation correlated with correctness</td>
+<td>needs model access, labels, and distribution-specific validation</td>
+</tr>
+<tr>
+<td>retrieval sufficiency</td>
+<td>whether evidence covers the question</td>
+<td>evaluator can confuse relevance with entailment</td>
+</tr>
+<tr>
+<td>verifier or ensemble score</td>
+<td>independent evidence/checker result</td>
+<td>correlated errors and judge drift</td>
+</tr>
+<tr>
+<td>conformal calibration</td>
+<td>threshold calibrated on exchangeable held-out data</td>
+<td>guarantee depends on score, labels, and distribution assumptions</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://arxiv.org/abs/2303.08896">SelfCheckGPT</a> uses disagreement among
+black-box samples. The Nature study on
+<a href="https://www.nature.com/articles/s41586-024-07421-0">semantic entropy</a>
+clusters semantically equivalent generations before measuring uncertainty, so
+paraphrases do not falsely appear diverse. Both target confabulation-like
+instability, not every consistently wrong claim.</p>
+<p><a href="https://arxiv.org/abs/2207.05221">Language Models (Mostly) Know What They Know</a>
+studies <span class="arithmatex">\(P(\mathrm{True})\)</span> and <span class="arithmatex">\(P(\mathrm{IK})\)</span> self-evaluation, while
+<a href="https://arxiv.org/abs/2405.01563">conformal abstention</a> calibrates an
+abstention rule with formal error-control goals under stated assumptions.
+Natural-language hedges should still be audited: Google's
+<a href="https://research.google/pubs/metafaith-faithful-natural-language-uncertainty-expression-in-llms/">MetaFaith</a>
+reports that ordinary prompts often fail to make verbal uncertainty faithfully
+track intrinsic uncertainty.</p>
+<h3 id="five-valid-outcomes">Five valid outcomes<a class="headerlink" href="#five-valid-outcomes" title="Permanent link">&para;</a></h3>
+<p>A reliable system does not force every request into “answer”:</p>
+<ol>
+<li><strong>answer</strong> with adequate evidence;</li>
+<li><strong>qualify</strong> a partially supported or disputed answer;</li>
+<li><strong>ask</strong> for missing identity, scope, source, time, or attachment;</li>
+<li><strong>abstain</strong> when expected error exceeds the domain threshold; or</li>
+<li><strong>escalate</strong> to a qualified human or controlled workflow.</li>
+</ol>
+<p>Thresholds must be calibrated per domain and severity. A creative suggestion, a
+customer account balance, and a drug interaction do not share an acceptable
+false-answer cost.</p>
+<h2 id="10-product-and-human-interface-controls">10. Product and human-interface controls<a class="headerlink" href="#10-product-and-human-interface-controls" title="Permanent link">&para;</a></h2>
+<p>The interface shapes reliance as much as the model.</p>
+<ul>
+<li>Show sources beside the exact supported claim, not as an undifferentiated
+  footer.</li>
+<li>Expose a short supporting passage, source owner, date, and version.</li>
+<li>Distinguish retrieved fact, model inference, calculation, and recommendation.</li>
+<li>Label incomplete searches, inaccessible sources, and conflicts.</li>
+<li>Avoid decorative confidence percentages that were not empirically
+  calibrated.</li>
+<li>Make “not enough evidence” and clarification normal outcomes rather than
+  product failures.</li>
+<li>Provide a correction path that captures the claim, evidence, model/system
+  version, and user impact.</li>
+<li>Require human sign-off for high-stakes decisions and define what the reviewer
+  must inspect; a generic “human in the loop” label is not a control.</li>
+<li>Preserve original source access so the user can independently verify.</li>
+<li>Do not let a citation badge imply endorsement or truth.</li>
+</ul>
+<h2 id="11-multimodal-code-and-agent-specific-extensions">11. Multimodal, code, and agent-specific extensions<a class="headerlink" href="#11-multimodal-code-and-agent-specific-extensions" title="Permanent link">&para;</a></h2>
+<h3 id="multimodal-systems">Multimodal systems<a class="headerlink" href="#multimodal-systems" title="Permanent link">&para;</a></h3>
+<p>Evaluate object existence, attributes, counts, spatial relations, optical
+character recognition, chart values, document layout, speaker identity,
+temporal order, and coordinate grounding separately. Useful controls include:</p>
+<ul>
+<li>higher-resolution crops or region tools;</li>
+<li>optical character recognition with bounding boxes and confidence;</li>
+<li>counterfactual image-question pairs and false-premise training;</li>
+<li>region/frame citations;</li>
+<li>specialist detectors for count or geometry;</li>
+<li>cross-frame identity tracking; and</li>
+<li>a text-only ablation to detect answers supplied by language priors rather
+  than the image.</li>
+</ul>
+<p>Google's
+<a href="https://research.google/blog/halva-hallucination-attenuated-language-and-vision-assistant/">HALVA</a>
+is one disclosed contrastive-training approach for attenuating visual
+hallucination. A lower object-hallucination score does not establish accurate
+OCR, charts, video, or world knowledge.</p>
+<h3 id="code-systems">Code systems<a class="headerlink" href="#code-systems" title="Permanent link">&para;</a></h3>
+<p>Ground the request in the exact repository and dependency versions; search
+symbols before inventing APIs; use constrained edits; compile; run targeted and
+regression tests; inspect the diff; and bind every claim about success to a real
+command result. Hidden tests, property tests, fuzzing, static analysis, and
+mutation testing reduce the chance that weak visible tests reward plausible but
+wrong code.</p>
+<h3 id="agents">Agents<a class="headerlink" href="#agents" title="Permanent link">&para;</a></h3>
+<p>Agents add action and state hallucinations. Preserve:</p>
+<ul>
+<li>every tool schema and version;</li>
+<li>exact arguments and returned observations;</li>
+<li>permission and authorization decisions;</li>
+<li>retries, errors, and rejected actions;</li>
+<li>state identifiers before and after mutation;</li>
+<li>policy, prompt, retriever, and model versions; and</li>
+<li>a final backend-state verification independent of the agent's narration.</li>
+</ul>
+<p>An agent that says “done” is not evidence that the external state changed.</p>
+<h2 id="12-what-commonly-fails-when-used-as-a-silver-bullet">12. What commonly fails when used as a silver bullet<a class="headerlink" href="#12-what-commonly-fails-when-used-as-a-silver-bullet" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Why it is false or incomplete</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“Use a larger model.”</td>
+<td>averages may improve, but rare facts, stale knowledge, false premises, and system errors remain</td>
+</tr>
+<tr>
+<td>“Set temperature to zero.”</td>
+<td>variance falls; consistent falsehoods remain</td>
+</tr>
+<tr>
+<td>“Add a long system prompt.”</td>
+<td>instructions neither provide missing evidence nor enforce compliance</td>
+</tr>
+<tr>
+<td>“Use RAG.”</td>
+<td>retrieval can be irrelevant or insufficient, and generation can ignore it</td>
+</tr>
+<tr>
+<td>“Put the whole corpus in a long context.”</td>
+<td>presence, discovery, attention, conflict resolution, and answerability are distinct</td>
+</tr>
+<tr>
+<td>“Require citations.”</td>
+<td>models can fabricate, misplace, or launder citations</td>
+</tr>
+<tr>
+<td>“Use valid JSON / Structured Outputs.”</td>
+<td>syntax is guaranteed, not values</td>
+</tr>
+<tr>
+<td>“Ask the model to critique itself.”</td>
+<td>the same knowledge and bias may reproduce or worsen the error</td>
+</tr>
+<tr>
+<td>“Use several agents or majority vote.”</td>
+<td>correlated systems can agree on the same misconception</td>
+</tr>
+<tr>
+<td>“Fine-tune the documents into the model.”</td>
+<td>provenance and freshness become harder, and updates require retraining</td>
+</tr>
+<tr>
+<td>“Use a knowledge graph.”</td>
+<td>extraction, entity linking, schema, query, and graph freshness can fail</td>
+</tr>
+<tr>
+<td>“Let an LLM judge grounding.”</td>
+<td>judges have position, verbosity, self-preference, injection, and factuality errors</td>
+</tr>
+<tr>
+<td>“Add a disclaimer.”</td>
+<td>warning text does not reduce the underlying error rate</td>
+</tr>
+<tr>
+<td>“A human reviews it.”</td>
+<td>review fails without source access, a checklist, time, authority, and sampled quality audits</td>
+</tr>
+</tbody>
+</table>
+<h2 id="13-a-practical-method-selection-rule">13. A practical method-selection rule<a class="headerlink" href="#13-a-practical-method-selection-rule" title="Permanent link">&para;</a></h2>
+<p>Choose the authority before choosing the model.</p>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Primary control stack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stable general explanation</td>
+<td>strong model + targeted factuality evaluation + optional verification</td>
+</tr>
+<tr>
+<td>internal-document question answering</td>
+<td>permissioned hybrid RAG + sufficiency gate + claim citations + abstention</td>
+</tr>
+<tr>
+<td>current open-web research</td>
+<td>iterative search/read agent + source hierarchy + dates + citation entailment + human audit</td>
+</tr>
+<tr>
+<td>current structured value</td>
+<td>authoritative API/SQL + typed calculation + state/time validation</td>
+</tr>
+<tr>
+<td>math or formal reasoning</td>
+<td>executable verifier or proof kernel + candidate search + checked final answer</td>
+</tr>
+<tr>
+<td>code change</td>
+<td>repository retrieval + compiler/tests + diff/state verification</td>
+</tr>
+<tr>
+<td>medical, legal, financial, or safety-critical support</td>
+<td>curated domain sources + calibrated abstention + qualified human decision maker</td>
+</tr>
+<tr>
+<td>creative generation</td>
+<td>clear fictional frame; factual verification only for claims presented as real</td>
+</tr>
+</tbody>
+</table>
+<p>The companion
+<a href="../hallucination-operations/">production operations chapter</a> turns this map
+into an executable architecture and evaluation gate. The
+<a href="../hallucination-vendors/">vendor evidence chapter</a> shows which parts leading
+labs have actually disclosed.</p>
+<h2 id="primary-source-index">Primary-source index<a class="headerlink" href="#primary-source-index" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Lewis et al.,
+   <a href="https://arxiv.org/abs/2005.11401">“Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks”</a>,
+   2020.</li>
+<li>Lin, Hilton, and Evans,
+   <a href="https://arxiv.org/abs/2109.07958">“TruthfulQA”</a>, 2021/2022.</li>
+<li>Nakano et al., <a href="https://arxiv.org/abs/2112.09332">“WebGPT”</a>, 2021.</li>
+<li>Ouyang et al.,
+   <a href="https://arxiv.org/abs/2203.02155">“Training Language Models to Follow Instructions with Human Feedback”</a>,
+   2022.</li>
+<li>Kadavath et al.,
+   <a href="https://arxiv.org/abs/2207.05221">“Language Models (Mostly) Know What They Know”</a>,
+   2022.</li>
+<li>Gao et al.,
+   <a href="https://arxiv.org/abs/2210.08726">“RARR: Researching and Revising What Language Models Say”</a>,
+   2022.</li>
+<li>Yao et al., <a href="https://arxiv.org/abs/2210.03629">“ReAct”</a>, 2022/2023.</li>
+<li>Manakul, Liusie, and Gales,
+   <a href="https://arxiv.org/abs/2303.08896">“SelfCheckGPT”</a>, 2023.</li>
+<li>Min et al., <a href="https://arxiv.org/abs/2305.14251">“FActScore”</a>, 2023.</li>
+<li>Gao et al.,
+    <a href="https://arxiv.org/abs/2305.14627">“Enabling Large Language Models to Generate Text with Citations”</a>,
+    2023.</li>
+<li>Shi et al.,
+    <a href="https://arxiv.org/abs/2305.14739">“Trusting Your Evidence: Hallucinate Less with Context-Aware Decoding”</a>,
+    2023.</li>
+<li>Chuang et al., <a href="https://arxiv.org/abs/2309.03883">“DoLa”</a>, 2023.</li>
+<li>Dhuliawala et al.,
+    <a href="https://arxiv.org/abs/2309.11495">“Chain-of-Verification Reduces Hallucination”</a>,
+    2023.</li>
+<li>Asai et al., <a href="https://arxiv.org/abs/2310.11511">“Self-RAG”</a>, 2023.</li>
+<li>Huang et al.,
+    <a href="https://arxiv.org/abs/2310.01798">“Large Language Models Cannot Self-Correct Reasoning Yet”</a>,
+    2023.</li>
+<li>Tian et al.,
+    <a href="https://arxiv.org/abs/2311.08401">“Fine-tuning Language Models for Factuality”</a>,
+    2023.</li>
+<li>Zhang et al., <a href="https://arxiv.org/abs/2311.09677">“R-Tuning”</a>, 2023.</li>
+<li>Niu et al., <a href="https://arxiv.org/abs/2401.00396">“RAGTruth”</a>, 2024.</li>
+<li>Yan et al., <a href="https://arxiv.org/abs/2401.15884">“Corrective RAG”</a>, 2024.</li>
+<li>Wei et al.,
+    <a href="https://deepmind.google/research/publications/85420/">“Long-form Factuality in Large Language Models”</a>,
+    2024.</li>
+<li>Farquhar et al.,
+    <a href="https://www.nature.com/articles/s41586-024-07421-0">“Detecting Hallucinations in Large Language Models Using Semantic Entropy”</a>,
+    2024.</li>
+<li>Yadkori et al.,
+    <a href="https://arxiv.org/abs/2405.01563">“Mitigating LLM Hallucinations via Conformal Abstention”</a>,
+    2024.</li>
+<li>Kalai et al.,
+    <a href="https://openai.com/index/why-language-models-hallucinate/">“Why Language Models Hallucinate”</a>,
+    2025.</li>
+<li>Google DeepMind,
+    <a href="https://deepmind.google/blog/facts-benchmark-suite-systematically-evaluating-the-factuality-of-large-language-models/">FACTS Benchmark Suite</a>,
+    2025.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

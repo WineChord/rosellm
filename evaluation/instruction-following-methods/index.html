@@ -1,0 +1,4071 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/evaluation/instruction-following-methods/">
+      
+      
+        <link rel="prev" href="../instruction-following/">
+      
+      
+        <link rel="next" href="../instruction-following-vendors/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Improvement Method Map - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#improving-llm-instruction-following-method-and-system-map" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Improvement Method Map
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-define-the-behavior-before-selecting-a-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Define the behavior before selecting a method
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-why-models-fail-to-follow-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Why models fail to follow instructions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Why models fail to follow instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-pretraining-predicts-text-rather-than-obeying-a-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Pretraining predicts text rather than obeying a contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-training-mixtures-contain-competing-behavioral-priors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Training mixtures contain competing behavioral priors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-constraints-compose-nonlinearly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Constraints compose nonlinearly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-attention-and-context-management-lose-governing-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Attention and context management lose governing state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-the-model-and-serving-stack-may-disagree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 The model and serving stack may disagree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-evaluation-and-rewards-use-imperfect-proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Evaluation and rewards use imperfect proxies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-instruction-data-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Instruction-data design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Instruction-data design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-build-a-broad-task-mixture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Build a broad task mixture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-use-human-demonstrations-for-the-target-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Use human demonstrations for the target contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-generate-synthetic-instructions-then-verify-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Generate synthetic instructions, then verify them
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-train-explicitly-on-complex-constraint-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Train explicitly on complex constraint composition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-include-negative-and-contrastive-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Include negative and contrastive examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-collect-on-policy-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Collect on-policy failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-preserve-role-turn-and-tool-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Preserve role, turn, and tool structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-put-instruction-structure-into-pretraining-when-scale-permits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 Put instruction structure into pretraining when scale permits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-model-training-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Model-training controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Model-training controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-supervised-instruction-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Supervised instruction tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-progressive-curricula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Progressive curricula
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-preference-optimization-and-human-or-ai-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Preference optimization and human or AI feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-rule-based-and-verifiable-rewards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Rule-based and verifiable rewards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-process-supervision-and-intermediate-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Process supervision and intermediate state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-instruction-hierarchy-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Instruction-hierarchy training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-multi-turn-and-revision-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 Multi-turn and revision training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-tool-and-function-calling-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 Tool- and function-calling training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49-multilingual-and-multimodal-instruction-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9 Multilingual and multimodal instruction tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#410-specialist-training-merging-and-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10 Specialist training, merging, and distillation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#411-parameter-efficient-adaptation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.11 Parameter-efficient adaptation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-inference-time-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Inference-time controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Inference-time controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-write-an-executable-instruction-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Write an executable instruction contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-extract-and-normalize-constraints-before-acting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Extract and normalize constraints before acting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-decompose-plan-and-bind-steps-to-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Decompose, plan, and bind steps to constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-use-candidate-search-and-external-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Use candidate search and external selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-critique-and-repair-with-localized-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Critique and repair with localized feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-constrained-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Constrained decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-deterministic-validators-and-policy-engines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.7 Deterministic validators and policy engines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#58-persistent-state-and-context-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.8 Persistent state and context management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#59-model-mode-and-route-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.9 Model, mode, and route selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#510-select-demonstrations-and-optimize-the-whole-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.10 Select demonstrations and optimize the whole harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#511-detect-ambiguity-and-learn-when-to-clarify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.11 Detect ambiguity and learn when to clarify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#512-white-box-activation-steering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.12 White-box activation steering
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-product-and-agent-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Product and agent controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Product and agent controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-separate-authority-from-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Separate authority from content
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-make-scope-and-authorization-concrete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Make scope and authorization concrete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-keep-validators-outside-the-conversational-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Keep validators outside the conversational loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-render-adherence-and-uncertainty-honestly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Render adherence and uncertainty honestly
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-commonly-fails-as-a-silver-bullet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. What commonly fails as a silver bullet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-method-selection-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Method-selection guide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-source-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary-source index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-define-the-behavior-before-selecting-a-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Define the behavior before selecting a method
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-why-models-fail-to-follow-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Why models fail to follow instructions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Why models fail to follow instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-pretraining-predicts-text-rather-than-obeying-a-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Pretraining predicts text rather than obeying a contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-training-mixtures-contain-competing-behavioral-priors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Training mixtures contain competing behavioral priors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-constraints-compose-nonlinearly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Constraints compose nonlinearly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-attention-and-context-management-lose-governing-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Attention and context management lose governing state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-the-model-and-serving-stack-may-disagree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 The model and serving stack may disagree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-evaluation-and-rewards-use-imperfect-proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Evaluation and rewards use imperfect proxies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-instruction-data-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Instruction-data design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Instruction-data design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-build-a-broad-task-mixture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Build a broad task mixture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-use-human-demonstrations-for-the-target-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Use human demonstrations for the target contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-generate-synthetic-instructions-then-verify-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Generate synthetic instructions, then verify them
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-train-explicitly-on-complex-constraint-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Train explicitly on complex constraint composition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-include-negative-and-contrastive-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Include negative and contrastive examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-collect-on-policy-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Collect on-policy failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-preserve-role-turn-and-tool-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Preserve role, turn, and tool structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-put-instruction-structure-into-pretraining-when-scale-permits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 Put instruction structure into pretraining when scale permits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-model-training-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Model-training controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Model-training controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-supervised-instruction-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Supervised instruction tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-progressive-curricula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Progressive curricula
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-preference-optimization-and-human-or-ai-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Preference optimization and human or AI feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-rule-based-and-verifiable-rewards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Rule-based and verifiable rewards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-process-supervision-and-intermediate-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Process supervision and intermediate state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-instruction-hierarchy-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Instruction-hierarchy training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-multi-turn-and-revision-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 Multi-turn and revision training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-tool-and-function-calling-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 Tool- and function-calling training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49-multilingual-and-multimodal-instruction-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9 Multilingual and multimodal instruction tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#410-specialist-training-merging-and-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10 Specialist training, merging, and distillation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#411-parameter-efficient-adaptation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.11 Parameter-efficient adaptation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-inference-time-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Inference-time controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Inference-time controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-write-an-executable-instruction-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Write an executable instruction contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-extract-and-normalize-constraints-before-acting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Extract and normalize constraints before acting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-decompose-plan-and-bind-steps-to-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Decompose, plan, and bind steps to constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-use-candidate-search-and-external-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Use candidate search and external selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-critique-and-repair-with-localized-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Critique and repair with localized feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-constrained-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Constrained decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-deterministic-validators-and-policy-engines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.7 Deterministic validators and policy engines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#58-persistent-state-and-context-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.8 Persistent state and context management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#59-model-mode-and-route-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.9 Model, mode, and route selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#510-select-demonstrations-and-optimize-the-whole-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.10 Select demonstrations and optimize the whole harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#511-detect-ambiguity-and-learn-when-to-clarify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.11 Detect ambiguity and learn when to clarify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#512-white-box-activation-steering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.12 White-box activation steering
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-product-and-agent-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Product and agent controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Product and agent controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-separate-authority-from-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Separate authority from content
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-make-scope-and-authorization-concrete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Make scope and authorization concrete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-keep-validators-outside-the-conversational-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Keep validators outside the conversational loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-render-adherence-and-uncertainty-honestly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Render adherence and uncertainty honestly
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-commonly-fails-as-a-silver-bullet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. What commonly fails as a silver bullet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-method-selection-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Method-selection guide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-source-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary-source index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="improving-llm-instruction-following-method-and-system-map">Improving LLM Instruction Following: Method and System Map<a class="headerlink" href="#improving-llm-instruction-following-method-and-system-map" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23.</p>
+<p>Instruction following is not a single latent skill and there is no universal
+“obedience” loss. A reliable system must identify the authorized instruction,
+retain it across the relevant horizon, resolve conflicts, execute the requested
+task, avoid unrequested behavior, and prove that each material constraint was
+satisfied.</p>
+<p>The strongest general pattern is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>task and authority contract
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  -&gt; instruction extraction and conflict resolution
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -&gt; capability, risk, and feasibility routing
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  -&gt; plan with explicit constraint coverage
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -&gt; model, tool, and environment execution
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  -&gt; deterministic and semantic verification
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  -&gt; accept, repair, clarify, refuse, or escalate
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  -&gt; trace failures into data, rewards, evaluations, and product controls
+</code></pre></div>
+<p>This chapter catalogs the model-training, inference, decoding, agent, product,
+and operational controls that can improve that path. The companion
+<a href="../instruction-following-vendors/">vendor evidence audit</a> asks which controls
+leading developers have actually disclosed. The
+<a href="../instruction-following-operations/">operations chapter</a> turns the map into an
+evaluation and deployment contract.</p>
+<h2 id="1-define-the-behavior-before-selecting-a-method">1. Define the behavior before selecting a method<a class="headerlink" href="#1-define-the-behavior-before-selecting-a-method" title="Permanent link">&para;</a></h2>
+<p>At least the following surfaces require separate labels and tests.</p>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Desired behavior</th>
+<th>Typical failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Task interpretation</strong></td>
+<td>infer the requested operation, object, and completion condition</td>
+<td>answers a nearby question</td>
+</tr>
+<tr>
+<td><strong>Positive constraints</strong></td>
+<td>include every requested item</td>
+<td>omits a required field or topic</td>
+</tr>
+<tr>
+<td><strong>Negative constraints</strong></td>
+<td>avoid every prohibited item or action</td>
+<td>edits an out-of-scope file</td>
+</tr>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>perform or present steps in the required sequence</td>
+<td>acts before approval or validation</td>
+</tr>
+<tr>
+<td><strong>Cardinality and length</strong></td>
+<td>produce exactly the requested count or bound</td>
+<td>returns six bullets instead of five</td>
+</tr>
+<tr>
+<td><strong>Format and grammar</strong></td>
+<td>satisfy syntax, schema, sections, and delimiters</td>
+<td>invalid JSON or extra prose</td>
+</tr>
+<tr>
+<td><strong>Style and audience</strong></td>
+<td>follow tone, language, reading level, and terminology</td>
+<td>defaults to a preferred house style</td>
+</tr>
+<tr>
+<td><strong>Scope and non-interference</strong></td>
+<td>change only authorized targets and preserve accepted state</td>
+<td>performs an unrelated cleanup</td>
+</tr>
+<tr>
+<td><strong>Literalness versus intent</strong></td>
+<td>infer omitted details only where the contract permits</td>
+<td>“helpfully” rewrites a literal translation</td>
+</tr>
+<tr>
+<td><strong>Multi-turn retention</strong></td>
+<td>retain still-active instructions and accepted edits</td>
+<td>forgets a turn-2 rule at turn 20</td>
+</tr>
+<tr>
+<td><strong>Revision consistency</strong></td>
+<td>incorporate new changes without regressing earlier ones</td>
+<td>reintroduces text that the user removed</td>
+</tr>
+<tr>
+<td><strong>Instruction hierarchy</strong></td>
+<td>obey the highest-authority applicable instruction</td>
+<td>follows malicious text from a tool result</td>
+</tr>
+<tr>
+<td><strong>Tool selection and arguments</strong></td>
+<td>call the right tool, with permitted and valid arguments</td>
+<td>calls a nonexistent or irrelevant tool</td>
+</tr>
+<tr>
+<td><strong>Tool and policy following</strong></td>
+<td>respect state, authorization, preconditions, and domain rules</td>
+<td>completes the task by an unauthorized route</td>
+</tr>
+<tr>
+<td><strong>Error recovery</strong></td>
+<td>react correctly to missing data, tool errors, and failed checks</td>
+<td>repeats a failed call or claims success</td>
+</tr>
+<tr>
+<td><strong>Multilingual transfer</strong></td>
+<td>preserve constraints across languages and scripts</td>
+<td>translates the content but drops a format rule</td>
+</tr>
+<tr>
+<td><strong>Multimodal grounding</strong></td>
+<td>apply text rules to the correct region, frame, or audio span</td>
+<td>edits or describes the wrong object</td>
+</tr>
+<tr>
+<td><strong>Stability</strong></td>
+<td>repeat compliant behavior under the production sampling regime</td>
+<td>passes once and fails on later identical trials</td>
+</tr>
+<tr>
+<td><strong>Correct non-compliance</strong></td>
+<td>reject lower-priority, unsafe, impossible, or unauthorized requests</td>
+<td>obeys everything indiscriminately</td>
+</tr>
+</tbody>
+</table>
+<p>Task correctness and instruction adherence are orthogonal. An answer may be
+substantively correct but violate the requested format. A perfectly formatted
+answer may solve the wrong task. A tool call may be syntactically valid but
+unauthorized. Report each axis.</p>
+<h2 id="2-why-models-fail-to-follow-instructions">2. Why models fail to follow instructions<a class="headerlink" href="#2-why-models-fail-to-follow-instructions" title="Permanent link">&para;</a></h2>
+<h3 id="21-pretraining-predicts-text-rather-than-obeying-a-contract">2.1 Pretraining predicts text rather than obeying a contract<a class="headerlink" href="#21-pretraining-predicts-text-rather-than-obeying-a-contract" title="Permanent link">&para;</a></h3>
+<p>Autoregressive pretraining rewards plausible continuation. It does not supply a
+privileged representation of “the current binding rule,” a transaction
+boundary, or an all-constraints acceptance test. Instruction tuning must teach
+these behaviors, while the surrounding system must enforce the parts that
+should never depend on token probabilities.</p>
+<h3 id="22-training-mixtures-contain-competing-behavioral-priors">2.2 Training mixtures contain competing behavioral priors<a class="headerlink" href="#22-training-mixtures-contain-competing-behavioral-priors" title="Permanent link">&para;</a></h3>
+<p>Chat, essays, code, role-play, safety examples, terse extraction, detailed
+explanations, and tool trajectories reward different styles. A preference
+model may favor helpfulness, length, confidence, or polish over literal
+compliance. Safety data can cause over-refusal; helpfulness data can cause scope
+expansion.</p>
+<h3 id="23-constraints-compose-nonlinearly">2.3 Constraints compose nonlinearly<a class="headerlink" href="#23-constraints-compose-nonlinearly" title="Permanent link">&para;</a></h3>
+<p>A model that follows each rule separately may fail when rules interact:</p>
+<ul>
+<li>“exactly three bullets” conflicts with four required topics;</li>
+<li>a JSON schema conflicts with “include a prose explanation”;</li>
+<li>“do not edit tests” interacts with “make all tests pass”;</li>
+<li>a later correction supersedes one field but not the whole earlier plan; and</li>
+<li>a tool result contains text that looks like a new instruction.</li>
+</ul>
+<p>The conjunction is the task. Average per-rule accuracy can hide a response that
+is unusable because one critical prohibition failed.</p>
+<p>Even under the simplifying assumption that <span class="arithmatex">\(m\)</span> equally difficult constraints
+are independent and each passes with probability <span class="arithmatex">\(p\)</span>, the whole prompt passes
+with probability only</p>
+<div class="arithmatex">\[
+p_{\mathrm{all}}=p^m.
+\]</div>
+<p>At <span class="arithmatex">\(p=0.95\)</span>, ten constraints yield only about <span class="arithmatex">\(59.9\%\)</span> all-constraints
+reliability. Real rules are not independent, but this calculation explains why
+apparently strong atomic performance can collapse on compositional prompts.</p>
+<h3 id="24-attention-and-context-management-lose-governing-state">2.4 Attention and context management lose governing state<a class="headerlink" href="#24-attention-and-context-management-lose-governing-state" title="Permanent link">&para;</a></h3>
+<p>Long conversations contain obsolete drafts, examples, quoted text, tool
+results, and repeated constraints. Recency, middle-position weakness,
+truncation, retrieval, and lossy compaction can hide the still-binding rule.
+The model cannot follow an instruction that the harness removed or mislabeled.</p>
+<h3 id="25-the-model-and-serving-stack-may-disagree">2.5 The model and serving stack may disagree<a class="headerlink" href="#25-the-model-and-serving-stack-may-disagree" title="Permanent link">&para;</a></h3>
+<p>Chat templates, role tokens, tool serializers, stop strings, constrained
+decoders, context windows, reasoning modes, and provider-specific parsers
+change behavior. Fine-tuning a model on one tool-call syntax and serving it with
+another can look like a reasoning failure even when the mismatch is entirely
+in the harness.</p>
+<h3 id="26-evaluation-and-rewards-use-imperfect-proxies">2.6 Evaluation and rewards use imperfect proxies<a class="headerlink" href="#26-evaluation-and-rewards-use-imperfect-proxies" title="Permanent link">&para;</a></h3>
+<p>An LLM judge may prefer verbosity or share the candidate's bias. A format
+checker can miss semantic omissions. A final-state reward can reinforce
+invalid intermediate actions when the result happens to be correct. Public
+prompts can leak into training. Optimizing one saturated benchmark can make the
+score rise without improving the production distribution.</p>
+<h2 id="3-instruction-data-design">3. Instruction-data design<a class="headerlink" href="#3-instruction-data-design" title="Permanent link">&para;</a></h2>
+<h3 id="31-build-a-broad-task-mixture">3.1 Build a broad task mixture<a class="headerlink" href="#31-build-a-broad-task-mixture" title="Permanent link">&para;</a></h3>
+<p>Early instruction tuning established that breadth matters. T0's
+<a href="https://arxiv.org/abs/2110.08207">multitask prompted training</a> reformulated
+supervised datasets with natural-language prompts. The
+<a href="https://arxiv.org/abs/2210.11416">FLAN scaling study</a> varied task count, model
+scale, and chain-of-thought data; its 1,800-task mixture improved unseen-task
+generalization across several model families.</p>
+<p>A production mixture should cover:</p>
+<ul>
+<li>transformation, extraction, classification, generation, reasoning, and
+  decision-support tasks;</li>
+<li>short and long answers;</li>
+<li>positive, negative, ordered, conditional, and exception-bearing rules;</li>
+<li>exact counts, schemas, tables, code, and natural-language formats;</li>
+<li>clarification, refusal, partial completion, and failure reporting;</li>
+<li>single-turn, multi-turn, revision, and stateful tool trajectories;</li>
+<li>multiple languages, scripts, domains, and modalities; and</li>
+<li>benign role conflicts plus adversarial prompt injection.</li>
+</ul>
+<p>Balance task families deliberately. Raw volume from a common conversational
+style can erase rarer but important literal, terse, or non-action behaviors.</p>
+<h3 id="32-use-human-demonstrations-for-the-target-contract">3.2 Use human demonstrations for the target contract<a class="headerlink" href="#32-use-human-demonstrations-for-the-target-contract" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2203.02155">InstructGPT</a> used labeler-written
+demonstrations before preference modeling and reinforcement learning. Human
+examples remain valuable when the behavior depends on organizational policy,
+subtle scope, domain-specific authorization, or a quality bar that a synthetic
+teacher does not reliably represent.</p>
+<p>Annotation records should preserve:</p>
+<ul>
+<li>atomic instruction and authority labels;</li>
+<li>required and forbidden outputs or actions;</li>
+<li>applicability conditions and exceptions;</li>
+<li>acceptable clarifications or refusals;</li>
+<li>exact tool and state transitions;</li>
+<li>why near-miss candidates fail; and</li>
+<li>disagreement rather than forcing a false consensus.</li>
+</ul>
+<h3 id="33-generate-synthetic-instructions-then-verify-them">3.3 Generate synthetic instructions, then verify them<a class="headerlink" href="#33-generate-synthetic-instructions-then-verify-them" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2212.10560">Self-Instruct</a> bootstraps tasks and
+demonstrations from a small seed set. <a href="https://arxiv.org/abs/2304.12244">WizardLM's
+Evol-Instruct</a> repeatedly rewrites seed
+instructions to increase breadth, depth, constraints, and reasoning demands.
+<a href="https://arxiv.org/abs/2308.06259">Instruction
+Backtranslation</a> runs the process in the
+opposite direction: a seed model writes instructions for human-authored web
+documents, then self-curation filters instruction–document pairs before
+fine-tuning. The three approaches expand different parts of the distribution:
+new tasks, harder constraints, and higher-quality target text.
+Synthetic generation makes scale and targeted coverage affordable, but it can
+amplify a teacher's style, errors, and preference for easily judged tasks.</p>
+<p>Use a generate–filter–verify loop:</p>
+<ol>
+<li>sample a seed by under-covered surface;</li>
+<li>transform one controlled dimension at a time;</li>
+<li>reject infeasible or contradictory instructions unless conflict handling is
+   the intended lesson;</li>
+<li>generate multiple candidate demonstrations;</li>
+<li>run deterministic validators where possible;</li>
+<li>use a separate semantic judge and sampled human audit;</li>
+<li>deduplicate instructions, answers, and underlying templates; and</li>
+<li>reserve transformation families, not only exact strings, for evaluation.</li>
+</ol>
+<h3 id="34-train-explicitly-on-complex-constraint-composition">3.4 Train explicitly on complex constraint composition<a class="headerlink" href="#34-train-explicitly-on-complex-constraint-composition" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2404.02823">Conifer</a> constructs multi-level constrained
+instructions with model-driven refinement, an easy-to-hard curriculum, and
+process feedback. <a href="https://arxiv.org/abs/2310.20410">FollowBench</a> and
+<a href="https://arxiv.org/abs/2407.03978">ComplexBench</a> provide useful taxonomies:
+content, situation, style, format, examples, dependencies, and compositions.</p>
+<p>Useful training transformations include:</p>
+<ul>
+<li>add one constraint while preserving all earlier constraints;</li>
+<li>negate an existing constraint;</li>
+<li>introduce an exception or conditional branch;</li>
+<li>require an exact count, order, or cross-field relationship;</li>
+<li>make two individually valid rules interact;</li>
+<li>perturb names, numbers, language, and surface form without changing logic;</li>
+<li>create a near-miss answer that violates exactly one rule; and</li>
+<li>ask the model to identify an infeasible conjunction before generating.</li>
+</ul>
+<p>Do not train only on ever-longer lists. Real complexity includes dependencies,
+scope, precedence, state change, and exceptions.</p>
+<h3 id="35-include-negative-and-contrastive-examples">3.5 Include negative and contrastive examples<a class="headerlink" href="#35-include-negative-and-contrastive-examples" title="Permanent link">&para;</a></h3>
+<p>A dataset containing only ideal answers does not expose the decision boundary.
+Include pairs that differ by:</p>
+<ul>
+<li>one missing required item;</li>
+<li>one forbidden addition;</li>
+<li>wrong order;</li>
+<li>correct format but wrong task;</li>
+<li>correct task but invalid schema;</li>
+<li>unauthorized tool use;</li>
+<li>obsolete versus current instruction;</li>
+<li>lower-priority text that should be ignored;</li>
+<li>excessive explanation when only an identifier is allowed; and</li>
+<li>over-literal execution when clarification is required.</li>
+</ul>
+<p>Contrastive data is useful for reward models, Direct Preference Optimization
+(DPO), rejection sampling, and explicit error classifiers.</p>
+<h3 id="36-collect-on-policy-failures">3.6 Collect on-policy failures<a class="headerlink" href="#36-collect-on-policy-failures" title="Permanent link">&para;</a></h3>
+<p>Static synthetic data misses how the current model actually fails. Periodically
+sample the deployed or candidate policy on real or representative tasks,
+cluster failures by violated instruction, and add the hardest informative
+cases to training and evaluation.</p>
+<p>Keep train, development, release-gate, and incident-regression sets separate.
+Do not immediately train on the only copy of a severe production failure; keep
+an immutable holdout variant that proves the fix generalizes.</p>
+<h3 id="37-preserve-role-turn-and-tool-structure">3.7 Preserve role, turn, and tool structure<a class="headerlink" href="#37-preserve-role-turn-and-tool-structure" title="Permanent link">&para;</a></h3>
+<p>Training serialization should retain system, developer, user, assistant, and
+tool roles; tool call IDs; tool results; refusal/clarification turns; and
+termination state. Flattening everything into undifferentiated text teaches the
+model that a quoted webpage or tool result has the same authority as the
+developer contract.</p>
+<p>The chat template, tokenizer, loss mask, and production serializer must agree.
+Test exact token sequences for every role and tool transition.</p>
+<h3 id="38-put-instruction-structure-into-pretraining-when-scale-permits">3.8 Put instruction structure into pretraining when scale permits<a class="headerlink" href="#38-put-instruction-structure-into-pretraining-when-scale-permits" title="Permanent link">&para;</a></h3>
+<p>Most practical projects start from an existing base model and add SFT, but
+instruction-shaped data can enter earlier. <a href="https://arxiv.org/abs/2406.14491">Instruction
+Pre-Training</a> uses a synthesizer to augment
+raw corpora with instruction–response pairs at pretraining scale; its
+experiments use 200 million pairs over more than 40 task categories in both
+from-scratch and continued-pretraining settings.</p>
+<p>This can make task structure less of a thin late-stage behavior, but it raises
+the same risks at much larger scale:</p>
+<ul>
+<li>synthetic-task contamination and teacher-style monoculture;</li>
+<li>loss of raw language-modeling, knowledge, or domain quality;</li>
+<li>catastrophic forgetting during continued pretraining;</li>
+<li>mismatch between pretraining serialization and production roles; and</li>
+<li>far more expensive correction when a behavioral prior is wrong.</li>
+</ul>
+<p>Mix raw, instruction-shaped, and domain data deliberately; use conservative
+learning-rate schedules for continued pretraining; preserve base and
+instruction anchor suites; and still apply post-training for authority,
+preference, safety, and application-specific behavior.</p>
+<h2 id="4-model-training-controls">4. Model-training controls<a class="headerlink" href="#4-model-training-controls" title="Permanent link">&para;</a></h2>
+<h3 id="41-supervised-instruction-tuning">4.1 Supervised instruction tuning<a class="headerlink" href="#41-supervised-instruction-tuning" title="Permanent link">&para;</a></h3>
+<p>For a tokenized conversation <span class="arithmatex">\(x_{1:T}\)</span>, a common response-only objective is</p>
+<div class="arithmatex">\[
+\mathcal L_{\mathrm{SFT}}(\theta)
+=-\sum_{t=1}^{T}m_t\log p_\theta(x_t\mid x_{&lt;t}),
+\]</div>
+<p>where <span class="arithmatex">\(m_t=1\)</span> only for policy-authored target tokens. Instructions, user
+content, and tool observations remain context but normally do not receive
+assistant-token imitation loss.</p>
+<p>Important design choices include:</p>
+<ul>
+<li>full response versus selected-turn loss;</li>
+<li>packing without role-boundary corruption;</li>
+<li>task and language sampling weights;</li>
+<li>maximum length and truncation policy;</li>
+<li>oversampling rare prohibitions and hierarchy conflicts;</li>
+<li>training exact chat/tool templates used at inference;</li>
+<li>mixing terse and explanatory targets; and</li>
+<li>checkpoints before narrow tuning erases general capabilities.</li>
+</ul>
+<p>SFT teaches an imitation prior. It does not guarantee compliance outside the
+demonstration distribution.</p>
+<h3 id="42-progressive-curricula">4.2 Progressive curricula<a class="headerlink" href="#42-progressive-curricula" title="Permanent link">&para;</a></h3>
+<p>Move from atomic constraints to combinations, dependencies, hierarchy
+conflicts, multi-turn retention, tools, and noisy environments. Difficulty can
+be estimated from:</p>
+<ul>
+<li>constraint count and dependency depth;</li>
+<li>current all-constraints pass rate;</li>
+<li>disagreement among validators;</li>
+<li>number of turns or state transitions;</li>
+<li>adversarial-content strength; and</li>
+<li>whether the model can recover after a controlled failure.</li>
+</ul>
+<p>Continually remove universally trivial samples, but retain a stable anchor set
+so advanced training does not regress basic format, language, or refusal
+behavior.</p>
+<h3 id="43-preference-optimization-and-human-or-ai-feedback">4.3 Preference optimization and human or AI feedback<a class="headerlink" href="#43-preference-optimization-and-human-or-ai-feedback" title="Permanent link">&para;</a></h3>
+<p>For each prompt, collect candidates that expose distinct compliance errors,
+then rank by task success, rule adherence, scope, safety, and usefulness.
+Possible optimizers include reward-model plus PPO, DPO-family objectives,
+rejection-sampling fine-tuning, and reinforcement learning from AI feedback
+(RLAIF).</p>
+<p>A preference rubric must state whether:</p>
+<ul>
+<li>one critical prohibition outweighs several minor successes;</li>
+<li>unnecessary content is a failure;</li>
+<li>a clarification beats a speculative completion;</li>
+<li>correct non-compliance beats unsafe obedience;</li>
+<li>format and semantics are scored separately; and</li>
+<li>response length is normalized.</li>
+</ul>
+<p>Generic “which answer is better?” preferences often reward prose quality
+instead of literal adherence.</p>
+<p><a href="https://arxiv.org/abs/2212.08073">Constitutional AI</a> makes principles explicit:
+the model first critiques and revises responses under a written constitution,
+SFT learns from the revisions, and AI comparisons train a preference model for
+RLAIF. This is useful when many rules can be stated but human pairwise labels
+are scarce. The constitution, critique model, and preference model can still
+encode omissions or systematic bias, so human audit and behavioral tests
+remain necessary.</p>
+<h3 id="44-rule-based-and-verifiable-rewards">4.4 Rule-based and verifiable rewards<a class="headerlink" href="#44-rule-based-and-verifiable-rewards" title="Permanent link">&para;</a></h3>
+<p>Many constraints are mechanically checkable:</p>
+<ul>
+<li>exact count, prefix, suffix, language, or delimiter;</li>
+<li>JSON Schema, regular expression, or grammar;</li>
+<li>required and forbidden phrases;</li>
+<li>file-diff scope;</li>
+<li>tool name and argument schema;</li>
+<li>ordered event log;</li>
+<li>unit tests, static analysis, or database invariants; and</li>
+<li>final environment state.</li>
+</ul>
+<p>Let <span class="arithmatex">\(z_i(y)\in\{0,1\}\)</span> indicate whether response or trajectory <span class="arithmatex">\(y\)</span> satisfies
+constraint <span class="arithmatex">\(i\)</span>. A weighted reward might use</p>
+<div class="arithmatex">\[
+r(y)=r_{\mathrm{task}}(y)
++\sum_i w_i z_i(y)
+-\sum_j \lambda_j v_j(y),
+\]</div>
+<p>where <span class="arithmatex">\(v_j\)</span> represents prohibited actions, scope expansion, or policy
+violations. A hard-conjunction gate can additionally require</p>
+<div class="arithmatex">\[
+z_{\mathrm{all}}(y)=\prod_{i\in\mathcal C_{\mathrm{critical}}}z_i(y).
+\]</div>
+<p>The first signal supplies dense learning; the second prevents a model from
+trading one catastrophic failure for many easy successes.</p>
+<p>Validators can be wrong. Audit parser edge cases, Unicode, equivalent
+expressions, gaming, and rewards that accidentally favor empty or truncated
+outputs.</p>
+<p><a href="https://arxiv.org/abs/2507.02833">IF-RLVR</a> provides a concrete generalization
+test: train reinforcement learning with verifiable rewards on 29
+hand-annotated constraint types, then evaluate 58 different out-of-domain
+constraints. Its central warning is that high scores on a small familiar
+constraint set can be benchmark overfitting rather than a transferable
+instruction-following skill. Hold out whole verifier and transformation
+families, not only prompt strings.</p>
+<h3 id="45-process-supervision-and-intermediate-state">4.5 Process supervision and intermediate state<a class="headerlink" href="#45-process-supervision-and-intermediate-state" title="Permanent link">&para;</a></h3>
+<p>Outcome-only reward can approve an invalid process that reaches the right
+answer by chance. For agents and complex edits, supervise or verify:</p>
+<ul>
+<li>extraction of active instructions;</li>
+<li>conflict and feasibility analysis;</li>
+<li>plan-to-constraint coverage;</li>
+<li>tool selection and authorization;</li>
+<li>state observations and completion checks; and</li>
+<li>final output.</li>
+</ul>
+<p>Process supervision costs more and can overconstrain legitimate strategies.
+Use hard checks for security and state transitions; allow multiple valid
+reasoning paths where the process need not be unique.</p>
+<h3 id="46-instruction-hierarchy-training">4.6 Instruction-hierarchy training<a class="headerlink" href="#46-instruction-hierarchy-training" title="Permanent link">&para;</a></h3>
+<p>OpenAI's <a href="https://arxiv.org/abs/2404.13208">Instruction Hierarchy
+paper</a> generates examples in which lower-trust
+text conflicts with higher-trust instructions and trains the model to ignore
+the conflict selectively. The reported GPT-3.5 experiment used SFT and
+reinforcement learning from human feedback and improved both trained and
+held-out attacks with small ordinary-capability costs.</p>
+<p>Hierarchy training should include:</p>
+<ul>
+<li>system/developer/user/tool conflict;</li>
+<li>quoted, translated, encoded, or role-played attacks;</li>
+<li>indirect injection in web pages, files, images, and tool results;</li>
+<li>extraction attempts against hidden instructions;</li>
+<li>benign lower-priority content that remains useful;</li>
+<li>absent conflict, to measure over-refusal; and</li>
+<li>domain authorization separate from linguistic role priority.</li>
+</ul>
+<p>Role labels alone are not a guarantee. The
+<a href="https://arxiv.org/abs/2502.15851">Control Illusion</a> evaluation finds that
+models can follow favored constraint types even when those constraints have
+lower declared priority. Training and release tests need semantic conflicts,
+not only message-role formatting.</p>
+<p>Prompt-injection defenses make the data-versus-instruction distinction more
+explicit. <a href="https://arxiv.org/abs/2402.06363">StruQ</a> pairs a secure front end
+that separates prompt and data channels with fine-tuning examples that teach
+the model to ignore instructions inside the data channel.
+<a href="https://arxiv.org/abs/2410.05451">SecAlign</a> instead creates injected inputs
+with secure and insecure responses, then uses preference optimization to favor
+the legitimate instruction. Both are research systems, not proofs that role
+tokens alone make arbitrary production agents secure.</p>
+<h3 id="47-multi-turn-and-revision-training">4.7 Multi-turn and revision training<a class="headerlink" href="#47-multi-turn-and-revision-training" title="Permanent link">&para;</a></h3>
+<p>Train conversations in which instructions:</p>
+<ul>
+<li>persist unchanged;</li>
+<li>expire after one operation;</li>
+<li>are explicitly replaced;</li>
+<li>are locally amended while other clauses remain;</li>
+<li>conflict with an obsolete draft;</li>
+<li>refer to accepted state created many turns earlier; and</li>
+<li>survive tool calls, errors, and context compression.</li>
+</ul>
+<p>Use turn-position balancing so governing rules appear near the beginning,
+middle, and end. <a href="https://arxiv.org/abs/2410.15553">Multi-IF</a> demonstrates why
+single-turn accuracy is insufficient: all tested systems degraded across its
+three turns, with additional multilingual weakness.</p>
+<p>Meta's Llama 2 report describes <strong>Ghost Attention</strong>: synthesize dialogues in
+which an instruction is present in every turn, train with that full context,
+then drop the repeated instruction from intermediate user messages so the
+model learns to retain the original constraint. It is an instructive
+multi-turn data technique, although the report also shows that the effect
+weakens over longer conversations.</p>
+<h3 id="48-tool-and-function-calling-training">4.8 Tool- and function-calling training<a class="headerlink" href="#48-tool-and-function-calling-training" title="Permanent link">&para;</a></h3>
+<p>High-quality tool data must teach more than JSON syntax:</p>
+<ol>
+<li>whether a tool is needed;</li>
+<li>which available tool is relevant;</li>
+<li>when no tool is applicable;</li>
+<li>valid and authorized arguments;</li>
+<li>parallel versus sequential calls;</li>
+<li>use of real tool results;</li>
+<li>recovery from errors and missing fields;</li>
+<li>state verification; and</li>
+<li>a faithful final response.</li>
+</ol>
+<p><a href="https://arxiv.org/abs/2406.18518">APIGen</a> synthesizes data over 3,673
+executable APIs and filters it through format checks, actual execution, and
+semantic verification. <a href="https://arxiv.org/abs/2409.00920">ToolACE</a> expands the
+API pool and uses multi-agent synthesis plus rule- and model-based validation.
+These pipelines illustrate a general principle: executable interfaces permit
+stronger data verification than unconstrained chat.</p>
+<p><a href="https://arxiv.org/abs/2302.04761">Toolformer</a> shows self-supervised insertion
+and filtering of API calls by language-model loss, while
+<a href="https://arxiv.org/abs/2305.15334">Gorilla</a> fine-tunes retrieval-aware API
+calling and measures hallucinated tools. Those methods address tool choice and
+call formation; authorization, transaction safety, and faithful use of the
+returned state still require separate training and system controls.</p>
+<p>Include irrelevant-tool and no-tool cases. Otherwise a model can maximize
+training success by calling something on every request.</p>
+<h3 id="49-multilingual-and-multimodal-instruction-tuning">4.9 Multilingual and multimodal instruction tuning<a class="headerlink" href="#49-multilingual-and-multimodal-instruction-tuning" title="Permanent link">&para;</a></h3>
+<p>Translate meanings, not only strings. Preserve:</p>
+<ul>
+<li>counts and structural constraints;</li>
+<li>formal versus informal address;</li>
+<li>locale-specific units and dates;</li>
+<li>script and punctuation rules;</li>
+<li>code-switching and cross-language references; and</li>
+<li>the difference between instructions and content to transform.</li>
+</ul>
+<p>For multimodal systems, attach constraints to stable image regions, frames,
+timestamps, document coordinates, or audio speakers. Include counterfactual
+rules about absent objects and visually embedded prompt injections.</p>
+<h3 id="410-specialist-training-merging-and-distillation">4.10 Specialist training, merging, and distillation<a class="headerlink" href="#410-specialist-training-merging-and-distillation" title="Permanent link">&para;</a></h3>
+<p>A developer can train specialists for precise constraints, tools, coding,
+writing, safety, and other domains, then merge them or distill them into a
+unified policy. This improves targeted coverage but introduces:</p>
+<ul>
+<li>conflicting teacher preferences;</li>
+<li>regression during parameter merging;</li>
+<li>domain-router errors;</li>
+<li>loss of rare behaviors in distillation; and</li>
+<li>difficulty attributing a final gain to one specialist.</li>
+</ul>
+<p>Use a stable cross-domain anchor suite and report every specialist's
+contribution through matched ablations.</p>
+<h3 id="411-parameter-efficient-adaptation">4.11 Parameter-efficient adaptation<a class="headerlink" href="#411-parameter-efficient-adaptation" title="Permanent link">&para;</a></h3>
+<p>Adapters, low-rank updates, prefix or soft-prompt tuning, and other
+parameter-efficient methods can create instruction specialists without
+updating every base parameter. They reduce training and storage cost, not the
+need for representative data, reward design, and regression testing.</p>
+<h2 id="5-inference-time-controls">5. Inference-time controls<a class="headerlink" href="#5-inference-time-controls" title="Permanent link">&para;</a></h2>
+<h3 id="51-write-an-executable-instruction-contract">5.1 Write an executable instruction contract<a class="headerlink" href="#51-write-an-executable-instruction-contract" title="Permanent link">&para;</a></h3>
+<p>Prompts work best when they make the task decidable:</p>
+<ul>
+<li>identify the object, operation, scope, and completion condition;</li>
+<li>number atomic positive and negative constraints;</li>
+<li>mark priority and applicability;</li>
+<li>give exact schemas, allowed values, and examples;</li>
+<li>distinguish content to process from instructions to obey;</li>
+<li>state whether clarification or refusal is allowed;</li>
+<li>specify tool and authorization boundaries; and</li>
+<li>avoid hidden contradictions.</li>
+</ul>
+<p>Longer prompts are not automatically better. Repeated, prose-heavy rules create
+more opportunities for conflict and omission.</p>
+<h3 id="52-extract-and-normalize-constraints-before-acting">5.2 Extract and normalize constraints before acting<a class="headerlink" href="#52-extract-and-normalize-constraints-before-acting" title="Permanent link">&para;</a></h3>
+<p>For complex tasks, first construct an internal ledger such as:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;task&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;update documentation&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;add one section&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run the documentation build&quot;</span><span class="p">],</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;forbidden&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;modify source code&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;stage research/&quot;</span><span class="p">],</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">&quot;order&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;inspect&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;edit&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;validate&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;publish&quot;</span><span class="p">],</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;docs/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;mkdocs.yml&quot;</span><span class="p">],</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">&quot;completion&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;strict build passes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;remote commit matches&quot;</span><span class="p">],</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">&quot;ambiguities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">}</span>
+</code></pre></div>
+<p>The ledger is a planning aid, not a correctness guarantee. Validate its
+extraction against the original request and keep security policy outside
+model-editable state.</p>
+<h3 id="53-decompose-plan-and-bind-steps-to-constraints">5.3 Decompose, plan, and bind steps to constraints<a class="headerlink" href="#53-decompose-plan-and-bind-steps-to-constraints" title="Permanent link">&para;</a></h3>
+<p>Map every planned action to at least one requirement and every prohibition to
+a guard. Detect:</p>
+<ul>
+<li>uncovered requirements;</li>
+<li>actions without authorization;</li>
+<li>impossible combinations;</li>
+<li>missing information;</li>
+<li>destructive or irreversible steps; and</li>
+<li>points that require user or human approval.</li>
+</ul>
+<p>Reasoning or planning can improve multi-step completion, but excessive
+deliberation can reinterpret a simple literal request. Route by task complexity
+instead of forcing one reasoning mode everywhere.</p>
+<h3 id="54-use-candidate-search-and-external-selection">5.4 Use candidate search and external selection<a class="headerlink" href="#54-use-candidate-search-and-external-selection" title="Permanent link">&para;</a></h3>
+<p>Generate multiple candidates when the validator is reliable and the added cost
+is justified. Select with:</p>
+<ul>
+<li>deterministic constraint checkers;</li>
+<li>task-specific executable tests;</li>
+<li>pairwise or listwise reward models;</li>
+<li>independent LLM judges with randomized order; or</li>
+<li>human review for high-impact ambiguity.</li>
+</ul>
+<p>Best-of-<span class="arithmatex">\(N\)</span> helps only if the candidates vary and the selector recognizes the
+failure. Correlated candidates plus a biased judge can make confidence rise
+without increasing compliance.</p>
+<h3 id="55-critique-and-repair-with-localized-feedback">5.5 Critique and repair with localized feedback<a class="headerlink" href="#55-critique-and-repair-with-localized-feedback" title="Permanent link">&para;</a></h3>
+<p>Verify each constraint, then repair only failed portions. A useful loop is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>draft
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  -&gt; rule-by-rule verdict with evidence
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  -&gt; list exact failures and affected spans/actions
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  -&gt; minimal revision
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  -&gt; rerun all checks, including earlier passes
+</code></pre></div>
+<p>Do not ask vaguely “Did you follow the instructions?” The same model can
+rubber-stamp its answer. Supply objective failures such as a JSON Pointer,
+missing section, unauthorized diff, wrong event order, or failed test.</p>
+<h3 id="56-constrained-decoding">5.6 Constrained decoding<a class="headerlink" href="#56-constrained-decoding" title="Permanent link">&para;</a></h3>
+<p>At each decoding step, a grammar engine can mask tokens that would make the
+prefix impossible under a regular expression, finite-state machine, context-free
+grammar, or JSON Schema. This can guarantee supported syntactic constraints.
+<a href="https://aclanthology.org/2023.emnlp-main.674/">Grammar-Constrained Decoding</a>
+demonstrates the approach without task-specific fine-tuning.</p>
+<p>Use it for:</p>
+<ul>
+<li>JSON, XML, SQL subsets, domain-specific languages, and tool calls;</li>
+<li>enumerations and finite identifiers;</li>
+<li>exact structural wrappers; and</li>
+<li>extraction whose values can be constrained to source spans.</li>
+</ul>
+<p>It does not prove:</p>
+<ul>
+<li>semantic correctness;</li>
+<li>correct tool selection;</li>
+<li>authorization;</li>
+<li>factual field values;</li>
+<li>completeness; or</li>
+<li>that the schema itself represents a feasible task.</li>
+</ul>
+<p>Strict grammar can also reduce reasoning freedom or force a model to populate a
+bad schema. Use a two-stage plan-then-format design when semantic reasoning and
+strict output syntax compete.</p>
+<h3 id="57-deterministic-validators-and-policy-engines">5.7 Deterministic validators and policy engines<a class="headerlink" href="#57-deterministic-validators-and-policy-engines" title="Permanent link">&para;</a></h3>
+<p>Move non-negotiable checks out of the model:</p>
+<ul>
+<li>schema and type validation;</li>
+<li>allowlists and capability tokens;</li>
+<li>file/path and database-row scope;</li>
+<li>diff-size and forbidden-pattern gates;</li>
+<li>order and state-machine transitions;</li>
+<li>unit tests and business invariants;</li>
+<li>rate, cost, and time limits; and</li>
+<li>human approval for irreversible actions.</li>
+</ul>
+<p>The model may propose. The policy engine decides whether the action is
+authorized.</p>
+<h3 id="58-persistent-state-and-context-management">5.8 Persistent state and context management<a class="headerlink" href="#58-persistent-state-and-context-management" title="Permanent link">&para;</a></h3>
+<p>Store accepted instructions in a versioned task ledger separate from ordinary
+dialogue. On compaction:</p>
+<ol>
+<li>retain authoritative instructions verbatim where feasible;</li>
+<li>mark superseded and expired clauses;</li>
+<li>preserve accepted outputs and unresolved decisions;</li>
+<li>keep tool state and identifiers;</li>
+<li>hash or version the summary;</li>
+<li>test reconstruction against the original constraints; and</li>
+<li>retrieve the relevant ledger entry before each action.</li>
+</ol>
+<p>Do not rely on semantic vector search alone for governing rules. Exact IDs,
+priority, scope, and version matter.</p>
+<h3 id="59-model-mode-and-route-selection">5.9 Model, mode, and route selection<a class="headerlink" href="#59-model-mode-and-route-selection" title="Permanent link">&para;</a></h3>
+<p>Different checkpoints or modes may specialize in:</p>
+<ul>
+<li>literal low-latency transformation;</li>
+<li>complex constraint composition;</li>
+<li>long-context retention;</li>
+<li>tool use;</li>
+<li>coding;</li>
+<li>multilingual work; or</li>
+<li>safety and policy.</li>
+</ul>
+<p>Route high-risk or low-confidence cases to a stronger model, external verifier,
+or human. Record the exact model and mode; a changing alias is not an auditable
+deployment.</p>
+<h3 id="510-select-demonstrations-and-optimize-the-whole-harness">5.10 Select demonstrations and optimize the whole harness<a class="headerlink" href="#510-select-demonstrations-and-optimize-the-whole-harness" title="Permanent link">&para;</a></h3>
+<p>Few-shot examples define behavior by showing it. Select demonstrations by task,
+constraint type, language, difficulty, and failure mode; include both compliant
+and explicitly labeled near misses where the model can interpret the label.
+Order and lexical similarity can dominate the intended principle, so validate
+retrieval and ordering as versioned system components.</p>
+<p>Automatic methods can search the prompt and pipeline against a development
+metric. <a href="https://arxiv.org/abs/2211.01910">Automatic Prompt Engineer</a> generates
+and selects instruction candidates; <a href="https://arxiv.org/abs/2309.03409">Optimization by
+PROmpting</a> iteratively proposes prompts from
+earlier candidates and scores; and <a href="https://arxiv.org/abs/2310.03714">DSPy</a>
+compiles declarative model pipelines by selecting demonstrations and other
+parameters.</p>
+<p>Optimize on a representative development set, then freeze and evaluate on
+unseen transformation families. Otherwise prompt search simply overfits a
+benchmark, leaks hidden cases, or exploits a biased judge.</p>
+<h3 id="511-detect-ambiguity-and-learn-when-to-clarify">5.11 Detect ambiguity and learn when to clarify<a class="headerlink" href="#511-detect-ambiguity-and-learn-when-to-clarify" title="Permanent link">&para;</a></h3>
+<p>Instruction following sometimes requires asking before acting. Train and test
+matched triples:</p>
+<ul>
+<li>an unambiguous request that should be executed without friction;</li>
+<li>an ambiguous request whose plausible interpretations materially differ; and</li>
+<li>the same request after a concise disambiguating answer.</li>
+</ul>
+<p><a href="https://arxiv.org/abs/2405.12063">CLAMBER</a> separates ambiguity identification
+from clarifying-question quality and finds that generic chain-of-thought and
+few-shot prompting offer only marginal help on its distribution.
+<a href="https://arxiv.org/abs/2410.13788">Future-turn modeling</a> scores a clarification
+using the later conversation it enables, then trains a policy to ask only when
+useful.</p>
+<p>Optimize task utility after clarification, not raw question frequency. Penalize
+silent guessing, irrelevant or compound questions, questions that request
+already supplied information, and over-clarification of harmless details.
+Irreversible actions need a lower threshold for asking than reversible drafts.</p>
+<h3 id="512-white-box-activation-steering">5.12 White-box activation steering<a class="headerlink" href="#512-white-box-activation-steering" title="Permanent link">&para;</a></h3>
+<p>Research systems with access to model internals can add learned activation
+directions during inference. <a href="https://arxiv.org/abs/2410.12877">Instruction-specific activation
+steering</a> computes contrasts between inputs
+with and without a constraint, then applies the resulting vectors to formats,
+length, and word-inclusion behavior. <a href="https://arxiv.org/abs/2312.06681">Contrastive Activation
+Addition</a> demonstrates a broader related
+recipe on Llama 2 residual streams.</p>
+<p>These methods can alter behavior without a full fine-tune, but are less
+auditable than an external policy rule, can entangle unrelated features,
+require matched no-steering baselines plus layer and strength sweeps, and do
+not create a hard instruction or authorization guarantee.</p>
+<h2 id="6-product-and-agent-controls">6. Product and agent controls<a class="headerlink" href="#6-product-and-agent-controls" title="Permanent link">&para;</a></h2>
+<h3 id="61-separate-authority-from-content">6.1 Separate authority from content<a class="headerlink" href="#61-separate-authority-from-content" title="Permanent link">&para;</a></h3>
+<p>Use explicit typed channels for system policy, developer configuration, user
+request, retrieved content, tool result, and assistant output. Mark untrusted
+data and prevent it from silently becoming an instruction.</p>
+<h3 id="62-make-scope-and-authorization-concrete">6.2 Make scope and authorization concrete<a class="headerlink" href="#62-make-scope-and-authorization-concrete" title="Permanent link">&para;</a></h3>
+<p>Expose only necessary tools and resources. Prefer:</p>
+<ul>
+<li>least-privilege credentials;</li>
+<li>read-only defaults;</li>
+<li>explicit change sets;</li>
+<li>dry runs and previews;</li>
+<li>idempotency keys;</li>
+<li>transaction boundaries;</li>
+<li>confirmation for material external effects; and</li>
+<li>read-after-write verification.</li>
+</ul>
+<p>Instruction-following quality cannot compensate for overbroad authority.</p>
+<h3 id="63-keep-validators-outside-the-conversational-loop">6.3 Keep validators outside the conversational loop<a class="headerlink" href="#63-keep-validators-outside-the-conversational-loop" title="Permanent link">&para;</a></h3>
+<p>A deterministic checker should receive the candidate artifact, original
+contract, and immutable environment observation. Do not let the model rewrite
+the test or silently omit failed checks.</p>
+<h3 id="64-render-adherence-and-uncertainty-honestly">6.4 Render adherence and uncertainty honestly<a class="headerlink" href="#64-render-adherence-and-uncertainty-honestly" title="Permanent link">&para;</a></h3>
+<p>For consequential workflows, expose:</p>
+<ul>
+<li>what was requested and completed;</li>
+<li>what was intentionally not changed;</li>
+<li>checks actually run and their result IDs;</li>
+<li>unresolved ambiguities;</li>
+<li>partial or failed steps;</li>
+<li>model/tool versions; and</li>
+<li>approvals still required.</li>
+</ul>
+<p>Do not claim success from an intended action, a syntactically valid call, or a
+submitted request alone.</p>
+<h2 id="7-what-commonly-fails-as-a-silver-bullet">7. What commonly fails as a silver bullet<a class="headerlink" href="#7-what-commonly-fails-as-a-silver-bullet" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Why it is incomplete</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“Use a larger model.”</td>
+<td>averages improve, but hierarchy, exact counts, scope, and state still fail</td>
+</tr>
+<tr>
+<td>“Write a longer system prompt.”</td>
+<td>length increases conflict and forgetting; prose is not enforcement</td>
+</tr>
+<tr>
+<td>“Put IMPORTANT in all caps.”</td>
+<td>salience is not authority or a release gate</td>
+</tr>
+<tr>
+<td>“Give one example.”</td>
+<td>the model may imitate surface form and miss the governing rule</td>
+</tr>
+<tr>
+<td>“Ask for chain of thought.”</td>
+<td>reasoning can help planning but also over-interpret literal tasks</td>
+</tr>
+<tr>
+<td>“Set temperature to zero.”</td>
+<td>variability falls; deterministic non-compliance remains</td>
+</tr>
+<tr>
+<td>“Use JSON mode.”</td>
+<td>valid JSON is weaker than schema conformance and semantic correctness</td>
+</tr>
+<tr>
+<td>“Use Structured Outputs.”</td>
+<td>syntax can be guaranteed while values, task choice, and authorization are wrong</td>
+</tr>
+<tr>
+<td>“Make the model self-check.”</td>
+<td>shared blind spots produce confident rubber-stamping</td>
+</tr>
+<tr>
+<td>“Use multiple agents.”</td>
+<td>they can share the same mistaken interpretation and expand scope</td>
+</tr>
+<tr>
+<td>“Fine-tune on more conversations.”</td>
+<td>an imbalanced mixture can strengthen unwanted defaults</td>
+</tr>
+<tr>
+<td>“Score average constraints.”</td>
+<td>one critical prohibition can disappear inside a high mean</td>
+</tr>
+<tr>
+<td>“Retry until it passes.”</td>
+<td>unbounded retries hide cost, bias evaluation, and can repeat external actions</td>
+</tr>
+<tr>
+<td>“The tool call succeeded.”</td>
+<td>execution success does not prove the right tool, arguments, result use, or final state</td>
+</tr>
+<tr>
+<td>“A human is in the loop.”</td>
+<td>review fails without the contract, evidence, authority, time, and an audited checklist</td>
+</tr>
+</tbody>
+</table>
+<h2 id="8-method-selection-guide">8. Method-selection guide<a class="headerlink" href="#8-method-selection-guide" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Primary control stack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>exact short format</td>
+<td>targeted SFT + grammar/schema decoding + deterministic validation</td>
+</tr>
+<tr>
+<td>complex natural-language constraints</td>
+<td>compositional data + preference/RL + constraint extraction + per-rule verifier</td>
+</tr>
+<tr>
+<td>minimal or no extra behavior</td>
+<td>negative examples + scope reward + diff/action allowlist</td>
+</tr>
+<tr>
+<td>long multi-turn revision</td>
+<td>turn-position training + versioned task ledger + regression checks</td>
+</tr>
+<tr>
+<td>system/developer priority</td>
+<td>hierarchy-conflict training + typed trust channels + injection tests</td>
+</tr>
+<tr>
+<td>function calling</td>
+<td>executable verified trajectories + no-tool cases + strict arguments + state validation</td>
+</tr>
+<tr>
+<td>coding changes</td>
+<td>repository-scoped plan + diff gate + compiler/tests + state verification</td>
+</tr>
+<tr>
+<td>multilingual instructions</td>
+<td>multilingual constraint data + locale-aware validators + language-slice release gates</td>
+</tr>
+<tr>
+<td>multimodal editing or agents</td>
+<td>grounded region/action data + counterfactual negatives + tool/state checks</td>
+</tr>
+<tr>
+<td>ambiguous consequential request</td>
+<td>ambiguity training + ask/proceed router + concise question + post-clarification task check</td>
+</tr>
+<tr>
+<td>recurring prompt distribution</td>
+<td>representative dev set + automatic prompt/demonstration search + hidden-family evaluation</td>
+</tr>
+<tr>
+<td>irreversible high-impact action</td>
+<td>least privilege + independent verification + explicit human authorization</td>
+</tr>
+</tbody>
+</table>
+<p>The most reliable design combines learned generalization with deterministic
+enforcement. Train the model to understand and plan under instructions; use
+software to enforce the constraints that can be formalized; use human judgment
+where the contract is consequential and irreducibly ambiguous.</p>
+<h2 id="primary-source-index">Primary-source index<a class="headerlink" href="#primary-source-index" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Sanh et al., <a href="https://arxiv.org/abs/2110.08207">T0 / Multitask Prompted
+  Training</a>, 2021.</li>
+<li>Chung et al., <a href="https://arxiv.org/abs/2210.11416">Scaling Instruction-Finetuned Language
+  Models</a>, 2022.</li>
+<li>Ouyang et al.,
+  <a href="https://arxiv.org/abs/2203.02155">InstructGPT</a>, 2022.</li>
+<li>Wang et al.,
+  <a href="https://arxiv.org/abs/2212.10560">Self-Instruct</a>, 2022.</li>
+<li>Xu et al.,
+  <a href="https://arxiv.org/abs/2304.12244">WizardLM / Evol-Instruct</a>, 2023.</li>
+<li>Li et al., <a href="https://arxiv.org/abs/2308.06259">Instruction
+  Backtranslation</a>, 2023.</li>
+<li>Cheng et al., <a href="https://arxiv.org/abs/2406.14491">Instruction
+  Pre-Training</a>, 2024.</li>
+<li>Sun et al., <a href="https://arxiv.org/abs/2404.02823">Conifer</a>, 2024.</li>
+<li>Bai et al., <a href="https://arxiv.org/abs/2212.08073">Constitutional AI</a>, 2022.</li>
+<li>Rafailov et al., <a href="https://arxiv.org/abs/2305.18290">Direct Preference
+  Optimization</a>, 2023.</li>
+<li>Wallace et al., <a href="https://arxiv.org/abs/2404.13208">The Instruction
+  Hierarchy</a>, 2024.</li>
+<li>Chen et al., <a href="https://arxiv.org/abs/2402.06363">StruQ</a>, 2024.</li>
+<li>Chen et al., <a href="https://arxiv.org/abs/2410.05451">SecAlign</a>, 2024.</li>
+<li>Geng et al., <a href="https://arxiv.org/abs/2502.15851">Control
+  Illusion</a>, 2025.</li>
+<li>Touvron et al., <a href="https://arxiv.org/abs/2307.09288">Llama 2 and Ghost
+  Attention</a>, 2023.</li>
+<li>Geng et al., <a href="https://aclanthology.org/2023.emnlp-main.674/">Grammar-Constrained
+  Decoding</a>, 2023.</li>
+<li>Schick et al., <a href="https://arxiv.org/abs/2302.04761">Toolformer</a>, 2023.</li>
+<li>Patil et al., <a href="https://arxiv.org/abs/2305.15334">Gorilla</a>, 2023.</li>
+<li>Rimsky et al., <a href="https://arxiv.org/abs/2312.06681">Contrastive Activation
+  Addition</a>, 2023.</li>
+<li>Stolfo et al., <a href="https://arxiv.org/abs/2410.12877">Instruction-specific activation
+  steering</a>, 2024.</li>
+<li>Zhou et al., <a href="https://arxiv.org/abs/2211.01910">Automatic Prompt
+  Engineer</a>, 2022.</li>
+<li>Yang et al., <a href="https://arxiv.org/abs/2309.03409">Optimization by
+  PROmpting</a>, 2023.</li>
+<li>Khattab et al., <a href="https://arxiv.org/abs/2310.03714">DSPy</a>, 2023.</li>
+<li>Zhang et al., <a href="https://arxiv.org/abs/2405.12063">CLAMBER</a>, 2024.</li>
+<li>Zhang et al., <a href="https://arxiv.org/abs/2410.13788">Future-turn clarification
+  training</a>, 2024.</li>
+<li>Liu et al., <a href="https://arxiv.org/abs/2406.18518">APIGen</a>, 2024.</li>
+<li>Liu et al., <a href="https://arxiv.org/abs/2409.00920">ToolACE</a>, 2024.</li>
+<li>Zhou et al., <a href="https://arxiv.org/abs/2311.07911">IFEval</a>, 2023.</li>
+<li>Jiang et al., <a href="https://arxiv.org/abs/2310.20410">FollowBench</a>, 2023.</li>
+<li>Qin et al., <a href="https://arxiv.org/abs/2401.03601">InFoBench</a>, 2024.</li>
+<li>Wen et al., <a href="https://arxiv.org/abs/2407.03978">ComplexBench</a>, 2024.</li>
+<li>He et al., <a href="https://arxiv.org/abs/2410.15553">Multi-IF</a>, 2024.</li>
+<li>Pyatkin et al., <a href="https://arxiv.org/abs/2507.02833">IFBench</a>, 2025.</li>
+<li>Scale AI, <a href="https://labs.scale.com/papers/multichallenge">MultiChallenge</a>,
+  2025.</li>
+<li>UC Berkeley, <a href="https://gorilla.cs.berkeley.edu/leaderboard">Berkeley Function-Calling Leaderboard
+  V4</a>, verified 2026-07-23.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

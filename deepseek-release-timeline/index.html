@@ -1,0 +1,2571 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/deepseek-release-timeline/">
+      
+      
+        <link rel="prev" href="../model-training-token-ledger/">
+      
+      
+        <link rel="next" href="../evaluation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>DeepSeek Release Timeline - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deepseek-release-timeline" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DeepSeek Release Timeline
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dating-and-scope-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dating and scope rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#main-text-and-reasoning-lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Main text and reasoning lineage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Main text and reasoning lineage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mainline-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mainline interpretation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-mathematics-and-theorem-proving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code, mathematics, and theorem proving
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vision-language-unified-generation-and-ocr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vision-language, unified generation, and OCR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#product-aliases-and-names-that-are-not-separate-generations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product aliases and names that are not separate generations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condensed-chronology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Condensed chronology
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remaining-unknowns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remaining unknowns
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dating-and-scope-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dating and scope rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#main-text-and-reasoning-lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Main text and reasoning lineage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Main text and reasoning lineage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mainline-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mainline interpretation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-mathematics-and-theorem-proving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code, mathematics, and theorem proving
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vision-language-unified-generation-and-ocr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vision-language, unified generation, and OCR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#product-aliases-and-names-that-are-not-separate-generations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product aliases and names that are not separate generations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condensed-chronology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Condensed chronology
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remaining-unknowns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remaining unknowns
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="deepseek-release-timeline">DeepSeek Release Timeline<a class="headerlink" href="#deepseek-release-timeline" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23. This timeline covers named first-party
+DeepSeek model families, open checkpoints, and material API model updates. It
+excludes third-party quantizations, community conversions, serving-framework
+ports, kernels, infrastructure projects, and ordinary bug fixes.</p>
+<p>Read this page together with the
+<a href="../model-training-token-ledger/">model training token ledger</a>. A release date
+does not disclose a training recipe, and a product alias does not necessarily
+identify a new checkpoint.</p>
+<h2 id="dating-and-scope-rules">Dating and scope rules<a class="headerlink" href="#dating-and-scope-rules" title="Permanent link">&para;</a></h2>
+<p>DeepSeek's early repositories do not all contain a formal release log. This
+page therefore labels the event type:</p>
+<ul>
+<li><strong>release:</strong> an official first-party announcement or repository news entry;</li>
+<li><strong>weights:</strong> the official registry exposes the checkpoint;</li>
+<li><strong>report:</strong> the first technical report became public;</li>
+<li><strong>API update:</strong> a hosted alias changed its backing model; and</li>
+<li><strong>temporary variant:</strong> a time-limited endpoint or mode, not a new base family.</li>
+</ul>
+<p>For early weights without an announcement date, the date comes from the
+official Hugging Face registry's <code>createdAt</code> metadata. That is artifact evidence
+of availability, not a claim about a press launch. Where a report and weights
+appeared on different dates, both are shown.</p>
+<h2 id="main-text-and-reasoning-lineage">Main text and reasoning lineage<a class="headerlink" href="#main-text-and-reasoning-lineage" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Model or event</th>
+<th>Event type</th>
+<th>Training-token status</th>
+<th>What changed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2023-11-29</td>
+<td>DeepSeek-LLM 7B / 67B</td>
+<td>weights/repository</td>
+<td>2T [D]</td>
+<td>dense bilingual base/chat family; <a href="https://huggingface.co/api/models/deepseek-ai/deepseek-llm-67b-base">registry</a>, <a href="https://arxiv.org/abs/2401.02954">report</a></td>
+</tr>
+<tr>
+<td>2024-01-08–09</td>
+<td>DeepSeekMoE 16B Base / Chat</td>
+<td>weights</td>
+<td>2T [D]</td>
+<td>first public fine-grained/shared-expert MoE family; base and chat registry records appeared on consecutive days; <a href="https://huggingface.co/api/models/deepseek-ai/deepseek-moe-16b-base">base registry</a>, <a href="https://github.com/deepseek-ai/DeepSeek-MoE">repository/report</a></td>
+</tr>
+<tr>
+<td>2024-05-06</td>
+<td>DeepSeek-V2</td>
+<td>release</td>
+<td>8.1T [D]</td>
+<td>236B-total / 21B-active MoE, Multi-head Latent Attention (MLA), 128K; <a href="https://github.com/deepseek-ai/DeepSeek-V2">official repository news</a></td>
+</tr>
+<tr>
+<td>2024-05-16</td>
+<td>DeepSeek-V2-Lite</td>
+<td>release</td>
+<td>5.7T [D]</td>
+<td>16B-total / 2.4B-active smaller V2 family; <a href="https://github.com/deepseek-ai/DeepSeek-V2">official repository news</a></td>
+</tr>
+<tr>
+<td>2024-05-17</td>
+<td>DeepSeek-V2-0517</td>
+<td>API update</td>
+<td>inherits V2</td>
+<td>first dated V2 hosted update in the current change log; <a href="https://api-docs.deepseek.com/updates/">change log</a></td>
+</tr>
+<tr>
+<td>2024-06-28</td>
+<td>DeepSeek-V2-0628</td>
+<td>API update</td>
+<td>added amount unknown [U]</td>
+<td>improved reasoning and role-play behavior; <a href="https://api-docs.deepseek.com/updates/">change log</a></td>
+</tr>
+<tr>
+<td>2024-09-05</td>
+<td>DeepSeek-V2.5</td>
+<td>release/API update</td>
+<td>added amount unknown [U]</td>
+<td>combines V2-0628 conversational and Coder-V2-0724 coding capabilities; <a href="https://api-docs.deepseek.com/news/news0905/">announcement</a></td>
+</tr>
+<tr>
+<td>2024-11-20</td>
+<td>DeepSeek-R1-Lite-Preview</td>
+<td>web-only preview</td>
+<td>training exposure unknown [U]</td>
+<td>first public reasoning preview with visible reasoning and inference scaling; no weights or API were released; <a href="https://api-docs.deepseek.com/news/news1120">official announcement</a></td>
+</tr>
+<tr>
+<td>2024-12-10</td>
+<td>DeepSeek-V2.5-1210</td>
+<td>API update</td>
+<td>added amount unknown [U]</td>
+<td>math, coding, writing, file and webpage handling update; <a href="https://api-docs.deepseek.com/news/news1210/">announcement</a></td>
+</tr>
+<tr>
+<td>2024-12-26</td>
+<td>DeepSeek-V3</td>
+<td>release</td>
+<td>14.8T [D]</td>
+<td>671B-total / 37B-active MoE, FP8 training, Multi-Token Prediction (MTP), loss-free routing; <a href="https://github.com/deepseek-ai/DeepSeek-V3">repository</a>, <a href="https://arxiv.org/abs/2412.19437">report</a></td>
+</tr>
+<tr>
+<td>2025-01-20</td>
+<td>DeepSeek-R1-Zero and DeepSeek-R1</td>
+<td>release</td>
+<td>inherit V3-Base; new broad total unknown [U]</td>
+<td>no-SFT RL experiment plus production cold-start/SFT/RL pipeline; <a href="https://api-docs.deepseek.com/news/news250120">official release</a></td>
+</tr>
+<tr>
+<td>2025-01-20</td>
+<td>six DeepSeek-R1-Distill checkpoints</td>
+<td>same-day release</td>
+<td>post-training only</td>
+<td>Qwen2.5- and Llama-based 1.5B, 7B, 8B, 14B, 32B, and 70B students; <a href="https://github.com/deepseek-ai/DeepSeek-R1">repository</a></td>
+</tr>
+<tr>
+<td>2025-03-24</td>
+<td>DeepSeek-V3-0324</td>
+<td>release/API update</td>
+<td>added amount unknown [U]</td>
+<td>post-training refresh for reasoning, code, writing, and function calling; <a href="https://api-docs.deepseek.com/updates/">change log</a></td>
+</tr>
+<tr>
+<td>2025-05-28</td>
+<td>DeepSeek-R1-0528</td>
+<td>release/API update</td>
+<td>added amount unknown [U]</td>
+<td>additional post-training compute and stronger reasoning; <a href="https://api-docs.deepseek.com/updates/">change log</a></td>
+</tr>
+<tr>
+<td>2025-08-21</td>
+<td>DeepSeek-V3.1</td>
+<td>release/API update</td>
+<td>V3.1-Base adds about 839B CPT [D]</td>
+<td>hybrid thinking/non-thinking, tool-agent training, 128K; <a href="https://api-docs.deepseek.com/updates/">change log</a>, <a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Base">base model card</a></td>
+</tr>
+<tr>
+<td>2025-09-22</td>
+<td>DeepSeek-V3.1-Terminus</td>
+<td>release/API update</td>
+<td>added amount unknown [U]</td>
+<td>language consistency and agent behavior update; <a href="https://api-docs.deepseek.com/updates/">change log</a></td>
+</tr>
+<tr>
+<td>2025-09-29</td>
+<td>DeepSeek-V3.2-Exp</td>
+<td>release/API update</td>
+<td>about 945.8B sparse conversion exposure [D]</td>
+<td>experimental DeepSeek Sparse Attention (DSA); <a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp">repository/report</a></td>
+</tr>
+<tr>
+<td>2025-12-01</td>
+<td>DeepSeek-V3.2</td>
+<td>release</td>
+<td>added broad amount unknown [U]</td>
+<td>production sparse-attention and agent/reasoning model; <a href="https://www.deepseek.com/en/transparency/">official transparency page</a>, <a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.2/blob/main/assets/paper.pdf">report</a></td>
+</tr>
+<tr>
+<td>2025-12-01</td>
+<td>DeepSeek-V3.2-Speciale</td>
+<td>temporary variant</td>
+<td>not a separate base count</td>
+<td>high-compute reasoning endpoint released alongside V3.2 for a limited period; <a href="https://api-docs.deepseek.com/updates/">change log</a></td>
+</tr>
+<tr>
+<td>2026-04-24</td>
+<td>DeepSeek-V4-Flash / V4-Pro</td>
+<td>preview release</td>
+<td>32T / 33T [D]</td>
+<td>million-token context; new attention, hyper-connection, optimizer, post-training, and agent systems; <a href="https://api-docs.deepseek.com/news/news260424/">official release</a>, <a href="https://www.deepseek.com/en/transparency/">transparency page</a>, <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash/blob/a7aaed80dd2df27620eb534454253ea25eb11c7a/DeepSeek_V4.pdf">immutable report snapshot</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="mainline-interpretation">Mainline interpretation<a class="headerlink" href="#mainline-interpretation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>DeepSeek-LLM
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  -&gt; DeepSeekMoE -&gt; V2 / V2-Lite
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -&gt; V2.5
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>      -&gt; R1-Lite-Preview
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -&gt; V3
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>      -&gt; R1-Zero / R1 / R1-Distill
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>      -&gt; V3-0324
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>      -&gt; V3.1 -&gt; V3.1-Terminus -&gt; V3.2-Exp -&gt; V3.2
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  -&gt; V4-Flash / V4-Pro
+</code></pre></div>
+<p>This is a capability and checkpoint lineage, not a statement that every arrow
+is ordinary continued pretraining. V2.5 is a capability combination with an
+undisclosed merge/training recipe; R1 is post-training over V3-Base; V4 is a
+new reported pretraining program.</p>
+<h2 id="code-mathematics-and-theorem-proving">Code, mathematics, and theorem proving<a class="headerlink" href="#code-mathematics-and-theorem-proving" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Model or event</th>
+<th>Event type</th>
+<th>Token/accounting status</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2023-10-28</td>
+<td>DeepSeek-Coder v1 weights</td>
+<td>weights</td>
+<td>2T fresh code-model training [D]</td>
+<td><a href="https://huggingface.co/api/models/deepseek-ai/deepseek-coder-33b-base">registry</a>, <a href="https://github.com/deepseek-ai/DeepSeek-Coder">repository</a></td>
+</tr>
+<tr>
+<td>2024-01-25</td>
+<td>DeepSeek-Coder paper and Coder-v1.5 weights</td>
+<td>report/weights</td>
+<td>v1 is 2T; exact v1.5 lineage total is not cleanly restated</td>
+<td><a href="https://arxiv.org/abs/2401.14196">paper</a>, <a href="https://huggingface.co/api/models/deepseek-ai/deepseek-coder-7b-base-v1.5">v1.5 registry</a></td>
+</tr>
+<tr>
+<td>2024-02-05</td>
+<td>DeepSeekMath 7B</td>
+<td>release/weights/report</td>
+<td>+500B CPT over Coder-v1.5 [D]</td>
+<td><a href="https://github.com/deepseek-ai/DeepSeek-Math">repository</a>, <a href="https://arxiv.org/abs/2402.03300">report</a></td>
+</tr>
+<tr>
+<td>2024-05-23</td>
+<td>DeepSeek-Prover V1 report</td>
+<td>report</td>
+<td>base inherited; added broad total unknown [U]</td>
+<td><a href="https://arxiv.org/abs/2405.14333">report</a></td>
+</tr>
+<tr>
+<td>2024-06-14</td>
+<td>DeepSeek-Coder-V2-0614</td>
+<td>API update/weights</td>
+<td>V2 intermediate 4.2T + 6T CPT = 10.2T branch [D]</td>
+<td><a href="https://api-docs.deepseek.com/updates/">change log</a>, <a href="https://huggingface.co/api/models/deepseek-ai/DeepSeek-Coder-V2-Base">registry</a></td>
+</tr>
+<tr>
+<td>2024-06-17</td>
+<td>DeepSeek-Coder-V2 report</td>
+<td>report</td>
+<td>same 10.2T branch</td>
+<td><a href="https://arxiv.org/abs/2406.11931">report</a></td>
+</tr>
+<tr>
+<td>2024-07-24</td>
+<td>DeepSeek-Coder-V2-0724</td>
+<td>API update</td>
+<td>added amount unknown [U]</td>
+<td><a href="https://api-docs.deepseek.com/updates/">change log</a></td>
+</tr>
+<tr>
+<td>2024-08-15</td>
+<td>DeepSeek-Prover-V1.5</td>
+<td>weights/repository/report</td>
+<td>9B formal-proof SFT tokens; inherited base</td>
+<td><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V1.5">repository</a>, <a href="https://arxiv.org/abs/2408.08152">report</a></td>
+</tr>
+<tr>
+<td>2024-08-16</td>
+<td>DeepSeek-Prover V1 weights</td>
+<td>weights</td>
+<td>inherited base; added broad total unknown [U]</td>
+<td><a href="https://huggingface.co/api/models/deepseek-ai/DeepSeek-Prover-V1">registry</a></td>
+</tr>
+<tr>
+<td>2025-04-30</td>
+<td>DeepSeek-Prover-V2 7B / 671B</td>
+<td>weights/repository/report</td>
+<td>based on Prover-V1.5 / V3-Base; added broad total unknown [U]</td>
+<td><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V2">repository</a>, <a href="https://arxiv.org/abs/2504.21801">report</a></td>
+</tr>
+<tr>
+<td>2025-11-27</td>
+<td>DeepSeekMath-V2</td>
+<td>weights/repository/report</td>
+<td>based on V3.2-Exp-Base; added amount unknown [U]</td>
+<td><a href="https://github.com/deepseek-ai/DeepSeek-Math-V2">repository</a>, <a href="https://arxiv.org/abs/2511.22570">report</a></td>
+</tr>
+</tbody>
+</table>
+<p>DeepSeek-R1-Distill is not placed in this table a second time: all six students
+were one coordinated 2025-01-20 reasoning release and appear in the mainline
+table.</p>
+<h2 id="vision-language-unified-generation-and-ocr">Vision-language, unified generation, and OCR<a class="headerlink" href="#vision-language-unified-generation-and-ocr" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Model or event</th>
+<th>Event type</th>
+<th>Token/accounting status</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024-03-11</td>
+<td>DeepSeek-VL 1.3B / 7B</td>
+<td>official family release</td>
+<td>starts from about 500B / 2T text checkpoints; added joint total unknown</td>
+<td><a href="https://github.com/deepseek-ai/DeepSeek-VL">repository news</a>, <a href="https://arxiv.org/abs/2403.05525">report</a></td>
+</tr>
+<tr>
+<td>2024-10-18</td>
+<td>Janus 1.3B</td>
+<td>weights/repository</td>
+<td>exact comparable total unknown [U]</td>
+<td><a href="https://huggingface.co/api/models/deepseek-ai/Janus-1.3B">registry</a>, <a href="https://github.com/deepseek-ai/Janus">repository</a></td>
+</tr>
+<tr>
+<td>2024-11-13</td>
+<td>JanusFlow 1.3B</td>
+<td>official repository news</td>
+<td>exact comparable total unknown [U]</td>
+<td><a href="https://github.com/deepseek-ai/Janus">Janus news</a>, <a href="https://arxiv.org/abs/2411.07975">report</a></td>
+</tr>
+<tr>
+<td>2024-12-13</td>
+<td>DeepSeek-VL2 Tiny / Small / 27B</td>
+<td>official family release</td>
+<td>about 818–831B across alignment, joint pretraining, and SFT depending on size</td>
+<td><a href="https://github.com/deepseek-ai/DeepSeek-VL2">repository news</a>, <a href="https://arxiv.org/abs/2412.10302">report</a></td>
+</tr>
+<tr>
+<td>2025-01-27</td>
+<td>Janus-Pro 1B / 7B</td>
+<td>official repository news</td>
+<td>training steps/mixtures disclosed; comparable token total unknown [U]</td>
+<td><a href="https://github.com/deepseek-ai/Janus">Janus news</a>, <a href="https://arxiv.org/abs/2501.17811">report</a></td>
+</tr>
+<tr>
+<td>2025-10-20</td>
+<td>DeepSeek-OCR</td>
+<td>official release</td>
+<td>exact total unknown [U]</td>
+<td><a href="https://github.com/deepseek-ai/DeepSeek-OCR">repository release log</a>, <a href="https://arxiv.org/abs/2510.18234">report</a></td>
+</tr>
+<tr>
+<td>2026-01-27</td>
+<td>DeepSeek-OCR 2</td>
+<td>official release</td>
+<td>exact total unknown [U]</td>
+<td><a href="https://github.com/deepseek-ai/DeepSeek-OCR">OCR release log</a>, <a href="https://github.com/deepseek-ai/DeepSeek-OCR-2">OCR 2 repository</a>, <a href="https://arxiv.org/abs/2601.20552">report</a></td>
+</tr>
+</tbody>
+</table>
+<p>These branches should not be forced into the V2 → V3 → V4 text-model chain.
+DeepSeek-VL and VL2 understand images; Janus adds image generation; OCR models
+specialize in document compression and recognition. Shared language backbones
+do not make their training exposures directly comparable.</p>
+<h2 id="product-aliases-and-names-that-are-not-separate-generations">Product aliases and names that are not separate generations<a class="headerlink" href="#product-aliases-and-names-that-are-not-separate-generations" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Correct interpretation at the cutoff</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deepseek-chat</code></td>
+<td>backward-compatible API alias whose backing checkpoint changes; the alias itself is not one stable model generation</td>
+</tr>
+<tr>
+<td><code>deepseek-reasoner</code></td>
+<td>reasoning-mode API alias; it has pointed to R1/V3-family and later hybrid-thinking behavior depending on release date</td>
+</tr>
+<tr>
+<td>DeepSeek-R1-Lite-Preview</td>
+<td>web-only preview that preceded R1; no open checkpoint or exact training-token total was disclosed</td>
+</tr>
+<tr>
+<td>DeepSeek-V4-Pro-Max</td>
+<td>maximum reasoning-effort mode of V4-Pro, not a separately disclosed checkpoint or pretraining run</td>
+</tr>
+<tr>
+<td>V3.2-Speciale</td>
+<td>temporary high-compute reasoning variant, not a new base family</td>
+</tr>
+<tr>
+<td>R1-Distill-Qwen/Llama</td>
+<td>six fine-tuned student checkpoints released together; their foundation pretraining belongs to Qwen/Llama, not DeepSeek</td>
+</tr>
+<tr>
+<td><code>Base</code>, <code>Chat</code>, <code>Instruct</code>, <code>RL</code>, <code>Zero</code></td>
+<td>training-stage or behavior suffixes; only count as a separate generation when the source reports a distinct checkpoint and recipe</td>
+</tr>
+<tr>
+<td><code>BF16</code>, <code>FP8</code>, <code>INT4</code>, <code>AWQ</code>, <code>GPTQ</code>, <code>GGUF</code></td>
+<td>precision or packaging variants; a conversion is not a new trained model unless the vendor reports additional training</td>
+</tr>
+</tbody>
+</table>
+<p>The DeepSeek change log should be read as a dated routing ledger. Calling
+<code>deepseek-chat</code> in May 2024 and April 2026 does not imply that the same weights
+served both requests.</p>
+<h2 id="condensed-chronology">Condensed chronology<a class="headerlink" href="#condensed-chronology" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>2023  Coder v1 -- DeepSeek-LLM
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>2024  MoE -- Coder-v1.5 -- Math -- VL -- V2/Lite -- Prover --
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>      Coder-V2 -- Prover-V1.5 -- V2.5 -- Janus -- JanusFlow --
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>      VL2 -- V3
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>2025  R1/R1-Zero/Distill -- Janus-Pro -- V3-0324 -- Prover-V2 --
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>      R1-0528 -- V3.1 -- Terminus -- V3.2-Exp -- OCR --
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>      Math-V2 -- V3.2/Speciale
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>2026  OCR 2 -- V4-Flash/V4-Pro
+</code></pre></div>
+<h2 id="remaining-unknowns">Remaining unknowns<a class="headerlink" href="#remaining-unknowns" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Exact first-party announcement dates for some early weights whose official
+   repositories provide no dated news item.</li>
+<li>Added training exposure for V2.5, dated V2/V3/R1 updates, production V3.2,
+   and most specialist post-training branches.</li>
+<li>Unique-token counts, complete corpus identities and licenses, and sampling
+   repetition for every flagship.</li>
+<li>Whether all live product surfaces route identically at every moment; API
+   aliases can change without creating a new open checkpoint.</li>
+<li>Full pretraining, ablation, failed-run, and post-training compute for most
+   generations.</li>
+</ol>
+<p>An unknown field is intentionally retained rather than reconstructed from
+model names, benchmark behavior, or community packaging.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

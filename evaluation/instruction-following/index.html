@@ -1,0 +1,3272 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/evaluation/instruction-following/">
+      
+      
+        <link rel="prev" href="../hallucination-operations/">
+      
+      
+        <link rel="next" href="../instruction-following-methods/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Overview, Benchmarks, and GPT vs DeepSeek - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#instruction-following-steerability-and-production-reliability" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview, Benchmarks, and GPT vs DeepSeek
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-practitioners-mean-by-follows-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What practitioners mean by “follows instructions”
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What practitioners mean by “follows instructions”">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#correct-non-compliance-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correct non-compliance exists
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#helpfulness-can-conflict-with-literalness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Helpfulness can conflict with literalness
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-observed-behavior-is-an-end-to-end-system-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The observed behavior is an end-to-end system property
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-why-gpt-models-have-often-felt-unusually-steerable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Why GPT models have often felt unusually steerable
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Why GPT models have often felt unusually steerable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-disclosed-post-training-targets-are-close-to-developer-pain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Disclosed post-training targets are close to developer pain
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-multi-turn-state-is-trained-and-evaluated-separately" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Multi-turn state is trained and evaluated separately
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-instruction-hierarchy-is-a-first-class-training-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Instruction hierarchy is a first-class training objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-the-api-provides-control-surfaces-around-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 The API provides control surfaces around the model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-deepseek-historical-weakness-real-progress-and-remaining-gaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. DeepSeek: historical weakness, real progress, and remaining gaps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. DeepSeek: historical weakness, real progress, and remaining gaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-the-weakness-was-visible-enough-to-become-an-explicit-release-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 The weakness was visible enough to become an explicit release target
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-v4-explicitly-trains-an-instruction-following-expert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 V4 explicitly trains an instruction-following expert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-deepseeks-own-report-is-positive-and-candid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 DeepSeek's own report is positive and candid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-current-independent-precise-constraint-scores-are-competitive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Current independent precise-constraint scores are competitive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-what-each-benchmark-actually-measures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. What each benchmark actually measures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. What each benchmark actually measures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preference-leaderboards-are-not-direct-instruction-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preference leaderboards are not direct instruction tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregate-scores-hide-catastrophic-one-missed-rule-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregate scores hide catastrophic “one missed rule” failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-what-forums-and-practitioner-reports-can-legitimately-tell-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. What forums and practitioner reports can legitimately tell us
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. What forums and practitioner reports can legitimately tell us">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepseek-v4-community-themes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeepSeek V4 community themes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpt-community-themes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPT community themes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normalize-these-confounders-before-believing-a-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Normalize these confounders before believing a comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-how-to-read-an-instruction-following-claim-in-a-tech-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. How to read an instruction-following claim in a tech report
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-a-production-evaluation-that-reflects-actual-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. A production evaluation that reflects actual experience
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-bottom-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Bottom line
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-practitioners-mean-by-follows-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What practitioners mean by “follows instructions”
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What practitioners mean by “follows instructions”">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#correct-non-compliance-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correct non-compliance exists
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#helpfulness-can-conflict-with-literalness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Helpfulness can conflict with literalness
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-observed-behavior-is-an-end-to-end-system-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The observed behavior is an end-to-end system property
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-why-gpt-models-have-often-felt-unusually-steerable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Why GPT models have often felt unusually steerable
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Why GPT models have often felt unusually steerable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-disclosed-post-training-targets-are-close-to-developer-pain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Disclosed post-training targets are close to developer pain
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-multi-turn-state-is-trained-and-evaluated-separately" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Multi-turn state is trained and evaluated separately
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-instruction-hierarchy-is-a-first-class-training-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Instruction hierarchy is a first-class training objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-the-api-provides-control-surfaces-around-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 The API provides control surfaces around the model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-deepseek-historical-weakness-real-progress-and-remaining-gaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. DeepSeek: historical weakness, real progress, and remaining gaps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. DeepSeek: historical weakness, real progress, and remaining gaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-the-weakness-was-visible-enough-to-become-an-explicit-release-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 The weakness was visible enough to become an explicit release target
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-v4-explicitly-trains-an-instruction-following-expert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 V4 explicitly trains an instruction-following expert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-deepseeks-own-report-is-positive-and-candid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 DeepSeek's own report is positive and candid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-current-independent-precise-constraint-scores-are-competitive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Current independent precise-constraint scores are competitive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-what-each-benchmark-actually-measures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. What each benchmark actually measures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. What each benchmark actually measures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preference-leaderboards-are-not-direct-instruction-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preference leaderboards are not direct instruction tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregate-scores-hide-catastrophic-one-missed-rule-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregate scores hide catastrophic “one missed rule” failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-what-forums-and-practitioner-reports-can-legitimately-tell-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. What forums and practitioner reports can legitimately tell us
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. What forums and practitioner reports can legitimately tell us">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepseek-v4-community-themes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeepSeek V4 community themes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpt-community-themes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPT community themes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normalize-these-confounders-before-believing-a-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Normalize these confounders before believing a comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-how-to-read-an-instruction-following-claim-in-a-tech-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. How to read an instruction-following claim in a tech report
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-a-production-evaluation-that-reflects-actual-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. A production evaluation that reflects actual experience
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-bottom-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Bottom line
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="instruction-following-steerability-and-production-reliability">Instruction Following, Steerability, and Production Reliability<a class="headerlink" href="#instruction-following-steerability-and-production-reliability" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23.</p>
+<p>Instruction following is not one scalar capability. A model can satisfy a word
+count while forgetting a rule from five turns earlier; call the correct tool
+while violating a business policy; return valid JSON whose values are wrong;
+or correctly ignore a user instruction because it conflicts with a higher
+priority developer rule. This chapter separates those cases and explains why a
+model can rank highly on an instruction-following leaderboard yet still feel
+unreliable in a real product.</p>
+<p>Use this topic in dependency order:</p>
+<ol>
+<li>This page defines the behavioral surfaces, explains end-to-end attribution,
+   maps benchmarks, and preserves a dated GPT-versus-DeepSeek comparison.</li>
+<li>The <a href="../instruction-following-methods/">instruction-following method map</a>
+   catalogs data, SFT, preference/RL, hierarchy, tool, inference, decoder,
+   memory, verification, and product controls.</li>
+<li>The <a href="../instruction-following-vendors/">vendor evidence audit</a> separates
+   named training disclosures from research prototypes, API controls, product
+   orchestration, and unknown proprietary details.</li>
+<li>The <a href="../instruction-following-operations/">production operations
+   chapter</a> defines the instruction
+   contract, test suite, metrics, release gates, telemetry, and incident loop.</li>
+</ol>
+<p>Within this page, first define the surface being tested, locate the failure in
+the model or surrounding system, choose a matched benchmark, and treat forum
+reports as failure-mode discovery rather than prevalence measurement.</p>
+<p>The general <a href="../../research-method/">research standard</a> defines the evidence
+labels used below. The <a href="../../agentic-rl/evaluation-and-safety/">agent evaluation chapter</a>
+covers stochastic environments, judges, confidence intervals, and deployment
+gates in more detail. For factual errors, unsupported claims, citations,
+retrieval sufficiency, and abstention, start with the
+<a href="../">reliability and factuality map</a>; a response can follow every
+instruction and still be false.</p>
+<h2 id="1-what-practitioners-mean-by-follows-instructions">1. What practitioners mean by “follows instructions”<a class="headerlink" href="#1-what-practitioners-mean-by-follows-instructions" title="Permanent link">&para;</a></h2>
+<p>A useful evaluation begins with the question:</p>
+<blockquote>
+<p>Which instruction, supplied by whom, must be retained for how long, while
+doing which task, through which interface?</p>
+</blockquote>
+<p>At least eleven different capabilities are routinely collapsed into the same
+phrase.</p>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Representative test</th>
+<th>Common failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task completion</td>
+<td>“Reconcile these invoices and identify the mismatch.”</td>
+<td>Polished prose without completing the requested operation</td>
+</tr>
+<tr>
+<td>Atomic constraints</td>
+<td>“Use exactly three sentences and include <code>alpha</code> twice.”</td>
+<td>One locally checkable constraint is missed</td>
+</tr>
+<tr>
+<td>Negative constraints</td>
+<td>“Do not contact support; do not modify tests.”</td>
+<td>A strong default habit overrides the prohibition</td>
+</tr>
+<tr>
+<td>Ordered instructions</td>
+<td>“Validate first, migrate second, then report.”</td>
+<td>Correct actions occur in the wrong order</td>
+</tr>
+<tr>
+<td>Content requirements</td>
+<td>“Include owner, amount, evidence, and due date.”</td>
+<td>The answer is substantively good but omits one required field</td>
+</tr>
+<tr>
+<td>Style and verbosity</td>
+<td>“Return only the identifier; no explanation.”</td>
+<td>Helpful preamble, headings, or unsolicited advice appears</td>
+</tr>
+<tr>
+<td>Multi-turn retention</td>
+<td>A rule introduced at turn 2 still applies at turn 20</td>
+<td>Recency dominates an older global rule</td>
+</tr>
+<tr>
+<td>Versioned editing</td>
+<td>“Change only section B; retain every accepted edit.”</td>
+<td>Earlier edits regress or unrelated content changes</td>
+</tr>
+<tr>
+<td>Instruction hierarchy</td>
+<td>System policy conflicts with user or tool text</td>
+<td>The model obeys the wrong source, or refuses everything</td>
+</tr>
+<tr>
+<td>Tool and policy following</td>
+<td>Select a tool, form valid arguments, obey domain rules</td>
+<td>Correct-looking answer without the required tool or authorization</td>
+</tr>
+<tr>
+<td>Calibration</td>
+<td>“If the record is absent, say unavailable.”</td>
+<td>The model fills the gap or overconfidently guesses</td>
+</tr>
+</tbody>
+</table>
+<p>Multilingual and multimodal variants add another axis: the model must retrieve
+the governing text rule while reasoning over a different language, an image,
+audio, or video. Consistency is also separate from best-case capability. A
+workflow that succeeds once and fails on two of the next nine identical runs is
+not production-reliable even if its best sample is excellent.</p>
+<h3 id="correct-non-compliance-exists">Correct non-compliance exists<a class="headerlink" href="#correct-non-compliance-exists" title="Permanent link">&para;</a></h3>
+<p>“Obey everything” is not the target. If a user asks a model to ignore a
+developer policy, or an untrusted web page tells an agent to reveal a secret,
+the correct behavior is to ignore the lower-trust instruction. OpenAI describes
+the priority order as <strong>system &gt; developer &gt; user &gt; tool</strong> in its 2026
+<a href="https://openai.com/index/instruction-hierarchy-challenge/">Instruction Hierarchy work</a>.
+Safety refusal, instruction-hierarchy resolution, and ordinary user
+steerability therefore need separate labels.</p>
+<h3 id="helpfulness-can-conflict-with-literalness">Helpfulness can conflict with literalness<a class="headerlink" href="#helpfulness-can-conflict-with-literalness" title="Permanent link">&para;</a></h3>
+<p>Preference training often rewards explanations, initiative, polished prose,
+and inferred intent. Those traits can hurt a request for minimal output, narrow
+edits, strict non-action, or literal translation. “More helpful” and “more
+obedient” are correlated only when the user's objective and the preference
+model's default are aligned.</p>
+<h2 id="2-the-observed-behavior-is-an-end-to-end-system-property">2. The observed behavior is an end-to-end system property<a class="headerlink" href="#2-the-observed-behavior-is-an-end-to-end-system-property" title="Permanent link">&para;</a></h2>
+<p>The user does not observe a bare checkpoint. The path is usually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>system/developer/user/tool messages
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  -&gt; product policy and prompt assembly
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -&gt; chat template, tokenization, retrieval, and context truncation
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  -&gt; model post-training and current inference mode
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -&gt; sampling or grammar-constrained decoding
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  -&gt; agent loop, retries, validation, and state mutation
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  -&gt; displayed answer or external action
+</code></pre></div>
+<p>This decomposition prevents several category errors.</p>
+<ol>
+<li><strong>Model behavior:</strong> supervised fine-tuning, preference optimization, and
+   reinforcement learning teach the checkpoint which constraints to notice and
+   how to trade them off.</li>
+<li><strong>Inference behavior:</strong> thinking mode, reasoning effort, temperature, token
+   budget, and stop conditions can change adherence. More test-time reasoning
+   is not guaranteed to improve a literal constraint.</li>
+<li><strong>Decoder enforcement:</strong> a grammar can make invalid JSON tokens impossible.
+   It cannot guarantee that a valid field contains the right fact.</li>
+<li><strong>Harness behavior:</strong> an agent may forget an instruction after compaction,
+   omit a tool schema, retry selectively, or mutate a file even when the raw
+   model intended otherwise.</li>
+<li><strong>Product behavior:</strong> memory, custom instructions, routing, hidden policies,
+   search, moderation, and changing aliases can make two surfaces with the same
+   vendor name behave differently.</li>
+</ol>
+<p>OpenAI's 2024 <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">Structured Outputs disclosure</a>
+is a clean example. Its trained model scored 93% on an internal complex-schema
+test, while dynamic constrained decoding raised schema conformance to 100%.
+That last seven-point gain is an inference-system guarantee, not proof that the
+language model became semantically perfect. DeepSeek's May 2024 API changelog
+similarly distinguished an 85% JSON parse rate from 97% after adding appropriate
+regular expressions.</p>
+<h2 id="3-why-gpt-models-have-often-felt-unusually-steerable">3. Why GPT models have often felt unusually steerable<a class="headerlink" href="#3-why-gpt-models-have-often-felt-unusually-steerable" title="Permanent link">&para;</a></h2>
+<p>The strongest public explanation is not a special Transformer block. It is the
+combination of post-training targets, developer-facing evaluation, role
+hierarchy, and serving controls.</p>
+<h3 id="31-disclosed-post-training-targets-are-close-to-developer-pain">3.1 Disclosed post-training targets are close to developer pain<a class="headerlink" href="#31-disclosed-post-training-targets-are-close-to-developer-pain" title="Permanent link">&para;</a></h3>
+<p>OpenAI's GPT-4.1 release lists an internal evaluation derived from developer
+feedback with six explicit categories:</p>
+<ul>
+<li>format following;</li>
+<li>negative instructions;</li>
+<li>ordered instructions;</li>
+<li>content requirements;</li>
+<li>ranking; and</li>
+<li>overconfidence or abstention when data is unavailable.</li>
+</ul>
+<p>The release also measured unrelated edits in code: 9% for GPT-4o versus 2% for
+GPT-4.1 in OpenAI's internal test. These targets align closely with the practical
+meaning of “do exactly this and do not improvise.” See the April 2025
+<a href="https://openai.com/index/gpt-4-1/">GPT-4.1 release</a>, instruction-following and
+real-world-example sections.</p>
+<h3 id="32-multi-turn-state-is-trained-and-evaluated-separately">3.2 Multi-turn state is trained and evaluated separately<a class="headerlink" href="#32-multi-turn-state-is-trained-and-evaluated-separately" title="Permanent link">&para;</a></h3>
+<p>On OpenAI's reported settings, GPT-4.1 scored 87.4% on IFEval versus 81.0% for
+GPT-4o and improved by 10.5 absolute points on Scale MultiChallenge. The GPT-5
+developer release later reported 69.6% on MultiChallenge using an o3-mini judge,
+64.0% on a hard internal API instruction-following evaluation, and 99.0% on
+COLLIE. These are vendor-reported release results, not a current cross-vendor
+leaderboard, but they show that OpenAI treated single-turn constraints and
+multi-turn retention as different optimization targets. See
+<a href="https://openai.com/index/introducing-gpt-5-for-developers/">Introducing GPT-5 for developers</a>.</p>
+<h3 id="33-instruction-hierarchy-is-a-first-class-training-objective">3.3 Instruction hierarchy is a first-class training objective<a class="headerlink" href="#33-instruction-hierarchy-is-a-first-class-training-objective" title="Permanent link">&para;</a></h3>
+<p>OpenAI's 2024 <a href="https://openai.com/index/the-instruction-hierarchy/">Instruction Hierarchy paper</a>
+frames prompt injection as following the wrong instruction source. Its 2026
+IH-Challenge work trains on objectively gradable role conflicts and reports
+improvements on held-out hierarchy, prompt-injection, and safety-steerability
+tests. Ordinary format obedience does not establish this property.</p>
+<h3 id="34-the-api-provides-control-surfaces-around-the-model">3.4 The API provides control surfaces around the model<a class="headerlink" href="#34-the-api-provides-control-surfaces-around-the-model" title="Permanent link">&para;</a></h3>
+<p>Structured Outputs, forced or selected tools, grammar-constrained custom tools,
+explicit developer messages, reasoning-effort controls, and a verbosity setting
+reduce ambiguity or enforce part of the output language. The end-user impression
+“GPT follows my format” can therefore combine genuine checkpoint steerability
+with deterministic serving machinery.</p>
+<p>This also explains a trade-off reported in the GPT-4.1 release: early testers
+found the model more literal. Literalness improves compliance with explicit
+constraints but may reduce useful inference when the request is underspecified.</p>
+<h2 id="4-deepseek-historical-weakness-real-progress-and-remaining-gaps">4. DeepSeek: historical weakness, real progress, and remaining gaps<a class="headerlink" href="#4-deepseek-historical-weakness-real-progress-and-remaining-gaps" title="Permanent link">&para;</a></h2>
+<p>The public evidence supports a more precise statement than either “DeepSeek
+cannot follow instructions” or “the gap is gone.”</p>
+<h3 id="41-the-weakness-was-visible-enough-to-become-an-explicit-release-target">4.1 The weakness was visible enough to become an explicit release target<a class="headerlink" href="#41-the-weakness-was-visible-enough-to-become-an-explicit-release-target" title="Permanent link">&para;</a></h3>
+<p>DeepSeek's official <a href="https://api-docs.deepseek.com/updates/">API changelog</a>
+states that the May 2024 DeepSeek-V2 update raised IFEval prompt-level accuracy
+from 63.9% to 77.6%, optimized system-message following, and improved an
+internal JSON parse rate from 78% to 85%. The September 2024 V2.5 release again
+called out writing and instruction following, although its published ArenaHard,
+AlpacaEval, MT-Bench, and AlignBench scores were broader chat-preference
+measures rather than pure constraint tests.</p>
+<p>DeepSeek-R1's January 2025 report is also revealing. On its reported IFEval
+Prompt Strict setting, R1 scored 83.3, below DeepSeek-V3 at 86.1, Claude 3.5
+Sonnet at 86.5, and slightly below GPT-4o at 84.3. The same report says the
+pure-RL R1-Zero checkpoint suffered endless repetition, poor readability, and
+language mixing; R1 added cold-start data, supervised stages, and preference
+alignment to address such behavior. Reasoning ability and controllable chat
+behavior were not the same optimization problem. See the
+<a href="https://github.com/deepseek-ai/DeepSeek-R1">DeepSeek-R1 report and model repository</a>.</p>
+<h3 id="42-v4-explicitly-trains-an-instruction-following-expert">4.2 V4 explicitly trains an instruction-following expert<a class="headerlink" href="#42-v4-explicitly-trains-an-instruction-following-expert" title="Permanent link">&para;</a></h3>
+<p>The April 2026 <a href="https://arxiv.org/abs/2606.19348">DeepSeek-V4 technical report</a>
+discloses a two-stage post-training system. Separate domain experts for
+mathematics, coding, agents, instruction following, and other areas each receive
+supervised fine-tuning followed by Group Relative Policy Optimization (GRPO)
+with domain-specific rewards. A unified model then learns from those experts by
+on-policy distillation. This is direct evidence that instruction following is
+now a dedicated training track rather than an incidental by-product of stronger
+reasoning.</p>
+<h3 id="43-deepseeks-own-report-is-positive-and-candid">4.3 DeepSeek's own report is positive and candid<a class="headerlink" href="#43-deepseeks-own-report-is-positive-and-candid" title="Permanent link">&para;</a></h3>
+<p>The V4 report contains several non-public internal evaluations, so their prompts,
+selection process, and vendor control must be treated cautiously.</p>
+<table>
+<thead>
+<tr>
+<th>Internal V4 evaluation</th>
+<th style="text-align: right;">Disclosed result</th>
+<th>What it does and does not show</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chinese creative-writing instruction following vs Gemini 3.1 Pro</td>
+<td style="text-align: right;">DeepSeek 60.0% win rate</td>
+<td>Strong evidence for that vendor-curated Chinese writing distribution, not general API reliability</td>
+</tr>
+<tr>
+<td>High-complexity instruction following and multi-turn writing vs Claude Opus 4.5</td>
+<td style="text-align: right;">DeepSeek 45.9%, Opus 52.0%, tie 2.0% over 196 cases</td>
+<td>Directly targets the harder behavior users notice; still private and not a GPT comparison</td>
+</tr>
+<tr>
+<td>Chinese white-collar tasks, instruction-following dimension</td>
+<td style="text-align: right;">DeepSeek V4 Pro Max 87.76, Opus 4.6 Max 88.88</td>
+<td>Near parity on 30 tool-equipped professional tasks; scale and rubric are internal</td>
+</tr>
+</tbody>
+</table>
+<p>The authors explicitly state that V4 Pro Max occasionally overlooks particular
+formatting constraints, slightly trails Opus on instruction following, is less
+effective at condensing large inputs into succinct summaries, and sometimes
+over-thinks or misreads vague coding prompts. That admission matches a common
+user perception more closely than a saturated single-turn benchmark does.</p>
+<h3 id="44-current-independent-precise-constraint-scores-are-competitive">4.4 Current independent precise-constraint scores are competitive<a class="headerlink" href="#44-current-independent-precise-constraint-scores-are-competitive" title="Permanent link">&para;</a></h3>
+<p>The following is a <strong>captured leaderboard snapshot</strong>, not a RoseLLM rerun. We
+read the live Artificial Analysis IFBench data on 2026-07-22. IFBench scores are
+prompt-level loose accuracy on difficult program-verifiable constraints; they
+do not measure all the surfaces in Section 1.</p>
+<table>
+<thead>
+<tr>
+<th>Selected live IFBench row</th>
+<th style="text-align: right;">Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Grok 4.3, medium reasoning</td>
+<td style="text-align: right;">83.33%</td>
+</tr>
+<tr>
+<td>MiniMax-M3</td>
+<td style="text-align: right;">82.86%</td>
+</tr>
+<tr>
+<td>DeepSeek V4 Flash, max reasoning</td>
+<td style="text-align: right;">79.18%</td>
+</tr>
+<tr>
+<td>Gemini 3.1 Pro Preview</td>
+<td style="text-align: right;">77.14%</td>
+</tr>
+<tr>
+<td>DeepSeek V4 Pro, max reasoning</td>
+<td style="text-align: right;">76.46%</td>
+</tr>
+<tr>
+<td>GPT-5.5, xhigh reasoning</td>
+<td style="text-align: right;">75.85%</td>
+</tr>
+<tr>
+<td>GPT-5.6 Sol, max reasoning</td>
+<td style="text-align: right;">72.65%</td>
+</tr>
+<tr>
+<td>Claude Fable 5 with fallback</td>
+<td style="text-align: right;">63.47%</td>
+</tr>
+</tbody>
+</table>
+<p>Source: the live <a href="https://artificialanalysis.ai/evaluations/ifbench">Artificial Analysis IFBench leaderboard</a>.
+Its contents are time-sensitive. The selected rows deliberately show that this
+narrow benchmark does <strong>not</strong> support a claim that current GPT models universally
+dominate DeepSeek. It also shows why one should not infer global quality from
+model size or reasoning effort: Flash outranks Pro here, and the leading Grok
+medium-effort row outranks its high-effort row.</p>
+<p>The defensible current conclusion is therefore:</p>
+<ul>
+<li>DeepSeek has improved substantially and is competitive on hard, verifiable,
+  single-response constraints;</li>
+<li>DeepSeek's own V4 evidence still identifies small deficits on complex,
+  multi-turn, concise, and formatting-sensitive tasks;</li>
+<li>public evidence does not provide one current, apples-to-apples GPT-versus-V4
+  score covering hierarchy, multi-turn retention, tools, non-interference,
+  verbosity, and product behavior; and</li>
+<li>a production decision remains application- and harness-specific.</li>
+</ul>
+<h2 id="5-what-each-benchmark-actually-measures">5. What each benchmark actually measures<a class="headerlink" href="#5-what-each-benchmark-actually-measures" title="Permanent link">&para;</a></h2>
+<p>No public leaderboard is “the real instruction-following ranking.” A useful
+suite covers orthogonal failure surfaces.</p>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th>Primary surface</th>
+<th>Scoring</th>
+<th>Main strength</th>
+<th>Main limitation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://arxiv.org/abs/2311.07911">IFEval</a></td>
+<td>About 500 prompts using 25 verifiable instruction types</td>
+<td>Programmatic strict/loose, prompt/instruction level</td>
+<td>Objective, cheap, reproducible</td>
+<td>Public, narrow, increasingly saturated; easy to mistake formatting for general reliability</td>
+</tr>
+<tr>
+<td><a href="https://github.com/allenai/IFBench">IFBench</a></td>
+<td>58 new out-of-distribution constraints combined with held-out WildChat prompts</td>
+<td>Programmatic; paper normally reports prompt-level loose accuracy</td>
+<td>Harder and more diverse precise constraints; open code and data</td>
+<td>Mostly synthetic/verifiable constraints; standard score is not long-horizon product behavior</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2401.03601">InFoBench</a></td>
+<td>500 instructions decomposed into about 2,250 fine-grained requirements</td>
+<td>LLM-based decomposition and Decomposed Requirements Following Ratio</td>
+<td>Makes omitted requirements visible instead of assigning one opaque answer score</td>
+<td>Decomposition and semantic grading inherit judge error</td>
+</tr>
+<tr>
+<td><a href="https://github.com/YJiangcm/FollowBench">FollowBench</a></td>
+<td>Content, situation, style, format, and example constraints at increasing levels</td>
+<td>LLM judge with constraint-evolution context</td>
+<td>Diagnoses degradation as constraints accumulate</td>
+<td>Judge quality and open-ended rubrics matter</td>
+</tr>
+<tr>
+<td><a href="https://github.com/thu-coai/ComplexBench">ComplexBench</a></td>
+<td>Multiple constraints and their dependency/composition structure</td>
+<td>Rules plus LLM evaluators</td>
+<td>Tests composition rather than isolated rules</td>
+<td>Evaluation is more complex and partly judge-dependent</td>
+</tr>
+<tr>
+<td><a href="https://aclanthology.org/2025.acl-long.1581/">CFBench</a></td>
+<td>1,000 Chinese prompts across 200-plus real scenarios, 50-plus tasks, and a 10-category constraint taxonomy</td>
+<td>Multi-dimensional constraint, instruction, and fulfillment scoring with requirement priority</td>
+<td>Tests realistic Chinese constraint composition beyond a small rule set</td>
+<td>Language and judge-dependent open-ended scoring limit generalization</td>
+</tr>
+<tr>
+<td><a href="https://distylai.github.io/IFScale/">IFScale</a></td>
+<td>Adherence as the number of simultaneous instructions grows</td>
+<td>Constraint-specific evaluation</td>
+<td>Exposes scaling curves hidden by one aggregate</td>
+<td>Still a controlled constraint proxy</td>
+</tr>
+<tr>
+<td><a href="https://labs.scale.com/papers/multichallenge">MultiChallenge</a></td>
+<td>Instruction retention, inferred user memory, versioned editing, and self-coherence across turns</td>
+<td>Instance rubrics with an LLM judge</td>
+<td>Much closer to conversational failure</td>
+<td>Scores are judge-sensitive; OpenAI reports its default GPT-4o judge sometimes mis-scored responses</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2410.15553">Multi-IF</a></td>
+<td>Three-turn instruction following across eight languages</td>
+<td>Hybrid programmatic/LLM/human construction and evaluation</td>
+<td>Reveals turn and language degradation</td>
+<td>Limited dialogue depth and benchmark language set</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2411.07037">LIFBench</a></td>
+<td>2,766 expanded instructions over three long-context scenarios, 11 tasks, and six length intervals</td>
+<td>Rubric-based automated LIFEval without human or LLM judging</td>
+<td>Exposes length-dependent performance and stability hidden in short prompts</td>
+<td>Synthetic expansion and controlled lengths may not match a live product's compaction</td>
+</tr>
+<tr>
+<td><a href="https://proceedings.iclr.cc/paper_files/paper/2025/file/b917f916e7eed84ffe8f5e63492b2be8-Paper-Conference.pdf">SysBench</a></td>
+<td>500 system messages, each paired with five user turns, covering constraint violations, priority conflicts, and instability</td>
+<td>Checklist-guided LLM verifier at three granularities</td>
+<td>Separates higher-priority system compliance from ordinary user obedience</td>
+<td>Judge error and a five-turn setting do not cover every tool injection or domain authorization rule</td>
+</tr>
+<tr>
+<td><a href="https://research.google/pubs/mmmt-if-a-challenging-multi-modal-multi-turn-instruction-following-foundation-model-benchmark/">MMMT-IF</a></td>
+<td>Global text rules dispersed through image-grounded multi-turn dialogue</td>
+<td>Program-verifiable Programmatic Instruction Following metrics</td>
+<td>Separates rule retrieval from visual reasoning and tests repeated-run robustness</td>
+<td>Narrow multimodal task design and older model set</td>
+</tr>
+<tr>
+<td><a href="https://openai.com/index/instruction-hierarchy-challenge/">IH-Challenge</a> and System IFEval</td>
+<td>Conflicts across system, developer, user, and tool roles</td>
+<td>Programmatic</td>
+<td>Tests obedience to the correct source and prompt-injection robustness</td>
+<td>Simple conflicts do not cover every real malicious document or agent trajectory</td>
+</tr>
+<tr>
+<td><a href="https://gorilla.cs.berkeley.edu/leaderboard">BFCL V4</a></td>
+<td>Single-turn, multi-turn, memory, hallucination, and tool-call correctness</td>
+<td>Abstract-syntax-tree, execution, and task-specific checks</td>
+<td>Reproducible tool-interface diagnostics with released responses</td>
+<td>Tool syntax success is not complete domain-policy compliance</td>
+</tr>
+<tr>
+<td><a href="https://github.com/sierra-research/tau2-bench"><span class="arithmatex">\(\tau^2\)</span>-bench</a></td>
+<td>Stateful user-agent-tool interaction under a domain policy</td>
+<td>Final state and task checks</td>
+<td>Tests whether an agent completes work while following operating rules</td>
+<td>Simulator, policy, user model, and harness affect the score</td>
+</tr>
+<tr>
+<td><a href="https://github.com/LiveBench/LiveBench">LiveBench</a> instruction category</td>
+<td>Dynamic objective instruction tasks</td>
+<td>Programmatic ground truth, no LLM judge</td>
+<td>Periodic releases reduce contamination and preserve discrimination</td>
+<td>The instruction category remains a task sample, not an end-to-end product audit</td>
+</tr>
+</tbody>
+</table>
+<h3 id="preference-leaderboards-are-not-direct-instruction-tests">Preference leaderboards are not direct instruction tests<a class="headerlink" href="#preference-leaderboards-are-not-direct-instruction-tests" title="Permanent link">&para;</a></h3>
+<p>Chatbot Arena, ArenaHard, AlpacaEval, and MT-Bench can reveal whether humans or
+judges prefer an answer. Preference can include correctness, prose quality,
+length, tone, and brand/style effects. A preferred answer may have silently
+violated a negative instruction, while a terse perfectly compliant answer may
+lose on perceived helpfulness. Use these resources as broad chat-quality
+signals, not substitutes for constraint-level evaluation.</p>
+<h3 id="aggregate-scores-hide-catastrophic-one-missed-rule-failures">Aggregate scores hide catastrophic “one missed rule” failures<a class="headerlink" href="#aggregate-scores-hide-catastrophic-one-missed-rule-failures" title="Permanent link">&para;</a></h3>
+<p>Report at least both:</p>
+<ul>
+<li><strong>constraint-level accuracy:</strong> the fraction of individual rules satisfied;</li>
+<li><strong>all-constraints or prompt-level accuracy:</strong> the fraction of tasks on which
+  every required rule passes.</li>
+</ul>
+<p>A response that satisfies nine of ten rules scores 90% under the first metric
+and 0% under the second. The second often matches production reality when one
+forbidden edit, missing field, or unauthorized action invalidates the result.</p>
+<h2 id="6-what-forums-and-practitioner-reports-can-legitimately-tell-us">6. What forums and practitioner reports can legitimately tell us<a class="headerlink" href="#6-what-forums-and-practitioner-reports-can-legitimately-tell-us" title="Permanent link">&para;</a></h2>
+<p>Forum posts are valuable for discovering recurring failure modes. They are poor
+measurements of model-family prevalence because users self-select, prompts are
+usually unavailable, model aliases change, and successful routine runs are
+underreported.</p>
+<h3 id="deepseek-v4-community-themes">DeepSeek V4 community themes<a class="headerlink" href="#deepseek-v4-community-themes" title="Permanent link">&para;</a></h3>
+<p>Recent reports are mixed rather than uniformly negative.</p>
+<ul>
+<li>Several users report that V4 Flash is fast and economical for coding agents,
+  long-context refactors, and specification-driven work; one July 2026 user
+  called V4 Pro sufficient and said it followed instructions well. See the
+  positive <a href="https://www.reddit.com/r/DeepSeek/comments/1v2dwel/deepseek_v4_pro_is_amazing/">V4 Pro report</a>
+  and an <a href="https://www.reddit.com/r/DeepSeek/comments/1uknpj9/switched_to_open_code_deepseek_v4_flash_is_the/">OpenCode/V4 Flash thread</a>.</li>
+<li>Other users repeatedly describe “babysitting,” omitted prompt clauses,
+  premature claims of completion, role-play/style drift, or simple instructions
+  becoming worse in thinking mode. See the mixed
+  <a href="https://www.reddit.com/r/DeepSeek/comments/1uagzvt/flash_and_pro_not_following_instructions/">Flash/Pro instruction thread</a>
+  and the <a href="https://www.reddit.com/r/DeepSeek/comments/1sv9lzt/deepseek_v4_how_can_we_get_more_out_of/">reasoner-versus-chat discussion</a>.</li>
+<li>Some practitioners find non-thinking mode better for simple literal tasks and
+  high/max effort better when retrieving many constraints or files. That is a
+  useful test hypothesis, not a universal rule.</li>
+<li>Role-play communities emphasize persistent character knowledge, style, and
+  “blind spots,” which are poorly represented by IFEval. Coding communities
+  emphasize prohibited file reads, plan-mode boundaries, tool use, and claims
+  of test completion. Their contradictory verdicts often reflect different
+  target capabilities.</li>
+</ul>
+<h3 id="gpt-community-themes">GPT community themes<a class="headerlink" href="#gpt-community-themes" title="Permanent link">&para;</a></h3>
+<p>GPT models also receive current complaints about custom instructions or coding
+rules being ignored, “helpful” reinterpretation, loss after context compaction,
+and behavior changes across product updates. Examples include a June 2026
+<a href="https://www.reddit.com/r/codex/comments/1u9t02o/gpt_54_and_55_are_ignoring_agentsmd_instructions/">Codex AGENTS.md report</a>
+and a <a href="https://www.reddit.com/r/ChatGPTcomplaints/comments/1tuupks/gpt55_keeps_helpfully_ignoring_instructions_i/">translation/adaptation complaint</a>.
+These reports refute “GPT never disobeys,” but they do not establish a 40%
+population failure rate or isolate the checkpoint from memory, compaction, or
+application behavior.</p>
+<h3 id="normalize-these-confounders-before-believing-a-comparison">Normalize these confounders before believing a comparison<a class="headerlink" href="#normalize-these-confounders-before-believing-a-comparison" title="Permanent link">&para;</a></h3>
+<ol>
+<li>exact immutable model ID and provider;</li>
+<li>web application, first-party API, or third-party gateway;</li>
+<li>thinking enabled/disabled and reasoning effort;</li>
+<li>temperature, top-p, maximum output, stop conditions, and retries;</li>
+<li>system/developer prompt, chat template, and full message order;</li>
+<li>context length, retrieval, summarization, and compaction state;</li>
+<li>native checkpoint versus a quantized or distilled local model;</li>
+<li>native tools versus prompt-emulated tools and constrained decoding;</li>
+<li>safety policy or content filter; and</li>
+<li>one impressive/failing sample versus repeated trials.</li>
+</ol>
+<p>DeepSeek's current <a href="https://api-docs.deepseek.com/guides/thinking_mode/">Thinking Mode documentation</a>
+states that thinking defaults to enabled for V4, regular requests default to
+high effort, some complex agent requests are automatically moved to max, and
+the old <code>deepseek-chat</code>/<code>deepseek-reasoner</code> aliases temporarily route to V4
+Flash non-thinking/thinking modes before retirement. A comparison that records
+only “DeepSeek” is therefore not reproducible.</p>
+<h2 id="7-how-to-read-an-instruction-following-claim-in-a-tech-report">7. How to read an instruction-following claim in a tech report<a class="headerlink" href="#7-how-to-read-an-instruction-following-claim-in-a-tech-report" title="Permanent link">&para;</a></h2>
+<p>Before accepting a score, record the following.</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Why it changes the interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Is this atomic formatting, open-ended task completion, multi-turn retention, hierarchy, or tool policy?</td>
+<td>These capabilities are not interchangeable</td>
+</tr>
+<tr>
+<td>What exact checkpoint, provider, date, mode, and reasoning effort were used?</td>
+<td>Aliases and inference effort can change behavior</td>
+</tr>
+<tr>
+<td>Is the dataset public, private, recently refreshed, or sampled from production?</td>
+<td>Contamination and selection bias differ</td>
+</tr>
+<tr>
+<td>Is scoring deterministic, human, or an LLM judge?</td>
+<td>Rules miss semantics; judges add preference and self-bias</td>
+</tr>
+<tr>
+<td>What is the denominator and metric: per-rule, all-rules, pass@1, best-of-N, win rate, or Elo?</td>
+<td>Identical-looking percentages can mean different events</td>
+</tr>
+<tr>
+<td>Were failures, refusals, truncations, and API errors counted as incorrect?</td>
+<td>Filtering can inflate reliability</td>
+</tr>
+<tr>
+<td>Were prompts, raw responses, graders, and code released?</td>
+<td>Reproduction and error auditing require artifacts</td>
+</tr>
+<tr>
+<td>Was JSON or tool syntax grammar-constrained?</td>
+<td>Decoder enforcement is not raw model adherence</td>
+</tr>
+<tr>
+<td>Were the compared prompts and budgets identical?</td>
+<td>Extra reasoning tokens and retries buy capability</td>
+</tr>
+<tr>
+<td>Does the report include negative results and slice breakdowns?</td>
+<td>Aggregate wins can conceal the user's critical failure class</td>
+</tr>
+</tbody>
+</table>
+<p>Vendor reports are useful evidence of training priorities and internal product
+distributions. They are not neutral leaderboards. Independent leaderboards are
+useful for standardized comparisons. They are not the user's production
+distribution. Both are needed.</p>
+<h2 id="8-a-production-evaluation-that-reflects-actual-experience">8. A production evaluation that reflects actual experience<a class="headerlink" href="#8-a-production-evaluation-that-reflects-actual-experience" title="Permanent link">&para;</a></h2>
+<p>For a meaningful GPT-versus-DeepSeek decision, build a private suite from real
+failures and accepted outputs. A practical first version contains 100–200 tasks:</p>
+<ul>
+<li>20–30 atomic and compositional hard constraints;</li>
+<li>15–25 negative instructions and “do nothing outside scope” cases;</li>
+<li>15–25 long-context or multi-turn retention cases;</li>
+<li>10–20 versioned editing and no-regression cases;</li>
+<li>10–20 system/developer/user/tool conflicts and prompt injections;</li>
+<li>15–25 tool-selection, argument-schema, error-recovery, and domain-policy
+  cases; and</li>
+<li>multilingual or multimodal slices proportional to the application.</li>
+</ul>
+<p>For each case, separate:</p>
+<ol>
+<li><strong>task oracle:</strong> was the substantive outcome correct?</li>
+<li><strong>constraint oracles:</strong> did every positive, negative, order, and scope rule
+   pass?</li>
+<li><strong>action oracle:</strong> were only authorized tools and mutations used?</li>
+<li><strong>calibration oracle:</strong> did the model abstain when required?</li>
+<li><strong>efficiency record:</strong> latency, input/output/reasoning tokens, tool calls,
+   retries, and cost.</li>
+</ol>
+<p>Run both deterministic-looking settings and production settings. Use at least
+three repeated trials for high-risk tasks; five or more is better when sampling,
+tools, or simulated users add variance. Report:</p>
+<ul>
+<li>first-attempt all-constraints pass rate;</li>
+<li>per-constraint accuracy by failure type;</li>
+<li>task-completion rate;</li>
+<li>unauthorized or extraneous action rate;</li>
+<li>repair rate after one explicit critique;</li>
+<li>regression rate across turns;</li>
+<li>output-length ratio against the requested length;</li>
+<li>mean and tail latency, token use, tool calls, and cost; and</li>
+<li>confidence intervals or paired bootstrap uncertainty.</li>
+</ul>
+<p>Evaluate V4 Flash and Pro separately, with thinking disabled and with high/max
+effort where applicable. Evaluate each GPT checkpoint with the exact reasoning
+effort, verbosity, tool mode, and schema enforcement used in production. Do not
+let one model use grammar constraints, retries, or a stronger harness while
+calling the result a checkpoint comparison.</p>
+<p>The final ship criterion should be slice-specific. A lower-cost model can be a
+good default for reversible drafting while a more reliable model handles
+irreversible actions, complex policy, or final verification. Model routing is
+often a better engineering answer than declaring one universal winner.</p>
+<h2 id="9-bottom-line">9. Bottom line<a class="headerlink" href="#9-bottom-line" title="Permanent link">&para;</a></h2>
+<p>The historical impression that GPT models were easier to steer than early
+DeepSeek chat/reasoning models has real support: DeepSeek repeatedly targeted
+instruction following in release notes, R1 underperformed its own V3 on strict
+IFEval, and reasoning-oriented training exposed readability and control
+trade-offs.</p>
+<p>The 2026 picture is more nuanced. DeepSeek V4 now includes a dedicated
+instruction-following expert in post-training and is competitive with or ahead
+of current GPT rows on the narrow IFBench precise-constraint leaderboard. At
+the same time, DeepSeek's own report and current practitioner discussions still
+identify complex multi-turn retention, succinctness, formatting details,
+over-thinking, and agent-policy adherence as places requiring supervision.</p>
+<p>GPT's perceived advantage is best understood as <strong>model post-training plus
+instruction hierarchy plus developer controls plus a mature serving and agent
+stack</strong>, not as an architectural law. It remains fallible, especially when
+custom instructions, memory, compaction, safety policy, or helpful defaults
+conflict. The most honest current answer is not one leaderboard rank but a
+vector of matched, repeated measurements on the user's actual workflow.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Jeffrey Zhou et al.,
+   <a href="https://arxiv.org/abs/2311.07911">“Instruction-Following Evaluation for Large Language Models”</a>,
+   2023.</li>
+<li>Valentina Pyatkin et al.,
+   <a href="https://arxiv.org/abs/2507.02833">“Generalizing Verifiable Instruction Following” / IFBench</a>,
+   NeurIPS 2025; <a href="https://github.com/allenai/IFBench">official code</a>.</li>
+<li>Ai2,
+   <a href="https://allenai.org/blog/ifbench-artificial-analysis">“Why Artificial Analysis uses Ai2's IFBench instruction-following eval”</a>,
+   2026.</li>
+<li>Ved Sirdeshmukh et al.,
+   <a href="https://labs.scale.com/papers/multichallenge">“MultiChallenge”</a>, 2025.</li>
+<li>OpenAI, <a href="https://openai.com/index/gpt-4-1/">“Introducing GPT-4.1 in the API”</a>,
+   2025.</li>
+<li>OpenAI,
+   <a href="https://openai.com/index/introducing-gpt-5-for-developers/">“Introducing GPT-5 for developers”</a>,
+   2025.</li>
+<li>OpenAI,
+   <a href="https://openai.com/index/instruction-hierarchy-challenge/">“Improving instruction hierarchy in frontier LLMs”</a>,
+   2026.</li>
+<li>DeepSeek,
+   <a href="https://api-docs.deepseek.com/updates/">API changelog</a>, verified
+   2026-07-22.</li>
+<li>DeepSeek,
+   <a href="https://arxiv.org/abs/2501.12948">“DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning”</a>,
+   v2, 2026.</li>
+<li>DeepSeek,
+    <a href="https://arxiv.org/abs/2606.19348">“DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence”</a>,
+    2026, especially Sections 1 and 5.4 and Tables 13–14.</li>
+<li>UC Berkeley,
+    <a href="https://gorilla.cs.berkeley.edu/leaderboard">Berkeley Function-Calling Leaderboard V4</a>,
+    verified 2026-07-22.</li>
+<li>LiveBench,
+    <a href="https://github.com/LiveBench/LiveBench">official repository and evaluation protocol</a>,
+    verified 2026-07-22.</li>
+<li>Elliot Epstein et al.,
+    <a href="https://research.google/pubs/mmmt-if-a-challenging-multi-modal-multi-turn-instruction-following-foundation-model-benchmark/">“MMMT-IF”</a>,
+    2024.</li>
+<li>Yiwei Qin et al.,
+    <a href="https://arxiv.org/abs/2401.03601">“InFoBench”</a>, 2024.</li>
+<li>Tao Zhang et al.,
+    <a href="https://aclanthology.org/2025.acl-long.1581/">“CFBench”</a>, ACL 2025.</li>
+<li>Xiaodong Wu et al.,
+    <a href="https://arxiv.org/abs/2411.07037">“LIFBench”</a>, 2024.</li>
+<li>Yanzhao Qin et al.,
+    <a href="https://proceedings.iclr.cc/paper_files/paper/2025/file/b917f916e7eed84ffe8f5e63492b2be8-Paper-Conference.pdf">“SysBench”</a>,
+    ICLR 2025.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

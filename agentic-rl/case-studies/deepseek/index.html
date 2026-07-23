@@ -1,0 +1,4602 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/agentic-rl/case-studies/deepseek/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../glm/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>DeepSeek - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deepseek-from-domain-data-to-million-token-agentic-reinforcement-learning" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DeepSeek
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#readers-terminology-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reader's terminology key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-executive-conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Executive conclusions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Lineage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-deepseek-llm-dense-baseline-and-global-deduplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. DeepSeek LLM: dense baseline and global deduplication
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. DeepSeek LLM: dense baseline and global deduplication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-and-pretraining-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture and pretraining [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-operation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data operation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alignment-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alignment [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-deepseek-coder-repository-level-training-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. DeepSeek Coder: repository-level training data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. DeepSeek Coder: repository-level training data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#models-and-exposure-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models and exposure [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repository-acquisition-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repository acquisition [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instruction-tuning-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instruction tuning [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-deepseekmath-domain-recovery-and-the-first-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. DeepSeekMath: domain recovery and the first GRPO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. DeepSeekMath: domain recovery and the first GRPO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#math-corpus-construction-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Math corpus construction [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actual-training-exposure-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actual training exposure [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sft-and-grpo-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SFT and GRPO [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-deepseek-v2-mla-fine-grained-moe-and-online-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. DeepSeek-V2: MLA, fine-grained MoE, and online RL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. DeepSeek-V2: MLA, fine-grained MoE, and online RL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pretraining-and-systems-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pretraining and systems [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context-and-alignment-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context and alignment [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-deepseek-coder-v2-verifiers-and-learned-code-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. DeepSeek-Coder-V2: verifiers and learned code reward
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. DeepSeek-Coder-V2: verifiers and learned code reward">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lineagedata-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lineage/data [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#models-and-post-training-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models and post-training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-v25-capability-combination-with-an-undisclosed-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. V2.5: capability combination with an undisclosed recipe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-deepseek-v3-architecturesystem-co-design-and-specialist-post-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. DeepSeek-V3: architecture/system co-design and specialist post-training
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. DeepSeek-V3: architecture/system co-design and specialist post-training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-d_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-and-optimization-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data and optimization [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context-infrastructure-and-disclosed-cost-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context, infrastructure, and disclosed cost [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-training-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-deepseek-r1-and-r1-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. DeepSeek-R1 and R1-Zero
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. DeepSeek-R1 and R1-Zero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-r1-zero-no-sft-experiment-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 R1-Zero: no-SFT experiment [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-production-r1-four-stages-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Production R1: four stages [D]
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.2 Production R1: four stages [D]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-1-cold-start-reasoning-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1 — cold-start reasoning SFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-2-reasoning-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2 — reasoning RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-3-rejection-sampled-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3 — rejection-sampled SFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-4-mixed-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4 — mixed RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-promptreward-operations-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Prompt/reward operations [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-infrastructure-and-cost-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Infrastructure and cost [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#105-distillation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5 Distillation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#106-explicit-limitations-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.6 Explicit limitations [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-interim-production-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Interim production checkpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Interim production checkpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v3-0324" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V3-0324
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#r1-0528" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        R1-0528
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v31-v31-terminus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V3.1 / V3.1-Terminus
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-v32-exp-sparse-attention-and-unified-post-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. V3.2-Exp: sparse attention and unified post-training
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. V3.2-Exp: sparse attention and unified post-training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepseek-sparse-attention-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeepSeek Sparse Attention [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-training-d_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-v32-production-agentic-rl-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. V3.2: production agentic-RL factory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. V3.2: production agentic-RL factory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#specialists-and-mixed-grpo-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Specialists and mixed GRPO [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-policy-fidelity-controls-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-policy fidelity controls [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thinking-with-tools-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking with tools [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-data-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent data [D]
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent data [D]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#search-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search synthesis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coding-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coding environments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#general-agent-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General-agent synthesis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-deepseek-v4-preview-million-token-models-and-opd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. DeepSeek-V4 Preview: million-token models and OPD
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. DeepSeek-V4 Preview: million-token models and OPD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141-models-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.1 Models [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142-architecture-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.2 Architecture [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143-data-and-pretraining-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3 Data and pretraining [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#144-specialist-grpo-and-on-policy-distillation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.4 Specialist GRPO and on-policy distillation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#145-tool-protocol-fp4-and-rollout-fidelity-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.5 Tool protocol, FP4, and rollout fidelity [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#146-million-token-fault-tolerance-and-dsec-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.6 Million-token fault tolerance and DSec [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-reconstructed-disclosed-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Reconstructed disclosed workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-source-level-study-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Source-level study map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-specialized-branches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Specialized branches
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. Specialized branches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepseek-prover-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeepSeek-Prover-V2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepseekmath-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeepSeekMath-V2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-claims-to-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Claims to avoid
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#readers-terminology-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reader's terminology key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-executive-conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Executive conclusions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Lineage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-deepseek-llm-dense-baseline-and-global-deduplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. DeepSeek LLM: dense baseline and global deduplication
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. DeepSeek LLM: dense baseline and global deduplication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-and-pretraining-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture and pretraining [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-operation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data operation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alignment-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alignment [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-deepseek-coder-repository-level-training-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. DeepSeek Coder: repository-level training data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. DeepSeek Coder: repository-level training data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#models-and-exposure-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models and exposure [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repository-acquisition-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repository acquisition [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instruction-tuning-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instruction tuning [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-deepseekmath-domain-recovery-and-the-first-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. DeepSeekMath: domain recovery and the first GRPO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. DeepSeekMath: domain recovery and the first GRPO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#math-corpus-construction-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Math corpus construction [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actual-training-exposure-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actual training exposure [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sft-and-grpo-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SFT and GRPO [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-deepseek-v2-mla-fine-grained-moe-and-online-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. DeepSeek-V2: MLA, fine-grained MoE, and online RL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. DeepSeek-V2: MLA, fine-grained MoE, and online RL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pretraining-and-systems-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pretraining and systems [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context-and-alignment-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context and alignment [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-deepseek-coder-v2-verifiers-and-learned-code-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. DeepSeek-Coder-V2: verifiers and learned code reward
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. DeepSeek-Coder-V2: verifiers and learned code reward">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lineagedata-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lineage/data [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#models-and-post-training-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models and post-training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-v25-capability-combination-with-an-undisclosed-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. V2.5: capability combination with an undisclosed recipe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-deepseek-v3-architecturesystem-co-design-and-specialist-post-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. DeepSeek-V3: architecture/system co-design and specialist post-training
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. DeepSeek-V3: architecture/system co-design and specialist post-training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-d_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-and-optimization-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data and optimization [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context-infrastructure-and-disclosed-cost-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context, infrastructure, and disclosed cost [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-training-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-deepseek-r1-and-r1-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. DeepSeek-R1 and R1-Zero
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. DeepSeek-R1 and R1-Zero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-r1-zero-no-sft-experiment-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 R1-Zero: no-SFT experiment [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-production-r1-four-stages-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Production R1: four stages [D]
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.2 Production R1: four stages [D]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-1-cold-start-reasoning-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1 — cold-start reasoning SFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-2-reasoning-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2 — reasoning RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-3-rejection-sampled-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3 — rejection-sampled SFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-4-mixed-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4 — mixed RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-promptreward-operations-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Prompt/reward operations [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-infrastructure-and-cost-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Infrastructure and cost [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#105-distillation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5 Distillation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#106-explicit-limitations-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.6 Explicit limitations [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-interim-production-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Interim production checkpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Interim production checkpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v3-0324" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V3-0324
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#r1-0528" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        R1-0528
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v31-v31-terminus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V3.1 / V3.1-Terminus
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-v32-exp-sparse-attention-and-unified-post-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. V3.2-Exp: sparse attention and unified post-training
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. V3.2-Exp: sparse attention and unified post-training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepseek-sparse-attention-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeepSeek Sparse Attention [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-training-d_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-v32-production-agentic-rl-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. V3.2: production agentic-RL factory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. V3.2: production agentic-RL factory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#specialists-and-mixed-grpo-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Specialists and mixed GRPO [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-policy-fidelity-controls-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-policy fidelity controls [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thinking-with-tools-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thinking with tools [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-data-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent data [D]
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent data [D]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#search-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search synthesis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coding-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coding environments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#general-agent-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General-agent synthesis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-deepseek-v4-preview-million-token-models-and-opd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. DeepSeek-V4 Preview: million-token models and OPD
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. DeepSeek-V4 Preview: million-token models and OPD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141-models-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.1 Models [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142-architecture-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.2 Architecture [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143-data-and-pretraining-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3 Data and pretraining [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#144-specialist-grpo-and-on-policy-distillation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.4 Specialist GRPO and on-policy distillation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#145-tool-protocol-fp4-and-rollout-fidelity-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.5 Tool protocol, FP4, and rollout fidelity [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#146-million-token-fault-tolerance-and-dsec-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.6 Million-token fault tolerance and DSec [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-reconstructed-disclosed-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Reconstructed disclosed workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-source-level-study-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Source-level study map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-specialized-branches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Specialized branches
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. Specialized branches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepseek-prover-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeepSeek-Prover-V2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepseekmath-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeepSeekMath-V2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-claims-to-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Claims to avoid
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="deepseek-from-domain-data-to-million-token-agentic-reinforcement-learning">DeepSeek: From Domain Data to Million-Token Agentic Reinforcement Learning<a class="headerlink" href="#deepseek-from-domain-data-to-million-token-agentic-reinforcement-learning" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23. <strong>Sources:</strong> DeepSeek papers, official model
+cards, repositories, and release notes. Benchmark results are vendor-reported
+unless marked reproduced.</p>
+<p>For release dates across the main text lineage, code/math/prover branches,
+vision/generation/OCR branches, and API aliases, see the
+<a href="../../../deepseek-release-timeline/">DeepSeek release timeline</a>. For a
+cross-vendor accounting of fresh, continued, and multimodal token exposure, see
+the <a href="../../../model-training-token-ledger/">model training token ledger</a>.</p>
+<p>For the separate DeepSeek-VL, Janus, DeepSeek-OCR/OCR 2, and current text-only
+V4 modality boundaries, see the
+<a href="../../../multimodal/deepseek/">DeepSeek multimodal architecture chapter</a>.</p>
+<h2 id="readers-terminology-key">Reader's terminology key<a class="headerlink" href="#readers-terminology-key" title="Permanent link">&para;</a></h2>
+<p>These terms recur throughout this chapter:</p>
+<ul>
+<li><strong>Supervised Fine-Tuning (SFT):</strong> next-token imitation on curated target
+  answers or trajectories.</li>
+<li><strong>Direct Preference Optimization (DPO):</strong> an offline objective that increases
+  preferred responses relative to rejected responses and a reference policy.</li>
+<li><strong>Group Relative Policy Optimization (GRPO):</strong> a critic-free online method
+  that compares a group of responses sampled for the same prompt.</li>
+<li><strong>Reinforcement Learning with Verifiable Rewards (RLVR):</strong> policy training
+  from mechanically checkable outcomes such as exact answers or unit tests.</li>
+<li><strong>Mixture of Experts (MoE):</strong> sparse feed-forward routing in which each token
+  activates only a small subset of many experts.</li>
+<li><strong>Multi-head Latent Attention (MLA):</strong> DeepSeek's compressed key/value latent
+  representation for reducing inference cache and bandwidth.</li>
+<li><strong>Multi-Token Prediction (MTP):</strong> auxiliary prediction of several future
+  tokens, later also used for speculative decoding.</li>
+<li><strong>DeepSeek Sparse Attention (DSA):</strong> DeepSeek's selected-token long-context
+  attention mechanism.</li>
+<li><strong>On-Policy Distillation (OPD):</strong> matching teachers on states and tokens
+  sampled by the student policy, rather than only on a fixed offline corpus.</li>
+<li><strong>Fill-in-the-Middle (FIM):</strong> generating a missing span from both its prefix
+  and suffix; important in code-model data.</li>
+<li><strong>Grouped-Query Attention (GQA):</strong> several query heads share fewer key/value
+  heads to reduce memory.</li>
+<li><strong>Byte-Level Byte Pair Encoding (BBPE):</strong> subword tokenization over bytes,
+  making arbitrary input representable.</li>
+<li><strong>Root Mean Square Layer Normalization (RMSNorm)</strong> and <strong>Rotary Position
+  Embedding (RoPE):</strong> the normalization and relative-position mechanisms used
+  by many DeepSeek generations.</li>
+<li><strong>Key-Value (KV) cache:</strong> stored attention keys and values reused during
+  autoregressive decoding.</li>
+</ul>
+<h2 id="1-executive-conclusions">1. Executive conclusions<a class="headerlink" href="#1-executive-conclusions" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>DeepSeekMath introduced GRPO publicly, not DeepSeek-R1.</strong> Its 2024 report
+   provides the original DeepSeek formulation and concrete math-RL recipe.</li>
+<li><strong>R1-Zero is the no-SFT experiment.</strong> The production DeepSeek-R1 pipeline
+   uses cold-start SFT, reasoning RL, rejection-sampled SFT, and a second mixed
+   RL stage.</li>
+<li><strong>Agentic RL becomes a first-class production pipeline in V3.1/V3.2.</strong> V3.2
+   discloses 85,267 coding/search/general/code-interpreter tasks and more than
+   1,800 environments.</li>
+<li><strong>V4 changes final capability consolidation.</strong> More than ten specialists are
+   trained with GRPO, but the final student is merged with full-vocabulary
+   multi-teacher on-policy distillation (OPD), replacing V3.2's final mixed-RL
+   consolidation.</li>
+<li>DeepSeek releases many weights, reports, reference inference implementations,
+   and selected kernels/systems. It does <strong>not</strong> release a complete pretraining
+   or RL stack, raw corpus, reward datasets/models, or production orchestration.</li>
+</ol>
+<h2 id="2-lineage">2. Lineage<a class="headerlink" href="#2-lineage" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Release</th>
+<th>Main transition</th>
+<th>Agentic-RL significance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024-01-05</td>
+<td>DeepSeek LLM</td>
+<td>Dense 7B/67B, 2T tokens</td>
+<td>SFT + DPO; no online RL disclosed</td>
+</tr>
+<tr>
+<td>2024-01-25</td>
+<td>DeepSeek Coder</td>
+<td>Repository-level code, FIM, 16K</td>
+<td>Executable-code data foundation</td>
+</tr>
+<tr>
+<td>2024-02-05</td>
+<td>DeepSeekMath</td>
+<td>Domain continued pretraining + GRPO</td>
+<td>First public DeepSeek GRPO</td>
+</tr>
+<tr>
+<td>2024-05-06</td>
+<td>DeepSeek-V2</td>
+<td>236B/21B MoE, MLA</td>
+<td>Two-stage GRPO and hybrid rollout/training</td>
+</tr>
+<tr>
+<td>2024-06-17</td>
+<td>DeepSeek-Coder-V2</td>
+<td>V2 branch + 6T code-heavy tokens</td>
+<td>Code/math verifier-based RL</td>
+</tr>
+<tr>
+<td>2024-09-05</td>
+<td>DeepSeek-V2.5</td>
+<td>Chat/coder capability combination</td>
+<td>Update recipe unknown</td>
+</tr>
+<tr>
+<td>2024-12-26</td>
+<td>DeepSeek-V3</td>
+<td>671B/37B, FP8, MTP, loss-free balancing</td>
+<td>Specialist distillation + mixed GRPO</td>
+</tr>
+<tr>
+<td>2025-01-20</td>
+<td>DeepSeek-R1</td>
+<td>long-CoT RL</td>
+<td>R1-Zero experiment + four-stage production R1</td>
+</tr>
+<tr>
+<td>2025-03-24</td>
+<td>V3-0324</td>
+<td>post-training refresh</td>
+<td>Tool/coding gains; recipe unknown</td>
+</tr>
+<tr>
+<td>2025-05-28</td>
+<td>R1-0528</td>
+<td>more post-training compute</td>
+<td>Stronger reasoning/tool behavior; recipe partial</td>
+</tr>
+<tr>
+<td>2025-08-21</td>
+<td>V3.1</td>
+<td>hybrid thinking + agent training</td>
+<td>Explicit search/coding/tool post-training</td>
+</tr>
+<tr>
+<td>2025-09-29</td>
+<td>V3.2-Exp</td>
+<td>DeepSeek Sparse Attention</td>
+<td>Specialists + mixed GRPO disclosed</td>
+</tr>
+<tr>
+<td>2025-12-01</td>
+<td>V3.2</td>
+<td>scaled agent environments</td>
+<td>85,267 tasks; &gt;10% pretraining-equivalent post-training budget</td>
+</tr>
+<tr>
+<td>2026-04-24</td>
+<td>DeepSeek-V4 preview release</td>
+<td>284B/13B Flash; 1.6T/49B Pro; 1M context</td>
+<td>GRPO specialists consolidated by OPD</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-deepseek-llm-dense-baseline-and-global-deduplication">3. DeepSeek LLM: dense baseline and global deduplication<a class="headerlink" href="#3-deepseek-llm-dense-baseline-and-global-deduplication" title="Permanent link">&para;</a></h2>
+<p>Primary source: <a href="https://arxiv.org/abs/2401.02954">DeepSeek LLM</a>, Sections 2
+and 4, pp. 4–6 and 12–13.</p>
+<h3 id="architecture-and-pretraining-d">Architecture and pretraining [D]<a class="headerlink" href="#architecture-and-pretraining-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Dense decoder-only 7B and 67B models; 4,096-token context.</li>
+<li>7B: 30 layers, hidden width 4,096, 32 attention/KV heads.</li>
+<li>67B: 95 layers, hidden width 8,192, 64 query heads and 8 KV heads (GQA).</li>
+<li>RMSNorm pre-normalization, SwiGLU, and RoPE.</li>
+<li>2T training tokens.</li>
+<li>BBPE tokenizer trained on about 24 GB of multilingual text; 100,015 realized
+  tokens in a nominal 102,400-token setup.</li>
+<li>AdamW <span class="arithmatex">\((\beta_1=.9,\beta_2=.95)\)</span>, weight decay .1, 2,000-step warmup,
+  gradient clipping 1.0.</li>
+<li>Data/tensor/sequence/pipeline parallelism, FlashAttention, ZeRO-1, BF16
+  forward/backward, FP32 gradients, asynchronous five-minute checkpoints.</li>
+</ul>
+<h3 id="data-operation-d">Data operation [D]<a class="headerlink" href="#data-operation-d" title="Permanent link">&para;</a></h3>
+<p>Global deduplication across 91 Common Crawl dumps removed <strong>89.8%</strong> of material,
+compared with <strong>22.2%</strong> when deduplicating one dump independently. The number is
+important for pipeline design: repeated web snapshots dominate raw volume, so
+per-dump deduplication dramatically overstates unique corpus size.</p>
+<h3 id="alignment-d">Alignment [D]<a class="headerlink" href="#alignment-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>1.5M SFT examples.</li>
+<li>1.2M helpful: 31.2% general, 46.6% math, 22.2% code.</li>
+<li>300K safety examples.</li>
+<li>SFT: four epochs for 7B and two for 67B; learning rates <span class="arithmatex">\(10^{-5}\)</span> and
+  <span class="arithmatex">\(5\times10^{-6}\)</span>.</li>
+<li>DPO: one epoch, learning rate <span class="arithmatex">\(5\times10^{-6}\)</span>, batch 512.</li>
+<li>No online RL stage is reported.</li>
+</ul>
+<p><strong>[U]</strong> Source-level corpus mixture, DPO pair count, GPU count/hours/cost, and
+training code remain undisclosed.</p>
+<h2 id="4-deepseek-coder-repository-level-training-data">4. DeepSeek Coder: repository-level training data<a class="headerlink" href="#4-deepseek-coder-repository-level-training-data" title="Permanent link">&para;</a></h2>
+<p>Primary sources: <a href="https://arxiv.org/abs/2401.14196">paper</a>, Sections 2–3,
+pp. 3–9; <a href="https://github.com/deepseek-ai/DeepSeek-Coder">repository</a>.</p>
+<h3 id="models-and-exposure-d">Models and exposure [D]<a class="headerlink" href="#models-and-exposure-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Dense 1.3B, 6.7B, and 33B models.</li>
+<li>1.8T tokens at 4K, then 200B at 16K.</li>
+<li>Mixture: 87% code, 10% code-related English, 3% unrelated Chinese text.</li>
+<li>50% document-level FIM in prefix–suffix–middle order before packing.</li>
+<li>33B uses GQA.</li>
+<li>16K extension: 1,000 steps, batch 512, RoPE scale 4/base 100,000.</li>
+</ul>
+<h3 id="repository-acquisition-d">Repository acquisition [D]<a class="headerlink" href="#repository-acquisition-d" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Collect public GitHub repositories created before February 2023 in 87
+   languages.</li>
+<li>Apply repository/file filters similar to StarCoder.</li>
+<li>Parse <code>import</code>, <code>using</code>, and <code>include</code> dependencies.</li>
+<li>Topologically order files where the dependency graph permits.</li>
+<li>Prefix repository paths and concatenate files as repository-level examples.</li>
+<li>Apply repository-level near-deduplication.</li>
+<li>Run compiler checks, learned quality scoring, and heuristics.</li>
+<li>Decontaminate against HumanEval, MBPP, GSM8K, and MATH by exact 10-gram
+   matching.</li>
+</ol>
+<p>Only <strong>32.8%</strong> of initial code survives filtering. The disclosed final material
+contains 797.92 GB and 603.173M files.</p>
+<h3 id="instruction-tuning-d">Instruction tuning [D]<a class="headerlink" href="#instruction-tuning-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Human instructions plus Alpaca-family data.</li>
+<li>About 2B instruction tokens.</li>
+<li>Batch about 4M tokens; learning rate <span class="arithmatex">\(10^{-5}\)</span>; 100 warmup steps.</li>
+<li>No RL stage.</li>
+</ul>
+<p>This stage contributes realistic repository context and executable filtering,
+but tool use and environment interaction are not yet policy-optimized.</p>
+<h2 id="5-deepseekmath-domain-recovery-and-the-first-grpo">5. DeepSeekMath: domain recovery and the first GRPO<a class="headerlink" href="#5-deepseekmath-domain-recovery-and-the-first-grpo" title="Permanent link">&para;</a></h2>
+<p>Primary source: <a href="https://arxiv.org/abs/2402.03300">DeepSeekMath</a>, Sections 2–4.</p>
+<h3 id="math-corpus-construction-d">Math corpus construction [D]<a class="headerlink" href="#math-corpus-construction-d" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Use OpenWebMath as positive seed data.</li>
+<li>Train fastText on 500K positive and 500K negative Common Crawl examples.</li>
+<li>Score about 40B deduplicated HTML pages.</li>
+<li>Select the highest-scoring 40B-token subset after 40/80/120/160B trials.</li>
+<li>Identify domains with more than 10% recall.</li>
+<li>Human-label useful URL-path patterns inside those domains.</li>
+<li>Recover matching pages and repeat classifier/domain discovery.</li>
+<li>Repeat four times; 98% of final data was found by iteration three.</li>
+<li>Apply 10-gram benchmark decontamination.</li>
+</ol>
+<p>The underlying DeepSeekMath corpus contains 35.5M pages and 120B tokens.</p>
+<h3 id="actual-training-exposure-d">Actual training exposure [D]<a class="headerlink" href="#actual-training-exposure-d" title="Permanent link">&para;</a></h3>
+<p>DeepSeekMath-Base 7B starts from DeepSeek-Coder-Base-v1.5 and consumes <strong>500B
+sampled tokens</strong>, not 120B unique tokens:</p>
+<ul>
+<li>56% DeepSeekMath corpus;</li>
+<li>4% AlgebraicStack;</li>
+<li>10% arXiv;</li>
+<li>20% GitHub code;</li>
+<li>10% English/Chinese Common Crawl.</li>
+</ul>
+<p>This distinction—underlying corpus versus repeated training exposure—must be
+preserved in every model table.</p>
+<h3 id="sft-and-grpo-d">SFT and GRPO [D]<a class="headerlink" href="#sft-and-grpo-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>776K SFT examples: chain-of-thought, program-of-thought, and tool-integrated
+  reasoning in English and Chinese.</li>
+<li>SFT: 500 steps, batch 256, max 4K, constant LR <span class="arithmatex">\(5\times10^{-5}\)</span>.</li>
+<li>RL prompts: about 144K GSM8K/MATH-style questions.</li>
+<li>64 outputs per question; max response 1,024.</li>
+<li>Training batch 1,024; policy LR <span class="arithmatex">\(10^{-6}\)</span>; KL coefficient .04.</li>
+<li>One policy update per exploration batch.</li>
+<li>Outcome-reward and process-reward variants.</li>
+<li>Iterative RL refreshes the reward model and retains 10% historical replay.</li>
+</ul>
+<p>GRPO removes PPO's learned critic and uses relative rewards in a prompt group.
+Its public origin in the DeepSeek line is here, a year before R1.</p>
+<h2 id="6-deepseek-v2-mla-fine-grained-moe-and-online-rl">6. DeepSeek-V2: MLA, fine-grained MoE, and online RL<a class="headerlink" href="#6-deepseek-v2-mla-fine-grained-moe-and-online-rl" title="Permanent link">&para;</a></h2>
+<p>Primary sources: <a href="https://arxiv.org/abs/2405.04434">paper</a>, Sections 3–4;
+<a href="https://github.com/deepseek-ai/DeepSeek-V2">repository</a>.</p>
+<h3 id="architecture-d">Architecture [D]<a class="headerlink" href="#architecture-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>236B total, 21B active per token; 60 layers; hidden 5,120.</li>
+<li>MLA: 128 query heads of size 128; KV latent 512; query latent 1,536;
+  decoupled RoPE dimension 64.</li>
+<li>First FFN dense; later layers use DeepSeekMoE.</li>
+<li>Each MoE layer has 2 shared and 160 routed experts; 6 routed experts active;
+  expert intermediate 1,536.</li>
+<li>128K after YaRN extension.</li>
+</ul>
+<h3 id="pretraining-and-systems-d">Pretraining and systems [D]<a class="headerlink" href="#pretraining-and-systems-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>8.1T tokens; base sequence 4K.</li>
+<li>AdamW .9/.95, weight decay .1, peak LR <span class="arithmatex">\(2.4\times10^{-4}\)</span>, 2K warmup;
+  LR drops at 60% and 90%.</li>
+<li>Batch grows from 2,304 to 9,216 sequences over the first 225B tokens.</li>
+<li>H800 nodes with eight GPUs, NVLink/NVSwitch, and InfiniBand.</li>
+<li>16-way zero-bubble pipeline; experts across eight nodes; ZeRO-1; no tensor
+  parallelism.</li>
+<li>172.8K H800 GPU-hours per trillion tokens, versus 300.6K for DeepSeek-67B.</li>
+<li><strong>[D→calc]</strong> <span class="arithmatex">\(172.8\text{K}\times8.1\approx1.40\text{M}\)</span> H800 GPU-hours
+  for base pretraining, excluding context extension, post-training, experiments,
+  and data processing.</li>
+</ul>
+<h3 id="context-and-alignment-d">Context and alignment [D]<a class="headerlink" href="#context-and-alignment-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>YaRN scale 40, <span class="arithmatex">\(\alpha=1\)</span>, <span class="arithmatex">\(\beta=32\)</span>, target 160K.</li>
+<li>1,000 extension steps at 32K, batch 576.</li>
+<li>1.5M SFT examples, two epochs, LR <span class="arithmatex">\(5\times10^{-6}\)</span>.</li>
+<li>Two RL stages with GRPO:</li>
+<li>code/math reasoning with rule or learned reasoning rewards;</li>
+<li>helpfulness, safety, and rule rewards together.</li>
+<li>Code preferences use compiler feedback; math uses ground truth.</li>
+<li>Reward models initialize from SFT and include pointwise/pairwise forms.</li>
+<li>Hybrid training/inference engine with vLLM and CPU offload generates large
+  online batches; the report finds online RL better than compared offline paths.</li>
+</ul>
+<p><strong>[U]</strong> Prompt count, group size, reward weights, post-training compute/cost, and
+exact corpus percentages.</p>
+<h2 id="7-deepseek-coder-v2-verifiers-and-learned-code-reward">7. DeepSeek-Coder-V2: verifiers and learned code reward<a class="headerlink" href="#7-deepseek-coder-v2-verifiers-and-learned-code-reward" title="Permanent link">&para;</a></h2>
+<p>Primary source: <a href="https://arxiv.org/abs/2406.11931">DeepSeek-Coder-V2</a>.</p>
+<h3 id="lineagedata-d">Lineage/data [D]<a class="headerlink" href="#lineagedata-d" title="Permanent link">&para;</a></h3>
+<p>Coder-V2 starts from an intermediate V2 checkpoint after 4.2T tokens—not the
+finished 8.1T model—and consumes 6T more, for 10.2T exposure on this branch:</p>
+<ul>
+<li>60% code;</li>
+<li>10% math;</li>
+<li>30% natural language.</li>
+</ul>
+<p>Underlying code data is about 1.17T tokens: 821B source, 185B code-related text,
+70B web code, and 94B from iterative GitHub recovery. Repositories are dated
+before November 2023 and cover 338 languages.</p>
+<h3 id="models-and-post-training-d">Models and post-training [D]<a class="headerlink" href="#models-and-post-training-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>16B/2.4B active and 236B/21B active; 128K.</li>
+<li>16B uses 50% FIM; 236B uses next-token prediction.</li>
+<li>Extension: 1,000 steps at 32K/batch 1,152, then 1,000 at 128K/batch 288.</li>
+<li>20K code + 30K math instructions plus V2 general instructions.</li>
+<li>About 300M unique instruction tokens sampled to 1B exposure.</li>
+<li>SFT batch 1M tokens, LR <span class="arithmatex">\(5\times10^{-6}\)</span>, 100 warmup steps.</li>
+<li>RL uses roughly 40K code/math prompts.</li>
+<li>Math reward is ground truth.</li>
+<li>Raw compiler 0/1 feedback was judged noisy; compiler outcomes supervise a
+  learned code reward model, then GRPO optimizes against it.</li>
+</ul>
+<p>This is a useful example of the verifier/reward-model boundary: executable
+signals can still be too noisy or incomplete to serve directly as the scalar
+policy reward.</p>
+<h2 id="8-v25-capability-combination-with-an-undisclosed-recipe">8. V2.5: capability combination with an undisclosed recipe<a class="headerlink" href="#8-v25-capability-combination-with-an-undisclosed-recipe" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://api-docs.deepseek.com/news/news0905">V2.5 announcement</a> and
+<a href="https://api-docs.deepseek.com/news/news1210">V2.5-1210</a>.</p>
+<p><strong>[D]</strong> The September model combines V2-0628 conversational behavior with
+Coder-V2-0724 coding strengths; the December update improves math/coding. The
+broad 236B/21B, 128K V2-family architecture remains.</p>
+<p><strong>[U]</strong> Merge algorithm, data mixture, SFT/RL steps, preference volume, reward
+models, compute, and cost. Do not call it weight averaging, model soup,
+distillation, or continued pretraining without evidence.</p>
+<h2 id="9-deepseek-v3-architecturesystem-co-design-and-specialist-post-training">9. DeepSeek-V3: architecture/system co-design and specialist post-training<a class="headerlink" href="#9-deepseek-v3-architecturesystem-co-design-and-specialist-post-training" title="Permanent link">&para;</a></h2>
+<p>Primary sources: <a href="https://arxiv.org/abs/2412.19437">paper</a>, Sections 2–4 and
+Table 1; <a href="https://github.com/deepseek-ai/DeepSeek-V3">repository</a>.</p>
+<h3 id="architecture-d_1">Architecture [D]<a class="headerlink" href="#architecture-d_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>671B main-model parameters, 37B active; 61 layers, hidden 7,168.</li>
+<li>Hosted files can total 685B because one-depth MTP adds 14B.</li>
+<li>MLA: 128 heads; KV latent 512; query latent 1,536; RoPE head 64.</li>
+<li>First three FFNs dense.</li>
+<li>Later MoE: 1 shared, 256 routed, 8 active; expert intermediate 2,048.</li>
+<li>Auxiliary-loss-free routing bias plus sequence-level balance loss <span class="arithmatex">\(10^{-4}\)</span>.</li>
+<li>One-depth multi-token prediction.</li>
+</ul>
+<h3 id="data-and-optimization-du">Data and optimization [D/U]<a class="headerlink" href="#data-and-optimization-du" title="Permanent link">&para;</a></h3>
+<ul>
+<li>14.8T processed training tokens <strong>[D]</strong>; unique corpus size <strong>[U]</strong>.</li>
+<li>Higher math, code, multilingual, and quality emphasis than V2, but exact
+  source mixture is <strong>[U]</strong>.</li>
+<li>128K BBPE vocabulary; cross-document packed attention; FIM probability .1.</li>
+<li>AdamW .9/.95, weight decay .1.</li>
+<li>2K warmup to <span class="arithmatex">\(2.2\times10^{-4}\)</span>; constant through 10T; cosine over 4.3T to
+  <span class="arithmatex">\(2.2\times10^{-5}\)</span>; final 500B at <span class="arithmatex">\(2.2\times10^{-5}\)</span> for 333B then
+  <span class="arithmatex">\(7.3\times10^{-6}\)</span> for 167B.</li>
+<li>Batch grows 3,072 → 15,360 sequences over first 469B.</li>
+<li>MTP loss .3 for first 10T and .1 for final 4.8T.</li>
+</ul>
+<h3 id="context-infrastructure-and-disclosed-cost-d">Context, infrastructure, and disclosed cost [D]<a class="headerlink" href="#context-infrastructure-and-disclosed-cost-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>YaRN: 1,000 steps at 32K/batch 1,920, then 1,000 at 128K/batch 480, LR
+  <span class="arithmatex">\(7.3\times10^{-6}\)</span>.</li>
+<li>2,048 H800 GPUs; FP8 mixed precision; DualPipe; eight-node expert parallel;
+  ZeRO-1; no tensor parallelism.</li>
+<li>Pretraining 2.664M H800-hours, estimated $5.328M.</li>
+<li>Context extension 119K hours/$238K.</li>
+<li>Post-training 5K hours/$10K.</li>
+<li>Total 2.788M hours/$5.576M at $2/H800-hour.</li>
+</ul>
+<p>The dollar value is a rental-equivalent for listed runs, not audited total
+development cost; it excludes prior research, ablations, data work, and failed
+runs.</p>
+<h3 id="post-training-d">Post-training [D]<a class="headerlink" href="#post-training-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>1.5M SFT examples; two epochs; cosine LR <span class="arithmatex">\(5\times10^{-6}\to10^{-6}\)</span>.</li>
+<li>Domain reasoning experts trained with SFT and RL generate long-CoT material.</li>
+<li>R1-family outputs are rejection sampled.</li>
+<li>Non-reasoning data begins from V2.5 and is human-verified.</li>
+<li>Rules for deterministic math/code; model rewards for writing, role-play, and
+  open QA.</li>
+<li>GRPO mixes code, math, writing, role-play, QA, helpfulness, and safety.</li>
+<li>Constitutional/self-reward procedures use V3 voting.</li>
+<li>R1 distillation improves reasoning but lengthens responses, exposing a
+  capability/style tradeoff.</li>
+</ul>
+<h2 id="10-deepseek-r1-and-r1-zero">10. DeepSeek-R1 and R1-Zero<a class="headerlink" href="#10-deepseek-r1-and-r1-zero" title="Permanent link">&para;</a></h2>
+<p>Primary sources: <a href="https://arxiv.org/abs/2501.12948">paper</a>, Sections 2–3 and
+Appendices B.1–B.6; <a href="https://github.com/deepseek-ai/DeepSeek-R1">repository</a>;
+<a href="https://api-docs.deepseek.com/news/news250120">announcement</a>.</p>
+<p>The revised report uploaded 2026-01-04 is much longer than the original January
+2025 release. Appendix-only facts should be identified as revised-report
+disclosures in historical analysis.</p>
+<h3 id="101-r1-zero-no-sft-experiment-d">10.1 R1-Zero: no-SFT experiment [D]<a class="headerlink" href="#101-r1-zero-no-sft-experiment-d" title="Permanent link">&para;</a></h3>
+<p>Initialization: DeepSeek-V3-Base; no cold-start SFT; same 671B/37B family.</p>
+<p>Rollout/update configuration:</p>
+<ul>
+<li>policy LR <span class="arithmatex">\(3\times10^{-6}\)</span>;</li>
+<li>KL coefficient .001;</li>
+<li>reported GRPO clip ratio 10;</li>
+<li>temperature 1;</li>
+<li>16 responses per question;</li>
+<li>max 32,768 tokens until step 8,200, then 65,536;</li>
+<li>32 unique prompts/update → 512 sampled responses;</li>
+<li>reference policy refreshed every 400 steps;</li>
+<li>each rollout collection generates 8,192 outputs in 16 minibatches;</li>
+<li>one inner epoch;</li>
+<li>10,400 policy steps, about 1.6 reported epochs.</li>
+</ul>
+<p>Reward:</p>
+<div class="arithmatex">\[
+R=R_{\text{accuracy}}+R_{\text{format}}
+\]</div>
+<p>with equal weights. Math uses answer parsing/matching; code uses compiler/hidden
+tests; logic uses deterministic verification; format enforces
+<code>&lt;think&gt;...&lt;/think&gt;&lt;answer&gt;...&lt;/answer&gt;</code>.</p>
+<p>DeepSeek explicitly avoids neural outcome/process reward models in this stage
+because of reward hacking and repeated retraining cost. The result develops
+longer reasoning and self-reflection, but also readability and language-mixing
+problems.</p>
+<h3 id="102-production-r1-four-stages-d">10.2 Production R1: four stages [D]<a class="headerlink" href="#102-production-r1-four-stages-d" title="Permanent link">&para;</a></h3>
+<h4 id="stage-1-cold-start-reasoning-sft">Stage 1 — cold-start reasoning SFT<a class="headerlink" href="#stage-1-cold-start-reasoning-sft" title="Permanent link">&para;</a></h4>
+<ul>
+<li>“Thousands” of long-CoT examples.</li>
+<li>R1-Zero trajectories sampled at temperature 1.</li>
+<li>Filter correctness, readability, repetition, and language consistency.</li>
+<li>SymPy checks symbolic expressions.</li>
+<li>DeepSeek-V3 rewrites low-quality outputs.</li>
+</ul>
+<h4 id="stage-2-reasoning-rl">Stage 2 — reasoning RL<a class="headerlink" href="#stage-2-reasoning-rl" title="Permanent link">&para;</a></h4>
+<p>Essentially R1-Zero settings: LR <span class="arithmatex">\(3\times10^{-6}\)</span>, KL .001, clip ratio 10,
+temperature 1, 16 outputs, 32 questions/step, max 32,768, batch 512, reference
+refresh every 400 steps. A language-consistency reward measures fraction of
+words in the target language.</p>
+<h4 id="stage-3-rejection-sampled-sft">Stage 3 — rejection-sampled SFT<a class="headerlink" href="#stage-3-rejection-sampled-sft" title="Permanent link">&para;</a></h4>
+<p>804,745 examples:</p>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th style="text-align: right;">Count</th>
+<th style="text-align: right;">Mean tokens where disclosed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Math</td>
+<td style="text-align: right;">395,285</td>
+<td style="text-align: right;">6,094</td>
+</tr>
+<tr>
+<td>Code</td>
+<td style="text-align: right;">211,129</td>
+<td style="text-align: right;">7,435.7</td>
+</tr>
+<tr>
+<td>STEM</td>
+<td style="text-align: right;">10,124</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>Logic</td>
+<td style="text-align: right;">10,395</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>General</td>
+<td style="text-align: right;">177,812</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>Total</td>
+<td style="text-align: right;">804,745</td>
+<td style="text-align: right;">5,355.3 overall</td>
+</tr>
+</tbody>
+</table>
+<p>Roughly 600K reasoning and 200K non-reasoning examples. Train 2–3 epochs, max
+32,768, batch 128, cosine <span class="arithmatex">\(5\times10^{-5}\to5\times10^{-6}\)</span>.</p>
+<h4 id="stage-4-mixed-rl">Stage 4 — mixed RL<a class="headerlink" href="#stage-4-mixed-rl" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Rule rewards for reasoning.</li>
+<li>Helpfulness and safety reward models for general prompts.</li>
+<li>Format/language rewards.</li>
+<li>Temperature .7; 1,700 steps.</li>
+<li>General instruction/preference data enters only during the final 400 steps;
+  longer preference-reward optimization caused reward hacking.</li>
+</ul>
+<h3 id="103-promptreward-operations-d">10.3 Prompt/reward operations [D]<a class="headerlink" href="#103-promptreward-operations-d" title="Permanent link">&para;</a></h3>
+<p>Approximate domains: 26K math, 17K algorithmic code, 8K bug fixing in prose,
+22K STEM, 15K logic, 66K helpfulness, 12K harmlessness. Table/prose are ambiguous
+about whether the 8K bug-fix prompts are included in the 17K code total; retain
+the contradiction.</p>
+<p>Code prompt pipeline:</p>
+<ul>
+<li>5,151 Codeforces and 2,504 AtCoder problems;</li>
+<li>V2.5 generates additional tests;</li>
+<li>correct submissions identify invalid tests;</li>
+<li>incorrect submissions help choose discriminative tests;</li>
+<li>GitHub issues provide executable bug-fix tasks.</li>
+</ul>
+<p>Reward models:</p>
+<ul>
+<li>helpfulness: 66K preference pairs, R1 backbone + scalar head, batch 256, LR
+  <span class="arithmatex">\(6\times10^{-6}\)</span>, one epoch, max 8,192;</li>
+<li>safety: 106K prompts with safe/unsafe point labels, same optimization;</li>
+<li>prompts include public sources and opt-in user data.</li>
+</ul>
+<h3 id="104-infrastructure-and-cost-d">10.4 Infrastructure and cost [D]<a class="headerlink" href="#104-infrastructure-and-cost-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>vLLM actor rollout;</li>
+<li>separate reward/reference inference services;</li>
+<li>asynchronous compilers, answer matchers, format verifiers;</li>
+<li>PPO/GRPO/DPO-capable trainer;</li>
+<li>length-sorted best-fit packing, DualPipe, hot-expert redundancy, MTP
+  speculative rollout;</li>
+<li>host/disk offload between phases.</li>
+</ul>
+<p>At $2/H800-hour:</p>
+<ul>
+<li>R1-Zero: 512 H800 × ~198 h ≈ 101K hours, $202K;</li>
+<li>SFT data creation: 5K hours, $10K;</li>
+<li>R1: 512 H800 × ~80 h ≈ 41K hours, $82K;</li>
+<li>total: 147K hours, $294K.</li>
+</ul>
+<p>This is post-training on an already trained V3, not total R1 development cost.</p>
+<h3 id="105-distillation-d">10.5 Distillation [D]<a class="headerlink" href="#105-distillation-d" title="Permanent link">&para;</a></h3>
+<p>The roughly 800K examples fine-tune Qwen/Llama bases for 2–3 epochs, max 32,768,
+batch 64. Initial learning rates: Qwen 1.5B <span class="arithmatex">\(10^{-4}\)</span>, 7B <span class="arithmatex">\(8\times10^{-5}\)</span>,
+14B <span class="arithmatex">\(7\times10^{-5}\)</span>, 32B <span class="arithmatex">\(6\times10^{-5}\)</span>; Llama 8B
+<span class="arithmatex">\(5\times10^{-5}\)</span>, 70B <span class="arithmatex">\(2\times10^{-5}\)</span>.</p>
+<h3 id="106-explicit-limitations-d">10.6 Explicit limitations [D]<a class="headerlink" href="#106-explicit-limitations-d" title="Permanent link">&para;</a></h3>
+<p>The original R1 recipe did not natively train tool use, struggled with structured
+output, and could not scale software-engineering RL because environments were
+slow and difficult to validate. These limitations motivate V3.1/V3.2.</p>
+<h2 id="11-interim-production-checkpoints">11. Interim production checkpoints<a class="headerlink" href="#11-interim-production-checkpoints" title="Permanent link">&para;</a></h2>
+<h3 id="v3-0324">V3-0324<a class="headerlink" href="#v3-0324" title="Permanent link">&para;</a></h3>
+<p><a href="https://api-docs.deepseek.com/news/news250325">Official release</a> discloses
+improved reasoning, frontend code, Chinese writing, and tool/function calling.
+<strong>[U]</strong> Dataset, RL steps, rewards, and cost.</p>
+<h3 id="r1-0528">R1-0528<a class="headerlink" href="#r1-0528" title="Permanent link">&para;</a></h3>
+<p><a href="https://api-docs.deepseek.com/news/news250528">Announcement</a> and
+<a href="https://huggingface.co/deepseek-ai/DeepSeek-R1-0528">model card</a> disclose more
+post-training compute and algorithmic optimization, a 64K generation limit, and
+better reasoning/function/coding-agent results. Average reported AIME response
+length roughly doubles from 12K to 23K. <strong>[U]</strong> data, rollouts, rewards, GRPO
+settings, GPU hours, and cost.</p>
+<h3 id="v31-v31-terminus">V3.1 / V3.1-Terminus<a class="headerlink" href="#v31-v31-terminus" title="Permanent link">&para;</a></h3>
+<p>Sources: <a href="https://api-docs.deepseek.com/news/news250821">V3.1 release</a>,
+<a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.1/blob/main/README.md">model card</a>,
+<a href="https://api-docs.deepseek.com/news/news250922">Terminus</a>.</p>
+<ul>
+<li>V3.1-Base continues V3-Base with ~630B tokens at 32K and ~209B at 128K,
+  totaling ~839–840B.</li>
+<li>One checkpoint exposes thinking/non-thinking modes through the chat template.</li>
+<li>Explicit tool-use, search-agent, and coding-agent post-training.</li>
+<li>Terminus is a reliability/language/code/search-agent refresh.</li>
+<li><strong>[U]</strong> SFT/RL sizes, algorithm settings, environments, rollout tokens, cost.</li>
+</ul>
+<h2 id="12-v32-exp-sparse-attention-and-unified-post-training">12. V3.2-Exp: sparse attention and unified post-training<a class="headerlink" href="#12-v32-exp-sparse-attention-and-unified-post-training" title="Permanent link">&para;</a></h2>
+<p>Primary source: <a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp">V3.2-Exp report/code</a>,
+Sections 2–3.</p>
+<h3 id="deepseek-sparse-attention-d">DeepSeek Sparse Attention [D]<a class="headerlink" href="#deepseek-sparse-attention-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>A lightweight lightning indexer scores earlier positions.</li>
+<li>Each query attends to top-ranked KV entries in the MLA/MQA representation.</li>
+<li>Top-k 2,048.</li>
+<li>The only architectural change from V3.1-Terminus.</li>
+</ul>
+<p>Conversion:</p>
+<ol>
+<li>Freeze main model; train indexer only, LR <span class="arithmatex">\(10^{-3}\)</span>, 1,000 steps,
+   <span class="arithmatex">\(16\times128\text{K}\)</span> tokens/step → 2.1B tokens.</li>
+<li>Joint sparse continuation, main LM LR <span class="arithmatex">\(7.3\times10^{-6}\)</span>, 15,000 steps,
+   <span class="arithmatex">\(480\times128\text{K}\)</span> tokens/step → 943.7B tokens. Indexer KL gradients
+   are detached from the main model.</li>
+</ol>
+<p>Total conversion exposure is about 945.8B tokens.</p>
+<h3 id="post-training-d_1">Post-training [D]<a class="headerlink" href="#post-training-d_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Specialists: writing/general QA, math, competitive code, logic, agentic code,
+  agentic search; separate thinking/non-thinking specialists.</li>
+<li>Large-scale domain RL.</li>
+<li>Specialist trajectories distilled into one checkpoint.</li>
+<li>A final mixed GRPO stage combines reasoning, agent, and alignment domains to
+  reduce forgetting.</li>
+<li>Reasoning/agent rewards: verified outcome, length penalty, language
+  consistency.</li>
+<li>Open tasks: prompt-specific rubric evaluated by a generative reward model.</li>
+</ul>
+<h2 id="13-v32-production-agentic-rl-factory">13. V3.2: production agentic-RL factory<a class="headerlink" href="#13-v32-production-agentic-rl-factory" title="Permanent link">&para;</a></h2>
+<p>Primary sources: <a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.2/resolve/main/assets/paper.pdf">technical report</a>,
+Sections 2–4 and Table 1; <a href="https://api-docs.deepseek.com/news/news251201">release</a>;
+<a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.2">model card</a>.</p>
+<h3 id="specialists-and-mixed-grpo-d">Specialists and mixed GRPO [D]<a class="headerlink" href="#specialists-and-mixed-grpo-d" title="Permanent link">&para;</a></h3>
+<p>Named specialists: writing, general QA, math, programming, general logic,
+general agent tasks, agentic coding, and agentic search, with thinking and
+non-thinking modes. Each receives large-scale RL, trajectories are distilled,
+then thousands of mixed-GRPO steps close the remaining specialist/student gap.</p>
+<ul>
+<li>Reasoning/agent rewards: rules, length penalty, language consistency.</li>
+<li>Open-ended tasks: prompt-specific rubric + generative reward model.</li>
+<li>All domains train together rather than sequentially to reduce forgetting.</li>
+</ul>
+<h3 id="on-policy-fidelity-controls-d">On-policy fidelity controls [D]<a class="headerlink" href="#on-policy-fidelity-controls-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>corrected KL estimation with importance sampling;</li>
+<li>domain-dependent KL strengths;</li>
+<li>masking of strongly divergent negative-advantage sequences;</li>
+<li><strong>Keep Routing:</strong> reuse MoE routes chosen at rollout during learner replay;</li>
+<li><strong>Keep Sampling Mask:</strong> respect rollout top-p/top-k action support in training.</li>
+</ul>
+<p>These address a deep implementation issue: inference and training distributions
+can differ because of quantization, kernels, routing, sampling masks, and policy
+lag even when the checkpoint name is the same.</p>
+<h3 id="thinking-with-tools-d">Thinking with tools [D]<a class="headerlink" href="#thinking-with-tools-d" title="Permanent link">&para;</a></h3>
+<p>Reasoning state is retained across tool calls/results. A new real user message
+discards earlier hidden reasoning. Cold-start data combines non-agent reasoning
+patterns with non-thinking tool-call patterns, followed by RL.</p>
+<h3 id="agent-data-d">Agent data [D]<a class="headerlink" href="#agent-data-d" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th style="text-align: right;">Tasks/prompts</th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Coding agent</td>
+<td style="text-align: right;">24,667</td>
+<td>real repositories and extracted software tasks</td>
+</tr>
+<tr>
+<td>Search agent</td>
+<td style="text-align: right;">50,275</td>
+<td>real + synthetic long-tail questions</td>
+</tr>
+<tr>
+<td>General agent</td>
+<td style="text-align: right;">4,417</td>
+<td>synthesized databases, tools, solutions, verifiers</td>
+</tr>
+<tr>
+<td>Code interpreter</td>
+<td style="text-align: right;">5,908</td>
+<td>real/extracted executable tasks</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>85,267</strong></td>
+<td>more than 1,800 environments overall</td>
+</tr>
+</tbody>
+</table>
+<p>Do not misstate this as 85K environments.</p>
+<h4 id="search-synthesis">Search synthesis<a class="headerlink" href="#search-synthesis" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Mine long-tail entities from web corpora.</li>
+<li>A question agent searches and proposes problems.</li>
+<li>Heterogeneous answer agents attempt solutions.</li>
+<li>A verifier performs multiple checks.</li>
+<li>Keep only verified ground truth with verifiably failed alternative attempts.</li>
+<li>Use rubrics/generative rewards for residual qualities.</li>
+</ol>
+<h4 id="coding-environments">Coding environments<a class="headerlink" href="#coding-environments" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Mine millions of GitHub issue/PR pairs.</li>
+<li>Apply heuristics and LLM quality filters.</li>
+<li>Recover gold patches/tests.</li>
+<li>Setup agent installs dependencies and runs tests.</li>
+<li>Parse JUnit-like structured results.</li>
+<li>Accept only when gold patch converts at least one failing test to passing and
+   creates no regression from passing to failing.</li>
+<li>Cover Python, Java, JavaScript/TypeScript, C/C++, Go, and PHP.</li>
+</ol>
+<h4 id="general-agent-synthesis">General-agent synthesis<a class="headerlink" href="#general-agent-synthesis" title="Permanent link">&para;</a></h4>
+<ul>
+<li>1,827 environments with tool schemas/databases.</li>
+<li>Generate task, reference solution, and verifier.</li>
+<li>Require the solution to interact through tools.</li>
+<li>Iteratively increase difficulty.</li>
+<li>Retain RL tasks with non-zero pass@100.</li>
+</ul>
+<p>DeepSeek states V3.2 post-training compute exceeded <strong>10% of pretraining cost</strong>,
+but gives no absolute GPU-hour or dollar figure.</p>
+<h2 id="14-deepseek-v4-preview-million-token-models-and-opd">14. DeepSeek-V4 Preview: million-token models and OPD<a class="headerlink" href="#14-deepseek-v4-preview-million-token-models-and-opd" title="Permanent link">&para;</a></h2>
+<p>Primary sources: <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash/blob/a7aaed80dd2df27620eb534454253ea25eb11c7a/DeepSeek_V4.pdf">V4 report snapshot</a>,
+especially Sections 2, 4, and 5; <a href="https://api-docs.deepseek.com/news/news260424/">official release</a>.</p>
+<h3 id="141-models-d">14.1 Models [D]<a class="headerlink" href="#141-models-d" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th style="text-align: right;">V4-Flash</th>
+<th style="text-align: right;">V4-Pro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total / active parameters</td>
+<td style="text-align: right;">284B / 13B</td>
+<td style="text-align: right;">1.6T / 49B</td>
+</tr>
+<tr>
+<td>Layers</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">61</td>
+</tr>
+<tr>
+<td>Hidden width</td>
+<td style="text-align: right;">4,096</td>
+<td style="text-align: right;">7,168</td>
+</tr>
+<tr>
+<td>Routed experts / active</td>
+<td style="text-align: right;">256 / 6</td>
+<td style="text-align: right;">384 / 6</td>
+</tr>
+<tr>
+<td>Expert intermediate</td>
+<td style="text-align: right;">2,048</td>
+<td style="text-align: right;">3,072</td>
+</tr>
+<tr>
+<td>CSA top-k</td>
+<td style="text-align: right;">512</td>
+<td style="text-align: right;">1,024</td>
+</tr>
+<tr>
+<td>Pretraining exposure</td>
+<td style="text-align: right;">32T</td>
+<td style="text-align: right;">33T</td>
+</tr>
+<tr>
+<td>Maximum batch</td>
+<td style="text-align: right;">75.5M tokens</td>
+<td style="text-align: right;">94.4M tokens</td>
+</tr>
+<tr>
+<td>Context</td>
+<td style="text-align: right;">1M</td>
+<td style="text-align: right;">1M</td>
+</tr>
+</tbody>
+</table>
+<p>Both use one shared expert, MTP depth one, manifold-constrained
+Hyper-Connections expansion four, and 20 Sinkhorn iterations. Every block is
+MoE; the first three use hash routing.</p>
+<h3 id="142-architecture-d">14.2 Architecture [D]<a class="headerlink" href="#142-architecture-d" title="Permanent link">&para;</a></h3>
+<p><strong>Manifold-Constrained Hyper-Connections (mHC):</strong> expand the residual stream into
+four paths and constrain mixing to a doubly stochastic matrix through Sinkhorn
+normalization. This adds learned residual routing while bounding the unstable
+mixing seen in unconstrained Hyper-Connections.</p>
+<p><strong>Compressed Sparse Attention (CSA):</strong> compress each four KV positions, apply
+DSA selection over compressed entries, and retain a 128-token sliding local
+window.</p>
+<p><strong>Heavily Compressed Attention (HCA):</strong> compress every 128 KV positions and use
+dense attention over the shortened sequence. CSA and HCA layers interleave.</p>
+<p>At 1M context the report estimates KV cache at roughly 2% of a BF16 GQA8,
+head-dimension-128 baseline.</p>
+<p><strong>MoE:</strong> routing affinity changes from sigmoid to
+<code>sqrt(softplus(...))</code>; loss-free balancing remains with sequence balance
+<span class="arithmatex">\(10^{-4}\)</span>; node restrictions are removed; the first three layers hash-route.</p>
+<h3 id="143-data-and-pretraining-du">14.3 Data and pretraining [D/U]<a class="headerlink" href="#143-data-and-pretraining-du" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Begins from the V3 data pipeline; filters batched auto-generated and templated
+  web content.</li>
+<li>Math/code remain core; agent material enters mid-training.</li>
+<li>More multilingual/long-tail cultural, scientific, technical, and long-document
+  data.</li>
+<li>More than 32T processed tokens; exact proportions, licenses, unique counts,
+  dedup thresholds, and agentic volume are <strong>[U]</strong>.</li>
+<li>128K vocabulary, FIM/token splitting, sample-isolated packed attention.</li>
+</ul>
+<p>Optimizer:</p>
+<ul>
+<li>Muon for most matrices; AdamW for embeddings, output head, RMSNorm.</li>
+<li>AdamW .9/.95, epsilon <span class="arithmatex">\(10^{-20}\)</span>, decay .1.</li>
+<li>Muon momentum .95, decay .1, update RMS .18.</li>
+</ul>
+<p>Flash: 32T, 2K warmup, peak LR <span class="arithmatex">\(2.7\times10^{-4}\)</span>, cosine final
+<span class="arithmatex">\(2.7\times10^{-5}\)</span>. Pro: 33T, peak <span class="arithmatex">\(2\times10^{-4}\)</span>, final
+<span class="arithmatex">\(2\times10^{-5}\)</span>. Context curriculum is 4K → 16K → 64K → 1M; Flash uses
+dense attention for the first 1T before sparse conversion, while Pro retains a
+longer dense stage. MTP loss .3 then .1 at LR decay.</p>
+<p>Stability:</p>
+<ul>
+<li>Anticipatory Routing uses delayed historical state to precompute future routes
+  only after a loss-spike detector and rollback; about 20% overhead while active,
+  negligible claimed run-wide because activation is rare.</li>
+<li>SwiGLU linear branch clamped to [-10, 10], gate upper bound 10.</li>
+</ul>
+<h3 id="144-specialist-grpo-and-on-policy-distillation-d">14.4 Specialist GRPO and on-policy distillation [D]<a class="headerlink" href="#144-specialist-grpo-and-on-policy-distillation-d" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Build more than ten domain specialists.</li>
+<li>Fine-tune each.</li>
+<li>Train each with GRPO and domain prompts/rewards.</li>
+<li>Train separate non-think, think/high, and think-max effort specialists with
+   different context/length controls.</li>
+<li>Merge them into one student with multi-teacher OPD, replacing V3.2's final
+   mixed GRPO stage.</li>
+</ol>
+<p>Easy-to-verify tasks use rules/tests. Hard-to-verify tasks use rubric-guided
+generative reward models; conventional scalar RMs are removed. RL is also
+applied to the generative judge.</p>
+<p>For student <span class="arithmatex">\(\pi_\theta\)</span> and expert <span class="arithmatex">\(\pi_{E_i}\)</span>:</p>
+<div class="arithmatex">\[
+L_{\mathrm{OPD}}=
+\sum_iw_iD_{\mathrm{KL}}(\pi_\theta\Vert\pi_{E_i}).
+\]</div>
+<p>The student generates the trajectories, preserving student-state coverage.
+DeepSeek computes full-vocabulary reverse KL rather than only a sampled-token
+approximation.</p>
+<p>Infrastructure:</p>
+<ul>
+<li>teacher weights in centralized distributed storage with ZeRO-like on-demand
+  sharding;</li>
+<li>cache teacher final hidden states instead of &gt;100K-vocabulary logits;</li>
+<li>reconstruct logits with teacher output head during learning;</li>
+<li>sort minibatch examples by teacher so only one teacher head is resident;</li>
+<li>TileLang kernel for exact teacher/student KL.</li>
+</ul>
+<p>Teacher weighting, disagreements, complete reward mixture, and sample counts are
+<strong>[U]</strong>.</p>
+<h3 id="145-tool-protocol-fp4-and-rollout-fidelity-d">14.5 Tool protocol, FP4, and rollout fidelity [D]<a class="headerlink" href="#145-tool-protocol-fp4-and-rollout-fidelity-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>XML-style DSML tool calls reduce escaping/schema failure.</li>
+<li>Tool conversations preserve complete reasoning across tools/results/later user
+  messages; ordinary chat still discards reasoning at the next user message.</li>
+<li>“Quick Instruction” special tokens reuse KV cache for routing, search-query
+  generation, domain/authority classification, titles, and URL read decisions.</li>
+<li>FP4 MXFP4 expert weights and FP4 CSA indexer Q/K; index scores FP32 → BF16.</li>
+<li>Reported selector speedup 2× at 99.7% KV-entry recall.</li>
+<li>RL rollout uses real FP4 deployment weights rather than simulated
+  quantization, improving actor/deployment numerical fidelity.</li>
+</ul>
+<h3 id="146-million-token-fault-tolerance-and-dsec-d">14.6 Million-token fault tolerance and DSec [D]<a class="headerlink" href="#146-million-token-fault-tolerance-and-dsec-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>token-granular write-ahead log for every generation;</li>
+<li>persist unfinished KV cache on preemption;</li>
+<li>reconstruct KV from logged tokens after hardware failure;</li>
+<li>avoid restarting incomplete generations, which would select for shorter
+  trajectories;</li>
+<li>split lightweight metadata from heavy token arrays; globally shuffle/pack
+  metadata and load token arrays through shared memory per minibatch.</li>
+</ul>
+<p>DeepSeek Elastic Compute (DSec) is a Rust platform over 3FS:</p>
+<ul>
+<li>API server, per-host edge agent, cluster watcher;</li>
+<li>hundreds of thousands of concurrent sandboxes;</li>
+<li>prewarmed functions, Docker-compatible containers, Firecracker microVMs, and
+  QEMU VMs behind one Python API;</li>
+<li>EROFS/3FS lazy layers and copy-on-write overlays;</li>
+<li>globally ordered trajectory logs, preemption-safe resumption, replay without
+  repeating non-idempotent commands, provenance and deterministic replay.</li>
+</ul>
+<p>DSec is described, not released as complete public source in the cited report.
+V4 hardware count, duration, energy, and dollar cost are <strong>[U]</strong>.</p>
+<h2 id="15-reconstructed-disclosed-workflow">15. Reconstructed disclosed workflow<a class="headerlink" href="#15-reconstructed-disclosed-workflow" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>raw web/code/math/documents
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  -&gt; global deduplication and quality filtering
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -&gt; domain recovery/classification
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  -&gt; benchmark decontamination
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -&gt; tokenization, packing, FIM
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  -&gt; base pretraining
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  -&gt; domain/agent/long-context mid-training
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  -&gt; sparse-attention conversion where applicable
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  -&gt; specialist SFT
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  -&gt; specialist GRPO with rules/tests/generative judges
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  -&gt; trajectory generation and rejection/distillation
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  -&gt; mixed GRPO consolidation [V3/V3.2]
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>     or multi-teacher OPD      [V4]
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  -&gt; quantization-aware adaptation
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>  -&gt; deployment-equivalent rollouts
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>  -&gt; agent/chat/API serving
+</code></pre></div>
+<p>This is supported at stage level. Exact live API routing, hidden prompts/tools,
+online adaptation, user-data mixture, safety filters, and production topology
+remain <strong>[U]</strong> unless explicitly disclosed.</p>
+<h2 id="16-source-level-study-map">16. Source-level study map<a class="headerlink" href="#16-source-level-study-map" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/deepseek-ai/DeepSeek-V3">DeepSeek-V3</a>: reference
+  <code>inference/model.py</code> for MLA, MoE, MTP, and FP8 handling.</li>
+<li><a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp">V3.2-Exp</a>: DSA inference and
+  report.</li>
+<li><a href="https://github.com/deepseek-ai/FlashMLA">FlashMLA</a>: dense/sparse MLA kernels.</li>
+<li><a href="https://github.com/deepseek-ai/DeepEP">DeepEP</a>: expert-parallel all-to-all.</li>
+<li><a href="https://github.com/deepseek-ai/DeepGEMM">DeepGEMM</a>: FP8 GEMM.</li>
+<li><a href="https://github.com/deepseek-ai/DualPipe">DualPipe</a>: bidirectional pipeline.</li>
+<li><a href="https://github.com/deepseek-ai/3FS">3FS</a>: distributed storage.</li>
+<li><a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/tree/main/inference">V4-Pro inference</a>:
+  CSA/HCA reference files.</li>
+<li><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V2">DeepSeek-Prover-V2</a>: Lean
+  theorem decomposition, proof search, binary verification.</li>
+<li><a href="https://github.com/deepseek-ai/DeepSeek-Math-V2">DeepSeekMath-V2</a>: verifier
+  and generator co-improvement for mathematical proof.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Public?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Major weights</td>
+<td>generally yes</td>
+</tr>
+<tr>
+<td>Lightweight/reference inference</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Selected kernels/communication/storage</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Exact pretraining framework</td>
+<td>no</td>
+</tr>
+<tr>
+<td>Complete RL orchestration</td>
+<td>no</td>
+</tr>
+<tr>
+<td>DSec implementation</td>
+<td>not in cited release</td>
+</tr>
+<tr>
+<td>Raw corpus</td>
+<td>no</td>
+</tr>
+<tr>
+<td>R1/V3.2 prompt/reward data</td>
+<td>no</td>
+</tr>
+<tr>
+<td>Reward models/data</td>
+<td>generally no</td>
+</tr>
+<tr>
+<td>Optimizer/checkpoint state</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>Pin exact revisions before making source-code claims.</p>
+<h2 id="17-specialized-branches">17. Specialized branches<a class="headerlink" href="#17-specialized-branches" title="Permanent link">&para;</a></h2>
+<h3 id="deepseek-prover-v2">DeepSeek-Prover-V2<a class="headerlink" href="#deepseek-prover-v2" title="Permanent link">&para;</a></h3>
+<p><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V2">Official repository/report</a>:
+7B and 671B Lean 4 models; the 671B branch starts from V3-Base. V3 decomposes
+difficult theorems into subgoals, a smaller 7B prover searches them, successful
+subgoals are recomposed, and informal reasoning plus formal proof becomes
+cold-start data. SFT is followed by binary Lean-verification RL.</p>
+<h3 id="deepseekmath-v2">DeepSeekMath-V2<a class="headerlink" href="#deepseekmath-v2" title="Permanent link">&para;</a></h3>
+<p><a href="https://github.com/deepseek-ai/DeepSeek-Math-V2">Official repository/report</a>:
+starts from V3.2-Exp-Base; trains verifier and generator; scales verification
+compute to label proof attempts beyond a fixed verifier; automatically generated
+verified proofs improve both. Its data/reward approach later informs
+V3.2-Speciale.</p>
+<h2 id="18-claims-to-avoid">18. Claims to avoid<a class="headerlink" href="#18-claims-to-avoid" title="Permanent link">&para;</a></h2>
+<ul>
+<li>“R1 was trained entirely without SFT.” Only R1-Zero was.</li>
+<li>“DeepSeek spent $5.6M to develop V3.” That is a listed-run rental-equivalent.</li>
+<li>“R1 cost only $294K end to end.” That is disclosed post-training on V3.</li>
+<li>“V2.5 used merge method X.” The method is unknown.</li>
+<li>“V3 had 14.8T unique tokens.” It had 14.8T processed exposure.</li>
+<li>“V3.2 had 85K environments.” It had 85,267 tasks and &gt;1,800 environments.</li>
+<li>“V4's final model was trained by mixed GRPO.” Specialists use GRPO; final
+  consolidation is OPD.</li>
+<li>“V4 High/Max training used 128K/384K.” Those are evaluation contexts, not
+  disclosed training hyperparameters.</li>
+<li>“DeepSeek is fully open source.” It is more accurate to say open weights,
+  reports, reference inference, and selected systems—not an end-to-end
+  reproducible training release.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

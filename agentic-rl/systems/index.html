@@ -1,0 +1,3062 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/agentic-rl/systems/">
+      
+      
+        <link rel="prev" href="../training-pipeline/">
+      
+      
+        <link rel="next" href="../evaluation-and-safety/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Systems and Infrastructure - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#systems-and-infrastructure" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Systems and Infrastructure
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-three-placement-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Three placement patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Three placement patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fully-colocated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fully colocated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disaggregated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disaggregated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hybrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hybrid
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-asynchronous-rollout-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The asynchronous rollout architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-throughput-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Throughput model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-generation-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Generation performance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Generation performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prefill-and-decode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prefill and decode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group rollout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-variable-length-scheduling-and-stragglers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Variable-length scheduling and stragglers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-partial-rollout-continuation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Partial rollout continuation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-policy-versioning-and-weight-publication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Policy versioning and weight publication
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-traininference-numerical-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Train/inference numerical mismatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-distributed-actor-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Distributed actor training
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-model-placement-and-memory-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Model placement and memory budget
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-environment-service-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Environment service design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-backpressure-and-admission-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Backpressure and admission control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-fault-tolerance-and-exactly-once-meaning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Fault tolerance and exactly-once meaning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Observability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-security-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Security architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-cost-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Cost accounting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-capacity-planning-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Capacity-planning procedure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-framework-reading-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Framework reading map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-three-placement-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Three placement patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Three placement patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fully-colocated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fully colocated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disaggregated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disaggregated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hybrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hybrid
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-asynchronous-rollout-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The asynchronous rollout architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-throughput-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Throughput model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-generation-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Generation performance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Generation performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prefill-and-decode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prefill and decode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group rollout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-variable-length-scheduling-and-stragglers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Variable-length scheduling and stragglers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-partial-rollout-continuation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Partial rollout continuation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-policy-versioning-and-weight-publication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Policy versioning and weight publication
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-traininference-numerical-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Train/inference numerical mismatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-distributed-actor-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Distributed actor training
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-model-placement-and-memory-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Model placement and memory budget
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-environment-service-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Environment service design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-backpressure-and-admission-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Backpressure and admission control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-fault-tolerance-and-exactly-once-meaning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Fault tolerance and exactly-once meaning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Observability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-security-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Security architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-cost-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Cost accounting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-capacity-planning-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Capacity-planning procedure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-framework-reading-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Framework reading map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="systems-and-infrastructure">Systems and Infrastructure<a class="headerlink" href="#systems-and-infrastructure" title="Permanent link">&para;</a></h1>
+<p><strong>Agentic Reinforcement Learning (Agentic RL)</strong> is often generation-bound and
+environment-bound rather than purely optimizer-bound. A fast trainer is
+useless when rollout <strong>Graphics Processing Units (GPUs)</strong> wait on browsers,
+sandboxes, users, reward models, or straggling episodes. The systems objective
+is to maximize <strong>valid, appropriately on-policy, reward-bearing training tokens
+per unit time and cost</strong> without corrupting the statistical objective.</p>
+<h2 id="1-components">1. Components<a class="headerlink" href="#1-components" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Responsibility</th>
+<th>Stateful data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task registry/curriculum</td>
+<td>choose task, seed, group, and priority</td>
+<td>task attempts and difficulty</td>
+</tr>
+<tr>
+<td>Rollout controller</td>
+<td>create/cancel episodes and enforce budgets</td>
+<td>trajectory lifecycle</td>
+</tr>
+<tr>
+<td>Policy inference server</td>
+<td>sample exact token identifiers (IDs) and log-probabilities</td>
+<td>Key-Value (KV) cache and policy version</td>
+</tr>
+<tr>
+<td>Agent loop</td>
+<td>render history, parse actions, manage memory</td>
+<td>transcript/scaffold state</td>
+</tr>
+<tr>
+<td>Environment worker</td>
+<td>reset, step, snapshot, validate</td>
+<td>world state</td>
+</tr>
+<tr>
+<td>Tool/sandbox pool</td>
+<td>execute code, Application Programming Interfaces (APIs), Graphical User Interfaces (GUIs), and retrieval</td>
+<td>process/tool state</td>
+</tr>
+<tr>
+<td>Reward/verifier service</td>
+<td>compute versioned feedback</td>
+<td>evaluator models/rubrics</td>
+</tr>
+<tr>
+<td>Trajectory store</td>
+<td>immutable event and artifact lineage</td>
+<td>tokens, observations, rewards</td>
+</tr>
+<tr>
+<td>Advantage/data worker</td>
+<td>group, filter, estimate, and pack</td>
+<td>returns and tensors</td>
+</tr>
+<tr>
+<td>Actor trainer</td>
+<td>compute objective and update policy</td>
+<td>weights, optimizer, scheduler</td>
+</tr>
+<tr>
+<td>Critic trainer</td>
+<td>learn values when configured</td>
+<td>critic checkpoint</td>
+</tr>
+<tr>
+<td>Reference server/model</td>
+<td>compute KL log-probabilities</td>
+<td>frozen reference</td>
+</tr>
+<tr>
+<td>Weight publisher</td>
+<td>atomically deliver new policies</td>
+<td>version manifest</td>
+</tr>
+<tr>
+<td>Evaluation plane</td>
+<td>hidden fixed and interactive suites</td>
+<td>protected tasks/results</td>
+</tr>
+<tr>
+<td>Observability/control</td>
+<td>metrics, traces, incidents, stop/rollback</td>
+<td>run state</td>
+</tr>
+</tbody>
+</table>
+<p>Keep control-plane state (versions, leases, lineage, permissions) separate from
+high-volume data-plane tensors and artifacts.</p>
+<h2 id="2-three-placement-patterns">2. Three placement patterns<a class="headerlink" href="#2-three-placement-patterns" title="Permanent link">&para;</a></h2>
+<h3 id="fully-colocated">Fully colocated<a class="headerlink" href="#fully-colocated" title="Permanent link">&para;</a></h3>
+<p>Actor training and rollout inference share the same accelerators at different
+times. Workers switch modes by freeing/reallocating optimizer states, KV cache,
+and inference buffers.</p>
+<p>Advantages:</p>
+<ul>
+<li>high utilization on a small cluster;</li>
+<li>no dedicated duplicate actor weights;</li>
+<li>direct/local weight transition.</li>
+</ul>
+<p>Costs:</p>
+<ul>
+<li>mode-switch latency and memory fragmentation;</li>
+<li>generation and training cannot fully overlap;</li>
+<li>failures affect both phases;</li>
+<li>training and inference prefer different parallel layouts.</li>
+</ul>
+<h3 id="disaggregated">Disaggregated<a class="headerlink" href="#disaggregated" title="Permanent link">&para;</a></h3>
+<p>Dedicated inference workers collect experience while dedicated trainers update.</p>
+<p>Advantages:</p>
+<ul>
+<li>stages overlap;</li>
+<li>each pool uses a suitable engine/topology;</li>
+<li>independent scaling for rollout, reward, environment, and training.</li>
+</ul>
+<p>Costs:</p>
+<ul>
+<li>duplicate weights and reference/critic memory;</li>
+<li>checkpoint conversion and network broadcast;</li>
+<li>behavior-policy lag;</li>
+<li>more queueing, failure, and lineage complexity.</li>
+</ul>
+<h3 id="hybrid">Hybrid<a class="headerlink" href="#hybrid" title="Permanent link">&para;</a></h3>
+<p>Some actors/references/critics are colocated and some rollout capacity is
+disaggregated. HybridFlow/veRL represents placements/dataflows flexibly
+(<a href="https://arxiv.org/abs/2409.19256">Sheng et al.</a>). The right layout depends on
+model size, rollout/optimization ratio, environment latency, and interconnect.</p>
+<h2 id="3-the-asynchronous-rollout-architecture">3. The asynchronous rollout architecture<a class="headerlink" href="#3-the-asynchronous-rollout-architecture" title="Permanent link">&para;</a></h2>
+<p>An efficient long-horizon collector separates model inference from agent and
+environment execution:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>many async AgentLoops
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    | batched generate(token_ids, sampling, policy_version)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    v
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>inference gateway / load balancer
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    |
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    +--&gt; policy replica / DP group 0
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    +--&gt; policy replica / DP group 1
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    +--&gt; ...
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>AgentLoop action --&gt; parser/authorizer --&gt; environment/tool RPC
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>       ^                                      |
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>       +-------------- observation -----------+
+</code></pre></div>
+<p>While one episode waits for a tool, other episodes supply generation work.
+Continuous batching merges ready requests with different histories. The
+inference engine must return exact tokens; the agent loop can decode them for
+parsing and display.</p>
+<p>veRL documents this client/server pattern and warns that text round-tripping can
+change tokenization
+(<a href="https://github.com/verl-project/verl/blob/main/docs/start/agentic_rl.rst">agentic RL documentation</a>).</p>
+<h2 id="4-throughput-model">4. Throughput model<a class="headerlink" href="#4-throughput-model" title="Permanent link">&para;</a></h2>
+<p>For one policy update, approximate wall time as</p>
+<div class="arithmatex">\[
+T_{\text{update}}
+=T_{\text{rollout}}+T_{\text{reward}}+T_{\text{prep}}+T_{\text{train}}
++T_{\text{sync}}+T_{\text{eval}}.
+\]</div>
+<p>With pipelining, steady-state throughput is bounded by the slowest stage plus
+dependencies and bubbles:</p>
+<div class="arithmatex">\[
+\text{throughput}\lesssim
+\min(C_{\text{rollout}},C_{\text{env}},C_{\text{reward}},C_{\text{train}}).
+\]</div>
+<p>But raw trajectories/s is misleading. Define effective yield:</p>
+<div class="arithmatex">\[
+Y=
+\frac{\text{valid action tokens admitted to updates}}
+{\text{accelerator-seconds} + \lambda\,\text{environment/tool cost}}.
+\]</div>
+<p>Track losses from:</p>
+<ul>
+<li>prompt/prefix recomputation;</li>
+<li>padding and packing;</li>
+<li>invalid actions and infrastructure failures;</li>
+<li>all-equal groups/dynamic-sampling rejection;</li>
+<li>overlong/truncated episodes;</li>
+<li>policy-lag rejection;</li>
+<li>evaluator errors;</li>
+<li>safety quarantine.</li>
+</ul>
+<p>A system can double generation tokens/s while reducing learning yield if those
+tokens are too stale or uninformative.</p>
+<h2 id="5-generation-performance">5. Generation performance<a class="headerlink" href="#5-generation-performance" title="Permanent link">&para;</a></h2>
+<h3 id="prefill-and-decode">Prefill and decode<a class="headerlink" href="#prefill-and-decode" title="Permanent link">&para;</a></h3>
+<p>Prefill processes the full prompt in parallel and is compute-heavy; decode
+produces one token per sequence and is usually memory/KV-cache sensitive. Agent
+workloads repeatedly alternate them as tool observations extend context.</p>
+<p>Optimize with:</p>
+<ul>
+<li>continuous batching;</li>
+<li>chunked prefill to avoid blocking decodes;</li>
+<li>prefix/KV-cache reuse for common task/group prompts;</li>
+<li>paged KV allocation;</li>
+<li>prefill/decode disaggregation;</li>
+<li>speculative decoding only when behavior probabilities and exact sampled tokens
+  remain correct for training;</li>
+<li>structured decoding with efficient grammar masks;</li>
+<li>request routing by prefix locality and length.</li>
+</ul>
+<p>Prefix caching changes performance, not the probability distribution, when
+implemented exactly. Approximate/speculative methods require proof that accepted
+token samples and log-probabilities match the declared behavior policy.</p>
+<h3 id="group-rollout">Group rollout<a class="headerlink" href="#group-rollout" title="Permanent link">&para;</a></h3>
+<p>GRPO/RLOO groups share a prompt and often an initial environment snapshot.
+Compute the common prefix once and fork KV/state with copy-on-write where safe.
+Environment branches must receive independent seeds or controlled shared
+randomness according to the estimator.</p>
+<h2 id="6-variable-length-scheduling-and-stragglers">6. Variable-length scheduling and stragglers<a class="headerlink" href="#6-variable-length-scheduling-and-stragglers" title="Permanent link">&para;</a></h2>
+<p>Agent episode latency has a heavy tail: different token lengths, numbers of tool
+calls, environment delays, and retries. A synchronous batch that waits for every
+trajectory wastes resources.</p>
+<p>Options:</p>
+<ul>
+<li>dynamic admission of new episodes;</li>
+<li>per-turn/action token budgets;</li>
+<li>partial-rollout continuation across iterations;</li>
+<li>length-aware batching and routing;</li>
+<li>speculative task duplication with first-valid completion (careful: changes
+  attempt accounting);</li>
+<li>defined partial-group policy;</li>
+<li>cancellation with explicit truncation semantics;</li>
+<li>separate queues for long-context or slow-tool tasks.</li>
+</ul>
+<p>Completion-time filtering creates bias if hard/long failures miss update
+deadlines. Compare launched and admitted distributions by task, reward, length,
+and latency.</p>
+<h2 id="7-partial-rollout-continuation">7. Partial rollout continuation<a class="headerlink" href="#7-partial-rollout-continuation" title="Permanent link">&para;</a></h2>
+<p>For an unfinished trajectory, preserve environment snapshot, agent state, token
+history, policy segments, and remaining budget. At the next collection window,
+resume with a current or declared policy.</p>
+<p>If earlier turns came from policy <span class="arithmatex">\(v\)</span> and later turns from <span class="arithmatex">\(v+1\)</span>, the
+trajectory is multi-policy. Options:</p>
+<ol>
+<li>train only newly generated tokens using prior history as fixed context;</li>
+<li>apply correct per-segment behavior ratios;</li>
+<li>discard mixed trajectories;</li>
+<li>use an explicitly off-policy estimator.</li>
+</ol>
+<p>Never label the whole trajectory with the newest version. Kimi k1.5 publicly
+described partial rollout continuation and training only newly generated
+segments in its iterative system
+(<a href="https://arxiv.org/abs/2501.12599">Kimi k1.5, Section 3.3</a>).</p>
+<h2 id="8-policy-versioning-and-weight-publication">8. Policy versioning and weight publication<a class="headerlink" href="#8-policy-versioning-and-weight-publication" title="Permanent link">&para;</a></h2>
+<p>Each policy release needs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;policy_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">184</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;training_step&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9520</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;checkpoint_hash&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sha256:...&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">&quot;model_config_hash&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sha256:...&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">&quot;tokenizer_hash&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sha256:...&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">&quot;chat_template_hash&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sha256:...&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">&quot;sampler_contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="nt">&quot;ready&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">}</span>
+</code></pre></div>
+<p>Publication protocol:</p>
+<ol>
+<li>checkpoint trainer shards and metadata;</li>
+<li>convert to inference layout deterministically;</li>
+<li>compute hashes and run a small logit parity suite;</li>
+<li>transfer/stream all shards;</li>
+<li>load into a shadow slot;</li>
+<li>verify complete model and tokenizer/template;</li>
+<li>atomically switch new requests to the version;</li>
+<li>allow old requests to drain with their original version;</li>
+<li>acknowledge replica versions to the controller.</li>
+</ol>
+<p>Avoid in-place partial weight updates. A trajectory sampled across an
+unidentified mixture of tensors has no valid behavior policy.</p>
+<h2 id="9-traininference-numerical-mismatch">9. Train/inference numerical mismatch<a class="headerlink" href="#9-traininference-numerical-mismatch" title="Permanent link">&para;</a></h2>
+<p>Even identical checkpoint files can yield different logits because of:</p>
+<ul>
+<li>different model implementations;</li>
+<li>attention/kernels and reduction order;</li>
+<li>tensor/expert parallel partitioning;</li>
+<li>precision, quantization, and fused operations;</li>
+<li>rotary scaling or position IDs;</li>
+<li>MoE router tie-breaking/capacity;</li>
+<li>logits processors and constrained masks;</li>
+<li>tokenizer/chat-template/version differences.</li>
+</ul>
+<p>Run parity tests on fixed prefixes:</p>
+<ol>
+<li>compare input token IDs and positions;</li>
+<li>compare selected-layer activations where possible;</li>
+<li>compare logits/top-k and sampled-token log-probabilities;</li>
+<li>compare greedy output;</li>
+<li>compare behavior old-logprob stored at rollout to trainer recomputation.</li>
+</ol>
+<p>Set tolerances by precision and measure their effect on policy ratios. “Greedy
+text matches” can hide log-probability mismatch large enough to destabilize PPO.</p>
+<h2 id="10-distributed-actor-training">10. Distributed actor training<a class="headerlink" href="#10-distributed-actor-training" title="Permanent link">&para;</a></h2>
+<p>Large actors combine parallel dimensions:</p>
+<ul>
+<li><strong>data parallelism:</strong> different trajectory batches;</li>
+<li><strong>tensor parallelism:</strong> shard matrix operations;</li>
+<li><strong>pipeline parallelism:</strong> shard layers;</li>
+<li><strong>sequence/context parallelism:</strong> shard long sequences;</li>
+<li><strong>expert parallelism:</strong> distribute MoE experts;</li>
+<li><strong>FSDP/ZeRO:</strong> shard parameters, gradients, and optimizer states.</li>
+</ul>
+<p>Agentic RL adds variable-length packed samples and potentially several models
+(actor, critic, reference, reward). Ensure:</p>
+<ul>
+<li>segment-isolated attention;</li>
+<li>globally correct token/sample denominators;</li>
+<li>group members are available where advantage is computed;</li>
+<li>MoE load balancing does not correlate with padding/packing artifacts;</li>
+<li>gradient clipping uses the global sharded norm;</li>
+<li>checkpointing captures data/curriculum and async cursors.</li>
+</ul>
+<h2 id="11-model-placement-and-memory-budget">11. Model placement and memory budget<a class="headerlink" href="#11-model-placement-and-memory-budget" title="Permanent link">&para;</a></h2>
+<p>For parameter count <span class="arithmatex">\(P\)</span>, rough training memory includes:</p>
+<ul>
+<li>weights: <span class="arithmatex">\(P b_w\)</span>;</li>
+<li>gradients: <span class="arithmatex">\(P b_g\)</span>;</li>
+<li>optimizer states/master weights: often several <span class="arithmatex">\(P\)</span> bytes;</li>
+<li>activations: function of batch, sequence, layers, hidden width, checkpointing;</li>
+<li>temporary/fused-kernel workspaces;</li>
+<li>communication buffers.</li>
+</ul>
+<p>PPO may add a critic of similar size and frozen reference/reward models. GRPO
+removes the critic but increases grouped generation. Decide whether to:</p>
+<ul>
+<li>shard/freeze/offload reference;</li>
+<li>precompute reference log-probabilities;</li>
+<li>share backbone for reward/value heads (with coupling risks);</li>
+<li>colocate models and time-share memory;</li>
+<li>dedicate separate GPU pools;</li>
+<li>use LoRA/adapters for the actor.</li>
+</ul>
+<p>Account for rollout KV cache separately. Long context can make KV memory larger
+than active weights per request.</p>
+<h2 id="12-environment-service-design">12. Environment service design<a class="headerlink" href="#12-environment-service-design" title="Permanent link">&para;</a></h2>
+<p>Environment workers need lease-based lifecycle:</p>
+<ol>
+<li>allocate immutable task snapshot;</li>
+<li>issue environment/episode ID and capability token;</li>
+<li>accept ordered action with idempotency key;</li>
+<li>persist transition before acknowledging;</li>
+<li>renew lease while active;</li>
+<li>terminate and collect artifacts;</li>
+<li>scrub secrets/state before reuse.</li>
+</ol>
+<p>Use action sequence numbers to reject duplicates/out-of-order delivery. A retry
+after ambiguous timeout must query action status before re-execution. This is
+critical for email, payments, file deletion, or any irreversible tool.</p>
+<p>Pool warm sandboxes to reduce startup cost, but prove cleanup/isolation between
+tasks. Reused containers can leak state across episodes.</p>
+<h2 id="13-backpressure-and-admission-control">13. Backpressure and admission control<a class="headerlink" href="#13-backpressure-and-admission-control" title="Permanent link">&para;</a></h2>
+<p>Unbounded queues create stale rollouts and memory failure. Each boundary needs a
+policy:</p>
+<ul>
+<li>maximum queued tasks/requests/tokens/bytes;</li>
+<li>priority and fairness by task family;</li>
+<li>deadline and cancellation semantics;</li>
+<li>whether producer blocks, spills, or resamples;</li>
+<li>lag/age admission at trainer;</li>
+<li>disk/object-store quotas and retention;</li>
+<li>circuit breakers for failed tools/reward services.</li>
+</ul>
+<p>The curriculum should react to capacity intentionally. Do not let “fastest
+environment wins” become the implicit training distribution.</p>
+<h2 id="14-fault-tolerance-and-exactly-once-meaning">14. Fault tolerance and exactly-once meaning<a class="headerlink" href="#14-fault-tolerance-and-exactly-once-meaning" title="Permanent link">&para;</a></h2>
+<p>Exactly-once execution is generally impossible across arbitrary external side
+effects. Aim for:</p>
+<ul>
+<li>at-least-once event delivery with deduplication;</li>
+<li>idempotent actions where possible;</li>
+<li>durable event log before acknowledgment;</li>
+<li>immutable trajectory finalization;</li>
+<li>deterministic identifiers from run/task/attempt/turn;</li>
+<li>leases for orphan detection;</li>
+<li>checkpointed queue and curriculum cursors;</li>
+<li>explicit partial/infrastructure-invalid status.</li>
+</ul>
+<p>Failure injection should kill inference replicas, trainers, environment workers,
+reward services, storage, and network links. Verify no action is silently
+duplicated and no corrupted trajectory enters training.</p>
+<h2 id="15-observability">15. Observability<a class="headerlink" href="#15-observability" title="Permanent link">&para;</a></h2>
+<p>Use a trace ID spanning curriculum, inference, agent, tool, environment, reward,
+packing, and training. One trace should answer:</p>
+<ul>
+<li>which policy and sampler generated every token;</li>
+<li>how long each prefill/decode/tool transition took;</li>
+<li>what action parser/authorizer decided;</li>
+<li>what state transition and side effects occurred;</li>
+<li>which reward component came from which evaluator;</li>
+<li>how the advantage was computed;</li>
+<li>which minibatch/update consumed the token;</li>
+<li>which checkpoint resulted.</li>
+</ul>
+<h3 id="core-metrics">Core metrics<a class="headerlink" href="#core-metrics" title="Permanent link">&para;</a></h3>
+<p><strong>Rollout:</strong> prompt/output tokens, TTFT, inter-token latency, cache hit, batch
+size, generation utilization, group completion.</p>
+<p><strong>Environment:</strong> reset/step/validation latency, error type, sandbox allocation,
+CPU/memory/disk/network usage.</p>
+<p><strong>Data:</strong> launched/completed/valid/admitted tokens, filter reasons, policy lag,
+replay success.</p>
+<p><strong>Training:</strong> tokens/s, model FLOP utilization, communication, memory, loss,
+ratio/KL/clip/entropy, gradient, checkpoint time.</p>
+<p><strong>End to end:</strong> verified successes per hour/dollar, valid learning tokens per
+accelerator-second, safety incidents, evaluation regressions.</p>
+<p>Avoid storing unrestricted chain-of-thought or sensitive observations in general
+metrics/logs. Use access-controlled artifacts and a defined retention policy.</p>
+<h2 id="16-security-architecture">16. Security architecture<a class="headerlink" href="#16-security-architecture" title="Permanent link">&para;</a></h2>
+<p>RL actively searches behavior space; assume the policy will find accidental
+capabilities and reward loopholes.</p>
+<ul>
+<li>isolate policy plane from control plane;</li>
+<li>never mount cluster credentials in tool sandboxes;</li>
+<li>use short-lived least-privilege capability tokens scoped to one action/task;</li>
+<li>deny network by default, proxy allowlisted destinations, log egress;</li>
+<li>separate training environment, validator, and hidden evaluation networks;</li>
+<li>treat tool/web output as untrusted prompt content;</li>
+<li>cap forks, processes, files, output, compute, and time;</li>
+<li>prohibit access to reward model prompts, expected answers, and data registries;</li>
+<li>hard-stop unauthorized actions outside the learned reward;</li>
+<li>retain immutable security audit logs and a kill switch.</li>
+</ul>
+<p>Safety controls must not depend on the same policy being optimized.</p>
+<h2 id="17-cost-accounting">17. Cost accounting<a class="headerlink" href="#17-cost-accounting" title="Permanent link">&para;</a></h2>
+<p>Separate:</p>
+<ul>
+<li>rollout inference accelerator-hours;</li>
+<li>actor/critic/reference/reward training/inference;</li>
+<li>environment CPU/GPU/memory/storage/network;</li>
+<li>paid tools/APIs/search;</li>
+<li>human annotation/adjudication;</li>
+<li>failed/rejected generation;</li>
+<li>evaluation and hyperparameter search;</li>
+<li>checkpoint/object storage and transfer.</li>
+</ul>
+<p>Report marginal final-run cost and total development cost separately. A vendor
+figure for a final pretraining run rarely includes data acquisition, failed
+runs, post-training, evaluation, serving, or staff.</p>
+<h2 id="18-capacity-planning-procedure">18. Capacity-planning procedure<a class="headerlink" href="#18-capacity-planning-procedure" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Measure one episode distribution: input/output tokens, turns, tool time,
+   reward time, success, accepted yield.</li>
+<li>Benchmark inference prefill/decode by context and concurrency.</li>
+<li>Benchmark environment and sandbox capacity independently.</li>
+<li>Benchmark trainer tokens/s and update ratio.</li>
+<li>Choose policy-update cadence and maximum lag.</li>
+<li>Solve approximate stage capacities; provision the bottleneck plus failure
+   headroom.</li>
+<li>Run a closed-loop load test because batching/queueing interactions are
+   nonlinear.</li>
+<li>Verify statistical distribution and safety under load, not just throughput.</li>
+</ol>
+<h2 id="19-framework-reading-map">19. Framework reading map<a class="headerlink" href="#19-framework-reading-map" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/verl-project/verl">veRL / HybridFlow</a>: flexible RL
+  dataflows, FSDP/Megatron, vLLM/SGLang, multi-turn agent loop.</li>
+<li><a href="https://github.com/OpenRLHF/OpenRLHF">OpenRLHF</a>: Ray, DeepSpeed, vLLM, hybrid
+  engine, PPO/critic-free methods.</li>
+<li><a href="https://github.com/inclusionAI/AReaL">AReaL</a>: large-scale asynchronous RL and
+  staleness-aware execution.</li>
+<li><a href="https://github.com/microsoft/agent-lightning">Agent Lightning</a>: decoupled
+  agent execution/training and credit decomposition.</li>
+<li><a href="https://github.com/langfengQ/verl-agent">verl-agent</a>: long-horizon multi-turn
+  environments and GiGPO.</li>
+<li><a href="https://github.com/kvcache-ai/Mooncake">Mooncake</a>: disaggregated serving and
+  distributed KV-cache infrastructure relevant to long-context rollouts.</li>
+</ul>
+<p>Pin a commit when studying code. The moving default branch is evidence only for
+its current state, not for a paper's historical experiment.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Guangming Sheng et al.,
+   <a href="https://arxiv.org/abs/2409.19256">“HybridFlow: A Flexible and Efficient RLHF Framework”</a>,
+   2024/2025.</li>
+<li>Shangchun Fu et al.,
+   <a href="https://arxiv.org/abs/2505.24298">“AReaL: A Large-Scale Asynchronous Reinforcement Learning System for Language Reasoning”</a>,
+   2025.</li>
+<li>Kimi Team et al.,
+   <a href="https://arxiv.org/abs/2501.12599">“Kimi k1.5: Scaling Reinforcement Learning with LLMs”</a>,
+   2025.</li>
+<li>Qin Zhu et al.,
+   <a href="https://arxiv.org/abs/2407.00079">“Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving”</a>,
+   2024.</li>
+<li>Guibin Zhang et al.,
+   <a href="https://arxiv.org/abs/2509.02547">“The Landscape of Agentic Reinforcement Learning for LLMs”</a>,
+   TMLR, 2026.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

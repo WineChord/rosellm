@@ -1,0 +1,4041 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/agentic-rl/case-studies/kimi/">
+      
+      
+        <link rel="prev" href="../glm/">
+      
+      
+        <link rel="next" href="../openai-anthropic-google/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Moonshot Kimi - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#moonshot-ai-kimi-long-context-muon-tool-reinforcement-learning-and-agent-swarms" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Moonshot Kimi
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#readers-terminology-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reader's terminology key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-executive-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Executive synthesis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-chronology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Chronology
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-early-kimi-and-mooncake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Early Kimi and Mooncake
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Early Kimi and Mooncake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#early-model-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Early model [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mooncake-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mooncake [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kimi-k15-long-cot-rl-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Kimi k1.5: long-CoT RL foundation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Kimi k1.5: long-CoT RL foundation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-architecturepretraining-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Architecture/pretraining [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-sft-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 SFT [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-rl-data-and-anti-hacking-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 RL data and anti-hacking [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-rewards-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Rewards [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-value-model-free-policy-optimization-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Value-model-free policy optimization [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-concrete-code-data-operation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Concrete code-data operation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-long-to-short-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 Long-to-short [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-rl-infrastructure-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 RL infrastructure [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-moonlight-scaling-muon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Moonlight: scaling Muon
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Moonlight: scaling Muon">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#muon-mechanics-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Muon mechanics [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moonlight-modeltraining-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moonlight model/training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-moba-sparse-attention-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. MoBA: sparse attention research
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-kimi-k2-trillion-parameter-moe-and-agent-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Kimi K2: trillion-parameter MoE and agent RL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Kimi K2: trillion-parameter MoE and agent RL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-architecture-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Architecture [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-muonclip-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 MuonClip [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-data-and-semantic-rephrasing-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Data and semantic rephrasing [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-schedulesystem-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Schedule/system [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-agentic-sft-factory-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 Agentic SFT factory [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-rl-gymrewards-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 RL Gym/rewards [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#77-weight-transitionevaluation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7 Weight transition/evaluation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-k2-instruct-0905" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. K2-Instruct-0905
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-k2-thinking-reasoning-interleaved-with-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. K2 Thinking: reasoning interleaved with tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-kimi-linear-and-kda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Kimi Linear and KDA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Kimi Linear and KDA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kimi-delta-attention-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kimi Delta Attention [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-k25-multimodality-and-trainable-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. K2.5: multimodality and trainable orchestration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. K2.5: multimodality and trainable orchestration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-architecturecontinual-pretraining-di" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Architecture/continual pretraining [D/I]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-visual-data-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 Visual data [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-zero-vision-sft-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 “Zero-vision” SFT [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-joint-text-vision-rl-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 Joint text-vision RL [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-toggle-efficient-rl-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 Toggle efficient RL [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#116-parl-agent-swarm-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6 PARL / Agent Swarm [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#117-infrastructure-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7 Infrastructure [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-k26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. K2.6
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-attention-residuals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Attention Residuals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-k27-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. K2.7 Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-k3-latest-public-endpoint-at-cutoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. K3: latest public endpoint at cutoff
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. K3: latest public endpoint at cutoff">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disclosed-architecture-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disclosed architecture [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#efficiencyagents-d-as-vendor-claims" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Efficiency/agents [D as vendor claims]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release-boundary-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release boundary [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-reconstructed-disclosed-moonshot-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Reconstructed disclosed Moonshot workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. Reconstructed disclosed Moonshot workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#corpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Corpus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pretraining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pretraining
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sft-and-environment-construction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SFT and environment construction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#online-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Online RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agentmulti-agent-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent/multi-agent RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-critical-unknowns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Critical unknowns
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#readers-terminology-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reader's terminology key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-executive-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Executive synthesis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-chronology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Chronology
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-early-kimi-and-mooncake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Early Kimi and Mooncake
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Early Kimi and Mooncake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#early-model-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Early model [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mooncake-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mooncake [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kimi-k15-long-cot-rl-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Kimi k1.5: long-CoT RL foundation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Kimi k1.5: long-CoT RL foundation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-architecturepretraining-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Architecture/pretraining [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-sft-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 SFT [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-rl-data-and-anti-hacking-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 RL data and anti-hacking [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-rewards-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Rewards [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-value-model-free-policy-optimization-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Value-model-free policy optimization [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-concrete-code-data-operation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Concrete code-data operation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-long-to-short-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 Long-to-short [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-rl-infrastructure-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 RL infrastructure [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-moonlight-scaling-muon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Moonlight: scaling Muon
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Moonlight: scaling Muon">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#muon-mechanics-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Muon mechanics [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moonlight-modeltraining-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moonlight model/training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-moba-sparse-attention-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. MoBA: sparse attention research
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-kimi-k2-trillion-parameter-moe-and-agent-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Kimi K2: trillion-parameter MoE and agent RL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Kimi K2: trillion-parameter MoE and agent RL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-architecture-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Architecture [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-muonclip-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 MuonClip [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-data-and-semantic-rephrasing-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Data and semantic rephrasing [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-schedulesystem-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Schedule/system [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-agentic-sft-factory-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 Agentic SFT factory [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-rl-gymrewards-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 RL Gym/rewards [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#77-weight-transitionevaluation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7 Weight transition/evaluation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-k2-instruct-0905" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. K2-Instruct-0905
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-k2-thinking-reasoning-interleaved-with-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. K2 Thinking: reasoning interleaved with tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-kimi-linear-and-kda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Kimi Linear and KDA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Kimi Linear and KDA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kimi-delta-attention-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kimi Delta Attention [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-k25-multimodality-and-trainable-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. K2.5: multimodality and trainable orchestration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. K2.5: multimodality and trainable orchestration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-architecturecontinual-pretraining-di" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Architecture/continual pretraining [D/I]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-visual-data-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 Visual data [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-zero-vision-sft-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 “Zero-vision” SFT [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-joint-text-vision-rl-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 Joint text-vision RL [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-toggle-efficient-rl-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 Toggle efficient RL [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#116-parl-agent-swarm-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6 PARL / Agent Swarm [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#117-infrastructure-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7 Infrastructure [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-k26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. K2.6
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-attention-residuals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Attention Residuals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-k27-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. K2.7 Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-k3-latest-public-endpoint-at-cutoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. K3: latest public endpoint at cutoff
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. K3: latest public endpoint at cutoff">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disclosed-architecture-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disclosed architecture [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#efficiencyagents-d-as-vendor-claims" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Efficiency/agents [D as vendor claims]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release-boundary-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release boundary [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-reconstructed-disclosed-moonshot-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Reconstructed disclosed Moonshot workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. Reconstructed disclosed Moonshot workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#corpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Corpus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pretraining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pretraining
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sft-and-environment-construction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SFT and environment construction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#online-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Online RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agentmulti-agent-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent/multi-agent RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-critical-unknowns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Critical unknowns
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="moonshot-ai-kimi-long-context-muon-tool-reinforcement-learning-and-agent-swarms">Moonshot AI / Kimi: Long Context, Muon, Tool Reinforcement Learning, and Agent Swarms<a class="headerlink" href="#moonshot-ai-kimi-long-context-muon-tool-reinforcement-learning-and-agent-swarms" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-22. Sources are Moonshot papers, repositories,
+model cards, and official product/research posts. Vendor benchmark claims are
+not independent reproductions.</p>
+<p>For a component-level explanation of MoonViT-3D, visual token projection, K2
+suffixes, K3's “native vision” boundary, and media generation, see the
+<a href="../../../multimodal/kimi/">Kimi multimodal architecture chapter</a>.</p>
+<h2 id="readers-terminology-key">Reader's terminology key<a class="headerlink" href="#readers-terminology-key" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Chain of Thought (CoT):</strong> intermediate reasoning before an answer;
+  long-CoT deliberately allows extended traces.</li>
+<li><strong>Mixture of Experts (MoE):</strong> sparse routing that activates only a subset of
+  feed-forward experts for each token.</li>
+<li><strong>Key-Value (KV) cache:</strong> stored attention keys/values reused during decoding;
+  Mooncake manages this cache across memory tiers and machines.</li>
+<li><strong>Remote Direct Memory Access (RDMA):</strong> network transfer directly between
+  registered memory regions with little central-processing-unit involvement.</li>
+<li><strong>Mixture of Block Attention (MoBA):</strong> Moonshot's sparse routing of a query to
+  selected context blocks.</li>
+<li><strong>Kimi Delta Attention (KDA):</strong> Moonshot's gated delta-rule linear attention.</li>
+<li><strong>Multi-head Latent Attention (MLA):</strong> a compressed latent key/value attention
+  representation used in Kimi's hybrid architectures.</li>
+<li><strong>Attention Residuals (AttnRes):</strong> learned attention over earlier residual
+  streams instead of an unweighted cumulative residual sum.</li>
+<li><strong>Parallel-Agent Reinforcement Learning (PARL):</strong> K2.5 training for a learned
+  orchestrator that launches and coordinates parallel sub-agents.</li>
+<li><strong>On-Policy Distillation (OPD):</strong> teacher supervision on the student's own
+  sampled state distribution.</li>
+<li><strong>Muon:</strong> an optimizer name, not an acronym; it orthogonalizes matrix-shaped
+  updates, and MuonClip adds Moonshot's stability control for K2.</li>
+</ul>
+<h2 id="1-executive-synthesis">1. Executive synthesis<a class="headerlink" href="#1-executive-synthesis" title="Permanent link">&para;</a></h2>
+<p>Moonshot's public development has five connected strands:</p>
+<ol>
+<li><strong>Long-context product/serving:</strong> early 128K APIs, Mooncake's disaggregated
+   KV-cache serving, and MoBA sparse long-context research.</li>
+<li><strong>Long-CoT RL:</strong> Kimi k1.5 documents verifiable long-context RL, anti-hacking
+   filters, curricula, partial rollouts, and a value-model-free objective.</li>
+<li><strong>Trillion-parameter MoE:</strong> Moonlight scales Muon; K2 introduces MuonClip and
+   reports stable 1.04T-MoE training over 15.5T tokens.</li>
+<li><strong>Trainable agents:</strong> K2 synthesizes tools/environments/trajectories; K2
+   Thinking interleaves reasoning/tools; K2.5 adds multimodal agent RL and PARL
+   for a learned multi-agent orchestrator.</li>
+<li><strong>Architecture beyond conventional attention:</strong> Kimi Linear introduces KDA,
+   Attention Residuals changes depth routing, and K3 announces KDA + AttnRes +
+   LatentMoE at 2.8T and 1M context.</li>
+</ol>
+<p>Transparency boundary:</p>
+<ul>
+<li>k1.5, Moonlight, K2, Kimi Linear, and K2.5 have substantial reports.</li>
+<li>K2-0905, K2 Thinking, K2.6, and K2.7 Code have model cards/posts without a
+  comparably complete training report.</li>
+<li>K3 was announced 2026-07-17; full weights were promised for 2026-07-27 and
+  its complete training report was pending at the cutoff.</li>
+</ul>
+<h2 id="2-chronology">2. Chronology<a class="headerlink" href="#2-chronology" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Generation/line</th>
+<th>Architecture/context</th>
+<th>Disclosure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024-01-31</td>
+<td><code>moonshot-v1</code> API</td>
+<td>unknown params; up to 128K</td>
+<td>very limited</td>
+</tr>
+<tr>
+<td>2024-06-26</td>
+<td>Mooncake</td>
+<td>serving system</td>
+<td>detailed systems paper</td>
+</tr>
+<tr>
+<td>2025-01-20</td>
+<td>Kimi k1.5</td>
+<td>proprietary multimodal Transformer; 128K; params unknown</td>
+<td>detailed RL/data/system report</td>
+</tr>
+<tr>
+<td>2025-02-18</td>
+<td>MoBA</td>
+<td>parameter-free sparse attention; research to 1M</td>
+<td>detailed paper/code</td>
+</tr>
+<tr>
+<td>2025-02-23</td>
+<td>Moonlight</td>
+<td>15.29B/2.24B active excluding embeddings (~16B/3B including)</td>
+<td>detailed optimizer/pretraining</td>
+</tr>
+<tr>
+<td>2025-04-10</td>
+<td>Kimi-VL</td>
+<td>16B/2.8B active multimodal MoE; 128K</td>
+<td>detailed report</td>
+</tr>
+<tr>
+<td>2025-07-11</td>
+<td>Kimi K2</td>
+<td>1.04T/32.6B active; 61 layers; 384 experts; 128K</td>
+<td>detailed report</td>
+</tr>
+<tr>
+<td>2025-09-05</td>
+<td>K2-Instruct-0905</td>
+<td>K2 family; 256K</td>
+<td>model card</td>
+</tr>
+<tr>
+<td>2025-10</td>
+<td>Kimi Linear</td>
+<td>48B/3B research MoE; hybrid KDA/MLA; 1M checkpoint</td>
+<td>detailed report</td>
+</tr>
+<tr>
+<td>2025-11-06</td>
+<td>K2 Thinking</td>
+<td>1T/32B; 256K; interleaved reasoning/tools; INT4</td>
+<td>post/model card</td>
+</tr>
+<tr>
+<td>2026-01-27</td>
+<td>K2.5</td>
+<td>1T/32B + ~400M MoonViT; 256K</td>
+<td>detailed report</td>
+</tr>
+<tr>
+<td>2026-02-09</td>
+<td>Agent Swarm</td>
+<td>K2.5 PARL orchestration</td>
+<td>report + post</td>
+</tr>
+<tr>
+<td>2026-03</td>
+<td>Attention Residuals</td>
+<td>attention over residual streams</td>
+<td>paper/code</td>
+</tr>
+<tr>
+<td>2026-04-20</td>
+<td>K2.6</td>
+<td>K2.5-family architecture; 256K</td>
+<td>post/model card</td>
+</tr>
+<tr>
+<td>2026-06-12</td>
+<td>K2.7 Code</td>
+<td>built on K2.6; coding focus</td>
+<td>model card/release</td>
+</tr>
+<tr>
+<td>2026-07-17</td>
+<td>K3</td>
+<td>2.8T; 896 experts/16 selected; 1M; KDA/AttnRes/LatentMoE</td>
+<td>announcement; report pending</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-early-kimi-and-mooncake">3. Early Kimi and Mooncake<a class="headerlink" href="#3-early-kimi-and-mooncake" title="Permanent link">&para;</a></h2>
+<h3 id="early-model-du">Early model [D/U]<a class="headerlink" href="#early-model-du" title="Permanent link">&para;</a></h3>
+<p><a href="https://platform.kimi.com/blog/posts/kimi-latest">Official API announcement</a> and
+<a href="https://kimi.moonshot.cn/download/app">product page</a> offered <code>moonshot-v1</code> up
+to 128K (consumer description: about 200K Chinese characters). Architecture,
+parameters, pretraining corpus, post-training, and RL are <strong>[U]</strong>. Do not retrofit
+later K2 architecture or k1.5 recipe onto this model.</p>
+<h3 id="mooncake-d">Mooncake [D]<a class="headerlink" href="#mooncake-d" title="Permanent link">&para;</a></h3>
+<p>Sources: <a href="https://arxiv.org/abs/2407.00079">paper</a>,
+<a href="https://github.com/kvcache-ai/Mooncake">repository</a>.</p>
+<p>Mooncake is serving infrastructure, not model training:</p>
+<ul>
+<li>disaggregated prefill/decode pools;</li>
+<li>distributed KV cache across GPU, CPU DRAM, and SSD;</li>
+<li>RDMA KV-chunk movement;</li>
+<li>prefix-locality-aware scheduling;</li>
+<li>layerwise asynchronous KV transfer;</li>
+<li>chunked prefill;</li>
+<li>hot replication, cold swapping, overload rejection;</li>
+<li>global Conductor optimizing locality, TTFT, and inter-token latency.</li>
+</ul>
+<p>The paper reports up to 525% simulated throughput gain and 75% more requests in
+one real workload. Results are topology/workload-specific; public hardware tests
+use dummy Llama-2-70B-like workloads/A800 nodes and do not reveal production
+Kimi architecture.</p>
+<h2 id="4-kimi-k15-long-cot-rl-foundation">4. Kimi k1.5: long-CoT RL foundation<a class="headerlink" href="#4-kimi-k15-long-cot-rl-foundation" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://arxiv.org/abs/2501.12599">paper</a>,
+<a href="https://arxiv.org/pdf/2501.12599">PDF</a>,
+<a href="https://github.com/MoonshotAI/Kimi-k1.5">repository</a>.</p>
+<h3 id="41-architecturepretraining-du">4.1 Architecture/pretraining [D/U]<a class="headerlink" href="#41-architecturepretraining-du" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Multimodal autoregressive Transformer with vision encoder and interleaved
+  text/image input.</li>
+<li>Context 131,072.</li>
+<li><strong>[U]</strong> parameters, dimensions/experts, pretraining-token total, cluster,
+  duration, and cost.</li>
+</ul>
+<p>Appendix B, pp. 21–24:</p>
+<ul>
+<li>English, Chinese, code, math/reasoning, general knowledge.</li>
+<li>Rule cleaning → fastText classification → embedding near-dedup → LLM quality.</li>
+<li>Code cleaned similarly to BigCode, markup downsampled, 32 major languages
+  deliberately upsampled.</li>
+<li>Math from web/PDF with specialized OCR and learned filtering.</li>
+<li>Knowledge from exercises, textbooks, papers with educational/document labels.</li>
+<li>Multimodal captions, interleaved docs, OCR, knowledge, general VQA.</li>
+<li>Synthetic captions capped rather than allowed to dominate.</li>
+</ul>
+<p>Stages:</p>
+<ol>
+<li>language-first;</li>
+<li>frozen language model while training vision tower separately;</li>
+<li>unfreeze/joint train, vision-text rises to 30% mixture;</li>
+<li>cooldown with high-quality and rejection-sampled synthetic QA;</li>
+<li>context 4K → 32K → 131,072.</li>
+</ol>
+<p>At final long-context stage, 40% uses full attention with natural long docs plus
+synthetic long QA/summarization; 60% uses partial attention with uniform cooldown
+data. RoPE base 1,000,000.</p>
+<h3 id="42-sft-d">4.2 SFT [D]<a class="headerlink" href="#42-sft-d" title="Permanent link">&para;</a></h3>
+<p>PDF p. 8:</p>
+<ul>
+<li>~1M text and ~1M text-vision examples.</li>
+<li>Listed text: 500K general QA, 200K code, 200K math/science, 5K creative,
+  20K long context = 925K; remaining ~75K uncategorized.</li>
+<li>Epoch 1: 32K, LR <span class="arithmatex">\(2\times10^{-5}\to2\times10^{-6}\)</span>.</li>
+<li>Epoch 2: 128K, rewarm <span class="arithmatex">\(10^{-5}\)</span>, decay <span class="arithmatex">\(10^{-6}\)</span>.</li>
+<li>Packed examples.</li>
+</ul>
+<h3 id="43-rl-data-and-anti-hacking-d">4.3 RL data and anti-hacking [D]<a class="headerlink" href="#43-rl-data-and-anti-hacking-d" title="Permanent link">&para;</a></h3>
+<p>Pipeline:</p>
+<div class="arithmatex">\[
+\text{pretraining}\to\text{vanilla SFT}\to
+\text{long-CoT SFT warmup}\to\text{RL}.
+\]</div>
+<p>Prompts cover STEM, code, and general domains; balance difficulty; require
+automatic evaluation. Estimate difficulty by sampling ten high-temperature SFT
+answers and measuring pass rate. Exclude multiple-choice, true/false, and proof
+formats that are easily hacked.</p>
+<p>The <strong>no-CoT guessing test</strong> asks the model to answer without reasoning; if it
+guesses correctly within eight attempts, remove the problem. This filters
+memorization, leakage, and shallow reward paths.</p>
+<p>The small long-CoT warmup set contains verified planning, evaluation,
+reflection, and exploration traces.</p>
+<h3 id="44-rewards-d">4.4 Rewards [D]<a class="headerlink" href="#44-rewards-d" title="Permanent link">&para;</a></h3>
+<p>Terminal binary outcome:</p>
+<div class="arithmatex">\[
+r(x,y,y^*)\in\{0,1\}.
+\]</div>
+<ul>
+<li>code: executable tests;</li>
+<li>structured math: exact/rule verification;</li>
+<li>free form: learned answer matcher.</li>
+</ul>
+<p>No disclosed ground-truth intermediate reasoning reward. Search traces are
+flattened into autoregressive context, so next-token learning and outcome RL
+teach an implicit search pattern.</p>
+<h3 id="45-value-model-free-policy-optimization-d">4.5 Value-model-free policy optimization [D]<a class="headerlink" href="#45-value-model-free-policy-optimization-d" title="Permanent link">&para;</a></h3>
+<p>PDF pp. 4–6 defines an online mirror-descent-like objective with relative
+entropy. From <span class="arithmatex">\(K\)</span> old-policy responses:</p>
+<div class="arithmatex">\[
+A_i=r_i-\frac1K\sum_jr_j.
+\]</div>
+<p>The policy minimizes a squared difference between new-policy sequence
+log-ratio and an analytically reward-tilted target.</p>
+<ul>
+<li>no value network;</li>
+<li>no MCTS;</li>
+<li>reset optimizer between RL iterations;</li>
+<li>older-policy responses can be used through log-ratio objective;</li>
+<li>gradual length reward favors shorter correct and penalizes longer incorrect;</li>
+<li>easy-to-hard curriculum;</li>
+<li>task priority roughly <span class="arithmatex">\(1-\text{success rate}\)</span>.</li>
+</ul>
+<p>The rationale for avoiding token/state values is important: a locally failing
+reasoning branch can be useful exploration if the model later detects/repairs
+it. Premature negative token credit can suppress trial-and-error.</p>
+<h3 id="46-concrete-code-data-operation-d">4.6 Concrete code-data operation [D]<a class="headerlink" href="#46-concrete-code-data-operation-d" title="Permanent link">&para;</a></h3>
+<p>For code problems:</p>
+<ol>
+<li>generate 50 tests with CYaRon;</li>
+<li>sample ten candidate ground-truth submissions;</li>
+<li>retain a test when at least 7/10 agree;</li>
+<li>admit a problem when at least 9/10 submissions pass retained tests.</li>
+</ol>
+<p>From 1,000 contest problems: 614 lack special judges; 463 generate at least 40
+valid cases; 323 survive the entire pipeline.</p>
+<p>Math reward models: ~800K conventional scalar examples and ~800K CoT-labeled
+examples. Manual spot-check reports 84.4% scalar versus 98.5% CoT model accuracy.</p>
+<p>Vision RL covers real science, geolocation, charts, procedural spatial/geometry/
+object tasks, and rendered text/code/structured data.</p>
+<h3 id="47-long-to-short-d">4.7 Long-to-short [D]<a class="headerlink" href="#47-long-to-short-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>weight averaging;</li>
+<li>shortest-correct rejection sampling over eight candidates;</li>
+<li>DPO preferring shortest correct over longer/incorrect (correct negative can be
+  selected if ≥1.5× longer);</li>
+<li>second RL with stronger length penalty and lower maximum rollout.</li>
+</ul>
+<p>Vendor result: short-CoT AIME 60.8 at 3,272 average tokens versus long-CoT 77.5.</p>
+<h3 id="48-rl-infrastructure-d">4.8 RL infrastructure [D]<a class="headerlink" href="#48-rl-infrastructure-d" title="Permanent link">&para;</a></h3>
+<p>PDF pp. 8–11: synchronous iterative rollout/controller/replay/trainer/reward/
+code-execution system.</p>
+<p><strong>Partial rollout continuation:</strong> fixed per-iteration output-token budget;
+unfinished state saved/resumed next iteration; only newly generated segment is
+on-policy/trainable; earlier tokens remain context; repetition detector prevents
+infinite loops.</p>
+<p>Megatron training + vLLM inference colocated in Kubernetes pod sharing GPUs:
+training → inference under one minute; inference → training about ten seconds;
+checkpoint conversion/transfer through shared memory and Mooncake/RDMA.</p>
+<p>Sandbox: Kubernetes, <code>crun</code>, cgroup reuse, <code>tmpfs</code> overlay; reported startup
+0.04s versus Docker 0.12s; throughput 120 versus 27 containers/s on 16 cores.</p>
+<h2 id="5-moonlight-scaling-muon">5. Moonlight: scaling Muon<a class="headerlink" href="#5-moonlight-scaling-muon" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://arxiv.org/abs/2502.16982">paper</a>,
+<a href="https://github.com/MoonshotAI/Moonlight">repository</a>.</p>
+<h3 id="muon-mechanics-d">Muon mechanics [D]<a class="headerlink" href="#muon-mechanics-d" title="Permanent link">&para;</a></h3>
+<p>For matrices, compute momentum then approximate orthogonalization with five
+Newton–Schulz iterations. Moonlight adds:</p>
+<ul>
+<li>weight decay for weight/output RMS growth;</li>
+<li>shape multiplier approximately <span class="arithmatex">\(0.2\sqrt{\max(A,B)}\)</span> for an <span class="arithmatex">\(A\times B\)</span>
+  matrix to match AdamW-like update RMS;</li>
+<li>AdamW retained for embeddings, norms, output head.</li>
+</ul>
+<p>Distributed Muon:</p>
+<ol>
+<li>ZeRO-1 shards optimizer state.</li>
+<li>Reduce-scatter gradients.</li>
+<li>Update local momentum.</li>
+<li>Gather full matrices for orthogonalization.</li>
+<li>Discard nonlocal update pieces.</li>
+<li>All-gather updated parameters.</li>
+</ol>
+<p>Muon uses one momentum buffer versus AdamW's two moments. Report estimates
+1–1.25× AdamW optimizer communication and 1–3% forward/backward latency.</p>
+<h3 id="moonlight-modeltraining-d">Moonlight model/training [D]<a class="headerlink" href="#moonlight-modeltraining-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>15.29B total/2.24B active excluding embeddings; ~16B/3B including.</li>
+<li>8K; DeepSeek-V3-small-like MoE; no MTP.</li>
+<li>stable auxiliary-loss-free routing-bias update; router gate scale 2.446.</li>
+<li>5.7T tokens.</li>
+</ul>
+<p>Schedule:</p>
+<ol>
+<li>0–33B: warm to <span class="arithmatex">\(4.2\times10^{-4}\)</span>, 2,000 steps, batch 2,048 sequences.</li>
+<li>33B–5.2T: cosine to <span class="arithmatex">\(4.2\times10^{-5}\)</span>; batch 2,048 until 200B then 4,096.</li>
+<li>5.2–5.7T: math/code/reasoning cooldown; rewarm <span class="arithmatex">\(10^{-4}\)</span> over 100 steps,
+   linearly decay to zero.</li>
+</ol>
+<p>Weight decay .1; expert-bias rate <span class="arithmatex">\(10^{-3}\)</span> first two stages then zero.
+Scaling fits across 399M–1.5B dense models estimate Muon needs ~52% AdamW FLOPs
+for equal loss. This is a fit, not universal 2× wall-clock proof.</p>
+<p><strong>[U]</strong> exact corpus, cluster, duration, cost, full SFT mixture.</p>
+<h2 id="6-moba-sparse-attention-research">6. MoBA: sparse attention research<a class="headerlink" href="#6-moba-sparse-attention-research" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://arxiv.org/abs/2502.13189">paper</a>,
+<a href="https://github.com/MoonshotAI/MoBA">repository</a>.</p>
+<p>MoBA blocks keys/values, represents a block by mean key, scores all block means
+per query, selects top-k plus the current causal block, and runs ordinary
+attention only inside selected blocks. Implementation sorts queries by selected
+blocks, applies variable-length FlashAttention, and combines with online softmax.</p>
+<p>Qualifications:</p>
+<ul>
+<li>no learned gate, but continued training is required;</li>
+<li>~90% MoBA tokens then 10% full-attention tokens;</li>
+<li>final few full-attention layers improve SFT;</li>
+<li>1M experiment extends Llama-family 8B through 128K/256K/512K/1M with ~100B
+  activation tokens;</li>
+<li>block 4,096, top-12, MoBA in 29 layers/full attention last 3;</li>
+<li>MoBA prefill can pair with full-attention generation.</li>
+</ul>
+<p>Vendor experiments report up to 6.5× 1M prefill. K2/K2.5 disclose MLA, so MoBA
+research is not proof those products used MoBA.</p>
+<h2 id="7-kimi-k2-trillion-parameter-moe-and-agent-rl">7. Kimi K2: trillion-parameter MoE and agent RL<a class="headerlink" href="#7-kimi-k2-trillion-parameter-moe-and-agent-rl" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://github.com/MoonshotAI/Kimi-K2/blob/main/tech_report.pdf">technical report</a>,
+<a href="https://github.com/MoonshotAI/Kimi-K2">repository</a>,
+<a href="https://www.kimi.com/blog/kimi-k2">launch</a>.</p>
+<h3 id="71-architecture-d">7.1 Architecture [D]<a class="headerlink" href="#71-architecture-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>1.04T total; 32.6B active.</li>
+<li>61 layers; first dense.</li>
+<li>hidden 7,168; 384 routed experts; 8 routed + 1 shared active; expert 2,048.</li>
+<li>64 attention heads; MLA; SwiGLU; 160K vocabulary; 128K context.</li>
+<li>effective expert sparsity 48.</li>
+</ul>
+<p>Compared with DeepSeek-V3: more experts, fewer active routed experts/fewer dense
+layers, 64 vs 128 heads, no expert grouping. K2 ablation says 128 heads cost 83%
+more inference FLOPs at 128K for 0.5–1.2% validation-loss gain.</p>
+<h3 id="72-muonclip-d">7.2 MuonClip [D]<a class="headerlink" href="#72-muonclip-d" title="Permanent link">&para;</a></h3>
+<p>QK-Clip measures maximum pre-softmax logit per head. If above <span class="arithmatex">\(\tau=100\)</span>,
+rescale selected query/key components, treating rotary/non-rotary keys
+differently. A 53B/9B active precursor saw unbounded logits &gt;1,000; K2 reports
+15.5T training without a loss spike. This is vendor evidence, not an independent
+universal stability guarantee.</p>
+<h3 id="73-data-and-semantic-rephrasing-du">7.3 Data and semantic rephrasing [D/U]<a class="headerlink" href="#73-data-and-semantic-rephrasing-du" title="Permanent link">&para;</a></h3>
+<ul>
+<li>15.5T processed tokens across web/code/math/knowledge.</li>
+<li>Rewrite prompts vary style, perspective, exposition.</li>
+<li>Long documents rewritten chunk-by-chunk autoregressively.</li>
+<li>Semantic fidelity filters.</li>
+<li>Math rewritten as learning notes; selected material translated to English.</li>
+<li>Large corpora rewritten at most twice.</li>
+</ul>
+<p>SimpleQA ablation: raw repeated 10 epochs 23.76; one rewrite repeated 27.39; ten
+independent rewrites one epoch 28.94. Exact proportions, licenses, original/
+synthetic ratio, dedup thresholds, unique tokens are <strong>[U]</strong>.</p>
+<h3 id="74-schedulesystem-du">7.4 Schedule/system [D/U]<a class="headerlink" href="#74-schedulesystem-du" title="Permanent link">&para;</a></h3>
+<ul>
+<li>main sequence 4,096; global batch ~67M tokens; decay .1; 500 warmup;</li>
+<li>LR <span class="arithmatex">\(2\times10^{-4}\)</span> through 10T, cosine to <span class="arithmatex">\(2\times10^{-5}\)</span> over 5.5T;</li>
+<li>late annealing/long context: ~400B at 4K + 60B at 32K, LR
+  <span class="arithmatex">\(2\times10^{-5}\to7\times10^{-6}\)</span>; wording does not prove these add to
+  15.5T;</li>
+<li>YaRN to 128K.</li>
+</ul>
+<p>H800 nodes: eight NVLink GPUs, 2TB CPU, eight 400Gbps RoCE NICs; PP16, virtual
+stages, EP16, ZeRO-1. A 256-GPU model-parallel group holds ~6TB BF16 params +
+FP32 gradients. Optimizer ~30GB/GPU; CPU offload across 32-node group.</p>
+<p>Expert all-to-all overlaps 1F1B; weight-gradient computation decoupled from
+backward. No DualPipe due duplicated storage. Activation recompute + selected
+FP8 E4M3 activation storage (not claimed FP8 matrix compute) + CPU activation
+offload.</p>
+<p>Total GPUs, duration, energy, failures, and cost are <strong>[U]</strong>.</p>
+<h3 id="75-agentic-sft-factory-d">7.5 Agentic SFT factory [D]<a class="headerlink" href="#75-agentic-sft-factory-d" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Build tool repository.</li>
+<li>Generate agent identities and rubric-scored tasks.</li>
+<li>
+<p>Generate tool-use trajectories.</p>
+</li>
+<li>
+<blockquote>
+<p>3,000 real MCP tools;</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>20,000 synthetic tools;</p>
+</blockquote>
+</li>
+<li>hierarchical domain evolution;</li>
+<li>thousands of agents;</li>
+<li>tens of thousands of trajectories;</li>
+<li>simulated user persona;</li>
+<li>stateful tool simulator with stochastic failure;</li>
+<li>LLM rubric judge;</li>
+<li>real sandboxes/tests for coding;</li>
+<li>K1.5/in-house experts generate candidates, filtered by LLM + humans.</li>
+</ol>
+<h3 id="76-rl-gymrewards-d">7.6 RL Gym/rewards [D]<a class="headerlink" href="#76-rl-gymrewards-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>math/STEM/logic: rule or expert verification;</li>
+<li>code: open/synthetic/pretraining-derived human tests and GitHub issues/PRs;</li>
+<li>instruction following: deterministic verifier + LLM judge + hack detector;</li>
+<li>grounded factuality: sentence-level judge;</li>
+<li>safety: evolved attacks, targets, rubrics;</li>
+<li>subjective tasks: self-critique reward model.</li>
+</ul>
+<p>Self-critique: K2 samples candidates; K2 critic ranks with core, prescriptive,
+human rubrics; bootstrap critic with preference SFT; continue grounding via
+on-policy rollouts from verifiable domains.</p>
+<p>Policy optimization mostly retains k1.5's squared log-ratio objective, adding
+per-task output budgets/truncation penalties, high-quality pretraining loss to
+reduce drift, and temperature decay. More than 10,000 concurrent Kubernetes
+code sandboxes are reported.</p>
+<h3 id="77-weight-transitionevaluation-d">7.7 Weight transition/evaluation [D]<a class="headerlink" href="#77-weight-transitionevaluation-d" title="Permanent link">&para;</a></h3>
+<p>Pipeline-wise parameter streaming updates the 1T model into inference in under
+30 seconds; partial rollouts and unified Gym remain.</p>
+<p>Vendor examples: SWE-bench Verified 65.8 single attempt, multilingual 47.3,
+LiveCodeBench 53.7, AIME 49.5, GPQA 75.1, Tau2 66.1, ACEBench 76.5. The report
+uses non-thinking model, normally 128K/8K output (SWE 16K); protocol is part of
+the result.</p>
+<h2 id="8-k2-instruct-0905">8. K2-Instruct-0905<a class="headerlink" href="#8-k2-instruct-0905" title="Permanent link">&para;</a></h2>
+<p><a href="https://huggingface.co/moonshotai/Kimi-K2-Instruct-0905">Official model card</a>:
+same 1T/32B family; context 256K; agent coding/frontend emphasis. Five-run
+vendor means include SWE Verified <span class="arithmatex">\(69.2\pm.63\)</span>, multilingual <span class="arithmatex">\(55.9\pm.72\)</span>,
+Multi-SWE 33.5, TerminalBench 44.5, SWE-Dev 66.6. Harness derives from SWE-agent;
+unreachable Git objects and SWE-Dev tests were removed.</p>
+<p><strong>[U]</strong> new pretraining, post-training data, RL, optimizer, compute. Same
+architecture does not imply a simple SFT-only update.</p>
+<h2 id="9-k2-thinking-reasoning-interleaved-with-tools">9. K2 Thinking: reasoning interleaved with tools<a class="headerlink" href="#9-k2-thinking-reasoning-interleaved-with-tools" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://www.kimi.com/blog/kimi-k2-thinking">launch</a>,
+<a href="https://huggingface.co/moonshotai/Kimi-K2-Thinking">model card</a>.</p>
+<p><strong>[D]</strong> 1T/32B; 256K; reasoning interleaved with function calls; ~200–300
+sequential calls in search tasks; test-time scaling over thinking and tools;
+native INT4 quantization-aware post-training; weight-only INT4 for MoE; all
+published benchmarks use INT4.</p>
+<p>Protocol examples:</p>
+<ul>
+<li>temperature 1, 256K;</li>
+<li>96K reasoning cap on HLE/AIME/HMMT/GPQA;</li>
+<li>up to 300 search steps, 24K reasoning each;</li>
+<li>HLE up to 120 steps, 48K each;</li>
+<li>earlier tool outputs hidden on overflow;</li>
+<li>heavy mode: eight rollouts + reflective aggregation.</li>
+</ul>
+<p>Vendor scores include HLE-with-tools 44.9, BrowseComp 60.2, SWE Verified 71.3.
+K2.5 later says Toggle RL reduced K2 Thinking tokens 25–30% with negligible
+loss. <strong>[U]</strong> training counts, data, reward mix, rollout K, hyperparameters,
+compute, exact initialization.</p>
+<h2 id="10-kimi-linear-and-kda">10. Kimi Linear and KDA<a class="headerlink" href="#10-kimi-linear-and-kda" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://arxiv.org/abs/2510.26692">paper</a>,
+<a href="https://github.com/MoonshotAI/Kimi-Linear">repository</a>.</p>
+<h3 id="kimi-delta-attention-d">Kimi Delta Attention [D]<a class="headerlink" href="#kimi-delta-attention-d" title="Permanent link">&para;</a></h3>
+<p>KDA combines per-channel decay <span class="arithmatex">\(\alpha_t\)</span>, delta-rule writes <span class="arithmatex">\(\beta_t\)</span>,
+normalized Q/K, short convolution + Swish, low-rank decay/write gates, RMSNorm,
+and sigmoid output gate:</p>
+<div class="arithmatex">\[
+S_t=\operatorname{diag}(\alpha_t)S_{t-1}
++\beta_t(v_t-S_{t-1}k_t)k_t^\top.
+\]</div>
+<p>The delta writes only the value not predicted from memory; diagonal decay lets
+channels forget at different rates.</p>
+<p>Released 48B/3B MoE: 256 routed experts; 8 routed + 1 shared; dense first layer;
+3:1 KDA:MLA; recurrent components dimension 128. MLA preserves exact retrieval;
+KDA reduces long sequential cost.</p>
+<h3 id="training-d">Training [D]<a class="headerlink" href="#training-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>initial 1.4T at 4K; MuonClip; WSD schedule; peak LR <span class="arithmatex">\(1.1\times10^{-3}\)</span>;
+  global batch ~32M;</li>
+<li>released checkpoint through 5.7T; long context to 1M;</li>
+<li>broad SFT, reasoning SFT, RL over math/code/STEM;</li>
+<li>k1.5-family objective + high-quality pretraining loss + truncated importance
+  sampling + dynamic KL + minibatching.</li>
+</ul>
+<p>Report claims up to 75% lower KV cache, ~6× faster 1M decode, 2.9× prefill.
+Kimi Linear is a validated K3 precursor, not proof of identical K3 layer ratios
+or hyperparameters.</p>
+<h2 id="11-k25-multimodality-and-trainable-orchestration">11. K2.5: multimodality and trainable orchestration<a class="headerlink" href="#11-k25-multimodality-and-trainable-orchestration" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://arxiv.org/abs/2602.02276">paper</a>,
+<a href="https://huggingface.co/moonshotai/Kimi-K2.5">model card</a>,
+<a href="https://www.kimi.com/blog/kimi-k2-5">launch</a>.</p>
+<h3 id="111-architecturecontinual-pretraining-di">11.1 Architecture/continual pretraining [D/I]<a class="headerlink" href="#111-architecturecontinual-pretraining-di" title="Permanent link">&para;</a></h3>
+<ul>
+<li>K2 language backbone: ~1T/32B, 61 layers, 384 experts, 8+1 active, MLA, 256K.</li>
+<li>~400M MoonViT-3D initialized from SigLIP-SO-400M.</li>
+<li>Native-resolution NaViT processing; group four frames and temporal pool → 4×
+  lower video-token rate.</li>
+<li>Starts near final K2 and processes ~15T additional mixed visual/text tokens,
+  with more code/unique tokens and limited source repeats.</li>
+<li><strong>[I]</strong> K2 15.5T + ~15T continuation suggests ~30T cumulative processed
+  exposure, not 30T unique data.</li>
+</ul>
+<p>Early fusion 10:90 visual/text outperforms mid 20:80 and late 50:50 in fixed-token
+ablation across text/vision/multimodal. ViT receives ~1T caption-style tokens
+aligned against Moonlight-16B-A3B; short projector connects to backbone.</p>
+<p>Schedule table: ViT 1T at 4K; joint ~15T at 4K; long-context stages described as
+500B and 200B as length grows 32K → 262,144; YaRN.</p>
+<h3 id="112-visual-data-d">11.2 Visual data [D]<a class="headerlink" href="#112-visual-data-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>captions, interleaved image-text, OCR, visual knowledge;</li>
+<li>perception/grounding, video, computer-use trajectories;</li>
+<li>cap synthetic captions;</li>
+<li>retrieve academic material and reformulate as questions;</li>
+<li>screenshot-to-HTML/React/SVG;</li>
+<li>desktop/mobile/web screenshots plus human action traces;</li>
+<li>hour-long video, boxes/points/contours/segmentation;</li>
+<li>filter/dedup media.</li>
+</ul>
+<p>S3-like object storage dynamically blends, tokenizes, masks, augments, and packs.
+Coordinate-preserving augmentation supports grounding; tiered caches and
+deterministic resume support recovery.</p>
+<h3 id="113-zero-vision-sft-d">11.3 “Zero-vision” SFT [D]<a class="headerlink" href="#113-zero-vision-sft-d" title="Permanent link">&para;</a></h3>
+<p>Main SFT uses text-only examples despite multimodal pretraining. Images are
+manipulated through an IPython tool; the report says human visual trajectories
+generalized worse. Text SFT + multimodal RL activates flexible visual tools.
+Candidates come from K2, K2 Thinking, proprietary experts plus human/prompt/
+automatic verification.</p>
+<h3 id="114-joint-text-vision-rl-d">11.4 Joint text-vision RL [D]<a class="headerlink" href="#114-joint-text-vision-rl-d" title="Permanent link">&para;</a></h3>
+<p>Tasks: grounding/counting, charts/docs, vision STEM, OCR, points/boxes,
+segmentation, synthetic puzzles.</p>
+<p>Rewards:</p>
+<ul>
+<li>IoU/soft F1 localization;</li>
+<li>Gaussian point matching;</li>
+<li>segmentation IoU;</li>
+<li>normalized edit distance OCR;</li>
+<li>absolute-difference count reward;</li>
+<li>K2 verification for puzzles.</li>
+</ul>
+<p>Text/visual experts combine with general reward models. Vendor ablation reports
+text MMLU-Pro 84.7 → 86.4 and GPQA 84.3 → 86.4 after visual RL.</p>
+<p>Objective changes toward token-level clipped ratios: ratios outside interval
+receive zero gradient regardless of advantage sign. MuonClip remains. General
+reward models cover chat, code, search, artifact creation with multiple rubrics.</p>
+<h3 id="115-toggle-efficient-rl-d">11.5 Toggle efficient RL [D]<a class="headerlink" href="#115-toggle-efficient-rl-d" title="Permanent link">&para;</a></h3>
+<p>Alternate unconstrained reasoning-growth and budget-constrained efficiency.
+Budgets are task-wise percentiles of correct rollout lengths, not one global
+cap. Applied retrospectively to K2 Thinking: 25–30% fewer tokens with negligible
+reported loss.</p>
+<h3 id="116-parl-agent-swarm-d">11.6 PARL / Agent Swarm [D]<a class="headerlink" href="#116-parl-agent-swarm-d" title="Permanent link">&para;</a></h3>
+<p>Parallel-Agent Reinforcement Learning trains the orchestrator while subagents
+remain frozen.</p>
+<ul>
+<li>orchestrator decides whether to spawn and what to delegate;</li>
+<li>subagents from intermediate checkpoints;</li>
+<li>subagent tokens excluded from orchestrator gradient;</li>
+<li>curriculum small subagents → larger;</li>
+<li>dynamic inference allocation.</li>
+</ul>
+<p>Reward:</p>
+<div class="arithmatex">\[
+r=\lambda_1r_{\text{parallel}}+
+\lambda_2r_{\text{finish}}+r_{\text{performance}}.
+\]</div>
+<p>Parallel shaping prevents serial collapse; finish shaping prevents meaningless
+spawns/uncompleted work; both anneal toward zero so task performance dominates.</p>
+<p>Training prompts include wide/deep search, large-document analysis, batch
+processing without explicitly ordering parallelism. Critical steps count main
+work plus max branch depth, approximating wall time rather than total work.</p>
+<p>Vendor results: BrowseComp 60.6 single → 78.4 swarm; WideSearch 72.7 → 79.0;
+internal deep research 41.6 → 58.3; ~3–4.5× wall-clock. Product initial cap: 100
+subagents and 1,500 calls. Independent bounded contexts return relevant results
+to orchestrator—context sharding, not one shared transcript.</p>
+<h3 id="117-infrastructure-du">11.7 Infrastructure [D/U]<a class="headerlink" href="#117-infrastructure-du" title="Permanent link">&para;</a></h3>
+<ul>
+<li>modular Toolset, Judge, prompt enhancement, environments;</li>
+<li>white/black-box tools;</li>
+<li>each task an async coroutine; recursive subtask rollouts;</li>
+<li>up to 100K concurrent agent tasks;</li>
+<li>environment/sandbox pools;</li>
+<li>rollout log-probs for train/inference mismatch;</li>
+<li>gateway for proprietary/black-box models;</li>
+<li>decoupled encoder process replicates small ViT, load balances visual forward,
+  drops activations/recomputes backward; ~90% reported text-only efficiency.</li>
+</ul>
+<p><strong>[U]</strong> exact modality ratios, RL/SFT totals, reward weights, cluster, duration,
+cost.</p>
+<h2 id="12-k26">12. K2.6<a class="headerlink" href="#12-k26" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://www.kimi.com/blog/kimi-k2-6">launch</a>,
+<a href="https://huggingface.co/moonshotai/Kimi-K2.6">model card</a>.</p>
+<p>Same disclosed K2.5 family: 1T/32B, 61 layers, 384 experts, MLA, ~400M vision,
+256K. Product emphasis: long-horizon coding/design/proactive execution; up to
+300 subagents and 4,000 coordinated steps; multi-hour/multi-day case studies.</p>
+<p>Vendor scores: HLE tools 54.0, BrowseComp 83.2/86.3 swarm, OSWorld 73.1,
+TerminalBench 66.7, SWE-Pro 58.6, SWE Verified 80.2. Typical evaluation uses
+temperature 1, top-p 1, 262,144 context, up to 98,304 reasoning tokens with
+benchmark-specific overflow rules.</p>
+<p><strong>[U]</strong> new data, environments, rewards, sample counts, optimizer, compute.</p>
+<h2 id="13-attention-residuals">13. Attention Residuals<a class="headerlink" href="#13-attention-residuals" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://arxiv.org/abs/2603.15031">paper</a>,
+<a href="https://github.com/MoonshotAI/Attention-Residuals">repository</a>.</p>
+<p>Ordinary residual accumulation</p>
+<div class="arithmatex">\[
+h_\ell=\sum_{i&lt;\ell}v_i
+\]</div>
+<p>is replaced by learned normalized routing</p>
+<div class="arithmatex">\[
+h_\ell=\sum_{i&lt;\ell}\alpha_{i\to\ell}v_i,
+\qquad\alpha=\operatorname{softmax}(q_\ell^\top k_i).
+\]</div>
+<p>A blockwise variant attends over block representatives, reducing residual
+attention memory from roughly <span class="arithmatex">\(O(Ld)\)</span> to <span class="arithmatex">\(O(Nd)\)</span>. Around eight blocks recover
+most reported benefit. Scaling fits suggest conventional residual baseline
+needs ~1.25× compute; 48B/3B Kimi Linear experiment reports GPQA +7.5 among other
+gains. K3 adopts AttnRes, but exact K3 block/key/query details are <strong>[U]</strong>.</p>
+<h2 id="14-k27-code">14. K2.7 Code<a class="headerlink" href="#14-k27-code" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://huggingface.co/moonshotai/Kimi-K2.7-Code">model card</a>,
+<a href="https://www.kimi.com/code/docs/en/kimi-code/whats-new.html">release notes</a>,
+<a href="https://www.kimi.com/resources/kimi-k2-7-code">resource page</a>.</p>
+<p>Built on K2.6; same disclosed 1T/32B, 61 layers, 384 experts, 256K; text/image/
+video input; thinking-only; INT4; vendor reports ~30% fewer thinking tokens.
+Vendor evaluations: KimiCodeBench V2 62.0, Program 53.6, MLSLite 35.1, Claw24/7
+46.9, MCP Atlas 76.0, MCPMark Verified 81.1, with source-specific setups.</p>
+<p><strong>[U]</strong> corpus, coding-RL operation, trajectory volume, reward, optimizer,
+duration, cost.</p>
+<h2 id="15-k3-latest-public-endpoint-at-cutoff">15. K3: latest public endpoint at cutoff<a class="headerlink" href="#15-k3-latest-public-endpoint-at-cutoff" title="Permanent link">&para;</a></h2>
+<p>Primary source: <a href="https://www.kimi.com/blog/kimi-k3">official announcement</a>, dated
+2026-07-17 on the research page.</p>
+<h3 id="disclosed-architecture-d">Disclosed architecture [D]<a class="headerlink" href="#disclosed-architecture-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>2.8T total parameters;</li>
+<li>896 experts, 16 selected;</li>
+<li>1M context; native vision;</li>
+<li>Kimi Delta Attention, Attention Residuals, Stable LatentMoE;</li>
+<li>Quantile Balancing, Per-Head Muon, SiTU, Gated MLA;</li>
+<li>quantization-aware training from SFT;</li>
+<li>MXFP4 weights and MXFP8 activations.</li>
+</ul>
+<p>Stable LatentMoE/Quantile Balancing are described at high level: expert-balance
+signals from router-score quantiles, avoiding heuristic bias update and
+sensitive balance hyperparameters; balanced expert execution uses static shapes
+without host sync. Recommended deployments use supernodes with ≥64 accelerators.
+KDA prefix-cache support was contributed to vLLM.</p>
+<p><strong>[U]</strong> active parameters. <code>2.8T × 16/896</code> is invalid because attention,
+embeddings, shared components, and LatentMoE internals are omitted.</p>
+<h3 id="efficiencyagents-d-as-vendor-claims">Efficiency/agents [D as vendor claims]<a class="headerlink" href="#efficiencyagents-d-as-vendor-claims" title="Permanent link">&para;</a></h3>
+<p>Announcement claims ~2.5× scaling efficiency over K2 but does not define
+loss/FLOP, throughput, total cost, or another unit. Product demonstrations
+include 24-hour kernel work, multi-day chip design, and research runs with many
+papers/equations/code/web fetches and self-improvement rounds. They demonstrate
+intended operating scale, not the training environments that produced it.</p>
+<h3 id="release-boundary-du">Release boundary [D/U]<a class="headerlink" href="#release-boundary-du" title="Permanent link">&para;</a></h3>
+<p>At 2026-07-22, K3 was available in products/API, full weights were promised for
+2026-07-27, and architecture/training/evaluation reports were promised later.
+Therefore pretraining tokens/data, active params, optimizer, post-training, RL,
+rewards, environments, hardware, duration, and cost remain <strong>[U]</strong>.</p>
+<h2 id="16-reconstructed-disclosed-moonshot-workflow">16. Reconstructed disclosed Moonshot workflow<a class="headerlink" href="#16-reconstructed-disclosed-moonshot-workflow" title="Permanent link">&para;</a></h2>
+<h3 id="corpus">Corpus<a class="headerlink" href="#corpus" title="Permanent link">&para;</a></h3>
+<ul>
+<li>ingest web, code, PDF/textbooks/exercises/papers, images/video/screenshots,
+  repos/issues/PRs;</li>
+<li>rules, language/domain classifiers, learned quality, embedding near-dedup,
+  OCR/document classifiers;</li>
+<li>cap dominating synthetic categories and upsample valuable domains/languages;</li>
+<li>semantically rewrite selected knowledge/math;</li>
+<li>generate tests, grounding, screenshot-code, GUI, and tool-schema data.</li>
+</ul>
+<h3 id="pretraining">Pretraining<a class="headerlink" href="#pretraining" title="Permanent link">&para;</a></h3>
+<ul>
+<li>short → long context activation;</li>
+<li>Muon/MuonClip matrices + AdamW non-matrices;</li>
+<li>sparse MoE with pipeline/expert/data parallelism;</li>
+<li>stable load balancing without large auxiliary loss;</li>
+<li>recompute, compressed activations, CPU offload;</li>
+<li>high-quality cooldown and long-context mid-training.</li>
+</ul>
+<h3 id="sft-and-environment-construction">SFT and environment construction<a class="headerlink" href="#sft-and-environment-construction" title="Permanent link">&para;</a></h3>
+<ul>
+<li>generate candidates from earlier/strong specialist models;</li>
+<li>verify programmatically, with judges, and humans;</li>
+<li>broad instruction/code/reasoning/long/multimodal/tool data;</li>
+<li>async Gym interface;</li>
+<li>prioritize executable/terminal/sandbox/exact rewards;</li>
+<li>code-test agreement, learned matchers, rubric judges, hack/no-CoT tests;</li>
+<li>thousands to tens of thousands of concurrent environments.</li>
+</ul>
+<h3 id="online-rl">Online RL<a class="headerlink" href="#online-rl" title="Permanent link">&para;</a></h3>
+<ul>
+<li>multiple samples/task and group-centered terminal outcomes;</li>
+<li>no value network in k1.5/K2;</li>
+<li>curricula and failure-prioritized sampling;</li>
+<li>partial continuation;</li>
+<li>gradual output/length control;</li>
+<li>high-quality pretraining loss against drift;</li>
+<li>K2.5 token-ratio clipping and Toggle budgets.</li>
+</ul>
+<h3 id="agentmulti-agent-rl">Agent/multi-agent RL<a class="headerlink" href="#agentmulti-agent-rl" title="Permanent link">&para;</a></h3>
+<ul>
+<li>synthesize tools/agents/users/tasks/rubrics/trajectories;</li>
+<li>interleave reasoning and tool calls;</li>
+<li>freeze subagents and train orchestrator with PARL;</li>
+<li>anneal parallel/finish shaping toward task reward;</li>
+<li>independent agent contexts and compressed results.</li>
+</ul>
+<h3 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">&para;</a></h3>
+<ul>
+<li>collocated rapid policy refresh where useful;</li>
+<li>pipeline-stream trillion-parameter checkpoints;</li>
+<li>disaggregated prefill/decode and distributed KV;</li>
+<li>low precision/QAT;</li>
+<li>harness-specific context management for long runs.</li>
+</ul>
+<h2 id="17-critical-unknowns">17. Critical unknowns<a class="headerlink" href="#17-critical-unknowns" title="Permanent link">&para;</a></h2>
+<ol>
+<li>k1.5 architecture size.</li>
+<li>K2 corpus proportions and unique-token count.</li>
+<li>K2/K2.5 cluster size, duration, energy, cost.</li>
+<li>SFT/RL token totals for most models.</li>
+<li>Most exact reward weights, rollout counts, KL/clip coefficients, judge
+   calibration.</li>
+<li>K2-0905/K2 Thinking/K2.6/K2.7 update recipes.</li>
+<li>K3 active parameters and training process at cutoff.</li>
+<li>Cross-model benchmarks use different tool budgets, context rules, reasoning
+   caps, and harnesses.</li>
+<li>Product cases are not controlled robustness/training-efficacy experiments.</li>
+<li>Processed tokens are not unique data; K2.5 continuation implies ~30T
+    cumulative exposure only as an inference.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

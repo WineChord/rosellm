@@ -1,0 +1,4524 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/evaluation/instruction-following-vendors/">
+      
+      
+        <link rel="prev" href="../instruction-following-methods/">
+      
+      
+        <link rel="next" href="../instruction-following-operations/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Disclosed Vendor Practices - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#what-leading-model-vendors-disclose-about-instruction-following" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Disclosed Vendor Practices
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-cross-vendor-conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Cross-vendor conclusions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Cross-vendor conclusions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-publicly-visible-industry-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The publicly visible industry stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#particularly-concrete-disclosed-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particularly concrete disclosed examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#important-counterexamples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Important counterexamples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-openai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. OpenAI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. OpenAI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#developer-derived-instruction-data-and-evaluations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Developer-derived instruction data and evaluations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train-the-model-to-follow-the-correct-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Train the model to follow the correct source
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-plus-inference-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training plus inference constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-anthropic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Anthropic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Anthropic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constitutional-and-character-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constitutional and character training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool-context-reflection-and-constrained-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool context, reflection, and constrained output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluate-outcomes-and-traces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluate outcomes and traces
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-google-and-google-deepmind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Google and Google DeepMind
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Google and Google DeepMind">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flan-and-the-general-instruction-tuning-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FLAN and the general instruction-tuning recipe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gemini-post-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gemini post-training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool-and-structured-output-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool and structured-output protocols
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-useful-instruction-tuning-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A useful instruction-tuning trade-off
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-meta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Meta
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Meta">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llama-3-iterative-sft-candidate-selection-and-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Llama 3: iterative SFT, candidate selection, and DPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool-and-function-call-curricula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool and function-call curricula
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llama-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Llama 4
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-microsoft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Microsoft
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Microsoft">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phi-4-shows-that-dpo-is-not-automatically-literal-instruction-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phi-4 shows that DPO is not automatically literal instruction training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#microsoft-research-prototypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Microsoft research prototypes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-amazon-and-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Amazon and AWS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cohere" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Cohere
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Cohere">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-a-builds-specialists-on-a-general-instruction-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command A builds specialists on a general instruction model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reward-revision-and-regression-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reward, revision, and regression control
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-xai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. xAI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-mistral-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Mistral AI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-nvidia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. NVIDIA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. NVIDIA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nemotron-3-nano-verified-instruction-data-and-unified-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nemotron 3 Nano: verified instruction data and unified RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nemotron-3-super-and-ultra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nemotron 3 Super and Ultra
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-alibaba-qwen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Alibaba Qwen
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Alibaba Qwen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qwen3s-four-stage-post-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qwen3's four-stage post-training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qwen25-and-coding-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qwen2.5 and coding agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-moonshot-ai-kimi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Moonshot AI / Kimi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-zhipu-ai-glm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Zhipu AI / GLM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Zhipu AI / GLM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dedicated-instruction-and-function-call-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dedicated instruction and function-call RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-tencent-hunyuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Tencent Hunyuan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-deepseek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. DeepSeek
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. DeepSeek">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v4-makes-instruction-following-a-separate-expert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V4 makes instruction following a separate expert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#r1-and-historical-release-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        R1 and historical release lessons
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-baidu-ernie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Baidu ERNIE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-bytedance-seed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. ByteDance Seed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. ByteDance Seed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seed-oss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seed-OSS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seed20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seed2.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-minimax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. MiniMax
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19. MiniMax">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minimax-01" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MiniMax-01
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimax-m2-and-forge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MiniMax-M2 and Forge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-apple" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Apple
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-ibm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. IBM
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-ai21-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. AI21 Labs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-01ai-yi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23. 01.AI / Yi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-baichuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24. Baichuan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-huawei" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25. Huawei
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-iflytek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26. iFlytek
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-stepfun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27. StepFun
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-xiaomi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        28. Xiaomi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-explicit-coverage-gaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        29. Explicit coverage gaps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-how-to-compare-a-new-vendor-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        30. How to compare a new vendor claim
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-cross-vendor-conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Cross-vendor conclusions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Cross-vendor conclusions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-publicly-visible-industry-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The publicly visible industry stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#particularly-concrete-disclosed-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particularly concrete disclosed examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#important-counterexamples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Important counterexamples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-openai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. OpenAI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. OpenAI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#developer-derived-instruction-data-and-evaluations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Developer-derived instruction data and evaluations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train-the-model-to-follow-the-correct-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Train the model to follow the correct source
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-plus-inference-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training plus inference constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-anthropic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Anthropic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Anthropic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constitutional-and-character-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constitutional and character training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool-context-reflection-and-constrained-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool context, reflection, and constrained output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluate-outcomes-and-traces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluate outcomes and traces
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-google-and-google-deepmind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Google and Google DeepMind
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Google and Google DeepMind">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flan-and-the-general-instruction-tuning-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FLAN and the general instruction-tuning recipe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gemini-post-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gemini post-training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool-and-structured-output-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool and structured-output protocols
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-useful-instruction-tuning-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A useful instruction-tuning trade-off
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-meta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Meta
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Meta">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llama-3-iterative-sft-candidate-selection-and-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Llama 3: iterative SFT, candidate selection, and DPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool-and-function-call-curricula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool and function-call curricula
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llama-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Llama 4
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-microsoft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Microsoft
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Microsoft">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phi-4-shows-that-dpo-is-not-automatically-literal-instruction-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phi-4 shows that DPO is not automatically literal instruction training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#microsoft-research-prototypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Microsoft research prototypes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-amazon-and-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Amazon and AWS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cohere" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Cohere
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Cohere">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-a-builds-specialists-on-a-general-instruction-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command A builds specialists on a general instruction model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reward-revision-and-regression-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reward, revision, and regression control
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-xai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. xAI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-mistral-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Mistral AI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-nvidia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. NVIDIA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. NVIDIA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nemotron-3-nano-verified-instruction-data-and-unified-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nemotron 3 Nano: verified instruction data and unified RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nemotron-3-super-and-ultra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nemotron 3 Super and Ultra
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-alibaba-qwen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Alibaba Qwen
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Alibaba Qwen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qwen3s-four-stage-post-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qwen3's four-stage post-training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qwen25-and-coding-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qwen2.5 and coding agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-moonshot-ai-kimi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Moonshot AI / Kimi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-zhipu-ai-glm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Zhipu AI / GLM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Zhipu AI / GLM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dedicated-instruction-and-function-call-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dedicated instruction and function-call RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-tencent-hunyuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Tencent Hunyuan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-deepseek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. DeepSeek
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. DeepSeek">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v4-makes-instruction-following-a-separate-expert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V4 makes instruction following a separate expert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#r1-and-historical-release-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        R1 and historical release lessons
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-baidu-ernie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Baidu ERNIE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-bytedance-seed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. ByteDance Seed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. ByteDance Seed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seed-oss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seed-OSS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seed20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seed2.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-minimax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. MiniMax
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19. MiniMax">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minimax-01" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MiniMax-01
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimax-m2-and-forge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MiniMax-M2 and Forge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-apple" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Apple
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-ibm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. IBM
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-ai21-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. AI21 Labs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-01ai-yi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23. 01.AI / Yi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-baichuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24. Baichuan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-huawei" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25. Huawei
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-iflytek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26. iFlytek
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-stepfun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27. StepFun
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#28-xiaomi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        28. Xiaomi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#29-explicit-coverage-gaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        29. Explicit coverage gaps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-how-to-compare-a-new-vendor-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        30. How to compare a new vendor claim
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="what-leading-model-vendors-disclose-about-instruction-following">What Leading Model Vendors Disclose About Instruction Following<a class="headerlink" href="#what-leading-model-vendors-disclose-about-instruction-following" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23.</p>
+<p>This is an evidence audit, not a ranking. It asks which instruction-following
+controls a developer has publicly confirmed for a named model, research
+prototype, product, or customer-facing API. It does not infer proprietary
+training from a benchmark score or a product feature.</p>
+<p>Evidence labels follow the <a href="../../research-method/">research standard</a>:</p>
+<ul>
+<li><strong>D — disclosed:</strong> a first-party source or author paper states the practice;</li>
+<li><strong>C — confirmed artifact:</strong> released code, prompt, configuration, data, or
+  weights directly establish it;</li>
+<li><strong>R — reproduced:</strong> RoseLLM retained the run, configuration, and artifacts;</li>
+<li><strong>I — inferred:</strong> the conclusion depends on named evidence and assumptions;</li>
+<li><strong>U — unknown:</strong> public evidence is absent or insufficient.</li>
+</ul>
+<p>The object label is equally important:</p>
+<ul>
+<li><strong>model training</strong> changes a checkpoint;</li>
+<li><strong>research prototype</strong> demonstrates a method but is not automatically
+  deployed;</li>
+<li><strong>evaluation</strong> measures behavior but does not reveal its cause;</li>
+<li><strong>API or decoding control</strong> constrains inference around a model;</li>
+<li><strong>product orchestration</strong> adds prompts, routing, memory, tools, and policy;</li>
+<li><strong>customer customization</strong> is a capability offered to builders, not evidence
+  about the vendor's base model.</li>
+</ul>
+<p>A schema-constrained API does not prove that the model weights learned perfect
+format following. A tool benchmark does not establish domain authorization.
+A product prompt does not prove compliance. A release score does not reveal
+the SFT data, reward, or live router.</p>
+<h2 id="1-cross-vendor-conclusions">1. Cross-vendor conclusions<a class="headerlink" href="#1-cross-vendor-conclusions" title="Permanent link">&para;</a></h2>
+<h3 id="the-publicly-visible-industry-stack">The publicly visible industry stack<a class="headerlink" href="#the-publicly-visible-industry-stack" title="Permanent link">&para;</a></h3>
+<p>Leading developers repeatedly expose seven layers:</p>
+<ol>
+<li>broad instruction SFT over real, licensed, human, and synthetic tasks;</li>
+<li>targeted data for complex constraints, system prompts, multiple turns,
+   tools, failure recovery, and negative examples;</li>
+<li>preferences, rejection sampling, DPO-family optimization, or online RL;</li>
+<li>rule, execution, or model-based rewards for objectively and semantically
+   judged requirements;</li>
+<li>specialist training, curricula, merging, or distillation;</li>
+<li>role channels, schemas, constrained decoding, tool controls, memory, and
+   agent harnesses; and</li>
+<li>private evaluations, partner feedback, production failures, canaries, and
+   regression gates.</li>
+</ol>
+<p>The exact data mixture, reward composition, hierarchy loss, online router,
+compaction policy, retry budget, release threshold, and production violation
+rate are usually <strong>U</strong>. Public evidence supports this layered pattern, not a
+complete reverse-engineered stack.</p>
+<p>This edition audits 27 named developers with sufficiently specific primary
+evidence: OpenAI, Anthropic, Google, Meta, Microsoft, Amazon, Cohere, xAI,
+Mistral, NVIDIA, Alibaba, Moonshot, Zhipu, Tencent, DeepSeek, Baidu,
+ByteDance, MiniMax, Apple, IBM, AI21 Labs, 01.AI, Baichuan, Huawei, iFlytek,
+StepFun, and Xiaomi. Section 29 records several prominent cases where a
+specific instruction-following recipe remains unknown. Coverage is broad, not
+a claim that every commercial model developer has been exhaustively audited.</p>
+<h3 id="particularly-concrete-disclosed-examples">Particularly concrete disclosed examples<a class="headerlink" href="#particularly-concrete-disclosed-examples" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Vendor / model</th>
+<th>Disclosed practice</th>
+<th>Why it is unusually informative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI GPT-4.1</td>
+<td>developer-feedback tasks for format, negative, ordered, content, ranking, and unavailable-data behavior</td>
+<td>links named practical failure classes to training and private evaluation</td>
+</tr>
+<tr>
+<td>OpenAI Instruction Hierarchy / IH-Challenge</td>
+<td>synthesize or programmatically grade role conflicts and train selective obedience</td>
+<td>targets following the correct source, not maximum obedience</td>
+</tr>
+<tr>
+<td>Meta Llama 3</td>
+<td>repeated SFT, reward-model candidate selection, edited preferences, DPO, system-prompt and tool curricula</td>
+<td>exposes an iterative data-generation and preference loop</td>
+</tr>
+<tr>
+<td>Meta Llama 4</td>
+<td>Maverick uses lightweight SFT, multimodal online RL with medium-to-hard filtering, and lightweight DPO; Behemoth separately uses a pass-at-<span class="arithmatex">\(k\)</span> curriculum and mixed capability batches</td>
+<td>distinguishes the released model's recipe from its still-training teacher</td>
+</tr>
+<tr>
+<td>Google Gemini 1</td>
+<td>representative real-world single/multi-turn prompts, SFT demonstrations, feedback, reward model, and RLHF</td>
+<td>ties a deployed family to a conventional but named post-training pipeline</td>
+</tr>
+<tr>
+<td>Cohere Command A</td>
+<td>a general instruction initializer plus six capability specialists, parameter merging, best-of-<span class="arithmatex">\(N\)</span>, offline preference, and online RLHF</td>
+<td>exposes a detailed general-to-specialist merge and regression strategy</td>
+</tr>
+<tr>
+<td>DeepSeek V4</td>
+<td>dedicated instruction-following expert with SFT and GRPO, then on-policy distillation into a unified model</td>
+<td>separates precise adherence from general reasoning specialists</td>
+</tr>
+<tr>
+<td>Alibaba Qwen</td>
+<td>broad SFT followed by multi-stage RL with instruction-specific rewards and verifiers</td>
+<td>exposes a scalable rule/judge reward path for a released family</td>
+</tr>
+<tr>
+<td>Moonshot Kimi K2</td>
+<td>rubric-based RL Gym with instruction, tool, and environment feedback</td>
+<td>connects complex agent behavior to named reward and verification layers</td>
+</tr>
+<tr>
+<td>Tencent Hunyuan</td>
+<td>many task-specific scoring services and instruction or hallucination reward models in online RL</td>
+<td>demonstrates multi-scorer specialization rather than one universal reward</td>
+</tr>
+<tr>
+<td>Apple 2024 foundation models</td>
+<td>teacher-committee rejection sampling plus mirror-descent RLHF with a leave-one-out advantage estimator</td>
+<td>directly attributes significant instruction-following gains to two named post-training algorithms</td>
+</tr>
+</tbody>
+</table>
+<h3 id="important-counterexamples">Important counterexamples<a class="headerlink" href="#important-counterexamples" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Microsoft Phi-4's DPO stages improved many reasoning qualities while its
+  reported IFEval score fell from the SFT checkpoint. Preference optimization
+  does not automatically improve literal compliance.</li>
+<li>Google found that standard instruction tuning could make a model less
+  willing to obey deliberately arbitrary label mappings. Strong semantic
+  priors and local in-context instructions can conflict.</li>
+<li>A grammar can deliver 100% supported-schema conformance while the model still
+  selects the wrong tool, supplies a wrong value, or violates authorization.</li>
+<li>More reasoning can help complex composition and hurt short literal tasks.</li>
+<li>Strong safety or hierarchy training can over-refuse; preference tuning can
+  favor verbose helpfulness over terse obedience.</li>
+<li>Partner testimonials, arena preference, and aggregate chat-quality scores are
+  not instruction-level evaluations.</li>
+</ul>
+<h2 id="2-openai">2. OpenAI<a class="headerlink" href="#2-openai" title="Permanent link">&para;</a></h2>
+<h3 id="developer-derived-instruction-data-and-evaluations">Developer-derived instruction data and evaluations<a class="headerlink" href="#developer-derived-instruction-data-and-evaluations" title="Permanent link">&para;</a></h3>
+<p>OpenAI's <a href="https://openai.com/index/gpt-4-1/">GPT-4.1 release</a> says training and
+private evaluation drew from developer feedback in six categories:</p>
+<ul>
+<li>format following;</li>
+<li>negative instructions;</li>
+<li>ordered instructions;</li>
+<li>content requirements;</li>
+<li>ranking; and</li>
+<li>overconfidence or abstention when data is unavailable.</li>
+</ul>
+<p>It also targeted retrieval from earlier conversation turns and multi-turn
+retention. <strong>[D — model training and evaluation]</strong></p>
+<p>On OpenAI's reported settings, GPT-4.1 scored 87.4% on IFEval versus 81.0% for
+GPT-4o, improved the default-grader MultiChallenge result from 27.8% to 38.3%,
+and improved the private hard API instruction evaluation from 29.2% to 49.1%.
+In an internal coding-edit test, unrelated edits fell from 9% to 2%. These are
+vendor evaluations for named settings, not current cross-vendor prevalence
+estimates.</p>
+<p><a href="https://openai.com/index/introducing-gpt-5-for-developers/">GPT-5 for developers</a>
+says the model was trained with real coding tasks from early customers and
+improved detailed instruction following, tool-error handling, sequential and
+parallel tool use, and progress preambles. OpenAI reports 69.6% on
+MultiChallenge with an o3-mini grader, 64.0% on its private hard evaluation,
+and 99.0% on COLLIE. <strong>[D — model training and evaluation]</strong> The release also
+shows that API GPT-5 modes and ChatGPT routing are different objects.</p>
+<h3 id="train-the-model-to-follow-the-correct-source">Train the model to follow the correct source<a class="headerlink" href="#train-the-model-to-follow-the-correct-source" title="Permanent link">&para;</a></h3>
+<p>The 2024 <a href="https://openai.com/index/the-instruction-hierarchy/">Instruction
+Hierarchy</a> research
+generates privileged-role conflicts and trains GPT-3.5 with SFT and
+reinforcement learning from human feedback to ignore lower-priority
+instructions selectively. It improved both trained and unseen attacks with
+small general-capability costs. <strong>[D — research prototype]</strong></p>
+<p>The o1 <a href="https://openai.com/index/openai-o1-system-card/">System Card</a> says o1
+training included role conflicts with the order system over developer over
+user. Reported role-conflict scores improved over GPT-4o, including
+system/developer and system/user cases, while a phrase-protection slice
+regressed. <strong>[D — model training/evaluation]</strong> This is evidence that hierarchy
+training has trade-offs, not a proof of perfect priority handling.</p>
+<p>The 2026
+<a href="https://openai.com/index/instruction-hierarchy-challenge/">IH-Challenge</a>
+uses role-conflict tasks that Python can grade and that cannot be solved by
+refusing everything. Large-scale RL on a GPT-5 Mini research variant improved
+held-out hierarchy, safety steerability, CyberSecEval 2, and internal prompt
+injection evaluations. <strong>[D — research prototype]</strong> OpenAI does not state that
+every current production model uses this exact dataset or reward.</p>
+<h3 id="training-plus-inference-constraints">Training plus inference constraints<a class="headerlink" href="#training-plus-inference-constraints" title="Permanent link">&para;</a></h3>
+<p>OpenAI's <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">Structured
+Outputs</a>
+disclosure separates two effects:</p>
+<ul>
+<li>schema-understanding training raised <code>gpt-4o-2024-08-06</code> to 93% on an
+  internal complex-schema evaluation; and</li>
+<li>dynamic constrained decoding raised supported-schema conformance to 100%.</li>
+</ul>
+<p><strong>[D — model training plus API/decoder]</strong> The decoder guarantees supported
+shape, not semantic values, task choice, tool relevance, or authorization.</p>
+<p>GPT-5 also exposes reasoning effort, verbosity, custom plaintext tools, and
+regular-expression or context-free-grammar constraints. <strong>[D — API controls]</strong>
+An explicit user constraint is documented to override the general verbosity
+setting.</p>
+<p><strong>Still unknown:</strong> current GPT-5.6 SFT data, preference and RL rewards, mixture
+weights, hierarchy loss, production feedback selection, routing, compaction,
+and live violation rates. The Model Spec is a behavioral standard, not by
+itself proof of a training recipe.</p>
+<h2 id="3-anthropic">3. Anthropic<a class="headerlink" href="#3-anthropic" title="Permanent link">&para;</a></h2>
+<h3 id="constitutional-and-character-training">Constitutional and character training<a class="headerlink" href="#constitutional-and-character-training" title="Permanent link">&para;</a></h3>
+<p><a href="https://www.anthropic.com/news/constitutional-ai-harmlessness-from-ai-feedback">Constitutional
+AI</a>
+first has a model critique and revise answers under written principles, then
+uses AI comparisons to train a preference model and RLAIF. <strong>[D — historical
+research recipe]</strong> Its main objective was harmlessness with less evasiveness;
+Anthropic says current processes have evolved.</p>
+<p><a href="https://www.anthropic.com/research/claude-character">Claude's Character</a>
+describes a Claude 3 training stage in which researchers define desired
+character traits, generate synthetic situations and responses, have the model
+rank responses, train a preference model, and iteratively review the result.
+<strong>[D — model training]</strong> This shapes default behavior and judgment; it is not a
+hard guarantee for every literal constraint.</p>
+<p>The current Claude constitution further states norms for helpfulness, honesty,
+calibration, and appropriate deference. Exact current SFT, preference, and RL
+composition remain <strong>U</strong>.</p>
+<h3 id="tool-context-reflection-and-constrained-output">Tool context, reflection, and constrained output<a class="headerlink" href="#tool-context-reflection-and-constrained-output" title="Permanent link">&para;</a></h3>
+<p>Anthropic's <a href="https://www.anthropic.com/engineering/advanced-tool-use">Advanced Tool
+Use</a> is
+customer-visible inference and context engineering:</p>
+<ul>
+<li>Tool Search loads only relevant tools dynamically;</li>
+<li>Tool Use Examples supply realistic valid invocations;</li>
+<li>programmatic tool calling compresses intermediate work.</li>
+</ul>
+<p>On Anthropic's internal MCP evaluations, Tool Search improved Opus 4 from 49%
+to 74% and Opus 4.5 from 79.5% to 88.1%; examples improved a complex-parameter
+test from 72% to 90%. <strong>[D — API/product evaluation]</strong> These gains do not
+disclose base-model training.</p>
+<p>The <a href="https://www.anthropic.com/engineering/claude-think-tool">think tool</a>
+creates an explicit intermediate reflection point for policy-heavy and
+sequential tool tasks. Anthropic later recommends extended thinking for most
+general cases and retains the tool for selected policy workflows. <strong>[D —
+inference/product control]</strong></p>
+<p>Claude <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use">strict tool
+use</a>
+uses grammar-constrained sampling to guarantee supported tool names and
+argument schemas. <strong>[D — API/decoder]</strong> It does not select the correct tool or
+validate field meaning.</p>
+<h3 id="evaluate-outcomes-and-traces">Evaluate outcomes and traces<a class="headerlink" href="#evaluate-outcomes-and-traces" title="Permanent link">&para;</a></h3>
+<p>Anthropic's <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">agent evaluation
+guide</a>
+recommends repeated trials, complete traces, outcome/state graders, and
+separating model failures from harness failures. It warns that a grader
+requiring one exact operation sequence can reject a valid alternative path.
+<strong>[D — production evaluation guidance]</strong></p>
+<p>The <a href="https://www.anthropic.com/news/claude-opus-4-7">Claude Opus 4.7
+release</a> describes more literal
+behavior and warns that prompts tuned to older models may require adjustment.
+Partner-reported workflow and tool-error gains are useful deployment signals,
+not neutral instruction-following measurements.</p>
+<p><strong>Still unknown:</strong> current Claude 4.x instruction SFT data, RLAIF/RL rewards,
+hierarchy training, role-conflict objectives, product prompts, and online
+release thresholds.</p>
+<h2 id="4-google-and-google-deepmind">4. Google and Google DeepMind<a class="headerlink" href="#4-google-and-google-deepmind" title="Permanent link">&para;</a></h2>
+<h3 id="flan-and-the-general-instruction-tuning-recipe">FLAN and the general instruction-tuning recipe<a class="headerlink" href="#flan-and-the-general-instruction-tuning-recipe" title="Permanent link">&para;</a></h3>
+<p>Google's <a href="https://research.google/blog/introducing-flan-more-generalizable-language-models-with-instruction-fine-tuning/">FLAN
+work</a>
+templates many tasks as natural-language instructions and holds out task
+clusters to test unseen-task transfer. The later <a href="https://research.google/blog/the-flan-collection-advancing-open-source-methods-for-instruction-tuning/">FLAN
+Collection</a>
+mixes zero-shot, few-shot, chain-of-thought, and inverted-input templates while
+balancing task sources. <strong>[D — research/open model training]</strong></p>
+<p>These studies establish task diversity, template diversity, scaling, and
+mixture balance as real instruction-tuning levers. They are not a full recipe
+for current Gemini.</p>
+<h3 id="gemini-post-training">Gemini post-training<a class="headerlink" href="#gemini-post-training" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://storage.googleapis.com/deepmind-media/gemini/gemini_1_report.pdf">Gemini 1 Technical
+Report</a>
+describes:</p>
+<ol>
+<li>representative real-world single- and multi-turn prompts from vendor,
+   licensed, and synthetic sources;</li>
+<li>human demonstrations for supervised fine-tuning;</li>
+<li>multiple candidate answers and human feedback;</li>
+<li>a reward model; and</li>
+<li>reinforcement learning from human feedback.</li>
+</ol>
+<p><strong>[D — model training]</strong> This is direct evidence for a deployed family, though
+the quantities, mixture, losses, and complete rewards are not public.</p>
+<p>The <a href="https://storage.googleapis.com/deepmind-media/gemini/gemini_v1_5_report.pdf">Gemini 1.5
+report</a>
+adds data filtering, conditional pretraining tags, SFT, and RLHF. Its
+helpfulness objective is to fulfill a request safely whenever possible and
+refuse only when no policy-compliant answer exists. Long-context safety tests
+include prompt injection around a needle. <strong>[D — model training and
+evaluation]</strong></p>
+<p>The <a href="https://storage.googleapis.com/deepmind-media/gemini/gemini_v2_5_report.pdf">Gemini 2.5
+report</a>
+says thinking models learn to use inference compute through RL, Gemini 2.0 was
+trained for native tools and search, and 2.5 learns interleaved reasoning,
+search, follow-up queries, and verification. Safety behavior uses custom data
+inspired by Constitutional AI with human revision of incorrect refusals and
+violations. <strong>[D — model training]</strong></p>
+<h3 id="tool-and-structured-output-protocols">Tool and structured-output protocols<a class="headerlink" href="#tool-and-structured-output-protocols" title="Permanent link">&para;</a></h3>
+<p>Gemini <a href="https://ai.google.dev/gemini-api/docs/generate-content/function-calling">function
+calling</a>
+exposes:</p>
+<ul>
+<li><code>ANY</code>, which requires at least one schema-constrained function call;</li>
+<li><code>VALIDATED</code>, which permits text or a constrained call;</li>
+<li><code>AUTO</code>, which lets the model choose; and</li>
+<li><code>NONE</code>, which disables calls.</li>
+</ul>
+<p>Gemini <a href="https://ai.google.dev/gemini-api/docs/generate-content/structured-output">structured
+output</a>
+constrains JSON syntax and supported schema. <strong>[D — API/decoder]</strong> Neither
+guarantees semantic values, tool relevance, or business permission.</p>
+<p>For Gemini 3 function-calling workflows, Vertex <a href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/thought-signatures">thought
+signatures</a>
+from required prior steps must be returned unchanged; missing required
+signatures can produce HTTP 400, while the official SDKs handle them
+automatically. <strong>[D — API protocol]</strong> This is context orchestration, not a
+checkpoint-training disclosure.</p>
+<h3 id="a-useful-instruction-tuning-trade-off">A useful instruction-tuning trade-off<a class="headerlink" href="#a-useful-instruction-tuning-trade-off" title="Permanent link">&para;</a></h3>
+<p>Google reports that FLAN-PaLM was less willing than PaLM to obey deliberately
+arbitrary label mappings in context; <a href="https://research.google/blog/symbol-tuning-improves-in-context-learning-in-language-models/">symbol
+tuning</a>
+uses semantically meaningless labels to reduce reliance on prior task
+semantics. <strong>[D — research]</strong> Standard instruction tuning can strengthen the
+model's interpretation of what a task “should” mean while weakening obedience
+to an unusual local mapping.</p>
+<p><strong>Still unknown:</strong> Gemini 3/3.5 instruction data, reward weights, hierarchy
+algorithm, live product routing, memory/compaction, and release thresholds.</p>
+<h2 id="5-meta">5. Meta<a class="headerlink" href="#5-meta" title="Permanent link">&para;</a></h2>
+<h3 id="llama-3-iterative-sft-candidate-selection-and-dpo">Llama 3: iterative SFT, candidate selection, and DPO<a class="headerlink" href="#llama-3-iterative-sft-candidate-selection-and-dpo" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2407.21783">Llama 3 model-family report</a> describes
+six post-training rounds. Each uses SFT and DPO, with new preference data and
+model outputs feeding later rounds. <strong>[D — model training]</strong></p>
+<p>The disclosed loop includes:</p>
+<ul>
+<li>human pairwise ranking of multi-turn answers;</li>
+<li>frequent human editing of the preferred answer, yielding
+  <code>edited &gt; chosen &gt; rejected</code>;</li>
+<li>a reward model;</li>
+<li>about 10–30 candidates per prompt for rejection sampling;</li>
+<li>SFT on selected outputs;</li>
+<li>DPO, selected over PPO partly because it was cheaper and gave better IFEval;</li>
+<li>masking special formatting tokens in the DPO loss; and</li>
+<li>a 0.2 next-token negative-log-likelihood term for stability.</li>
+</ul>
+<p>Later data includes system prompts controlling length, format, tone, and
+persona. Annotators test consistency across multiple turns, and the resulting
+preferences feed the reward model, rejection sampling, SFT, and DPO.</p>
+<h3 id="tool-and-function-call-curricula">Tool and function-call curricula<a class="headerlink" href="#tool-and-function-call-curricula" title="Permanent link">&para;</a></h3>
+<p>Llama 3 tool training combines human message-level labels and synthetic
+trajectories, moving from single calls to dialogue and multi-step use. It
+includes:</p>
+<ul>
+<li>tool versus no-tool negatives;</li>
+<li>function documentation;</li>
+<li>nested, parallel, and multi-turn calls;</li>
+<li>Python, Wolfram Alpha, and search; and</li>
+<li>final responses based on results.</li>
+</ul>
+<p><strong>[D — model training]</strong> The report says rejection sampling did not help this
+tool data, so it was not used there. That negative result prevents the generic
+claim that every good post-training component helps every domain.</p>
+<h3 id="llama-4">Llama 4<a class="headerlink" href="#llama-4" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/">Llama 4
+release</a> says
+Maverick used lightweight SFT, multimodal online RL with continuous
+medium-to-hard prompt filtering, and lightweight DPO. <strong>[D — released-model
+training]</strong></p>
+<p>Separately, the still-training Behemoth teacher uses pass-at-<span class="arithmatex">\(k\)</span> difficulty
+curricula, dynamically removes zero-advantage prompts, mixes capability
+batches, and varies system instructions in reasoning and code training to
+preserve instruction following. <strong>[D — teacher model training]</strong> These details
+must not be projected onto every Scout or Maverick stage.</p>
+<p>Prompt Guard and Llama Guard are separate product/open components. They do not
+prove an instruction hierarchy inside Llama weights.</p>
+<p><strong>Still unknown:</strong> Llama 4 data and reward weights, live Meta AI prompts and
+routing, hierarchy training, product memory, and online violation thresholds.</p>
+<h2 id="6-microsoft">6. Microsoft<a class="headerlink" href="#6-microsoft" title="Permanent link">&para;</a></h2>
+<h3 id="phi-4-shows-that-dpo-is-not-automatically-literal-instruction-training">Phi-4 shows that DPO is not automatically literal instruction training<a class="headerlink" href="#phi-4-shows-that-dpo-is-not-automatically-literal-instruction-training" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://www.microsoft.com/en-us/research/publication/phi-4-technical-report/">Phi-4 Technical
+Report</a>
+describes roughly eight billion post-training tokens in a broad ChatML SFT
+mixture, followed by pivotal-token DPO and judge-guided DPO. The latter uses
+about 850,000 preference pairs from GPT-4o, GPT-4 Turbo, and Phi candidates,
+with a GPT-4o judge evaluating accuracy, style, and detail. <strong>[D — model
+training]</strong></p>
+<p>Phi-4's reported IFEval score fell from 66.2 at SFT to 63.0 in the final model.
+The report says strict instruction following was not the main priority,
+training was mostly single-turn, and the model could be verbose. This is a
+valuable counterexample: broad preference optimization and stronger reasoning
+do not guarantee better exact adherence.</p>
+<h3 id="microsoft-research-prototypes">Microsoft research prototypes<a class="headerlink" href="#microsoft-research-prototypes" title="Permanent link">&para;</a></h3>
+<p><a href="https://www.microsoft.com/en-us/research/publication/wizardlm-empowering-large-language-models-to-follow-complex-instructions/">WizardLM / Evol-Instruct</a>
+recursively increases instruction breadth, depth, complexity, and constraints
+before SFT. <strong>[D — research prototype]</strong></p>
+<p><a href="https://www.microsoft.com/en-us/research/blog/orca-agentinstruct-agentic-flows-can-be-effective-synthetic-data-generators/">Orca
+AgentInstruct</a>
+uses specialized agents, tools, reflection, and verification across more than
+100 subcategories to synthesize about 25 million pairs and releases one
+million. Fine-tuning Mistral-7B produced broad reported gains but a substantial
+summarization regression. <strong>[D — research prototype]</strong> Synthetic
+specialization needs cross-domain regression tests.</p>
+<p>Azure <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs">Structured
+Outputs</a>
+is a hosted OpenAI control, not evidence about a Microsoft-trained base model.</p>
+<p><strong>Still unknown:</strong> current Microsoft closed-model instruction data, preference
+or RL rewards, hierarchy training, and Copilot product routing.</p>
+<h2 id="7-amazon-and-aws">7. Amazon and AWS<a class="headerlink" href="#7-amazon-and-aws" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://cdn.amazon.science/c5/3d/84514a224666b5be6de4b43ef4aa/nova-2-0-technical-report2.pdf">Nova 2 Technical
+Report</a>
+reports IFBench and MultiChallenge results but does not disclose the base
+model's instruction SFT or RL recipe. <strong>[D — evaluation; U — causal training
+method]</strong></p>
+<p>AWS offers <a href="https://docs.aws.amazon.com/nova/latest/nova2-userguide/nova-model-training-job.html">Nova 2
+customization</a>
+in which customers can use multi-turn SFT for schema, policy, and tools, then
+reinforcement fine-tuning with verifiable or model judges. The documentation
+notes that SFT primarily changes behavior rather than acting as a reliable
+knowledge-ingestion mechanism. Nova 1 also supports customer SFT and DPO.
+<strong>[D — customer customization]</strong> This does not disclose the Nova base recipe.</p>
+<p>Amazon's <a href="https://www.amazon.science/publications/rnr-teaching-large-language-models-to-follow-roles-and-rules">Roles and Rules
+research</a>
+automatically builds diverse role/rule tasks from instruction datasets and
+reports more than 25 percentage points of all-rule adherence improvement on
+selected mixtures without a standard instruction-following regression.
+<strong>[D — research prototype]</strong></p>
+<p>Bedrock
+<a href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_agent_ToolChoice.html">ToolChoice</a>
+can allow automatic selection, require some tool, or require a named tool.
+Nova structured-output guidance says constrained decoding reduced tool-use
+format errors by more than 95%. <strong>[D — API/decoder]</strong> Correct structure does
+not establish semantic applicability.</p>
+<p>Amazon's <a href="https://www.amazon.science/publications/iheval-evaluating-language-models-on-following-the-instruction-hierarchy">IHEval</a>
+contains 3,538 examples over nine tasks and finds weak open-model performance
+under conflicts. <strong>[D — evaluation]</strong> A benchmark is not a deployed fix.</p>
+<p><strong>Still unknown:</strong> Nova's actual instruction SFT, reward, hierarchy method,
+production prompts, and release gates.</p>
+<h2 id="8-cohere">8. Cohere<a class="headerlink" href="#8-cohere" title="Permanent link">&para;</a></h2>
+<h3 id="command-a-builds-specialists-on-a-general-instruction-model">Command A builds specialists on a general instruction model<a class="headerlink" href="#command-a-builds-specialists-on-a-general-instruction-model" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://cohere.com/research/papers/command-a-technical-report.pdf">Command A Technical
+Report</a>
+discloses one of the most detailed current pipelines. <strong>[D — model training]</strong></p>
+<ol>
+<li>Train a general instruction-following Instruct initializer with SFT and
+   offline preference optimization, selecting Self-Reward Preference
+   Optimization (SRPO).</li>
+<li>Train six SFT specialists: code, safety, RAG, math, multilingual, and
+   general long context.</li>
+<li>Combine them through a weighted linear parameter merge.</li>
+<li>Train six corresponding RL specialists using pairwise or verifiable rewards
+   and merge them.</li>
+<li>Polish the unified model with best-of-<span class="arithmatex">\(N\)</span> SFT, offline preference
+   optimization, and online RLHF.</li>
+</ol>
+<p>The general initializer, rather than a seventh instruction specialist, supplies
+the common instruction behavior. Synthetic enterprise prompts are sampled at
+multiple temperatures, human-rated across turns, and rewritten when every
+candidate is poor. System/preamble data explicitly varies response language,
+JSON versus no Markdown, forbidden terms, and other controls before entering
+both SFT and preference training.</p>
+<h3 id="reward-revision-and-regression-control">Reward, revision, and regression control<a class="headerlink" href="#reward-revision-and-regression-control" title="Permanent link">&para;</a></h3>
+<p>Cohere compares multiple preference objectives and selects its own Self-Reward
+Preference Optimization (SRPO), which trains a generator and self-improver and
+supports revision at inference. Its reward-model process relabels about four
+million lower-quality pairs with an ensemble before using roughly 350,000
+higher-quality examples.</p>
+<p>All specialists share a general instruction-following initializer as a
+cross-domain regularizer. Leave-one-out merges detect specialist conflicts,
+especially long-context regressions. Final instruction preference pairs require
+the chosen response to satisfy every criterion; one failed criterion makes a
+candidate rejected. The polishing sequence alternates best-of-four SFT, offline
+SRPO, and online Cohere Preference Group Optimization to limit regression and
+reward hacking.</p>
+<p>Reported IFEval and InFoBench numbers are vendor results and use settings that
+are not uniformly comparable across every model row. They support the named
+checkpoint, not a neutral universal ranking.</p>
+<p>Command A's tool/RAG trajectories include custom instructions, reasoning,
+sequential and parallel calls, results, citations, and multi-reviewer
+preferences. <strong>[D — model training]</strong></p>
+<p>Cohere <a href="https://docs.cohere.com/docs/structured-outputs">Structured
+Outputs</a> and strict tools
+constrain JSON shape, tool names, required arguments, and types. <strong>[D —
+API/decoder]</strong> They do not validate semantic values or tool choice.</p>
+<p><strong>Still unknown:</strong> the complete instruction data, reward weights, parameter
+merge weights, online thresholds, and production routing.</p>
+<h2 id="9-xai">9. xAI<a class="headerlink" href="#9-xai" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://x.ai/news/grok/model-card">Grok-1 model card</a> says the model was
+fine-tuned with substantial human and Grok-0 feedback but gives little
+instruction-specific detail. <strong>[D — high-level model training]</strong></p>
+<p><a href="https://x.ai/news/grok-4-1">Grok 4.1</a> uses large-scale RL and frontier
+agentic-reasoning models as reward models for non-verifiable style,
+personality, helpfulness, and alignment. A silent live-traffic experiment and
+blind pairwise user evaluation reported a 64.78% preference rate over the prior
+production model. <strong>[D — model training and product evaluation]</strong> Preference
+is not a pure instruction-following score.</p>
+<p><a href="https://x.ai/news/grok-4-1-fast">Grok 4.1 Fast</a> is trained with RL in simulated
+multi-tool environments across many domains for long-horizon, multi-turn work
+and a two-million-token context. xAI reports 100% on the telecom slice of
+<span class="arithmatex">\(\tau^2\)</span>-bench and 72% on BFCL V4. <strong>[D — model training and evaluation]</strong></p>
+<p><a href="https://x.ai/news/grok-code-fast-1">Grok Code Fast
+1</a> uses curated pull-request and coding
+tasks, repeated partner feedback, and explicit grep, terminal, and file-editing
+tools. <strong>[D — specialist model training]</strong></p>
+<p>The revisioned <a href="https://github.com/xai-org/grok-prompts">grok-prompts
+repository</a> exposes real product
+instructions about high-authority policy, resisting override, and tool/search
+behavior. <strong>[C — product artifact]</strong> It does not prove a weight-level hierarchy.</p>
+<p>xAI <a href="https://docs.x.ai/developers/model-capabilities/text/structured-outputs">Structured
+Outputs</a>
+supports schema-constrained output and strict tool arguments, with documented
+best-effort limitations for some features. <strong>[D — API/decoder]</strong></p>
+<p><strong>Still unknown:</strong> Grok 4.x general instruction SFT/RL data, reward weights,
+hierarchy training, live prompt selection, and product thresholds.</p>
+<h2 id="10-mistral-ai">10. Mistral AI<a class="headerlink" href="#10-mistral-ai" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://mistral.ai/news/mixtral-of-experts/">Mixtral 8x7B
+release</a> describes instruction
+fine-tuning followed by DPO on paired feedback and characterizes the resulting
+checkpoint as a careful instruction follower. <strong>[D — model training]</strong> The
+instruction data, preference construction, and objective details are not
+public.</p>
+<p><a href="https://mistral.ai/news/mistral-large-2407/">Mistral Large
+2</a> is described as substantially
+better at precise instruction following and long multi-turn interaction, with
+specific training for parallel and sequential function calls and cautious
+behavior when information is insufficient. <strong>[D — high-level model
+training/behavior]</strong> No data volume, loss, reward, or matched ablation is
+disclosed.</p>
+<p>Mistral's function-calling API can:</p>
+<ul>
+<li>allow automatic tool selection;</li>
+<li>require some tool;</li>
+<li>disable tools;</li>
+<li>require a named tool; and</li>
+<li>disable parallel calls.</li>
+</ul>
+<p>The application must execute the call and return the actual result.
+<strong>[D — API/product control]</strong></p>
+<p>Custom structured output can enforce a supported JSON Schema, while ordinary
+JSON mode only guarantees valid JSON; Mistral's own limitation documentation
+draws this distinction. <strong>[D — API/decoder]</strong></p>
+<p>Mistral's <a href="https://mistral.ai/news/manage-prompts-and-skills-in-studio/">prompt and skill
+management</a>
+adds immutable versions, tests, approval, rollback, owners, labels, audit, and
+telemetry lineage. <strong>[D — production governance]</strong> This can stabilize a
+deployed system without changing the checkpoint.</p>
+<p><strong>Still unknown:</strong> current Large, Medium, and Ministral SFT/preferences/RL,
+hierarchy training, production feedback, and live routing.</p>
+<h2 id="11-nvidia">11. NVIDIA<a class="headerlink" href="#11-nvidia" title="Permanent link">&para;</a></h2>
+<h3 id="nemotron-3-nano-verified-instruction-data-and-unified-rl">Nemotron 3 Nano: verified instruction data and unified RL<a class="headerlink" href="#nemotron-3-nano-verified-instruction-data-and-unified-rl" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://research.nvidia.com/labs/nemotron/files/NVIDIA-Nemotron-3-Nano-Technical-Report.pdf">Nemotron 3 Nano Technical
+Report</a>
+describes an instruction SFT pipeline that combines IFEval/IFBench-style
+constraints with simulated single- and multi-turn users. Candidate answers from
+several teacher models are retained only when every turn passes a verifier;
+an LLM judge removes superficial or reward-hacking compliance. <strong>[D — model
+training]</strong></p>
+<p>Its unified reinforcement learning includes:</p>
+<ul>
+<li>roughly 46,000 program-verifiable instruction tasks;</li>
+<li>roughly 3,000 MultiChallenge-inspired subtle multi-turn tasks judged by an
+  LLM;</li>
+<li>roughly 9,000 JSON-Schema tasks whose reward checks exact schema but
+  explicitly does not reward semantic content; and</li>
+<li>many other environments trained together to limit irreversible
+  specialization regressions.</li>
+</ul>
+<p>The report uses synchronous GRPO with masked importance sampling and discloses
+the rollout batch structure. <strong>[D — model training]</strong> The JSON environment is
+an unusually explicit statement of the syntax–semantics boundary.</p>
+<p>NVIDIA also trains a large generative reward model to reason over two answers
+before outputting helpfulness and a ranking, with position swapping to reduce
+bias, then applies RLHF and group-relative length control to limit unnecessary
+verbosity.</p>
+<h3 id="nemotron-3-super-and-ultra">Nemotron 3 Super and Ultra<a class="headerlink" href="#nemotron-3-super-and-ultra" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://research.nvidia.com/labs/nemotron/files/NVIDIA-Nemotron-3-Super-Technical-Report.pdf">Nemotron 3 Super Technical
+Report</a>
+describes more than seven million SFT examples, long-context stages, unified
+multi-environment RLVR, a separate software-engineering RL stage, and an RLHF
+stage specifically improving instruction following, robustness, and
+interaction quality. Multi-turn rubrics and over-refusal/jailbreak training are
+included. <strong>[D — model training]</strong></p>
+<p>The <a href="https://research.nvidia.com/labs/nemotron/files/NVIDIA-Nemotron-3-Ultra-Technical-Report.pdf">Nemotron 3 Ultra Technical
+Report</a>
+builds a dedicated instruction-following/factuality teacher through
+domain-focused RLVR. Its mixture covers strict format, mid-conversation
+instruction changes, long-horizon coherence, abstention, and RLHF; checks are
+programmatic or model-based, and abstention reward is dynamically calibrated.
+The specialist is then combined with general, agentic, STEM, chat, and other
+teachers through asynchronous multi-teacher on-policy distillation. <strong>[D —
+model training]</strong></p>
+<p>Vendor-reported IFBench and MultiChallenge gains support the named checkpoints
+and protocols. They do not make scores across different harnesses automatically
+comparable.</p>
+<p>NeMo <a href="https://docs.nvidia.com/nemo/guardrails/latest/about-nemo-guardrails-library/rail-types">Guardrails</a>
+can apply input, retrieval, dialogue, execution, output, tool-argument, and
+tool-result rails. <strong>[D — customer-side product control]</strong> Its effectiveness
+depends on the chosen checkers and application evaluation; it is not an
+intrinsic property of every NVIDIA model.</p>
+<p><strong>Still unknown:</strong> complete blends and reward weights, hosted configuration,
+production routing, and live thresholds.</p>
+<h2 id="12-alibaba-qwen">12. Alibaba Qwen<a class="headerlink" href="#12-alibaba-qwen" title="Permanent link">&para;</a></h2>
+<h3 id="qwen3s-four-stage-post-training">Qwen3's four-stage post-training<a class="headerlink" href="#qwen3s-four-stage-post-training" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2505.09388">Qwen3 Technical Report</a> discloses:</p>
+<ol>
+<li>long-chain-of-thought cold start;</li>
+<li>reasoning reinforcement learning;</li>
+<li>thinking/non-thinking fusion; and</li>
+<li>general reinforcement learning.</li>
+</ol>
+<p><strong>[D — model training]</strong></p>
+<p>Stage 3 non-thinking SFT explicitly includes code, mathematics, instruction
+following, multilingual work, creative writing, question answering, and
+role-play. Automatically generated checklists help evaluate examples.
+Thinking-control markers are inserted at different turns so the latest
+<code>/think</code> or <code>/no_think</code> instruction governs subsequent behavior.</p>
+<p>Stage 4 spans more than 20 task families and directly optimizes content,
+format, length, structured output, preference, agents, and RAG. Rewards combine:</p>
+<ul>
+<li>deterministic rules;</li>
+<li>a reference-aware Qwen2.5-72B-Instruct judge; and</li>
+<li>a reference-free scalar reward model trained from human preferences.</li>
+</ul>
+<p>Agent data contains complete multi-turn interactions with real execution
+feedback. <strong>[D — model training]</strong></p>
+<p>Qwen reports substantial IFEval, Multi-IF, ThinkFollow, and ToolUse gains
+between stages for Qwen3-32B, alongside small regressions on some mathematics
+and coding evaluations. Instruction and general-capability optimization must
+be balanced.</p>
+<h3 id="qwen25-and-coding-agents">Qwen2.5 and coding agents<a class="headerlink" href="#qwen25-and-coding-agents" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2412.15115">Qwen2.5 Technical Report</a> describes more
+than one million SFT examples, about 150,000 DPO pairs selected with execution,
+answer matching, and human/automatic checks, and online GRPO over truthfulness,
+usefulness, brevity, relevance, harmlessness, and bias. <strong>[D — model
+training]</strong></p>
+<p><a href="https://qwenlm.github.io/blog/qwen3-coder/">Qwen3-Coder</a> adds executable code
+RL and long-horizon agent RL over 20,000 parallel environments. <strong>[D —
+specialist model training]</strong></p>
+<p>The released <a href="https://github.com/QwenLM/Qwen3/blob/main/docs/source/getting_started/quickstart.md">Qwen3
+quickstart</a>
+confirms hard thinking-mode controls in the chat template, while Qwen-Agent
+supports parallel, multi-step, and multi-turn functions. <strong>[C — released
+artifact/API]</strong> These artifacts do not disclose the production hierarchy or
+reward.</p>
+<p><strong>Still unknown:</strong> instruction sample counts and full taxonomy, reward weights,
+annotation scale, production system hierarchy, and use of real user feedback.</p>
+<h2 id="13-moonshot-ai-kimi">13. Moonshot AI / Kimi<a class="headerlink" href="#13-moonshot-ai-kimi" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://arxiv.org/abs/2507.20534">Kimi K2 Technical Report</a> describes an
+agent SFT factory with:</p>
+<ul>
+<li>more than 3,000 real Model Context Protocol tools;</li>
+<li>more than 20,000 synthetic tools;</li>
+<li>thousands of system-prompt-defined agents;</li>
+<li>task-specific rubrics;</li>
+<li>user-persona and stateful tool simulators;</li>
+<li>injected success, partial failure, and boundary conditions;</li>
+<li>real code sandboxes; and</li>
+<li>large-scale rejection sampling that retains trajectories passing model
+  judges.</li>
+</ul>
+<p><strong>[D — model training]</strong></p>
+<p>Instruction RL uses a hybrid verifier:</p>
+<ul>
+<li>code or deterministic checks for length, style, and formal constraints;</li>
+<li>an LLM judge for semantic constraints; and</li>
+<li>a separate hack check for answers that claim compliance without actually
+  satisfying the rubric.</li>
+</ul>
+<p>Instruction generators combine expert-conditioned prompts/rubrics,
+AutoIF-style augmentation, and targeted generation of current-model failures
+and edge cases. Subjective alignment uses a self-critic with core,
+anti-hacking, and human-specific rubrics, first bootstrapped with preference
+SFT and then updated from on-policy verifiable rollouts. <strong>[D — model
+training]</strong></p>
+<p>K2 also uses task-specific token budgets, truncation penalties, an auxiliary
+high-quality pretraining loss to limit forgetting, and temperature decay.</p>
+<p>The released <a href="https://github.com/MoonshotAI/K2-Vendor-Verifier">K2 Vendor
+Verifier</a> compares 4,000 tool
+requests across vendor APIs and exposes deployment concerns such as tool-call
+ID normalization and guided encoding. <strong>[C — evaluation artifact]</strong> A base
+model does not by itself hard-guarantee JSON across every serving stack.</p>
+<p><strong>Still unknown:</strong> instruction prompt and trajectory counts, reward weights,
+training steps, and production hierarchy.</p>
+<h2 id="14-zhipu-ai-glm">14. Zhipu AI / GLM<a class="headerlink" href="#14-zhipu-ai-glm" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://arxiv.org/abs/2508.06471">GLM-4.5 Technical Report</a> describes
+separate reasoning, agent, and general specialists followed by
+self-distillation into one model. Millions of SFT examples reach 128K context.
+The pipeline filters duplicates, overly short and truncated answers, invalid
+reasoning formats, wrong objective answers, reward-model failures, invalid
+tool protocols, and failed terminal states. <strong>[D — model training]</strong></p>
+<p>Its agent factory collects real frameworks, APIs, MCP tools, and synthetic
+tools; generates single- and multi-step tasks; simulates users to create
+multi-turn interactions; and retains successful trajectories through multiple
+judges.</p>
+<p>General RL combines rules, RLHF, and RLAIF. A holistic RL set of about 5,000
+prompts covers seven top-level, 33 second-level, and 139 third-level categories,
+with human reward labels for instruction following, safety, and factuality plus
+model rubrics.</p>
+<h3 id="dedicated-instruction-and-function-call-rl">Dedicated instruction and function-call RL<a class="headerlink" href="#dedicated-instruction-and-function-call-rl" title="Permanent link">&para;</a></h3>
+<p>GLM-4.5's instruction RL spans seven major and 151 minor constraint
+categories. Feedback combines deterministic rules, a trained reward model, and
+a critique model under GRPO. The report shows a SysBench instruction
+satisfaction improvement over roughly 1,000 steps without an observed reward
+hack on that audit. <strong>[D — model training]</strong></p>
+<p>Function-call RL has two levels:</p>
+<ul>
+<li>step-wise reward requires exact format, function name, arguments, and each
+  field; and</li>
+<li>end-to-end reward requires valid calls plus task completion in MCP/AgentGym
+  under environment rules or an LLM judge.</li>
+</ul>
+<p>Invalid tool format terminates a rollout with zero reward. A pathology stage
+targets rare language mixing, repetition, and format errors, while XML-like
+calls reduce JSON escaping burden. <strong>[D — model training]</strong></p>
+<p><strong>Still unknown:</strong> instruction sample count, reward weights, optimizer details,
+real-user feedback, and production hierarchy.</p>
+<h2 id="15-tencent-hunyuan">15. Tencent Hunyuan<a class="headerlink" href="#15-tencent-hunyuan" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://raw.githubusercontent.com/Tencent-Hunyuan/Hunyuan-A13B/main/report/Hunyuan_A13B_Technical_Report.pdf">Hunyuan-A13B Technical
+Report</a>
+describes reasoning SFT/RL, all-scenarios SFT/general RL, and a dual
+chain-of-thought stage. The all-scenarios mixture covers language, writing,
+multilingual work, complex constraints, role-play, question answering,
+multi-turn dialogue, and agents. <strong>[D — model training]</strong></p>
+<p>The data pipeline:</p>
+<ul>
+<li>removes ambiguous instructions;</li>
+<li>uses response scoring and expert rewrites;</li>
+<li>systematically varies complex constraints, long-context and agent
+  requirements;</li>
+<li>verifies formal constraints with rules;</li>
+<li>builds multi-turn data from open, vendor, controlled-synthetic, and
+  pseudo-dialogue sources;</li>
+<li>uses user, planner, tool, agent, and checker roles in an agent factory; and</li>
+<li>varies more than 30 system-instruction types, actions, tools, and response
+  formats into about 20,000 format combinations.</li>
+</ul>
+<p>General RL uses a generative reward model that can compare candidates and
+references, inspect reasoning, call tools, and check length and constraints.
+The system has 16 subtopics and more than 30 scoring services. <strong>[D — model
+training]</strong></p>
+<p>Domain-specific rewards include:</p>
+<ul>
+<li>paired generative preference plus formal checks for writing;</li>
+<li>marker, order, tool, parameter, and value correctness for agents;</li>
+<li>unstable-dialogue mining for multi-turn work;</li>
+<li>constraint extraction, satisfaction tools, a critic, and reward model for
+  complex instructions;</li>
+<li>understanding, consistency, and empathy for role-play; and</li>
+<li>specialized long-context and safety rewards.</li>
+</ul>
+<p>The released <a href="https://github.com/Tencent-Hunyuan/Hunyuan-A13B#use-with-transformers">Hunyuan-A13B
+quickstart</a>
+supports thinking and non-thinking controls through <code>enable_thinking</code> and
+<code>/think</code> or <code>/no_think</code>. <strong>[C — model/API artifact]</strong> Vendor-reported IFEval,
+SysBench, BFCL, and agent scores use different protocols from other reports and
+should not be ranked by raw values alone.</p>
+<p><strong>Still unknown:</strong> per-domain sample counts, reward weights, RL optimizer and
+steps, and human-annotation scale.</p>
+<h2 id="16-deepseek">16. DeepSeek<a class="headerlink" href="#16-deepseek" title="Permanent link">&para;</a></h2>
+<h3 id="v4-makes-instruction-following-a-separate-expert">V4 makes instruction following a separate expert<a class="headerlink" href="#v4-makes-instruction-following-a-separate-expert" title="Permanent link">&para;</a></h3>
+<p>DeepSeek's <a href="https://api-docs.deepseek.com/news/news260424/">V4
+release</a> and
+<a href="https://arxiv.org/abs/2606.19348">technical report</a> describe high-quality SFT
+and GRPO for separate domain specialists, including a
+dedicated instruction-following expert. More than ten specialist teachers are
+then combined through full-vocabulary on-policy reverse-KL distillation rather
+than the final mixed-RL stage used in V3.2. <strong>[D — model training]</strong></p>
+<p>Hard-to-verify tasks use rubric-guided RL data and a generative reward model,
+with minimal/diverse human annotations described at a high level. Exact
+instruction data and rewards are not disclosed.</p>
+<p>V4 applies length penalties by non-thinking, high-thinking, and max-thinking
+mode. A special tool schema and interleaved reasoning protocol preserve
+reasoning through user/tool turns but clear it for a new ordinary user request.
+DeepSeek warns that frameworks mislabeling tool results as user messages can
+break this context and recommends non-thinking mode in that integration.
+<strong>[D — model/API protocol]</strong></p>
+<p>Vendor evaluations report strengths in Chinese creative instruction following
+and a remaining gap against Claude Opus 4.5 on a small complex
+instruction/multi-turn writing set. The report also acknowledges occasional
+format misses and weaker concise summarization.</p>
+<h3 id="r1-and-historical-release-lessons">R1 and historical release lessons<a class="headerlink" href="#r1-and-historical-release-lessons" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://github.com/deepseek-ai/DeepSeek-R1">DeepSeek-R1 repository and
+report</a> describe R1-Zero problems
+with repetition, readability, and language mixing. Production R1 adds
+cold-start data, reasoning RL, rejection-sampled SFT, and final mixed RL with
+rule rewards for reasoning and reward models for helpfulness/safety. General
+instruction preferences are introduced late because longer preference
+optimization showed reward hacking. <strong>[D — model training]</strong></p>
+<p>R1 did not originally include native tool-use or structured-output training.
+Historical API release notes separately report system-message and JSON
+improvements; those product/version results should not be projected onto every
+checkpoint.</p>
+<p><strong>Still unknown:</strong> V4 instruction SFT size and taxonomy, reward weights, real
+user-feedback use, and complete system hierarchy.</p>
+<h2 id="17-baidu-ernie">17. Baidu ERNIE<a class="headerlink" href="#17-baidu-ernie" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://ernie.baidu.com/blog/publication/ERNIE_Technical_Report.pdf">ERNIE 4.5 Technical
+Report</a>
+describes 2.3 million SFT examples over ten domains, including mathematics,
+code, logic, information processing, writing, multilingual tasks, knowledge QA,
+multi-turn/role behavior, and safety. It separates reasoning and non-reasoning
+data and may retain multiple reasoning paths for one query. <strong>[D — model
+training]</strong></p>
+<p>Its unified reward stack uses:</p>
+<ul>
+<li>rule verifiers;</li>
+<li>reference-guided LLM judges;</li>
+<li>code sandboxes;</li>
+<li>reference-guided discriminative reward models;</li>
+<li>checklist-aware verifiers for objectively decidable criteria;</li>
+<li>dynamic generative reward models; and</li>
+<li>discriminative reward models for open tasks.</li>
+</ul>
+<p>Progressive PPO moves from logic to mathematics/code and then mixed general
+reasoning/non-reasoning tasks. Unified Preference Optimization combines a DPO
+pairwise term with PPO; online variants form preference pairs by rejection
+sampling multiple current-policy answers. Prompts that are all-correct,
+all-wrong, or have very low within-group reward variance are filtered.
+<strong>[D — model training]</strong></p>
+<p>ERNIEKit releases SFT and DPO components, while Baidu Cloud function calling
+offers automatic, none, required, or named tool choice. The API returns a
+function and arguments but does not execute them; Baidu also documents that a
+prompt conflict can make tool choice imperfect. <strong>[C/D — artifact and API
+boundary]</strong></p>
+<p><strong>Still unknown:</strong> instruction slice counts, checklist construction, reward
+weights, human-feedback volume, and flagship tool-training details.</p>
+<h2 id="18-bytedance-seed">18. ByteDance Seed<a class="headerlink" href="#18-bytedance-seed" title="Permanent link">&para;</a></h2>
+<h3 id="seed-oss">Seed-OSS<a class="headerlink" href="#seed-oss" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://github.com/ByteDance-Seed/seed-oss">Seed-OSS repository and model
+card</a> release base variants with
+and without synthetic instruction data. The synthetic-instruction variant
+improves many reported evaluations; the instruction model reports 85.8 on
+IFEval. The release also provides a native tool parser and trained reasoning
+budgets. <strong>[C/D — released artifact and evaluation]</strong></p>
+<p>The card only gives general SFT/RLHF/PPO detail for safety. It does not disclose
+a complete general instruction-following recipe.</p>
+<h3 id="seed20">Seed2.0<a class="headerlink" href="#seed20" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://raw.githubusercontent.com/ByteDance-Seed/Seed2.0/master/Seed2.0%20Model%20Card.pdf">Seed2.0 Model
+Card</a>
+makes reliable complex instruction execution an explicit objective and says
+large-scale product feedback shapes optimization priorities: Doubao emphasizes
+instruction robustness, long-tail, and long context, while Trae contributes
+coding priorities. <strong>[D — model/product feedback priority]</strong> This does not
+establish that raw user conversations are directly trained on.</p>
+<p>Seed's private Chinese complex-instruction evaluation contains 912 cases over
+17 weighted dimensions, including format, conditions, content, wording, tone,
+emoji, few-shot patterns, and Chinese/English length. Seed2.0 Pro improves the
+reported total over Seed1.8 while format barely improves and content regresses.
+<strong>[D — evaluation]</strong> Aggregate gains do not prove every surface improved.</p>
+<p>An automated model-on-model diagnostic records tokens, format adherence, turns,
+emoji, outputs, traces, and tool trajectories to generate behavioral reports
+for iteration. More than 15 cross-dependent constraints produce substantially
+more failures in the WorldTravel analysis.</p>
+<p><strong>Still unknown:</strong> Seed2.0 architecture, SFT/RL recipe, rewards, product-feedback
+sampling and authorization, and hierarchy training.</p>
+<h2 id="19-minimax">19. MiniMax<a class="headerlink" href="#19-minimax" title="Permanent link">&para;</a></h2>
+<h3 id="minimax-01">MiniMax-01<a class="headerlink" href="#minimax-01" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2501.08313">MiniMax-01 report</a> describes millions of
+high-quality prompts labeled by task, domain, and difficulty, covering long
+context, code, mathematics/logic, writing, function calling, knowledge, and
+safety. <strong>[D — model training]</strong></p>
+<p>Its reward framework evaluates correctness, truthfulness, helpfulness, and
+harmlessness. Helpfulness combines automatic rule/constraint checks with
+human coherence, depth, relevance, and style judgments. Domain specialists
+iterate SFT and RL; multi-temperature rejection sampling uses hierarchical
+rewards and diversity filters. Offline DPO selects best/worst candidates, while
+online modified GRPO focuses on medium-success and SFT-unseen prompts with
+importance clipping and KL control.</p>
+<p>The report gives a detailed five-stage long-context SFT, DPO, and online-RL
+curriculum. It also says Hailuo interactions contribute heavily to an internal
+test and that teams collect multi-level instruction failures rapidly; it does
+not establish unqualified direct training on raw interactions.</p>
+<h3 id="minimax-m2-and-forge">MiniMax-M2 and Forge<a class="headerlink" href="#minimax-m2-and-forge" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2605.26494">MiniMax-M2 series
+report</a> trains general conversation/writing,
+multi-turn instruction and rubric following, cross-turn context, long context,
+tool and tool-free behavior, role-play, code, and cowork/agent trajectories.
+Rule and model verifiers filter SFT data. <strong>[D — model training]</strong></p>
+<p>Role-play RLHF uses explicit and implicit product feedback with disclosed
+causal-inference and stratified bias-removal steps, plus entropy monitoring for
+reward hacking. A composite RL reward penalizes language mixing and invalid
+tool formats, rewards structured intermediate behavior and parallel completion,
+and mixes reasoning, code, agent, and general domains to limit forgetting.</p>
+<p><a href="https://www.minimaxi.com/news/forge-%E5%A4%A7%E8%A7%84%E6%A8%A1%E5%8E%9F%E7%94%9F-agent-rl-%E7%B3%BB%E7%BB%9F">Forge</a>
+supports many agent scaffolds and tool formats at large rollout scale.
+MiniMax's XML tool syntax and parser are released product/protocol artifacts,
+not proof of general semantic compliance.</p>
+<p><strong>Still unknown:</strong> instruction sample counts, reward weights, complete feedback
+sampling/privacy detail, and system hierarchy.</p>
+<h2 id="20-apple">20. Apple<a class="headerlink" href="#20-apple" title="Permanent link">&para;</a></h2>
+<p>Apple's 2024 <a href="https://machinelearning.apple.com/research/introducing-apple-foundation-models">on-device and server foundation-model
+disclosure</a>
+uses a hybrid of human-annotated and synthetic post-training data. A
+teacher-committee rejection-sampling fine-tuning algorithm is followed by RLHF
+using mirror-descent policy optimization and a leave-one-out advantage
+estimator. Apple explicitly says both algorithms significantly improve
+instruction-following quality. <strong>[D — model training]</strong></p>
+<p>Feature-specific low-rank adapters are dynamically loaded over a shared
+foundation model. Summarization data comes from larger server teachers and is
+filtered by rejection sampling; product evaluations sample 750 responses per
+use case and classify the whole response as poor if any dimension is poor.
+<strong>[D — model adaptation and evaluation]</strong> This resembles an all-constraints
+product criterion but is not a universal model guarantee.</p>
+<p>Apple says private user data and interactions are not used to train these
+foundation models. The exact SFT mixture, reward-model data, RLHF reward,
+adapter router, and current 2025/2026 production recipe remain <strong>U</strong>; the
+disclosed pipeline applies to the named 2024 family.</p>
+<h2 id="21-ibm">21. IBM<a class="headerlink" href="#21-ibm" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://www.ibm.com/docs/en/watsonx/w-and-w/2.2.0?topic=models-granite-30-8b-instruct-model-card">Granite 3.0 8B Instruct model
+card</a>
+describes an instruction checkpoint built from Granite-3.0-8B-Base. Its SFT
+mixture combines permissively licensed public datasets, internally generated
+targeted synthetic data, and a small amount of human-authored data. It uses a
+structured chat format, SFT, reinforcement-learning alignment, and model
+merging. <strong>[D — model training]</strong></p>
+<p>The card does not disclose the RL algorithm, reward composition, mixture
+weights, hierarchy training, or production routing. Granite customer
+fine-tuning and watsonx guardrails are separate customization or system
+controls, not evidence about the base recipe.</p>
+<h2 id="22-ai21-labs">22. AI21 Labs<a class="headerlink" href="#22-ai21-labs" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://arxiv.org/abs/2408.12570">Jamba-1.5 technical
+report</a> describes SFT over high-quality
+conversation, skill, and long-context data. Its synthetic pipeline generates
+prompts for a target distribution, samples model responses, automatically
+validates or ranks them, and applies post-editing. <strong>[D — model training]</strong></p>
+<p>For steerability, AI21 adds fine-grained, automatically verifiable constraints
+to document tasks, uses constraint checks plus a general reward model for
+rejection sampling, and moves shared constraints into the system message to
+form multi-turn examples. This is unusually concrete evidence for
+constraint-aware data construction. The report discusses PPO and DPO as
+available preference methods but does <strong>not</strong> confirm that Jamba-1.5 used
+either; claiming deployed PPO or DPO would therefore be unsupported.</p>
+<p><strong>Still unknown:</strong> exact data volumes and mixtures, post-editing scale,
+reward-model training, hierarchy loss, and current hosted-product controls.</p>
+<h2 id="23-01ai-yi">23. 01.AI / Yi<a class="headerlink" href="#23-01ai-yi" title="Permanent link">&para;</a></h2>
+<p>The released <a href="https://github.com/01-ai/Yi">Yi
+repository</a> states that the Yi-1.5 Chat family was
+trained with SFT and no subsequent reinforcement-learning stage. Released
+weights, chat templates, and fine-tuning examples provide artifact-level
+evidence for the serialization and deployment surface. <strong>[C/D — open-model
+artifact and disclosure]</strong></p>
+<p>This is a useful negative result: a capable instruction checkpoint need not
+have a published RL stage. The exact SFT corpus, size, quality filters, complex
+constraint coverage, and hierarchy training are <strong>U</strong>, and the statement
+should not be projected onto later closed Yi APIs.</p>
+<h2 id="24-baichuan">24. Baichuan<a class="headerlink" href="#24-baichuan" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://statics.baichuan-ai.com/paper/Baichuan2-technical-report.pdf">Baichuan 2 technical
+report</a>
+describes more than 100,000 SFT samples organized into six primary, 30
+secondary, and more than 200 tertiary prompt categories. Its reward-model data
+uses Baichuan 2 responses from different model sizes and SFT/PPO stages, then
+PPO jointly uses actor, reference, reward, and critic models for 350
+iterations. The report publishes several clipping, KL, and learning-rate
+settings. <strong>[D — model training]</strong></p>
+<p>This is detailed evidence for the 2023 Baichuan 2 7B/13B Chat family, not for
+Baichuan 4 or a current commercial API. The instruction-category counts do not
+by themselves prove multi-turn, hierarchy, tool, or production reliability.</p>
+<h2 id="25-huawei">25. Huawei<a class="headerlink" href="#25-huawei" title="Permanent link">&para;</a></h2>
+<p><a href="https://arxiv.org/abs/2307.14936">PanGu-Coder2</a> expands CodeAlpaca-20K with
+Evol-Instruct to 100,000 coding instructions and rule-filters the result to
+68,000. Student and teacher models sample at multiple temperatures; candidates
+are ranked using compilation errors, runtime errors, partial or complete unit
+test success, and a teacher heuristic. Training combines a ranking loss with
+cross-entropy on the teacher response. <strong>[D — specialist model training]</strong></p>
+<p>This is a strong executable-verifier recipe for a 15B text-to-code model. It
+does not establish that general or industry PanGu language models use the same
+instruction data, preference objective, or hierarchy method. Huawei Cloud
+fine-tuning is a customer capability, not disclosure of the base model.</p>
+<h2 id="26-iflytek">26. iFlytek<a class="headerlink" href="#26-iflytek" title="Permanent link">&para;</a></h2>
+<p><a href="https://arxiv.org/abs/2408.06574">SciLit-LLM</a>, built from
+iFlytekSpark-13B, first continues pretraining on more than ten million papers
+and patents, then performs domain SFT. Each SFT item has
+instruction/input/output fields; instructions combine Self-Instruct generation
+and human writing, while experts create the target outputs. A paper-polishing
+slice additionally uses few-shot and chain-of-thought generation before
+instruction fine-tuning. <strong>[D — derivative specialist model training]</strong></p>
+<p>This proves a concrete derivative route, not the alignment recipe of the core
+commercial Spark or SparkDesk families. Their instruction SFT mixture,
+preference/RL method, rewards, role hierarchy, and version mapping remain
+<strong>U</strong>.</p>
+<h2 id="27-stepfun">27. StepFun<a class="headerlink" href="#27-stepfun" title="Permanent link">&para;</a></h2>
+<p>StepFun releases a
+<a href="https://huggingface.co/datasets/stepfun-ai/Step-3.5-Flash-SFT">Step-3.5-Flash-SFT</a>
+artifact with 1.62 million records and about 64.8 GB of general multi-turn
+training data. Turns preserve role, content, and loss masks; some assistant
+turns also retain <code>reasoning_content</code>. The dataset card targets multi-turn
+instruction following, chat, code, and reasoning-style training. <strong>[C —
+released data artifact]</strong></p>
+<p>The <a href="https://huggingface.co/stepfun-ai/Step-3.5-Flash">Step-3.5-Flash model
+card</a> separately describes
+scalable RL. The shared name does not prove that every current dataset shard
+was used for the released checkpoint, and no instruction-specific RL reward or
+mixture is disclosed. Treat that causal link as <strong>U</strong>.</p>
+<h2 id="28-xiaomi">28. Xiaomi<a class="headerlink" href="#28-xiaomi" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://arxiv.org/abs/2601.02780">MiMo-V2-Flash technical
+report</a> begins general SFT with millions of
+conversation, reasoning, code, and agent instruction–response examples in both
+thinking and non-thinking modes. It trains specialist teachers for search,
+code, tools, mathematics, general reasoning, and safety. <strong>[D — model
+training]</strong></p>
+<p>Multi-teacher On-Policy Distillation gives the student token-level reverse-KL
+rewards from teachers together with outcome rewards. Open-ended helpfulness and
+safety use detailed rubrics, reference answers, and LLM judges. This is strong
+evidence for a specialist-to-unified post-training route, but the report does
+not disclose a dedicated system-over-user hierarchy reward or a
+constraint-specific instruction mixture.</p>
+<h2 id="29-explicit-coverage-gaps">29. Explicit coverage gaps<a class="headerlink" href="#29-explicit-coverage-gaps" title="Permanent link">&para;</a></h2>
+<p>The absence of a specific public recipe is itself a result:</p>
+<table>
+<thead>
+<tr>
+<th>Developer / model</th>
+<th>What is public</th>
+<th>What remains U</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm">Databricks DBRX Instruct</a></td>
+<td>described as instruction-fine-tuned and post-trained, with human quality/safety feedback during development</td>
+<td>instruction SFT mixture, preference objective, DPO/PPO/RLHF algorithm, and constraint generation</td>
+</tr>
+<tr>
+<td><a href="https://www.sensetime.com/">SenseTime SenseChat / SenseNova</a></td>
+<td>product capability claims and vendor evaluations</td>
+<td>a named model's instruction SFT, preference/RL, verifier, or hierarchy recipe</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2510.22115">Ant Ling 2.0</a></td>
+<td>instruct checkpoints and reasoning-oriented post-training such as Evo-CoT, DFT, and LPO</td>
+<td>which data or rewards specifically target ordinary or complex instruction following</td>
+</tr>
+</tbody>
+</table>
+<p>Reasoning RL, a high IFEval score, or a customer fine-tuning interface is not
+enough to fill these gaps. Add a developer only when a named model, artifact,
+or system control supports the instruction-following claim.</p>
+<h2 id="30-how-to-compare-a-new-vendor-claim">30. How to compare a new vendor claim<a class="headerlink" href="#30-how-to-compare-a-new-vendor-claim" title="Permanent link">&para;</a></h2>
+<p>For each future disclosure, record:</p>
+<ol>
+<li><strong>object:</strong> model training, research prototype, API/decoder, product,
+   customer customization, or evaluation;</li>
+<li><strong>model and date:</strong> immutable checkpoint, provider, mode, tools, and
+   verified-through date;</li>
+<li><strong>surface:</strong> atomic, negative, order, content, format, scope, multi-turn,
+   hierarchy, tool, multilingual, multimodal, or end-to-end task;</li>
+<li><strong>data:</strong> real, human, licensed, synthetic, teacher, on-policy, product
+   feedback, and filtering;</li>
+<li><strong>training:</strong> SFT, rejection sampling, preference, DPO, RLHF/RLAIF, RLVR,
+   specialist, merge, or distillation;</li>
+<li><strong>system control:</strong> role channel, prompt, schema, constrained decoder, tool
+   policy, memory, router, verifier, or guardrail;</li>
+<li><strong>measurement:</strong> per-constraint versus all-constraints, turns, tools,
+   retries, reasoning budget, judge, and denominator;</li>
+<li><strong>trade-off:</strong> task quality, over-refusal, verbosity, latency, cost, and
+   unrelated-capability regression;</li>
+<li><strong>causal evidence:</strong> matched ablation or bundled release comparison; and</li>
+<li><strong>unknowns:</strong> what public evidence cannot establish.</li>
+</ol>
+<p>This prevents a high benchmark score from becoming a claim about private
+training, a schema feature from becoming semantic reliability, or a product
+guardrail from becoming a checkpoint property.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

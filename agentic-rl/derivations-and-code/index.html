@@ -1,0 +1,3659 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/agentic-rl/derivations-and-code/">
+      
+      
+        <link rel="prev" href="../mathematical-foundations/">
+      
+      
+        <link rel="next" href="../algorithms/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Step-by-Step Derivations and Code - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#derivations-and-code-from-trajectory-probability-to-agent-updates" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Step-by-Step Derivations and Code
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-start-with-the-partially-observable-markov-decision-process-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Start with the Partially Observable Markov Decision Process distribution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-derive-the-likelihood-ratio-gradient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Derive the likelihood-ratio gradient
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-why-reward-to-go-is-valid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Why reward-to-go is valid
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-expand-one-semantic-action-into-llm-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Expand one semantic action into LLM tokens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-baselines-prove-zero-expected-gradient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Baselines: prove zero expected gradient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Baselines: prove zero expected gradient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#leave-one-out-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Leave-one-out baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-derive-temporal-difference-residual-and-gae" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Derive temporal-difference residual and GAE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-importance-sampling-where-old-log-probabilities-enter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Importance sampling: where old log-probabilities enter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-proximal-policy-optimization-clipping-piece-by-piece" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Proximal Policy Optimization clipping piece by piece
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Proximal Policy Optimization clipping piece by piece">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive-advantage-a0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Positive advantage \(A&gt;0\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative-advantage-a0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Negative advantage \(A&lt;0\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-kl-regularized-reward-and-its-optimal-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. KL-regularized reward and its optimal policy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-derive-dpo-from-bradleyterry-preferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Derive DPO from Bradley–Terry preferences
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-group-relative-policy-optimization-what-is-and-is-not-removed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Group Relative Policy Optimization: what is and is not removed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-why-standard-deviation-normalization-changes-prompt-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Why standard-deviation normalization changes prompt weights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-token-versus-sequence-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Token versus sequence normalization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-on-policy-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. On-policy distillation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-multi-teacher-opd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Multi-teacher OPD
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-partial-rollout-with-multiple-behavior-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Partial rollout with multiple behavior policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-derive-gspo-and-the-gspo-token-gradient-carrier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Derive GSPO and the GSPO-token gradient carrier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-derive-sapos-smooth-trust-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Derive SAPO's smooth trust gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-compaction-aware-sub-traces-and-critic-ppo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Compaction-aware sub-traces and critic PPO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-single-rollout-asynchronous-optimization-derived" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Single-Rollout Asynchronous Optimization, derived
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20. Single-Rollout Asynchronous Optimization, derived">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#201-why-asynchronous-group-sampling-increases-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1 Why asynchronous group sampling increases lag
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#202-direct-double-sided-importance-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.2 Direct Double-Sided Importance Sampling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#203-the-critic-and-two-timescale-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3 The critic and two-timescale updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#204-skip-observation-generalized-advantage-estimation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.4 Skip-observation Generalized Advantage Estimation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#205-evidence-boundary-for-glm-52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.5 Evidence boundary for GLM-5.2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-potential-based-reward-shaping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. Potential-based reward shaping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-constrained-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. Constrained objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-a-complete-one-batch-tensor-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23. A complete one-batch tensor calculation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-numerical-and-statistical-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24. Numerical and statistical checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-start-with-the-partially-observable-markov-decision-process-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Start with the Partially Observable Markov Decision Process distribution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-derive-the-likelihood-ratio-gradient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Derive the likelihood-ratio gradient
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-why-reward-to-go-is-valid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Why reward-to-go is valid
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-expand-one-semantic-action-into-llm-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Expand one semantic action into LLM tokens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-baselines-prove-zero-expected-gradient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Baselines: prove zero expected gradient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Baselines: prove zero expected gradient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#leave-one-out-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Leave-one-out baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-derive-temporal-difference-residual-and-gae" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Derive temporal-difference residual and GAE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-importance-sampling-where-old-log-probabilities-enter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Importance sampling: where old log-probabilities enter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-proximal-policy-optimization-clipping-piece-by-piece" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Proximal Policy Optimization clipping piece by piece
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Proximal Policy Optimization clipping piece by piece">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive-advantage-a0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Positive advantage \(A&gt;0\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative-advantage-a0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Negative advantage \(A&lt;0\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-kl-regularized-reward-and-its-optimal-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. KL-regularized reward and its optimal policy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-derive-dpo-from-bradleyterry-preferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Derive DPO from Bradley–Terry preferences
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-group-relative-policy-optimization-what-is-and-is-not-removed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Group Relative Policy Optimization: what is and is not removed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-why-standard-deviation-normalization-changes-prompt-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Why standard-deviation normalization changes prompt weights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-token-versus-sequence-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Token versus sequence normalization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-on-policy-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. On-policy distillation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-multi-teacher-opd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Multi-teacher OPD
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-partial-rollout-with-multiple-behavior-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Partial rollout with multiple behavior policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-derive-gspo-and-the-gspo-token-gradient-carrier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Derive GSPO and the GSPO-token gradient carrier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-derive-sapos-smooth-trust-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Derive SAPO's smooth trust gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-compaction-aware-sub-traces-and-critic-ppo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Compaction-aware sub-traces and critic PPO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-single-rollout-asynchronous-optimization-derived" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Single-Rollout Asynchronous Optimization, derived
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20. Single-Rollout Asynchronous Optimization, derived">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#201-why-asynchronous-group-sampling-increases-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1 Why asynchronous group sampling increases lag
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#202-direct-double-sided-importance-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.2 Direct Double-Sided Importance Sampling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#203-the-critic-and-two-timescale-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3 The critic and two-timescale updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#204-skip-observation-generalized-advantage-estimation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.4 Skip-observation Generalized Advantage Estimation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#205-evidence-boundary-for-glm-52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.5 Evidence boundary for GLM-5.2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-potential-based-reward-shaping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. Potential-based reward shaping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-constrained-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. Constrained objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-a-complete-one-batch-tensor-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23. A complete one-batch tensor calculation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-numerical-and-statistical-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24. Numerical and statistical checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="derivations-and-code-from-trajectory-probability-to-agent-updates">Derivations and Code: From Trajectory Probability to Agent Updates<a class="headerlink" href="#derivations-and-code-from-trajectory-probability-to-agent-updates" title="Permanent link">&para;</a></h1>
+<p>This chapter does not assume the policy-gradient formula. It derives each step,
+maps the result to autoregressive tokens, and then shows the smallest correct
+code pattern. The purpose is to make it impossible to hide a changed objective
+behind words such as “normalize,” “clip,” or “distill.”</p>
+<p>The policy is a <strong>Large Language Model (LLM)</strong> trained with <strong>Reinforcement
+Learning (RL)</strong> from interactive trajectories.</p>
+<h2 id="1-start-with-the-partially-observable-markov-decision-process-distribution">1. Start with the Partially Observable Markov Decision Process distribution<a class="headerlink" href="#1-start-with-the-partially-observable-markov-decision-process-distribution" title="Permanent link">&para;</a></h2>
+<p>A <strong>Partially Observable Markov Decision Process (POMDP)</strong> models sequential
+decisions when the environment has a latent state but exposes only observations.
+An LLM agent usually sees a transcript, tool result, or screenshot rather than
+the complete browser, operating system, or user state.</p>
+<p>Let an episode contain latent states <span class="arithmatex">\(s_t\)</span>, observations <span class="arithmatex">\(o_t\)</span>, policy-visible
+histories <span class="arithmatex">\(h_t\)</span>, semantic actions <span class="arithmatex">\(a_t\)</span>, rewards <span class="arithmatex">\(r_t\)</span>, and transitions
+<span class="arithmatex">\(P\)</span>. For simplicity, assume the observation is emitted from the state and the
+environment does not depend differentiably on policy parameters.</p>
+<div class="arithmatex">\[
+p_\theta(\tau)=
+\rho_0(s_0)O(o_0\mid s_0)
+\prod_{t=0}^{T-1}
+\pi_\theta(a_t\mid h_t)
+P(s_{t+1}\mid s_t,a_t)
+O(o_{t+1}\mid s_{t+1}).
+\]</div>
+<p>Take logs:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\log p_\theta(\tau)
+&amp;=\log\rho_0(s_0)+\log O(o_0\mid s_0)\\
+&amp;\quad+\sum_t\left[
+\log\pi_\theta(a_t\mid h_t)
++\log P(s_{t+1}\mid s_t,a_t)
++\log O(o_{t+1}\mid s_{t+1})
+\right].
+\end{aligned}
+\]</div>
+<p>Only the policy term contains <span class="arithmatex">\(\theta\)</span>, so</p>
+<div class="arithmatex">\[
+\nabla_\theta\log p_\theta(\tau)
+=\sum_t\nabla_\theta\log\pi_\theta(a_t\mid h_t).
+\]</div>
+<p>No gradient through the browser, compiler, human, game, or database is required.
+Their behavior changes which trajectories are sampled, but the score-function
+identity differentiates the probability of selecting the actions.</p>
+<h2 id="2-derive-the-likelihood-ratio-gradient">2. Derive the likelihood-ratio gradient<a class="headerlink" href="#2-derive-the-likelihood-ratio-gradient" title="Permanent link">&para;</a></h2>
+<p>Let total discounted return be</p>
+<div class="arithmatex">\[
+R(\tau)=\sum_{t=0}^{T-1}\gamma^tr_t.
+\]</div>
+<p>The objective is</p>
+<div class="arithmatex">\[
+J(\theta)=\int p_\theta(\tau)R(\tau)d\tau.
+\]</div>
+<p>Assuming differentiation and integration can be exchanged:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\nabla_\theta J
+&amp;=\int \nabla_\theta p_\theta(\tau)R(\tau)d\tau\\
+&amp;=\int p_\theta(\tau)
+\frac{\nabla_\theta p_\theta(\tau)}{p_\theta(\tau)}
+R(\tau)d\tau\\
+&amp;=\mathbb E_{\tau\sim p_\theta}
+[R(\tau)\nabla_\theta\log p_\theta(\tau)]\\
+&amp;=\mathbb E\left[
+R(\tau)\sum_t\nabla_\theta\log\pi_\theta(a_t\mid h_t)
+\right].
+\end{aligned}
+\]</div>
+<p>The identity <span class="arithmatex">\(\nabla p=p\nabla\log p\)</span> is the “log-derivative trick.” It is
+mathematics, not a heuristic.</p>
+<p>Monte Carlo code for one trajectory is conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">for</span> <span class="n">logprob_of_action</span> <span class="ow">in</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">logprobs</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span> <span class="o">-</span> <span class="n">total_return</span> <span class="o">*</span> <span class="n">logprob_of_action</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</code></pre></div>
+<p>The code minimizes negative expected return. It has high variance because every
+action receives every reward.</p>
+<h2 id="3-why-reward-to-go-is-valid">3. Why reward-to-go is valid<a class="headerlink" href="#3-why-reward-to-go-is-valid" title="Permanent link">&para;</a></h2>
+<p>Split return around action <span class="arithmatex">\(a_t\)</span>:</p>
+<div class="arithmatex">\[
+R(\tau)=R_{&lt;t}+\gamma^tG_t,
+\]</div>
+<p>where <span class="arithmatex">\(R_{&lt;t}\)</span> contains rewards strictly before <span class="arithmatex">\(a_t\)</span>. Conditioned on
+history <span class="arithmatex">\(h_t\)</span>, those past rewards do not depend on the sampled <span class="arithmatex">\(a_t\)</span>:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathbb E[R_{&lt;t}\nabla\log\pi(a_t\mid h_t)\mid h_t]
+&amp;=R_{&lt;t}\sum_a\pi(a\mid h_t)\nabla\log\pi(a\mid h_t)\\
+&amp;=R_{&lt;t}\nabla\sum_a\pi(a\mid h_t)\\
+&amp;=0.
+\end{aligned}
+\]</div>
+<p>Therefore past rewards can be removed:</p>
+<div class="arithmatex">\[
+\nabla J=
+\mathbb E\left[\sum_t\gamma^tG_t
+\nabla\log\pi(a_t\mid h_t)\right].
+\]</div>
+<p>Many implementations absorb <span class="arithmatex">\(\gamma^t\)</span> into the state-visitation
+distribution or return convention. State the convention before comparing code.</p>
+<h2 id="4-expand-one-semantic-action-into-llm-tokens">4. Expand one semantic action into LLM tokens<a class="headerlink" href="#4-expand-one-semantic-action-into-llm-tokens" title="Permanent link">&para;</a></h2>
+<p>Suppose turn <span class="arithmatex">\(t\)</span> action is token sequence</p>
+<div class="arithmatex">\[
+a_t=(x_{t,1},\ldots,x_{t,L_t}).
+\]</div>
+<p>Autoregressive factorization gives</p>
+<div class="arithmatex">\[
+\log\pi_\theta(a_t\mid h_t)=
+\sum_{j=1}^{L_t}
+\log\pi_\theta(x_{t,j}\mid h_t,x_{t,&lt;j}).
+\]</div>
+<p>Substitute into the gradient:</p>
+<div class="arithmatex">\[
+\nabla J=
+\mathbb E\left[
+\sum_t\sum_j
+\hat A_t
+\nabla\log\pi_\theta(x_{t,j}\mid h_t,x_{t,&lt;j})
+\right].
+\]</div>
+<p>The same turn advantage is often broadcast to every generated token. The loss
+still distinguishes tokens because their log-probability gradients differ. It
+does <strong>not</strong> tell us that every token had equal causal effect.</p>
+<p>Code alignment:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span><span class="o">.</span><span class="n">logits</span>              <span class="c1"># [B, L, V]</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">targets</span> <span class="o">=</span> <span class="n">input_ids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>                    <span class="c1"># [B, L-1]</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">logits</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>                       <span class="c1"># predicts targets</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">logprobs</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">selected</span> <span class="o">=</span> <span class="n">logprobs</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">targets</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">token_advantages</span> <span class="o">=</span> <span class="n">turn_advantages</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">turn_ids</span><span class="p">)</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">selected</span> <span class="o">*</span> <span class="n">token_advantages</span> <span class="o">*</span> <span class="n">action_mask</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">action_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</code></pre></div>
+<p>Tool observations must have <code>action_mask=0</code>; otherwise the gradient treats
+environment text as an action chosen by the policy.</p>
+<h2 id="5-baselines-prove-zero-expected-gradient">5. Baselines: prove zero expected gradient<a class="headerlink" href="#5-baselines-prove-zero-expected-gradient" title="Permanent link">&para;</a></h2>
+<p>For any <span class="arithmatex">\(b(h_t)\)</span> independent of sampled action:</p>
+<div class="arithmatex">\[
+\mathbb E[b(h_t)\nabla\log\pi(a_t\mid h_t)\mid h_t]=0.
+\]</div>
+<p>Therefore replace return with</p>
+<div class="arithmatex">\[
+\hat A_t=G_t-b(h_t).
+\]</div>
+<p>The variance-minimizing scalar baseline under a simple conditional formulation
+is related to a gradient-norm-weighted return expectation, while <span class="arithmatex">\(V^\pi(h_t)\)</span>
+is the familiar practical approximation. “Subtract the mean” is not universally
+optimal; it is a control variate choice.</p>
+<h3 id="leave-one-out-baseline">Leave-one-out baseline<a class="headerlink" href="#leave-one-out-baseline" title="Permanent link">&para;</a></h3>
+<p>For <span class="arithmatex">\(G\)</span> independent rollouts of one task:</p>
+<div class="arithmatex">\[
+b_i=\frac{1}{G-1}\sum_{k\ne i}R_k,
+\qquad A_i=R_i-b_i.
+\]</div>
+<p>Conditional on the task, <span class="arithmatex">\(b_i\)</span> excludes rollout <span class="arithmatex">\(i\)</span>. For <span class="arithmatex">\(G=3\)</span> and
+rewards <code>[0, 1, 2]</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sample 0: 0 - (1+2)/2 = -1.5
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sample 1: 1 - (0+2)/2 =  0.0
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>sample 2: 2 - (0+1)/2 = +1.5
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">other_mean</span> <span class="o">=</span> <span class="p">(</span><span class="n">rewards</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-</span> <span class="n">rewards</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">group_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">advantages</span> <span class="o">=</span> <span class="n">rewards</span> <span class="o">-</span> <span class="n">other_mean</span>
+</code></pre></div>
+<h2 id="6-derive-temporal-difference-residual-and-gae">6. Derive temporal-difference residual and GAE<a class="headerlink" href="#6-derive-temporal-difference-residual-and-gae" title="Permanent link">&para;</a></h2>
+<p>If <span class="arithmatex">\(V=V^\pi\)</span>, then</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathbb E[r_t+\gamma V(h_{t+1})-V(h_t)\mid h_t,a_t]
+&amp;=Q^\pi(h_t,a_t)-V^\pi(h_t)\\
+&amp;=A^\pi(h_t,a_t).
+\end{aligned}
+\]</div>
+<p>Define TD residual</p>
+<div class="arithmatex">\[
+\delta_t=r_t+\gamma V(h_{t+1})-V(h_t).
+\]</div>
+<p>An <span class="arithmatex">\(n\)</span>-step advantage is</p>
+<div class="arithmatex">\[
+\hat A_t^{(n)}=
+\sum_{l=0}^{n-1}\gamma^lr_{t+l}
++\gamma^nV(h_{t+n})-V(h_t).
+\]</div>
+<p>It can be written as a sum of TD residuals:</p>
+<div class="arithmatex">\[
+\hat A_t^{(n)}=
+\sum_{l=0}^{n-1}\gamma^l\delta_{t+l}.
+\]</div>
+<p>GAE forms an exponentially weighted mixture of <span class="arithmatex">\(n\)</span>-step estimators:</p>
+<div class="arithmatex">\[
+\hat A_t^{\text{GAE}}=(1-\lambda)
+\sum_{n=1}^{\infty}\lambda^{n-1}\hat A_t^{(n)}.
+\]</div>
+<p>Substitute the TD-sum and exchange summations:</p>
+<div class="arithmatex">\[
+\hat A_t^{\text{GAE}}=
+\sum_{l=0}^{\infty}(\gamma\lambda)^l\delta_{t+l}.
+\]</div>
+<p>Finite episode code walks backward:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">next_advantage</span> <span class="o">=</span> <span class="mf">0.0</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">next_value</span> <span class="o">=</span> <span class="n">bootstrap_value</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">)):</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">nonterminal</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">terminated</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">delta</span> <span class="o">=</span> <span class="n">reward</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">nonterminal</span> <span class="o">*</span> <span class="n">next_value</span> <span class="o">-</span> <span class="n">value</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">advantage</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">nonterminal</span> <span class="o">*</span> <span class="n">next_advantage</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">next_value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">next_advantage</span> <span class="o">=</span> <span class="n">advantage</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+</code></pre></div>
+<p>True termination sets <code>nonterminal=0</code>. A collector truncation generally supplies
+a bootstrap value instead. Padding is skipped, not declared terminal.</p>
+<h2 id="7-importance-sampling-where-old-log-probabilities-enter">7. Importance sampling: where old log-probabilities enter<a class="headerlink" href="#7-importance-sampling-where-old-log-probabilities-enter" title="Permanent link">&para;</a></h2>
+<p>Samples come from behavior <span class="arithmatex">\(\mu\)</span>, but we want an expectation under target
+<span class="arithmatex">\(\pi\)</span>:</p>
+<div class="arithmatex">\[
+\mathbb E_{a\sim\pi}[f(a)]
+=\sum_a\mu(a)\frac{\pi(a)}{\mu(a)}f(a)
+=\mathbb E_{a\sim\mu}[\rho(a)f(a)].
+\]</div>
+<p>For one token:</p>
+<div class="arithmatex">\[
+\rho_j=\exp[
+\log\pi_\theta(x_j\mid x_{&lt;j})-
+\log\mu(x_j\mid x_{&lt;j})].
+\]</div>
+<p>For a complete token sequence:</p>
+<div class="arithmatex">\[
+\rho_{1:L}=\prod_j\rho_j
+=\exp\left(\sum_j\log\rho_j\right).
+\]</div>
+<p>Long products have extreme variance. Token clipping, sequence geometric means,
+truncated weights, and bounded policy lag change bias/variance differently.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">log_ratio</span> <span class="o">=</span> <span class="n">current_logprobs</span> <span class="o">-</span> <span class="n">old_logprobs</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">ratio</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_ratio</span><span class="p">)</span>
+</code></pre></div>
+<p>If <code>old_logprobs</code> came from unmasked logits but sampling used top-p, the
+denominator is wrong. If MoE routing differs between rollout and learner, the
+numerator is not the probability of the same computation. DeepSeek V3.2's Keep
+Routing/Keep Sampling Mask and GLM-5's token-in/token-out mismatch gates target
+these concrete failures.</p>
+<h2 id="8-proximal-policy-optimization-clipping-piece-by-piece">8. Proximal Policy Optimization clipping piece by piece<a class="headerlink" href="#8-proximal-policy-optimization-clipping-piece-by-piece" title="Permanent link">&para;</a></h2>
+<p><strong>Proximal Policy Optimization (PPO)</strong> constrains how much a sampled action's
+probability may profitably move during one batch of updates. “Proximal” means
+the new policy is encouraged to remain near the rollout policy.</p>
+<p>Define unclipped <span class="arithmatex">\(u(\rho,A)=\rho A\)</span> and clipped
+<span class="arithmatex">\(c(\rho,A)=\operatorname{clip}(\rho,1-\epsilon_l,1+\epsilon_h)A\)</span>. PPO uses</p>
+<div class="arithmatex">\[
+L(\rho,A)=\min(u,c).
+\]</div>
+<h3 id="positive-advantage-a0">Positive advantage <span class="arithmatex">\(A&gt;0\)</span><a class="headerlink" href="#positive-advantage-a0" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[
+L(\rho,A)=
+\begin{cases}
+\rho A,&amp;\rho\le1+\epsilon_h,\\
+(1+\epsilon_h)A,&amp;\rho&gt;1+\epsilon_h.
+\end{cases}
+\]</div>
+<p>Decreasing probability remains penalized; excessive increase stops receiving
+surrogate improvement.</p>
+<h3 id="negative-advantage-a0">Negative advantage <span class="arithmatex">\(A&lt;0\)</span><a class="headerlink" href="#negative-advantage-a0" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[
+L(\rho,A)=
+\begin{cases}
+(1-\epsilon_l)A,&amp;\rho&lt;1-\epsilon_l,\\
+\rho A,&amp;\rho\ge1-\epsilon_l.
+\end{cases}
+\]</div>
+<p>Excessive probability decrease stops improving; increasing a bad action remains
+penalized.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">unclipped</span> <span class="o">=</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">advantage</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">clipped</span> <span class="o">=</span> <span class="n">ratio</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">eps_low</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">eps_high</span><span class="p">)</span> <span class="o">*</span> <span class="n">advantage</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">surrogate</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">unclipped</span><span class="p">,</span> <span class="n">clipped</span><span class="p">)</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">masked_mean</span><span class="p">(</span><span class="n">surrogate</span><span class="p">,</span> <span class="n">action_mask</span><span class="p">)</span>
+</code></pre></div>
+<p>PPO clipping does not impose a hard KL bound. Log ratio distributions, clip
+fractions by advantage sign, and KL separately.</p>
+<h2 id="9-kl-regularized-reward-and-its-optimal-policy">9. KL-regularized reward and its optimal policy<a class="headerlink" href="#9-kl-regularized-reward-and-its-optimal-policy" title="Permanent link">&para;</a></h2>
+<p>For fixed context <span class="arithmatex">\(x\)</span>, optimize over distributions <span class="arithmatex">\(\pi\)</span>:</p>
+<div class="arithmatex">\[
+\max_\pi
+\sum_y\pi(y\mid x)r(x,y)
+-\beta\sum_y\pi(y\mid x)
+\log\frac{\pi(y\mid x)}{\pi_{\text{ref}}(y\mid x)}
+\]</div>
+<p>subject to <span class="arithmatex">\(\sum_y\pi(y\mid x)=1\)</span>. Add Lagrange multiplier <span class="arithmatex">\(\lambda\)</span>:</p>
+<div class="arithmatex">\[
+\mathcal L=\sum_y\pi_y r_y
+-\beta\sum_y\pi_y\log\frac{\pi_y}{q_y}
++\lambda(\sum_y\pi_y-1).
+\]</div>
+<p>Differentiate with respect to <span class="arithmatex">\(\pi_y\)</span>:</p>
+<div class="arithmatex">\[
+r_y-\beta\left(\log\frac{\pi_y}{q_y}+1\right)+\lambda=0.
+\]</div>
+<p>Rearrange:</p>
+<div class="arithmatex">\[
+\pi_y=q_y\exp(r_y/\beta)\exp((\lambda-\beta)/\beta).
+\]</div>
+<p>Normalization produces</p>
+<div class="arithmatex">\[
+\boxed{
+\pi^*(y\mid x)=
+\frac{1}{Z(x)}\pi_{\text{ref}}(y\mid x)e^{r(x,y)/\beta}
+}
+\]</div>
+<p>and therefore</p>
+<div class="arithmatex">\[
+r(x,y)=\beta\log\frac{\pi^*(y\mid x)}
+{\pi_{\text{ref}}(y\mid x)}+\beta\log Z(x).
+\]</div>
+<p>This identity connects preference rewards and policy log-ratios.</p>
+<h2 id="10-derive-dpo-from-bradleyterry-preferences">10. Derive DPO from Bradley–Terry preferences<a class="headerlink" href="#10-derive-dpo-from-bradleyterry-preferences" title="Permanent link">&para;</a></h2>
+<p>Assume probability that response <span class="arithmatex">\(y_w\)</span> is preferred over <span class="arithmatex">\(y_l\)</span>:</p>
+<div class="arithmatex">\[
+p(y_w\succ y_l\mid x)=
+\sigma(r(x,y_w)-r(x,y_l)).
+\]</div>
+<p>Insert the KL-optimal implicit reward. The context-only <span class="arithmatex">\(\log Z(x)\)</span> cancels:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+r(x,y_w)-r(x,y_l)
+&amp;=\beta\log\frac{\pi_\theta(y_w\mid x)}
+{\pi_{\text{ref}}(y_w\mid x)}\\
+&amp;\quad-\beta\log\frac{\pi_\theta(y_l\mid x)}
+{\pi_{\text{ref}}(y_l\mid x)}.
+\end{aligned}
+\]</div>
+<p>Negative log-likelihood yields</p>
+<div class="arithmatex">\[
+L_{\text{DPO}}=-\mathbb E\log\sigma\left[
+\beta\log\frac{\pi_\theta(y_w\mid x)}{\pi_{\text{ref}}(y_w\mid x)}
+-\beta\log\frac{\pi_\theta(y_l\mid x)}{\pi_{\text{ref}}(y_l\mid x)}
+\right].
+\]</div>
+<p>Minimal code:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">chosen_reward</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">chosen_logp</span> <span class="o">-</span> <span class="n">ref_chosen_logp</span><span class="p">)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">rejected_reward</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">rejected_logp</span> <span class="o">-</span> <span class="n">ref_rejected_logp</span><span class="p">)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="n">chosen_reward</span> <span class="o">-</span> <span class="n">rejected_reward</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</code></pre></div>
+<p>DPO depends on a static comparison distribution. It does not by itself collect
+new states induced by an interactive agent policy.</p>
+<h2 id="11-group-relative-policy-optimization-what-is-and-is-not-removed">11. Group Relative Policy Optimization: what is and is not removed<a class="headerlink" href="#11-group-relative-policy-optimization-what-is-and-is-not-removed" title="Permanent link">&para;</a></h2>
+<p><strong>Group Relative Policy Optimization (GRPO)</strong> replaces a learned value-model
+baseline with comparisons among several responses sampled for the same prompt.</p>
+<p>For one prompt/task with <span class="arithmatex">\(G\)</span> rollouts:</p>
+<div class="arithmatex">\[
+\bar R=\frac1G\sum_iR_i,
+\qquad
+s_R=\sqrt{\frac1G\sum_i(R_i-\bar R)^2},
+\qquad
+A_i=\frac{R_i-\bar R}{s_R+\epsilon}.
+\]</div>
+<p>GRPO removes a learned critic, not:</p>
+<ul>
+<li>multiple rollout generation;</li>
+<li>reward/verifier infrastructure;</li>
+<li>old/reference policies;</li>
+<li>clipping/KL decisions;</li>
+<li>length/token normalization;</li>
+<li>multi-turn credit decisions.</li>
+</ul>
+<p>For binary reward and all failures/successes, <span class="arithmatex">\(s_R=0\)</span> and the group has no
+relative signal. Dynamic sampling resamples such groups, changing which prompts
+enter the update and consuming unreported generation unless attempts are logged.</p>
+<h2 id="12-why-standard-deviation-normalization-changes-prompt-weights">12. Why standard-deviation normalization changes prompt weights<a class="headerlink" href="#12-why-standard-deviation-normalization-changes-prompt-weights" title="Permanent link">&para;</a></h2>
+<p>Consider two prompts with centered reward deviations of equal absolute size but
+different group spread:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>prompt A deviations: [-0.5, +0.5], std=0.5 -&gt; advantages [-1, +1]
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>prompt B deviations: [-0.1, +0.1], std=0.1 -&gt; advantages [-1, +1]
+</code></pre></div>
+<p>The raw evidence for B is five times smaller, but standardized magnitude is
+identical. Conversely, a wide reward-scale task is downweighted. This can be
+desirable scale invariance or unwanted prompt weighting; it is not algebraically
+neutral.</p>
+<p>When the current sample participates in <span class="arithmatex">\(\bar R\)</span> and <span class="arithmatex">\(s_R\)</span>, its advantage is
+coupled to its own reward. Dr. GRPO removes analyzed reward-std and per-response
+length normalizations to target an unbiased constant-normalized objective
+(<a href="https://arxiv.org/abs/2503.20783">Liu et al., 2025</a>).</p>
+<h2 id="13-token-versus-sequence-normalization">13. Token versus sequence normalization<a class="headerlink" href="#13-token-versus-sequence-normalization" title="Permanent link">&para;</a></h2>
+<p>Let sequence <span class="arithmatex">\(i\)</span> have <span class="arithmatex">\(L_i\)</span> valid action tokens and common advantage <span class="arithmatex">\(A_i\)</span>.</p>
+<p>Per-token batch mean:</p>
+<div class="arithmatex">\[
+L_{\text{token}}=-
+\frac{\sum_i\sum_{j=1}^{L_i}s_{i,j}}
+{\sum_iL_i}.
+\]</div>
+<p>Per-sequence mean:</p>
+<div class="arithmatex">\[
+L_{\text{seq}}=-
+\frac1B\sum_i\frac1{L_i}
+\sum_{j=1}^{L_i}s_{i,j}.
+\]</div>
+<p>If two sequences have identical per-token surrogate but lengths 10 and 100:</p>
+<ul>
+<li>token mean gives the long sequence ten times as many terms;</li>
+<li>sequence mean gives each sequence equal total weight.</li>
+</ul>
+<p>Neither is universally correct. DAPO explicitly uses token-level aggregation;
+Dr. GRPO analyzes per-response length normalization. Distributed code must sum
+global numerator/denominator; averaging local normalized losses changes weights
+when ranks contain different token counts.</p>
+<h2 id="14-on-policy-distillation">14. On-policy distillation<a class="headerlink" href="#14-on-policy-distillation" title="Permanent link">&para;</a></h2>
+<p>Let student generate trajectory <span class="arithmatex">\(y\sim\pi_\theta\)</span>. A teacher supplies its full
+distribution at the student-visited prefixes. Reverse-KL OPD minimizes</p>
+<div class="arithmatex">\[
+D_{\mathrm{KL}}(\pi_\theta\Vert\pi_E)=
+\sum_v\pi_\theta(v\mid h)
+\left[\log\pi_\theta(v\mid h)-\log\pi_E(v\mid h)\right].
+\]</div>
+<p>Exact code at one token position:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">student_logp</span> <span class="o">=</span> <span class="n">student_logits</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">teacher_logp</span> <span class="o">=</span> <span class="n">teacher_logits</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">student_p</span> <span class="o">=</span> <span class="n">student_logp</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">reverse_kl</span> <span class="o">=</span> <span class="p">(</span><span class="n">student_p</span> <span class="o">*</span> <span class="p">(</span><span class="n">student_logp</span> <span class="o">-</span> <span class="n">teacher_logp</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">loss</span> <span class="o">=</span> <span class="n">masked_mean</span><span class="p">(</span><span class="n">reverse_kl</span><span class="p">,</span> <span class="n">action_mask</span><span class="p">)</span>
+</code></pre></div>
+<p>This is not the sampled-token approximation</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">student_selected_logp</span> <span class="o">-</span> <span class="n">teacher_selected_logp</span>
+</code></pre></div>
+<p>which uses only the sampled action. Full vocabulary costs memory/bandwidth;
+DeepSeek V4 describes caching teacher hidden states, loading one teacher head at
+a time, and computing exact KL with a specialized kernel.</p>
+<p>Why “on-policy”: student chooses the histories/prefixes. Why “distillation”:
+teacher probabilities provide the target. It reduces offline exposure mismatch
+but remains sensitive to reverse-KL mode seeking, teacher disagreement, teacher
+selection, and cost.</p>
+<h2 id="15-multi-teacher-opd">15. Multi-teacher OPD<a class="headerlink" href="#15-multi-teacher-opd" title="Permanent link">&para;</a></h2>
+<p>For teachers <span class="arithmatex">\(E_1,\ldots,E_M\)</span>:</p>
+<div class="arithmatex">\[
+L(\theta)=\sum_{i=1}^{M}w_i(h)
+D_{\mathrm{KL}}(\pi_\theta(\cdot\mid h)
+\Vert\pi_{E_i}(\cdot\mid h)).
+\]</div>
+<p>Questions hidden by the compact formula:</p>
+<ul>
+<li>Are weights fixed, task-routed, confidence-weighted, or learned?</li>
+<li>What happens when teachers disagree?</li>
+<li>Is every teacher defined over the same tokenizer/vocabulary?</li>
+<li>Does student sample with deployment quantization/tools?</li>
+<li>Are teacher logits computed on every token or only policy spans?</li>
+<li>Does one teacher see privileged evidence?</li>
+</ul>
+<p>The exact answers define the training pipeline.</p>
+<h2 id="16-partial-rollout-with-multiple-behavior-policies">16. Partial rollout with multiple behavior policies<a class="headerlink" href="#16-partial-rollout-with-multiple-behavior-policies" title="Permanent link">&para;</a></h2>
+<p>Suppose turns <span class="arithmatex">\(0\ldots k\)</span> were sampled by <span class="arithmatex">\(\mu_0\)</span> and later turns by
+<span class="arithmatex">\(\mu_1\)</span>. Trajectory probability is</p>
+<div class="arithmatex">\[
+p(\tau)=\rho_0P
+\left[\prod_{t=0}^{k}\mu_0(a_t\mid h_t)P_t\right]
+\left[\prod_{t=k+1}^{T-1}\mu_1(a_t\mid h_t)P_t\right].
+\]</div>
+<p>There is no single behavior checkpoint for the whole episode. Correct records
+attach policy version/log-probabilities to each segment.</p>
+<p>Options:</p>
+<ol>
+<li>train only new-policy segment; earlier turns are masked context;</li>
+<li>use per-segment importance ratios;</li>
+<li>apply a fully off-policy estimator;</li>
+<li>discard mixed episodes.</li>
+</ol>
+<p>Kimi k1.5 publicly describes continuation with only newly generated segment
+trained. Restarting every incomplete trajectory would waste compute and select
+against naturally long solutions.</p>
+<h2 id="17-derive-gspo-and-the-gspo-token-gradient-carrier">17. Derive GSPO and the GSPO-token gradient carrier<a class="headerlink" href="#17-derive-gspo-and-the-gspo-token-gradient-carrier" title="Permanent link">&para;</a></h2>
+<p>For response <span class="arithmatex">\(y_i=(y_{i,1},\ldots,y_{i,L_i})\)</span>, the exact full-sequence
+importance ratio is</p>
+<div class="arithmatex">\[
+\frac{\pi_\theta(y_i\mid x)}{\pi_{\mathrm{old}}(y_i\mid x)}
+=\exp\left[
+\sum_{t=1}^{L_i}
+\log\frac{\pi_\theta(y_{i,t}\mid x,y_{i,&lt;t})}
+{\pi_{\mathrm{old}}(y_{i,t}\mid x,y_{i,&lt;t})}
+\right].
+\]</div>
+<p>This is the Radon–Nikodym density ratio for sampled complete responses, but its
+variance and magnitude scale dramatically with length. <strong>Group Sequence Policy
+Optimization (GSPO)</strong> uses the <span class="arithmatex">\(L_i\)</span>-th root instead:</p>
+<div class="arithmatex">\[
+s_i(\theta)
+=\left[
+\frac{\pi_\theta(y_i\mid x)}{\pi_{\mathrm{old}}(y_i\mid x)}
+\right]^{1/L_i}
+=\exp\left[
+\frac1{L_i}\sum_t
+(\ell_{i,t}^{\theta}-\ell_{i,t}^{\mathrm{old}})
+\right].
+\]</div>
+<p>The root is a geometric-mean token ratio. It controls numerical scale and lets
+one clip range serve variable lengths, but it is <strong>not</strong> the exact unnormalized
+full-sequence density ratio. Calling both quantities “the sequence importance
+ratio” hides this design choice.</p>
+<p>For group-standardized response advantage <span class="arithmatex">\(\widehat A_i\)</span>, GSPO maximizes</p>
+<div class="arithmatex">\[
+J_{\mathrm{GSPO}}
+=\frac1G\sum_i
+\min\left[
+s_i\widehat A_i,
+\operatorname{clip}(s_i,1-\epsilon_l,1+\epsilon_h)\widehat A_i
+\right].
+\]</div>
+<p>Away from clipping,</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\nabla_\theta s_i
+&amp;=s_i\nabla_\theta\log s_i\\
+&amp;=\frac{s_i}{L_i}\sum_t
+\nabla_\theta\ell_{i,t}^{\theta},
+\end{aligned}
+\]</div>
+<p>and therefore</p>
+<div class="arithmatex">\[
+\nabla_\theta J_i
+=\frac{s_i\widehat A_i}{L_i}
+\sum_t\nabla_\theta\ell_{i,t}^{\theta}.
+\]</div>
+<p>Every action token in a response receives the same scalar weight. In token-ratio
+GRPO, by contrast, token <span class="arithmatex">\(t\)</span> is additionally weighted by its own ratio. GSPO
+aligns optimization granularity with response reward but loses localized
+off-policy control.</p>
+<p>For multi-turn credit, GSPO-token defines</p>
+<div class="arithmatex">\[
+s_{i,t}(\theta)
+=\operatorname{sg}[s_i(\theta)]
+\frac{\pi_\theta(y_{i,t}\mid x,y_{i,&lt;t})}
+{\operatorname{sg}[\pi_\theta(y_{i,t}\mid x,y_{i,&lt;t})]},
+\]</div>
+<p>where <span class="arithmatex">\(\operatorname{sg}\)</span> is stop-gradient. Numerically,</p>
+<div class="arithmatex">\[
+s_{i,t}=s_i,
+\]</div>
+<p>but</p>
+<div class="arithmatex">\[
+\nabla_\theta s_{i,t}
+=s_i\nabla_\theta\ell_{i,t}^{\theta}.
+\]</div>
+<p>The GSPO-token objective averages these token surrogates within each response.
+When <span class="arithmatex">\(\widehat A_{i,t}=\widehat A_i\)</span>, its gradient is</p>
+<div class="arithmatex">\[
+\frac1{L_i}\sum_t
+s_i\widehat A_i\nabla_\theta\ell_{i,t}^{\theta},
+\]</div>
+<p>exactly the GSPO gradient above. With distinct turn/token advantages it instead
+weights each log-probability gradient locally. The executable implementation
+uses</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">carrier</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">current_logp</span> <span class="o">-</span> <span class="n">current_logp</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">token_ratio</span> <span class="o">=</span> <span class="n">sequence_ratio</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="o">*</span> <span class="n">carrier</span>
+</code></pre></div>
+<p>and a unit test proves both objective and gradient equality for uniform
+advantages. This is a case where matching forward values is insufficient: an
+incorrect detach changes the estimator while every printed ratio looks right.</p>
+<h2 id="18-derive-sapos-smooth-trust-gate">18. Derive SAPO's smooth trust gate<a class="headerlink" href="#18-derive-sapos-smooth-trust-gate" title="Permanent link">&para;</a></h2>
+<p><strong>Soft Adaptive Policy Optimization (SAPO)</strong> begins with token ratio</p>
+<div class="arithmatex">\[
+r_{i,t}=\exp(\ell_{i,t}^{\theta}-\ell_{i,t}^{\mathrm{old}})
+\]</div>
+<p>and sign-dependent temperature</p>
+<div class="arithmatex">\[
+\tau_{i,t}=\begin{cases}
+\tau_{\mathrm{pos}},&amp;\widehat A_{i,t}&gt;0,\\
+\tau_{\mathrm{neg}},&amp;\widehat A_{i,t}\le0.
+\end{cases}
+\]</div>
+<p>Its surrogate function is</p>
+<div class="arithmatex">\[
+f_{i,t}(r)=\frac4{\tau_{i,t}}
+\sigma[\tau_{i,t}(r-1)].
+\]</div>
+<p>The objective averages action tokens inside each response and then responses:</p>
+<div class="arithmatex">\[
+J_{\mathrm{SAPO}}
+=\frac1G\sum_i\frac1{L_i}\sum_t
+f_{i,t}(r_{i,t})\widehat A_{i,t}.
+\]</div>
+<p>Let <span class="arithmatex">\(p=\sigma[\tau(r-1)]\)</span>. Because</p>
+<div class="arithmatex">\[
+\frac{d}{dr}\sigma[\tau(r-1)]=\tau p(1-p),
+\]</div>
+<p>the prefactor cancels temperature in the first derivative:</p>
+<div class="arithmatex">\[
+f'(r)=4p(1-p).
+\]</div>
+<p>Also</p>
+<div class="arithmatex">\[
+\nabla_\theta r
+=r\nabla_\theta\ell^\theta.
+\]</div>
+<p>Thus one token contributes</p>
+<div class="arithmatex">\[
+4p(1-p)r\widehat A
+\nabla_\theta\ell^\theta.
+\]</div>
+<p>At <span class="arithmatex">\(r=1\)</span>, <span class="arithmatex">\(p=1/2\)</span>, and the gradient gate <span class="arithmatex">\(4p(1-p)=1\)</span> regardless of
+temperature. As <span class="arithmatex">\(\lvert r-1\rvert\)</span> grows, the gate approaches zero continuously. Larger
+temperature makes that decay faster. SAPO sets
+<span class="arithmatex">\(\tau_{\mathrm{neg}}&gt;\tau_{\mathrm{pos}}\)</span> because a negative advantage lowers
+the sampled logit but raises relative probability across the many unsampled
+vocabulary items; the paper treats that diffuse update as less stable.</p>
+<p>Do not detach <span class="arithmatex">\(r\)</span> in this objective. Unlike a likelihood-ratio loss, there is
+no explicit <span class="arithmatex">\(\log\pi_\theta\)</span> factor: detaching <span class="arithmatex">\(r\)</span> would make the SAPO policy
+gradient exactly zero. Conversely, advantages and rollout log-probabilities
+must be detached evidence.</p>
+<p>The raw surrogate value at <span class="arithmatex">\(r=1\)</span> is <span class="arithmatex">\(2\widehat A/\tau\)</span>, which depends on
+temperature even though the on-policy gradient does not. Therefore the printed
+SAPO objective is an optimization surrogate, not a calibrated return estimate;
+compare gradients and held-out reward, not raw loss values across temperatures.</p>
+<p>The paper's sequence-coherence argument uses two assumptions. Let</p>
+<div class="arithmatex">\[
+z_{i,t}=\log r_{i,t},\qquad
+\mu_i=\frac1{L_i}\sum_t z_{i,t}=\log s_i.
+\]</div>
+<p>If steps are small, <span class="arithmatex">\(r-1\approx\log r\)</span>. If within-sequence variance of <span class="arithmatex">\(z\)</span>
+is low, the average token gradient gate is close to</p>
+<div class="arithmatex">\[
+g_\tau(\log s_i)
+=\operatorname{sech}^2\left(\frac{\tau}{2}\log s_i\right),
+\]</div>
+<p>with the paper's bound</p>
+<div class="arithmatex">\[
+\left|
+\frac1{L_i}\sum_t g_\tau(z_{i,t})-g_\tau(\mu_i)
+\right|
+\le\frac{\tau^2}{4}\operatorname{Var}_t(z_{i,t}).
+\]</div>
+<p>This makes SAPO approximately sequence-coherent in a measured regime, not
+identical to GSPO. When a few tokens are outliers, SAPO intentionally falls
+back to token-adaptive attenuation instead of suppressing the whole response.</p>
+<h2 id="19-compaction-aware-sub-traces-and-critic-ppo">19. Compaction-aware sub-traces and critic PPO<a class="headerlink" href="#19-compaction-aware-sub-traces-and-critic-ppo" title="Permanent link">&para;</a></h2>
+<p>Long-running agents may compact old transcript into summaries and emit multiple
+trainable sub-traces. Let episode <span class="arithmatex">\(i\)</span> produce <span class="arithmatex">\(K_i\)</span> segments of length
+<span class="arithmatex">\(L_{i,k}\)</span>. If <span class="arithmatex">\(K_i\)</span> varies, a fixed group-per-prompt advantage is awkward:</p>
+<ul>
+<li>what is a “group member”: episode, segment, or compacted state?</li>
+<li>episodes with many segments create more token losses;</li>
+<li>segment rewards share downstream return and are statistically dependent;</li>
+<li>summaries change the information state.</li>
+</ul>
+<p>GLM-5.2 discloses moving such traces to critic PPO, individual-rollout learning,
+token-level advantages, retention of all sub-traces, and token-level loss. A
+critic can condition on each compacted information state:</p>
+<div class="arithmatex">\[
+A_{i,k,j}\approx Q(h_{i,k,j},x_{i,k,j})-V(h_{i,k,j}).
+\]</div>
+<p>The disclosure does not specify critic architecture, GAE, or coefficients; the
+mathematical motivation should not be mistaken for a reproducible recipe.</p>
+<h2 id="20-single-rollout-asynchronous-optimization-derived">20. Single-Rollout Asynchronous Optimization, derived<a class="headerlink" href="#20-single-rollout-asynchronous-optimization-derived" title="Permanent link">&para;</a></h2>
+<p>Hou et al.'s
+<a href="https://arxiv.org/abs/2607.07508">Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning</a>
+introduces <strong>Single-Rollout Asynchronous Optimization (SAO)</strong>. It is especially
+important because the authors explicitly report deploying it in the GLM-5.2
+agentic-RL pipeline. The controlled paper experiments, however, use
+Qwen3-30B-A3B; this derivation describes the published method rather than an
+undisclosed GLM-5.2 configuration.</p>
+<h3 id="201-why-asynchronous-group-sampling-increases-lag">20.1 Why asynchronous group sampling increases lag<a class="headerlink" href="#201-why-asynchronous-group-sampling-increases-lag" title="Permanent link">&para;</a></h3>
+<p>Let a prompt have <span class="arithmatex">\(G\)</span> rollouts with durations <span class="arithmatex">\(T_1,\ldots,T_G\)</span>. A grouped
+method cannot construct its group-relative advantage until</p>
+<div class="arithmatex">\[
+T_{\mathrm{ready}}=\max_{1\le i\le G}T_i.
+\]</div>
+<p>If rollout <span class="arithmatex">\(i\)</span> finishes at <span class="arithmatex">\(T_i\)</span>, its avoidable wait is
+<span class="arithmatex">\(T_{\mathrm{ready}}-T_i\)</span>. The total within-group waiting work is</p>
+<div class="arithmatex">\[
+W=\sum_{i=1}^{G}(T_{\mathrm{ready}}-T_i).
+\]</div>
+<p>This is not merely wasted wall time. If the learner updates while the group
+waits, early trajectories become more off-policy. SAO uses one rollout per
+prompt and admits it when ready, removing <span class="arithmatex">\(W\)</span> and the group barrier. It also
+removes the same-prompt group baseline, so a critic must control variance.</p>
+<h3 id="202-direct-double-sided-importance-sampling">20.2 Direct Double-Sided Importance Sampling<a class="headerlink" href="#202-direct-double-sided-importance-sampling" title="Permanent link">&para;</a></h3>
+<p><strong>Direct Double-Sided Importance Sampling (DIS)</strong> compares the current policy
+directly with the rollout engine's stored probability:</p>
+<div class="arithmatex">\[
+r_t(\theta)
+=\frac{\pi_\theta(a_t\mid s_t)}
+       {\pi_{\mathrm{rollout}}(a_t\mid s_t)}
+=\exp[\ell_t(\theta)-\ell_t^{\mathrm{rollout}}].
+\]</div>
+<p>There is no intermediate “old policy” checkpoint. This saves inference and
+checkpoint history, but it is valid only if rollout logs describe the actual
+sampling distribution. Top-<span class="arithmatex">\(p\)</span> masking, temperature, vocabulary mapping,
+Mixture-of-Experts routing, and numerical backend differences must still be
+handled.</p>
+<p>SAO's calibration is</p>
+<div class="arithmatex">\[
+f(r_t;\epsilon_l,\epsilon_h)=
+\begin{cases}
+r_t,&amp;1-\epsilon_l&lt;r_t&lt;1+\epsilon_h,\\
+0,&amp;\text{otherwise}.
+\end{cases}
+\]</div>
+<p>Compare the gradients qualitatively:</p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th style="text-align: right;">PPO with <span class="arithmatex">\(A&gt;0\)</span></th>
+<th style="text-align: right;">PPO with <span class="arithmatex">\(A&lt;0\)</span></th>
+<th style="text-align: right;">SAO DIS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(r&lt;1-\epsilon_l\)</span></td>
+<td style="text-align: right;">active</td>
+<td style="text-align: right;">saturated</td>
+<td style="text-align: right;">zero</td>
+</tr>
+<tr>
+<td>inside interval</td>
+<td style="text-align: right;">active</td>
+<td style="text-align: right;">active</td>
+<td style="text-align: right;">active</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(r&gt;1+\epsilon_h\)</span></td>
+<td style="text-align: right;">saturated</td>
+<td style="text-align: right;">active</td>
+<td style="text-align: right;">zero</td>
+</tr>
+</tbody>
+</table>
+<p>Therefore “double-sided clipping” is potentially misleading: it <strong>rejects</strong>
+both tails instead of replacing the ratio by a boundary value.</p>
+<p>The paper prints the maximization objective</p>
+<div class="arithmatex">\[
+L(\theta)=\widehat{\mathbb E}_t\left[
+f(r_t(\theta))\widehat A_t
+\log\pi_\theta(a_t\mid s_t)
+\right].
+\]</div>
+<p>There is a source-level ambiguity. If <span class="arithmatex">\(f\)</span> remains attached to the computation
+graph inside the accepted interval, then for
+<span class="arithmatex">\(g(\theta)=r(\theta)A\log\pi_\theta\)</span>,</p>
+<div class="arithmatex">\[
+\nabla g
+=A r\,[1+\log\pi_\theta(a\mid s)]
+\nabla\log\pi_\theta(a\mid s),
+\]</div>
+<p>which is not the usual importance-weighted policy gradient <span class="arithmatex">\(Ar\nabla\log\pi\)</span>.
+If the ratio is stop-gradient, it <em>is</em> a sampled policy-gradient weight. The
+paper's equation does not show a stop-gradient operator. A faithful
+implementation must inspect released code or ask the authors; it must not hide
+the choice.</p>
+<p>Minimal code with the conventional detached-weight interpretation is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">sao_policy_loss</span><span class="p">(</span><span class="n">current_logp</span><span class="p">,</span> <span class="n">rollout_logp</span><span class="p">,</span> <span class="n">advantage</span><span class="p">,</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>                    <span class="n">action_mask</span><span class="p">,</span> <span class="n">eps_low</span><span class="p">,</span> <span class="n">eps_high</span><span class="p">):</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">log_ratio</span> <span class="o">=</span> <span class="n">current_logp</span> <span class="o">-</span> <span class="n">rollout_logp</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">ratio</span> <span class="o">=</span> <span class="n">log_ratio</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">trusted</span> <span class="o">=</span> <span class="p">(</span><span class="n">ratio</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">eps_low</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ratio</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">eps_high</span><span class="p">)</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="n">weight</span> <span class="o">=</span> <span class="p">(</span><span class="n">ratio</span> <span class="o">*</span> <span class="n">trusted</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="n">numerator</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">weight</span> <span class="o">*</span> <span class="n">advantage</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="o">*</span> <span class="n">current_logp</span> <span class="o">*</span> <span class="n">action_mask</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    <span class="n">denominator</span> <span class="o">=</span> <span class="n">action_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">clamp_min</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>    <span class="k">return</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span><span class="p">,</span> <span class="n">trusted</span>
+</code></pre></div>
+<p>The strict inequalities match the paper. Unit tests should include values
+exactly at both boundaries because <code>&gt;=</code> versus <code>&gt;</code> changes their gradients.</p>
+<h3 id="203-the-critic-and-two-timescale-updates">20.3 The critic and two-timescale updates<a class="headerlink" href="#203-the-critic-and-two-timescale-updates" title="Permanent link">&para;</a></h3>
+<p>SAO trains an actor <span class="arithmatex">\(\pi_\theta\)</span> and critic <span class="arithmatex">\(V_\phi\)</span>. In the paper's
+controlled experiments, each actor update is preceded or accompanied by
+<span class="arithmatex">\(K=2\)</span> critic updates:</p>
+<div class="arithmatex">\[
+\phi\leftarrow\operatorname{Opt}_V(\phi)^K,
+\qquad
+\theta\leftarrow\operatorname{Opt}_\pi(\theta).
+\]</div>
+<p>The intention is a two-timescale process: the baseline should track the moving
+policy faster than the actor changes. More critic steps do not guarantee this;
+learning rate, replay distribution, bootstrap target, and representation drift
+also matter. The paper freezes the critic's attention parameters and updates
+its Mixture-of-Experts projections after observing unstable full-attention
+gradients. That is an empirical regularizer, not a theorem that attention never
+needs value adaptation.</p>
+<p>Explained variance diagnoses baseline fit:</p>
+<div class="arithmatex">\[
+\operatorname{EV}=1-
+\frac{\operatorname{Var}(R-V_\phi(s))}
+     {\operatorname{Var}(R)}.
+\]</div>
+<p><span class="arithmatex">\(\operatorname{EV}=1\)</span> is perfect prediction, <span class="arithmatex">\(0\)</span> is no better in variance
+than a constant mean, and a negative value is worse. When
+<span class="arithmatex">\(\operatorname{Var}(R)\approx0\)</span>, the statistic is ill-conditioned and must be
+guarded.</p>
+<h3 id="204-skip-observation-generalized-advantage-estimation">20.4 Skip-observation Generalized Advantage Estimation<a class="headerlink" href="#204-skip-observation-generalized-advantage-estimation" title="Permanent link">&para;</a></h3>
+<p><strong>Generalized Advantage Estimation (GAE)</strong> normally recurses through adjacent
+decision states. An agent transcript interleaves model-generated actions and
+environment-generated observations:</p>
+<div class="arithmatex">\[
+\tau=[a_0,o_0,a_1,o_1,\ldots].
+\]</div>
+<p>Assigning policy/value loss to observation tokens is conceptually wrong: the
+policy did not sample them. Let <span class="arithmatex">\(a_{i,N}\)</span> be the final token of action <span class="arithmatex">\(i\)</span>
+and <span class="arithmatex">\(a_{i+1,0}\)</span> the first token of the next action. SAO bridges the external
+observation span:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\delta_i
+&amp;=r_i+\gamma V_\phi(a_{i+1,0})-V_\phi(a_{i,N}),\\
+\widehat A(a_{i,N})
+&amp;=\delta_i+\gamma\lambda\widehat A(a_{i+1,0}).
+\end{aligned}
+\]</div>
+<p>This skips <em>loss positions</em>, not information. The prefix of
+<span class="arithmatex">\(a_{i+1,0}\)</span> contains <span class="arithmatex">\(o_i\)</span>, so the next value can condition on the tool
+result. For a terminal transition, replace the next value and recursive
+advantage with zero. For a timeout truncation, bootstrap only when the
+environment semantics say the episode could validly continue.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">skip_observation_gae</span><span class="p">(</span><span class="n">action_end_values</span><span class="p">,</span> <span class="n">next_action_values</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>                         <span class="n">terminals</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">lam</span><span class="p">):</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="c1"># One entry per semantic model action, not per environment token.</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">next_advantage</span> <span class="o">=</span> <span class="mf">0.0</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">advantages</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">rewards</span><span class="p">)</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rewards</span><span class="p">))):</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>        <span class="n">continuation</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">terminals</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>        <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">rewards</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>                 <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">continuation</span> <span class="o">*</span> <span class="n">next_action_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>                 <span class="o">-</span> <span class="n">action_end_values</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>        <span class="n">next_advantage</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">continuation</span> <span class="o">*</span> <span class="n">next_advantage</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>        <span class="n">advantages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_advantage</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>    <span class="k">return</span> <span class="n">advantages</span>
+</code></pre></div>
+<p>The paper also tests step-average and last-token step values in its appendix;
+both underperform token-wise value training in that experiment. This does not
+prove token-wise values dominate in every scaffold.</p>
+<h3 id="205-evidence-boundary-for-glm-52">20.5 Evidence boundary for GLM-5.2<a class="headerlink" href="#205-evidence-boundary-for-glm-52" title="Permanent link">&para;</a></h3>
+<p>The paper's Qwen3-30B-A3B experiment discloses group size one, batch 128, 128K
+maximum length, actor learning rate <span class="arithmatex">\(10^{-6}\)</span>, critic learning rate
+<span class="arithmatex">\(5\times10^{-6}\)</span>, and <span class="arithmatex">\(K=2\)</span>. Reasoning uses
+<span class="arithmatex">\((\epsilon_l,\epsilon_h)=(0.3,5.0)\)</span>; coding uses <span class="arithmatex">\((0.8,3.0)\)</span>.
+These unusually wide <em>ratio</em> intervals must not be confused with conventional
+PPO clip values.</p>
+<p>The only direct GLM-5.2 statement is that SAO was deployed in its agentic-RL
+pipeline. The GLM-5.2-specific stages, data, rewards, coefficients, compute,
+and gains are not published. The correct lesson is the algorithm and its
+systems motivation—not a fabricated 753B recipe.</p>
+<h2 id="21-potential-based-reward-shaping">21. Potential-based reward shaping<a class="headerlink" href="#21-potential-based-reward-shaping" title="Permanent link">&para;</a></h2>
+<p>Add shaping</p>
+<div class="arithmatex">\[
+F(s_t,s_{t+1})=\gamma\Phi(s_{t+1})-\Phi(s_t).
+\]</div>
+<p>Shaped discounted return telescopes:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+G'_0
+&amp;=\sum_{t=0}^{T-1}\gamma^t[r_t+\gamma\Phi(s_{t+1})-\Phi(s_t)]\\
+&amp;=G_0-\Phi(s_0)+\gamma^T\Phi(s_T).
+\end{aligned}
+\]</div>
+<p>For fixed initial state and appropriate terminal potential, action rankings are
+preserved. Arbitrary process scores do not have this guarantee. A judge reward
+for “looks like progress” can change the optimum to perform judge-visible
+rituals.</p>
+<h2 id="22-constrained-objectives">22. Constrained objectives<a class="headerlink" href="#22-constrained-objectives" title="Permanent link">&para;</a></h2>
+<p>Suppose task return <span class="arithmatex">\(J_R(\theta)\)</span> and expected safety/cost constraint</p>
+<div class="arithmatex">\[
+J_C(\theta)=\mathbb E[C(\tau)]\le d.
+\]</div>
+<p>Lagrangian:</p>
+<div class="arithmatex">\[
+\mathcal L(\theta,\lambda)=
+J_R(\theta)-\lambda(J_C(\theta)-d),\qquad\lambda\ge0.
+\]</div>
+<p>Policy update ascends <span class="arithmatex">\(\theta\)</span> on reward minus constraint advantage. Multiplier
+update increases <span class="arithmatex">\(\lambda\)</span> when observed cost exceeds budget:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">policy_loss</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">reward_surrogate</span> <span class="o">-</span> <span class="n">lambda_cost</span> <span class="o">*</span> <span class="n">cost_surrogate</span><span class="p">)</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">lambda_cost</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">lambda_cost</span> <span class="o">+</span> <span class="n">dual_lr</span> <span class="o">*</span> <span class="p">(</span><span class="n">mean_cost</span> <span class="o">-</span> <span class="n">budget</span><span class="p">))</span>
+</code></pre></div>
+<p>This controls an expectation, not worst-case catastrophe. Tool authorization,
+sandbox, and irreversible-action confirmation remain hard external constraints.</p>
+<h2 id="23-a-complete-one-batch-tensor-calculation">23. A complete one-batch tensor calculation<a class="headerlink" href="#23-a-complete-one-batch-tensor-calculation" title="Permanent link">&para;</a></h2>
+<p>Consider two trajectories, two action tokens each:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>old logp       [[-1.00, -0.50], [-0.20, -0.70]]
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>current logp   [[-0.90, -0.60], [-0.10, -1.00]]
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>advantages     [[+1.00, +1.00], [-0.50, -0.50]]
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>mask           [[1, 1], [1, 0]]
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>clip epsilon   0.20
+</code></pre></div>
+<p>Log-ratios at valid positions: <code>[+0.10, -0.10, +0.10]</code>.</p>
+<p>Ratios:</p>
+<div class="arithmatex">\[
+[e^{.1},e^{-.1},e^{.1}]
+\approx[1.10517,0.90484,1.10517].
+\]</div>
+<p>All lie inside <code>[0.8, 1.2]</code>, so no clipping. Surrogates:</p>
+<div class="arithmatex">\[
+[1.10517,0.90484,-0.55259].
+\]</div>
+<p>Mean objective over three valid tokens:</p>
+<div class="arithmatex">\[
+\frac{1.10517+0.90484-0.55259}{3}
+\approx0.48581.
+\]</div>
+<p>Minimized loss is <span class="arithmatex">\(-0.48581\)</span>. The fourth token is masked and contributes
+neither numerator nor denominator.</p>
+<p>Use this style of hand calculation before trusting a fused/distributed kernel.</p>
+<h2 id="24-numerical-and-statistical-checks">24. Numerical and statistical checks<a class="headerlink" href="#24-numerical-and-statistical-checks" title="Permanent link">&para;</a></h2>
+<p>For any implementation:</p>
+<ol>
+<li><code>current == old</code> implies ratio one before update.</li>
+<li>masked logit gradient is zero.</li>
+<li>padding/repacking does not change globally normalized loss.</li>
+<li><span class="arithmatex">\(\lambda=1\)</span> GAE equals Monte Carlo return minus value at true terminals.</li>
+<li>uniform group reward yields no centered relative signal.</li>
+<li>DPO loss is <span class="arithmatex">\(\log 2\)</span> when chosen/rejected implicit margins are equal.</li>
+<li>exact reverse KL is non-negative up to numerical tolerance and zero for equal
+   distributions.</li>
+<li>adding a constant to group rewards leaves centered advantages unchanged.</li>
+<li>multiplying rewards changes non-standardized but not standardized group
+   advantages; this is an objective property to document.</li>
+<li>local-rank normalized losses match global concatenated loss only when
+    denominators are aggregated correctly.</li>
+</ol>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Ronald J. Williams,
+   <a href="https://doi.org/10.1007/BF00992696">“Simple Statistical Gradient-Following Algorithms for Connectionist Reinforcement Learning”</a>,
+   1992.</li>
+<li>John Schulman et al.,
+   <a href="https://arxiv.org/abs/1506.02438">“High-Dimensional Continuous Control Using Generalized Advantage Estimation”</a>,
+   2015.</li>
+<li>John Schulman et al.,
+   <a href="https://arxiv.org/abs/1707.06347">“Proximal Policy Optimization Algorithms”</a>,
+   2017.</li>
+<li>Rafael Rafailov et al.,
+   <a href="https://arxiv.org/abs/2305.18290">“Direct Preference Optimization”</a>, 2023.</li>
+<li>Zhihong Shao et al.,
+   <a href="https://arxiv.org/abs/2402.03300">“DeepSeekMath”</a>, 2024.</li>
+<li>Zichen Liu et al.,
+   <a href="https://arxiv.org/abs/2503.20783">“Understanding R1-Zero-Like Training”</a>,
+   2025.</li>
+<li>Chujie Zheng et al.,
+   <a href="https://arxiv.org/abs/2507.18071">“Group Sequence Policy Optimization”</a>,
+   2025.</li>
+<li>Chang Gao et al.,
+   <a href="https://arxiv.org/abs/2511.20347">“Soft Adaptive Policy Optimization”</a>,
+   2025.</li>
+<li>Zhenyu Hou et al.,
+   <a href="https://arxiv.org/abs/2607.07508">“Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning”</a>,
+   2026.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

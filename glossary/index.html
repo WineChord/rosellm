@@ -1,0 +1,3398 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/glossary/">
+      
+      
+        <link rel="prev" href="../learning-roadmap/">
+      
+      
+        <link rel="next" href="../research-method/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Glossary - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#glossary-full-names-meanings-and-relationships" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Glossary
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-paradigms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning paradigms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mdp-pomdp-and-trajectories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MDP, POMDP, and trajectories
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MDP, POMDP, and trajectories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#markov-decision-process-mdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Markov Decision Process (MDP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partially-observable-markov-decision-process-pomdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Partially Observable Markov Decision Process (POMDP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-optimization-and-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy optimization and estimators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reward-and-evaluation-vocabulary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reward and evaluation vocabulary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#factuality-grounding-and-uncertainty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factuality, grounding, and uncertainty
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transformer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transformer architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-and-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data and representation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#distributed-training-and-serving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distributed training and serving
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precision-and-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Precision and hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agents-and-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents and software
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#first-use-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First-use example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-paradigms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning paradigms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mdp-pomdp-and-trajectories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MDP, POMDP, and trajectories
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MDP, POMDP, and trajectories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#markov-decision-process-mdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Markov Decision Process (MDP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partially-observable-markov-decision-process-pomdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Partially Observable Markov Decision Process (POMDP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-optimization-and-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy optimization and estimators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reward-and-evaluation-vocabulary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reward and evaluation vocabulary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#factuality-grounding-and-uncertainty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factuality, grounding, and uncertainty
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transformer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transformer architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-and-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data and representation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#distributed-training-and-serving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distributed training and serving
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precision-and-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Precision and hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agents-and-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents and software
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#first-use-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First-use example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="glossary-full-names-meanings-and-relationships">Glossary: Full Names, Meanings, and Relationships<a class="headerlink" href="#glossary-full-names-meanings-and-relationships" title="Permanent link">&para;</a></h1>
+<p>This glossary is a decoding aid. Every chapter must still expand an uncommon
+abbreviation at its first meaningful use and immediately explain what the
+concept does. A full name answers “what do the letters mean?”; the explanation
+answers the more important question, “what does this object do here?”</p>
+<h2 id="learning-paradigms">Learning paradigms<a class="headerlink" href="#learning-paradigms" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Full name</th>
+<th>Plain meaning and boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AI</strong></td>
+<td>Artificial Intelligence</td>
+<td>The broad field of machines performing tasks associated with intelligence. Machine learning is one approach within it.</td>
+</tr>
+<tr>
+<td><strong>LM / LLM</strong></td>
+<td>Language Model / Large Language Model</td>
+<td>A model assigns probabilities to token sequences. “Large” has no fixed parameter threshold.</td>
+</tr>
+<tr>
+<td><strong>VLM / VLA</strong></td>
+<td>Vision-Language Model / Vision-Language-Action model</td>
+<td>A VLM processes images and language; a VLA additionally produces actions, commonly for robotics.</td>
+</tr>
+<tr>
+<td><strong>RL</strong></td>
+<td>Reinforcement Learning</td>
+<td>Learning a behavior policy from scalar rewards produced through interaction.</td>
+</tr>
+<tr>
+<td><strong>agentic RL</strong></td>
+<td>Agentic Reinforcement Learning</td>
+<td>RL in which an LLM acts over multiple steps, often using tools and receiving delayed environment feedback. It is a setting, not one algorithm.</td>
+</tr>
+<tr>
+<td><strong>SFT</strong></td>
+<td>Supervised Fine-Tuning</td>
+<td>Maximum-likelihood training on supplied target responses or trajectories. It imitates demonstrations rather than directly maximizing a reward.</td>
+</tr>
+<tr>
+<td><strong>CPT</strong></td>
+<td>Continual Pretraining</td>
+<td>Additional next-token training of an existing checkpoint, often on a new domain, higher-quality mixture, or longer context. A CPT token count is an incremental stage, not automatically the model's total lifetime exposure.</td>
+</tr>
+<tr>
+<td><strong>agentic continued pretraining</strong></td>
+<td>—</td>
+<td>Continued next-token training on serialized goals, actions, tool calls, observations, and revisions. It teaches interaction-shaped priors at scale but remains likelihood training rather than online environment RL.</td>
+</tr>
+<tr>
+<td><strong>RLHF</strong></td>
+<td>Reinforcement Learning from Human Feedback</td>
+<td>RL in which human judgments directly or indirectly define reward, often through a learned reward model.</td>
+</tr>
+<tr>
+<td><strong>RLAIF</strong></td>
+<td>Reinforcement Learning from AI Feedback</td>
+<td>RL whose labels, critiques, or rewards are produced by another AI system.</td>
+</tr>
+<tr>
+<td><strong>CAI</strong></td>
+<td>Constitutional AI</td>
+<td>Uses written principles to generate critiques, revisions, or AI preference labels; the cited Anthropic pipeline combines these stages with SFT and RL.</td>
+</tr>
+<tr>
+<td><strong>RLVR</strong></td>
+<td>Reinforcement Learning with Verifiable Rewards</td>
+<td>RL using mechanically checkable rewards such as unit tests, exact answers, or proof verification. “From verifiable rewards” is also used.</td>
+</tr>
+<tr>
+<td><strong>BC / IL</strong></td>
+<td>Behavioral Cloning / Imitation Learning</td>
+<td>BC is supervised imitation of demonstrated actions; IL is the broader family.</td>
+</tr>
+<tr>
+<td><strong>KD / OPD</strong></td>
+<td>Knowledge Distillation / On-Policy Distillation</td>
+<td>KD trains a student from a teacher. OPD evaluates the teacher on states sampled by the student, reducing state-distribution mismatch.</td>
+</tr>
+<tr>
+<td><strong>MOPD</strong></td>
+<td>Multi-Domain / Multi-teacher On-Policy Distillation</td>
+<td>NVIDIA uses “Multi-Domain” in Cascade 2 and “Multi-teacher” in Nemotron 3 Ultra for closely related student-state distillation: the student samples states and a domain teacher supplies token distributions on those states.</td>
+</tr>
+<tr>
+<td><strong>CoT</strong></td>
+<td>Chain of Thought</td>
+<td>Intermediate language or latent reasoning before an answer. Long-CoT denotes deliberately extended traces.</td>
+</tr>
+<tr>
+<td><strong>TTRL</strong></td>
+<td>Test-Time Reinforcement Learning</td>
+<td>Target-specific policy adaptation performed during evaluation; AlphaProof uses generated variants around a target theorem. It differs from merely sampling more candidates.</td>
+</tr>
+<tr>
+<td><strong>NLL</strong></td>
+<td>Negative Log-Likelihood</td>
+<td>For a target sequence, <span class="arithmatex">\(-\log p_\theta(y\mid x)=-\sum_t\log p_\theta(y_t\mid x,y_{&lt;t})\)</span>; minimizing it performs maximum-likelihood imitation. Adding NLL on successful RL samples directly increases the likelihood of their tokens.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mdp-pomdp-and-trajectories">MDP, POMDP, and trajectories<a class="headerlink" href="#mdp-pomdp-and-trajectories" title="Permanent link">&para;</a></h2>
+<h3 id="markov-decision-process-mdp">Markov Decision Process (MDP)<a class="headerlink" href="#markov-decision-process-mdp" title="Permanent link">&para;</a></h3>
+<p>An <strong>MDP</strong> is the mathematical model</p>
+<div class="arithmatex">\[
+\mathcal M=(\mathcal S,\mathcal A,P,r,\gamma,\rho_0),
+\]</div>
+<p>where <span class="arithmatex">\(\mathcal S\)</span> is the state space, <span class="arithmatex">\(\mathcal A\)</span> the action space,
+<span class="arithmatex">\(P(s'\mid s,a)\)</span> the transition law, <span class="arithmatex">\(r\)</span> the reward, <span class="arithmatex">\(\gamma\)</span> the discount
+factor, and <span class="arithmatex">\(\rho_0\)</span> the initial-state distribution. “Markov” means the
+current state contains everything needed to predict the next state once the
+action is known.</p>
+<h3 id="partially-observable-markov-decision-process-pomdp">Partially Observable Markov Decision Process (POMDP)<a class="headerlink" href="#partially-observable-markov-decision-process-pomdp" title="Permanent link">&para;</a></h3>
+<p>A <strong>POMDP</strong> is an MDP in which the agent cannot directly observe the complete
+state. Instead it receives <span class="arithmatex">\(o_t\sim O(\cdot\mid s_t)\)</span> and must infer what
+matters from its interaction history or learned memory. Tool-using LLM agents
+are normally closer to POMDPs: hidden web state, omitted files, asynchronous
+events, and truncated context make the true environment state only partially
+visible.</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>state</strong> <span class="arithmatex">\(s_t\)</span></td>
+<td>All environment information that makes future dynamics independent of the earlier past, conditional on the next action. It may be hidden.</td>
+</tr>
+<tr>
+<td><strong>observation</strong> <span class="arithmatex">\(o_t\)</span></td>
+<td>Information exposed to the agent, such as a prompt, terminal output, or screenshot.</td>
+</tr>
+<tr>
+<td><strong>action</strong> <span class="arithmatex">\(a_t\)</span></td>
+<td>A decision affecting the environment: a token, message, tool call, or structured command.</td>
+</tr>
+<tr>
+<td><strong>policy</strong> <span class="arithmatex">\(\pi_\theta(a\mid h)\)</span></td>
+<td>A parameterized probability distribution over actions given observable history <span class="arithmatex">\(h\)</span>.</td>
+</tr>
+<tr>
+<td><strong>trajectory</strong> <span class="arithmatex">\(\tau\)</span></td>
+<td>One ordered record of observations, actions, rewards, and termination signals.</td>
+</tr>
+<tr>
+<td><strong>episode / horizon</strong></td>
+<td>One complete or truncated interaction / its maximum or realized number of decision steps.</td>
+</tr>
+<tr>
+<td><strong>task-completion time horizon</strong></td>
+<td>The human-task duration at which an evaluated agent is predicted to achieve a stated success probability over a specified task distribution. It measures task difficulty under one protocol, not agent wall-clock duration or universal job automation.</td>
+</tr>
+<tr>
+<td><strong>return</strong> <span class="arithmatex">\(G_t\)</span></td>
+<td>Discounted future reward, <span class="arithmatex">\(G_t=\sum_{k\ge0}\gamma^k r_{t+k}\)</span>.</td>
+</tr>
+<tr>
+<td><strong>value</strong> <span class="arithmatex">\(V^\pi(s)\)</span></td>
+<td>Expected return from a state under policy <span class="arithmatex">\(\pi\)</span>.</td>
+</tr>
+<tr>
+<td><strong>action value</strong> <span class="arithmatex">\(Q^\pi(s,a)\)</span></td>
+<td>Expected return after action <span class="arithmatex">\(a\)</span>, then following <span class="arithmatex">\(\pi\)</span>.</td>
+</tr>
+<tr>
+<td><strong>advantage</strong> <span class="arithmatex">\(A^\pi(s,a)\)</span></td>
+<td>How much better an action is than the policy average: <span class="arithmatex">\(Q^\pi(s,a)-V^\pi(s)\)</span>.</td>
+</tr>
+<tr>
+<td><strong>credit assignment</strong></td>
+<td>Determining which earlier actions deserve responsibility for a delayed outcome.</td>
+</tr>
+<tr>
+<td><strong>on-policy / off-policy</strong></td>
+<td>Data comes from the current policy / from a teacher, replay buffer, older checkpoint, or other behavior policy.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="policy-optimization-and-estimators">Policy optimization and estimators<a class="headerlink" href="#policy-optimization-and-estimators" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Full name</th>
+<th>Plain meaning and relationship</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>REINFORCE</strong></td>
+<td>A Monte Carlo policy-gradient estimator; not an acronym in the original paper</td>
+<td>Multiplies sampled log-probability gradients by returns or advantages. It is simple and often high variance.</td>
+</tr>
+<tr>
+<td><strong>PG</strong></td>
+<td>Policy Gradient</td>
+<td>Direct differentiation of expected return with respect to policy parameters.</td>
+</tr>
+<tr>
+<td><strong>A2C</strong></td>
+<td>Advantage Actor-Critic</td>
+<td>A synchronous actor-critic policy-gradient method; an advantage estimate subtracts a learned value baseline.</td>
+</tr>
+<tr>
+<td><strong>TRPO</strong></td>
+<td>Trust Region Policy Optimization</td>
+<td>Constrains updates by a Kullback–Leibler divergence trust region.</td>
+</tr>
+<tr>
+<td><strong>PPO</strong></td>
+<td>Proximal Policy Optimization</td>
+<td>Reuses rollouts while clipping or penalizing policy-ratio movement. Actor-critic PPO learns a value function.</td>
+</tr>
+<tr>
+<td><strong>GAE</strong></td>
+<td>Generalized Advantage Estimation</td>
+<td>A geometrically weighted mixture of temporal-difference residuals, trading bias against variance through <span class="arithmatex">\(\lambda\)</span>.</td>
+</tr>
+<tr>
+<td><strong>TD</strong></td>
+<td>Temporal Difference</td>
+<td>Bootstraps from a later value estimate instead of waiting for the complete return.</td>
+</tr>
+<tr>
+<td><strong>RLOO</strong></td>
+<td>REINFORCE Leave-One-Out</td>
+<td>Uses the other responses to the same prompt as a reward baseline; no critic is required.</td>
+</tr>
+<tr>
+<td><strong>GRPO</strong></td>
+<td>Group Relative Policy Optimization</td>
+<td>DeepSeek's publicly introduced critic-free PPO-like method; it derives relative advantages from a response group for one prompt.</td>
+</tr>
+<tr>
+<td><strong>Dr. GRPO</strong></td>
+<td>A named correction in <em>Understanding R1-Zero-Like Training</em></td>
+<td>Removes response-length and group-standard-deviation normalizations identified as bias sources. The label has no standard expanded phrase.</td>
+</tr>
+<tr>
+<td><strong>DAPO</strong></td>
+<td>Decoupled Clip and Dynamic sAmpling Policy Optimization</td>
+<td>A GRPO-family recipe with asymmetric clipping, dynamic sampling, token-level loss, and overlong-reward shaping.</td>
+</tr>
+<tr>
+<td><strong>VAPO</strong></td>
+<td>Value-based Augmented Proximal Policy Optimization</td>
+<td>A long-reasoning actor-critic recipe designed around value-model bias, heterogeneous lengths, and sparse rewards.</td>
+</tr>
+<tr>
+<td><strong>ProRL</strong></td>
+<td>Prolonged Reinforcement Learning</td>
+<td>NVIDIA's study of continuing verifiable RL for more than two thousand steps with KL control, curriculum changes, and reference/optimizer resets.</td>
+</tr>
+<tr>
+<td><strong>GSPO</strong></td>
+<td>Group Sequence Policy Optimization</td>
+<td>Uses a sequence-level importance ratio rather than independently clipping token ratios.</td>
+</tr>
+<tr>
+<td><strong>SAPO</strong></td>
+<td>Soft Adaptive Policy Optimization</td>
+<td>Replaces hard ratio clipping with a sigmoid-shaped token gate whose gradient decays smoothly away from the behavior policy; it uses separate positive/negative-advantage temperatures.</td>
+</tr>
+<tr>
+<td><strong>SAO</strong></td>
+<td>Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning</td>
+<td>Consumes each long trajectory when it finishes, uses direct double-sided importance masking, and restores a critic for group-size-one training. The 2026 authors report deployment in GLM-5.2.</td>
+</tr>
+<tr>
+<td><strong>CompactionRL</strong></td>
+<td>Reinforcement Learning with Context Compaction for Long-Horizon Agents</td>
+<td>Jointly optimizes ordinary agent actions and model-generated context summaries under downstream task reward, using token-level PPO loss and cross-segment GAE for variable compacted traces.</td>
+</tr>
+<tr>
+<td><strong>DIS</strong></td>
+<td>Direct Double-Sided Importance Sampling</td>
+<td>SAO's direct rollout-to-current-policy importance ratio with strict two-sided rejection outside a permitted interval. It is masking, not PPO's saturated clipping.</td>
+</tr>
+<tr>
+<td><strong>PARL</strong></td>
+<td>Parallel-Agent Reinforcement Learning</td>
+<td>Moonshot's Kimi K2.5 method for learning an orchestrator that delegates to parallel subagents and aggregates their results.</td>
+</tr>
+<tr>
+<td><strong>RoC / GRPO-RoC</strong></td>
+<td>Resample-on-Correct / GRPO with Resample-on-Correct</td>
+<td>rStar2-Agent oversamples a rollout group, preserves a failure subset, and selects cleaner successful tool trajectories before the GRPO update.</td>
+</tr>
+<tr>
+<td><strong>GiGPO</strong></td>
+<td>Group-in-Group Policy Optimization</td>
+<td>Adds a second, step-relative comparison group from repeated environment states observed across trajectories, without sampling new counterfactual actions.</td>
+</tr>
+<tr>
+<td><strong>MAGIC</strong></td>
+<td>Multi-stage Adaptive entropy scheduling for GRPO In Convergence</td>
+<td>Skywork-OR1's recipe combining staged length budgets, strict policy freshness, token-global loss, data filtering, and active entropy control.</td>
+</tr>
+<tr>
+<td><strong>RPO</strong></td>
+<td>Reward-aware Preference Optimization</td>
+<td>NVIDIA's framework for expressing preference objectives and reward information under a shared formulation; record the specific RPO variant because the acronym is not one universal loss.</td>
+</tr>
+<tr>
+<td><strong>DPO</strong></td>
+<td>Direct Preference Optimization</td>
+<td>Turns preference pairs into a classification-style policy objective without an online RL loop or separate scalar reward model.</td>
+</tr>
+<tr>
+<td><strong>IPO</strong></td>
+<td>Identity Preference Optimization</td>
+<td>A preference objective designed to avoid some overfitting behavior of logistic DPO.</td>
+</tr>
+<tr>
+<td><strong>KTO</strong></td>
+<td>Kahneman–Tversky Optimization</td>
+<td>A prospect-theory-inspired objective that can train from unpaired desirable/undesirable labels.</td>
+</tr>
+<tr>
+<td><strong>ORPO</strong></td>
+<td>Odds Ratio Preference Optimization</td>
+<td>Adds an odds-ratio preference term to supervised likelihood, normally without a separate reference model.</td>
+</tr>
+<tr>
+<td><strong>PRIME</strong></td>
+<td>Process Reinforcement through IMplicit rEwards</td>
+<td>Learns token-level process rewards from outcome-labeled rollouts.</td>
+</tr>
+<tr>
+<td><strong>V-trace</strong></td>
+<td>A truncated importance-sampling return estimator</td>
+<td>Corrects trajectories from lagging actors toward the current learner policy.</td>
+</tr>
+<tr>
+<td><strong>IMPALA</strong></td>
+<td>Importance Weighted Actor-Learner Architecture</td>
+<td>A distributed actor/learner architecture that introduced V-trace.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reward-and-evaluation-vocabulary">Reward and evaluation vocabulary<a class="headerlink" href="#reward-and-evaluation-vocabulary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Full name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RM / ORM / PRM</strong></td>
+<td>Reward Model / Outcome Reward Model / Process Reward Model</td>
+<td>An RM predicts quality; an ORM scores the final outcome; a PRM scores intermediate steps.</td>
+</tr>
+<tr>
+<td><strong>GenRM / GRM</strong></td>
+<td>Generative Reward Model</td>
+<td>Generates a critique or structured judgment instead of only a scalar. Both abbreviations occur in primary sources.</td>
+</tr>
+<tr>
+<td><strong>RBR</strong></td>
+<td>Rule-Based Rewards</td>
+<td>OpenAI's system of human-authored propositions graded by a fixed language model and linearly combined into a reward; it is not merely deterministic <code>if</code> statements.</td>
+</tr>
+<tr>
+<td><strong>IBT</strong></td>
+<td>Inter-Temporal Bradley-Terry</td>
+<td>A preference model over progress at two different prefixes of the same embodied trajectory.</td>
+</tr>
+<tr>
+<td><strong>ESS</strong></td>
+<td>Effective Sample Size</td>
+<td>For nonnegative, not-all-zero importance weights, <span class="arithmatex">\((\sum_i w_i)^2/\sum_i w_i^2\)</span>; it equals the sample count when weights are equal and falls toward 1 as a few samples dominate.</td>
+</tr>
+<tr>
+<td><strong>IPT</strong></td>
+<td>Isomorphic Perturbation Test</td>
+<td>A metamorphic reward audit that applies a meaning-preserving renaming or transformation and checks whether a genuinely general solution transforms consistently.</td>
+</tr>
+<tr>
+<td><strong>LLM judge</strong></td>
+<td>Large Language Model judge</td>
+<td>A model prompted or trained to evaluate another output; it is fallible and not automatically ground truth.</td>
+</tr>
+<tr>
+<td><strong>instruction following</strong></td>
+<td>—</td>
+<td>A family of capabilities for carrying out explicit or implied directives under scope, order, format, context, and trust constraints. Always identify whether the claim concerns atomic rules, multi-turn retention, hierarchy, tools, or end-to-end task behavior.</td>
+</tr>
+<tr>
+<td><strong>steerability</strong></td>
+<td>—</td>
+<td>How predictably a model's behavior changes in response to legitimate instructions or controls. It includes instruction following but also sensitivity, literalness, style, refusal boundaries, and stability across runs.</td>
+</tr>
+<tr>
+<td><strong>instruction pretraining</strong></td>
+<td>—</td>
+<td>Adding instruction–response structure during from-scratch or continued pretraining rather than waiting for post-training SFT. It operates at a different scale and can change both later tunability and base-model regressions.</td>
+</tr>
+<tr>
+<td><strong>instruction hierarchy</strong></td>
+<td>—</td>
+<td>A trust ordering among instruction sources. In OpenAI's documented hierarchy, system instructions outrank developer, user, and tool content; correct behavior can require ignoring a conflicting lower-priority command.</td>
+</tr>
+<tr>
+<td><strong>instruction contract / task ledger</strong></td>
+<td>—</td>
+<td>A versioned representation of active requirements, prohibitions, order, scope, authority, completion evidence, supersession, and approvals. It helps context management but must be checked against the original request.</td>
+</tr>
+<tr>
+<td><strong>selective clarification</strong></td>
+<td>—</td>
+<td>Choosing whether to ask a minimal decision-changing question, proceed, refuse, or use a tool. It must balance silent guessing against unnecessary interaction and be judged by downstream task success.</td>
+</tr>
+<tr>
+<td><strong>automatic prompt optimization</strong></td>
+<td>—</td>
+<td>Searching instruction wording, demonstrations, or an LM pipeline against a development metric. The optimized prompt and retriever are learned artifacts that can overfit or leak evaluation cases.</td>
+</tr>
+<tr>
+<td><strong>activation steering</strong></td>
+<td>—</td>
+<td>Adding a learned direction to internal model activations at inference to change behavior. It requires white-box access and does not provide a hard policy or authorization guarantee.</td>
+</tr>
+<tr>
+<td><strong>non-interference / scope adherence</strong></td>
+<td>—</td>
+<td>Satisfying a request without changing unrelated content, state, files, tools, or policy. A substantively correct result can still fail by causing an unauthorized extra effect.</td>
+</tr>
+<tr>
+<td><strong>constraint-level accuracy</strong></td>
+<td>—</td>
+<td>The fraction of individual instructions satisfied. It gives partial credit and must be paired with all-constraints accuracy when one missed rule can invalidate the task.</td>
+</tr>
+<tr>
+<td><strong>all-constraints / prompt-level accuracy</strong></td>
+<td>—</td>
+<td>The fraction of prompts for which every required constraint passes. It exposes conjunctive failure but does not show which rule failed.</td>
+</tr>
+<tr>
+<td><strong>constrained decoding</strong></td>
+<td>—</td>
+<td>Inference-time masking of tokens that would violate a regular expression, automaton, grammar, or schema. It can guarantee supported syntax, not semantic correctness or authorization.</td>
+</tr>
+<tr>
+<td><strong>task / instruction / state oracle</strong></td>
+<td>—</td>
+<td>Separate checks for whether the requested outcome is correct, every active rule was followed, and only authorized external state transitions occurred.</td>
+</tr>
+<tr>
+<td><strong>tool relevance</strong></td>
+<td>—</td>
+<td>Whether a supplied tool is applicable and necessary for the request. Function-call syntax may be perfect while the model calls the wrong tool or should call none.</td>
+</tr>
+<tr>
+<td><strong>IFEval</strong></td>
+<td>Instruction-Following Evaluation</td>
+<td>A reproducible benchmark of roughly 500 prompts and 25 program-verifiable instruction types. Its strict and loose scores measure precise constraints, not complete product reliability.</td>
+</tr>
+<tr>
+<td><strong>IFBench</strong></td>
+<td>Instruction-Following Benchmark</td>
+<td>Ai2's harder benchmark with 58 new out-of-distribution, program-verifiable constraints combined with held-out user prompts; the standard score remains narrower than multi-turn, hierarchy, or tool-policy reliability.</td>
+</tr>
+<tr>
+<td><strong>MultiChallenge</strong></td>
+<td>—</td>
+<td>Scale's multi-turn benchmark covering instruction retention, inferred user memory, versioned editing, and self-coherence; it uses instance-specific rubrics and an LLM judge. The authors do not expand the name as an acronym.</td>
+</tr>
+<tr>
+<td><strong>KL</strong></td>
+<td>Kullback–Leibler divergence</td>
+<td>A directional mismatch, <span class="arithmatex">\(D_{\mathrm{KL}}(p\Vert q)=\mathbb E_p[\log p-\log q]\)</span>, often used to limit policy drift.</td>
+</tr>
+<tr>
+<td><strong>TV</strong></td>
+<td>Total Variation distance</td>
+<td>A symmetric distance, <span class="arithmatex">\(\tfrac12\sum_x\lvert p(x)-q(x)\rvert\)</span>.</td>
+</tr>
+<tr>
+<td><strong>pass@k</strong></td>
+<td>pass at <span class="arithmatex">\(k\)</span></td>
+<td>Probability that at least one of <span class="arithmatex">\(k\)</span> sampled candidates passes; it requires a sampling protocol.</td>
+</tr>
+<tr>
+<td><strong>IoU / F1</strong></td>
+<td>Intersection over Union / harmonic mean of precision and recall</td>
+<td>Overlap metric for regions / class metric <span class="arithmatex">\(2PR/(P+R)\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="factuality-grounding-and-uncertainty">Factuality, grounding, and uncertainty<a class="headerlink" href="#factuality-grounding-and-uncertainty" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Full name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>hallucination</strong></td>
+<td>—</td>
+<td>An imprecise umbrella for plausible but false, unsupported, or source-unfaithful generation. A useful report names the failed reference: world fact, supplied context, citation, tool result, image, code, or another authority.</td>
+</tr>
+<tr>
+<td><strong>factuality</strong></td>
+<td>—</td>
+<td>Whether a claim agrees with the best available evidence about the world. This differs from faithfulness to a supplied source.</td>
+</tr>
+<tr>
+<td><strong>faithfulness / grounding</strong></td>
+<td>—</td>
+<td>Whether an output is supported by the supplied document, retrieved passage, image, database value, or tool observation. A response can be grounded in a source that is itself false.</td>
+</tr>
+<tr>
+<td><strong>attribution</strong></td>
+<td>—</td>
+<td>A trace from a generated claim to a source and location. Attribution is useful only when the source exists, the cited span entails the claim, material claims are covered, and the source is appropriate.</td>
+</tr>
+<tr>
+<td><strong>parametric knowledge</strong></td>
+<td>—</td>
+<td>Information represented in model weights. It lacks the simple record identity, update, access-control, and provenance properties of a database.</td>
+</tr>
+<tr>
+<td><strong>non-parametric memory</strong></td>
+<td>—</td>
+<td>An external corpus, index, database, or other store consulted at inference; “non-parametric” does not mean error-free or unlearned.</td>
+</tr>
+<tr>
+<td><strong>evidence sufficiency</strong></td>
+<td>—</td>
+<td>Whether the available evidence directly covers every material part of a request with the correct entity, date, version, authority, and qualifiers. Retrieval relevance alone is insufficient.</td>
+</tr>
+<tr>
+<td><strong>citation entailment</strong></td>
+<td>—</td>
+<td>Whether the meaning of a cited span actually supports the nearby claim, including its negation, magnitude, population, date, and qualifiers.</td>
+</tr>
+<tr>
+<td><strong>calibration</strong></td>
+<td>—</td>
+<td>Agreement between stated or scored confidence and empirical correctness over a defined distribution. A confident tone is not a calibrated probability.</td>
+</tr>
+<tr>
+<td><strong>selective prediction / abstention</strong></td>
+<td>—</td>
+<td>A policy that answers only above a calibrated evidence or confidence threshold and otherwise asks, abstains, or escalates; reliability improves by trading some coverage.</td>
+</tr>
+<tr>
+<td><strong>coverage / selective risk</strong></td>
+<td>—</td>
+<td>The fraction of requests answered / the error rate among those answered. Report them together so refusing everything cannot appear perfectly reliable.</td>
+</tr>
+<tr>
+<td><strong>semantic entropy</strong></td>
+<td>—</td>
+<td>Uncertainty measured over clusters of semantically equivalent sampled answers rather than surface word sequences. It detects instability-like confabulations but not every consistent falsehood.</td>
+</tr>
+<tr>
+<td><strong>RARR</strong></td>
+<td>Retrofit Attribution using Research and Revision</td>
+<td>A post-generation method that searches for supporting sources and minimally revises unsupported text.</td>
+</tr>
+<tr>
+<td><strong>Self-RAG / CRAG</strong></td>
+<td>Self-Reflective Retrieval-Augmented Generation / Corrective Retrieval-Augmented Generation</td>
+<td>Self-RAG trains retrieval and reflection decisions into generation; CRAG evaluates retrieval quality and triggers correction or broader search.</td>
+</tr>
+<tr>
+<td><strong>FActScore</strong></td>
+<td>Factual precision in Atomicity Score</td>
+<td>Decomposes long-form output into atomic claims and measures the fraction supported by a knowledge source.</td>
+</tr>
+<tr>
+<td><strong>SAFE</strong></td>
+<td>Search-Augmented Factuality Evaluator</td>
+<td>Uses a search-capable LLM agent to decompose and verify long-form claims; search and evaluator errors still require audit.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="transformer-architecture">Transformer architecture<a class="headerlink" href="#transformer-architecture" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Full name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MHA / MQA / GQA</strong></td>
+<td>Multi-Head / Multi-Query / Grouped-Query Attention</td>
+<td>MHA has separate heads; MQA shares one key/value head; GQA shares fewer key/value heads across groups of query heads.</td>
+</tr>
+<tr>
+<td><strong>MLA</strong></td>
+<td>Multi-head Latent Attention</td>
+<td>DeepSeek's compressed latent key/value representation for lower inference cache and bandwidth.</td>
+</tr>
+<tr>
+<td><strong>DSA</strong></td>
+<td>DeepSeek Sparse Attention</td>
+<td>DeepSeek's long-context mechanism that selects a limited set of relevant tokens.</td>
+</tr>
+<tr>
+<td><strong>KDA</strong></td>
+<td>Kimi Delta Attention</td>
+<td>Moonshot's gated delta-rule linear attention.</td>
+</tr>
+<tr>
+<td><strong>MoBA</strong></td>
+<td>Mixture of Block Attention</td>
+<td>Moonshot's parameter-free sparse routing of each query to selected context blocks.</td>
+</tr>
+<tr>
+<td><strong>AttnRes</strong></td>
+<td>Attention Residuals</td>
+<td>Moonshot's learned attention over earlier residual streams instead of a fixed cumulative sum.</td>
+</tr>
+<tr>
+<td><strong>LatentMoE</strong></td>
+<td>Latent Mixture of Experts</td>
+<td>Projects routed token activations into a narrower shared latent space before expert dispatch and computation, reducing routed communication and expert-weight bandwidth.</td>
+</tr>
+<tr>
+<td><strong>Quantile Balancing</strong></td>
+<td>—</td>
+<td>An MoE load-allocation family that derives routing offsets or thresholds from router-score quantiles rather than a hand-tuned auxiliary-loss coefficient or heuristic update rate; K3's exact algorithm was not yet public at the cutoff.</td>
+</tr>
+<tr>
+<td><strong>SiTU</strong></td>
+<td>Sigmoid Tanh Unit</td>
+<td>K3's named activation-control component; its exact public equation was still pending at the 2026-07-22 cutoff.</td>
+</tr>
+<tr>
+<td><strong>MoE</strong></td>
+<td>Mixture of Experts</td>
+<td>Routes each token to a small subset of feed-forward experts, increasing total parameters without proportional active compute.</td>
+</tr>
+<tr>
+<td><strong>FFN / MLP</strong></td>
+<td>Feed-Forward Network / Multilayer Perceptron</td>
+<td>The per-token nonlinear sublayer / the general stack of linear layers and nonlinearities.</td>
+</tr>
+<tr>
+<td><strong>MTP</strong></td>
+<td>Multi-Token Prediction</td>
+<td>Predicts several future tokens from one position, potentially improving representations and speculative decoding.</td>
+</tr>
+<tr>
+<td><strong>FIM</strong></td>
+<td>Fill-in-the-Middle</td>
+<td>Generates a missing span conditioned on both its prefix and suffix.</td>
+</tr>
+<tr>
+<td><strong>RoPE</strong></td>
+<td>Rotary Position Embedding</td>
+<td>Encodes relative position by rotating query/key channels.</td>
+</tr>
+<tr>
+<td><strong>YaRN</strong></td>
+<td>Yet another RoPE extensioN method</td>
+<td>Extends RoPE context through frequency scaling and attention-temperature adjustment.</td>
+</tr>
+<tr>
+<td><strong>ALiBi</strong></td>
+<td>Attention with Linear Biases</td>
+<td>Adds head-specific distance biases to attention logits.</td>
+</tr>
+<tr>
+<td><strong>RMSNorm</strong></td>
+<td>Root Mean Square Layer Normalization</td>
+<td>Normalizes magnitude without subtracting the mean.</td>
+</tr>
+<tr>
+<td><strong>SwiGLU / GeGLU</strong></td>
+<td>Swish-Gated / Gaussian Error Linear Unit Gated Linear Unit</td>
+<td>Two gated feed-forward activations.</td>
+</tr>
+<tr>
+<td><strong>QK-Norm</strong></td>
+<td>Query-Key Normalization</td>
+<td>Normalizes attention queries and keys before the dot product.</td>
+</tr>
+<tr>
+<td><strong>KV cache</strong></td>
+<td>Key-Value cache</td>
+<td>Stores earlier attention keys/values to avoid recomputing them during decoding.</td>
+</tr>
+<tr>
+<td><strong>QAT</strong></td>
+<td>Quantization-Aware Training</td>
+<td>Simulates low precision during training so the model adapts before quantized inference.</td>
+</tr>
+<tr>
+<td><strong>Muon</strong></td>
+<td>MomentUm Orthogonalized by Newton-Schulz</td>
+<td>A matrix optimizer that applies approximate orthogonalization to gradient momentum; Moonshot's scalable variant adds weight decay and shape-aware update scaling.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-and-representation">Data and representation<a class="headerlink" href="#data-and-representation" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Full name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>training-token exposure</strong></td>
+<td>—</td>
+<td>The number of token positions processed by an optimizer stage. Repeated epochs and resampled documents count again, so exposure is not necessarily unique corpus size; fresh pretraining, CPT, multimodal stages, and post-training must be identified separately.</td>
+</tr>
+<tr>
+<td><strong>BPE / BBPE</strong></td>
+<td>Byte Pair Encoding / Byte-Level Byte Pair Encoding</td>
+<td>Frequent-pair subword merging / the byte-based variant that can represent any input.</td>
+</tr>
+<tr>
+<td><strong>OCR</strong></td>
+<td>Optical Character Recognition</td>
+<td>Converts pixels or scanned pages into text.</td>
+</tr>
+<tr>
+<td><strong>VLM / LMM</strong></td>
+<td>Vision-Language Model / Large Multimodal Model</td>
+<td>A model that jointly processes language and one or more non-text modalities; the exact input and output modalities must still be stated.</td>
+</tr>
+<tr>
+<td><strong>ViT</strong></td>
+<td>Vision Transformer</td>
+<td>Divides an image into patches, embeds them as a sequence, and applies transformer attention to produce visual representations.</td>
+</tr>
+<tr>
+<td><strong>visual token</strong></td>
+<td>—</td>
+<td>An overloaded term for a continuous visual embedding occupying a sequence position or a discrete image-code identifier; always state which.</td>
+</tr>
+<tr>
+<td><strong>projector / adaptor</strong></td>
+<td>—</td>
+<td>Maps a modality encoder's feature width and sometimes token count into the language backbone's embedding space.</td>
+</tr>
+<tr>
+<td><strong>Q-Former</strong></td>
+<td>Querying Transformer</td>
+<td>Uses a small learned query set to cross-attend to a larger visual feature grid, producing a fixed-size bridge into a language model.</td>
+</tr>
+<tr>
+<td><strong>pixel unshuffle / space-to-depth</strong></td>
+<td>—</td>
+<td>Deterministically moves each local spatial block into the channel dimension, reducing spatial positions without averaging them; it is the downsampling inverse of pixel shuffle.</td>
+</tr>
+<tr>
+<td><strong>NaViT</strong></td>
+<td>Native-resolution Vision Transformer</td>
+<td>A variable-resolution approach that packs patch sequences from differently sized images rather than forcing every image to one square resolution.</td>
+</tr>
+<tr>
+<td><strong>M-RoPE</strong></td>
+<td>Multimodal Rotary Position Embedding</td>
+<td>Extends rotary position coordinates across modality-appropriate axes such as time, height, and width while retaining a text sequence axis.</td>
+</tr>
+<tr>
+<td><strong>SigLIP</strong></td>
+<td>Sigmoid Loss for Language-Image Pre-training</td>
+<td>A contrastively trained vision-language representation model using independent sigmoid pair losses rather than a batch softmax.</td>
+</tr>
+<tr>
+<td><strong>optical context compression</strong></td>
+<td>—</td>
+<td>Renders or receives text-rich content as pixels and represents it with fewer continuous visual positions before a language decoder reconstructs or reasons over it; compression is lossy and does not eliminate decoding cost.</td>
+</tr>
+<tr>
+<td><strong>VQ / VQ-VAE</strong></td>
+<td>Vector Quantization / Vector-Quantized Variational Autoencoder</td>
+<td>Maps continuous image/audio latents to discrete codebook entries and decodes predicted codes back into media.</td>
+</tr>
+<tr>
+<td><strong>VAE</strong></td>
+<td>Variational Autoencoder</td>
+<td>Encodes media into a compact continuous latent distribution and decodes latent samples or generated latents back into media.</td>
+</tr>
+<tr>
+<td><strong>DiT</strong></td>
+<td>Diffusion Transformer</td>
+<td>Uses a transformer as the denoising network over noisy image or video latent patches; it is not automatically a language model.</td>
+</tr>
+<tr>
+<td><strong>rectified flow</strong></td>
+<td>—</td>
+<td>Learns a continuous velocity field that transports noise toward data, then generates by integrating that field, often in a compressed latent space.</td>
+</tr>
+<tr>
+<td><strong>CFG</strong></td>
+<td>Classifier-Free Guidance</td>
+<td>Combines conditional and unconditional predictions during media sampling to strengthen prompt alignment; it usually requires both branches and therefore adds inference work.</td>
+</tr>
+<tr>
+<td><strong>native multimodal</strong></td>
+<td>—</td>
+<td>An ambiguous integration claim; specify API, sequence, training, shared-backbone, and media-generation levels instead of treating it as a binary architecture.</td>
+</tr>
+<tr>
+<td><strong>LSH / MinHash</strong></td>
+<td>Locality-Sensitive Hashing / Minimum Hashing</td>
+<td>Approximate similarity indexing / Jaccard-similarity estimation, often used in deduplication.</td>
+</tr>
+<tr>
+<td><strong>PII</strong></td>
+<td>Personally Identifiable Information</td>
+<td>Data that can identify or link to a person.</td>
+</tr>
+<tr>
+<td><strong>AST</strong></td>
+<td>Abstract Syntax Tree</td>
+<td>A tree representation of program syntax.</td>
+</tr>
+<tr>
+<td><strong>QA / STEM</strong></td>
+<td>Question Answering / Science, Technology, Engineering, and Mathematics</td>
+<td>A task family / a broad collection of technical subject domains; neither term identifies a reward or evaluation protocol by itself.</td>
+</tr>
+<tr>
+<td><strong>SQL</strong></td>
+<td>Structured Query Language</td>
+<td>A language for querying and mutating relational databases; database-agent environments must distinguish read-only queries from state-changing actions.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="distributed-training-and-serving">Distributed training and serving<a class="headerlink" href="#distributed-training-and-serving" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Full name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CPU / GPU</strong></td>
+<td>Central Processing Unit / Graphics Processing Unit</td>
+<td>The general-purpose host processor / the dominant parallel accelerator for modern LLM work.</td>
+</tr>
+<tr>
+<td><strong>CUDA</strong></td>
+<td>Compute Unified Device Architecture</td>
+<td>NVIDIA's GPU programming platform and execution model; the name now covers compilers, runtimes, libraries, and kernel APIs.</td>
+</tr>
+<tr>
+<td><strong>FLOP / FLOPs</strong></td>
+<td>Floating-Point Operation / Floating-Point Operations</td>
+<td>Arithmetic work; “per second” must be stated explicitly when it denotes a rate.</td>
+</tr>
+<tr>
+<td><strong>MFU</strong></td>
+<td>Model FLOPs Utilization</td>
+<td>Achieved model arithmetic divided by theoretical accelerator peak under a stated precision convention.</td>
+</tr>
+<tr>
+<td><strong>DP / DDP</strong></td>
+<td>Data Parallelism / Distributed Data Parallel</td>
+<td>Replicates parameters, splits examples, and synchronizes gradients.</td>
+</tr>
+<tr>
+<td><strong>TP / PP</strong></td>
+<td>Tensor Parallelism / Pipeline Parallelism</td>
+<td>Shards within layers / places consecutive layer groups on different devices.</td>
+</tr>
+<tr>
+<td><strong>EP / SP / CP</strong></td>
+<td>Expert / Sequence / Context Parallelism</td>
+<td>Shards experts / sequence work / long-context attention across devices.</td>
+</tr>
+<tr>
+<td><strong>FSDP</strong></td>
+<td>Fully Sharded Data Parallel</td>
+<td>Shards parameters, gradients, and optimizer state across data-parallel workers.</td>
+</tr>
+<tr>
+<td><strong>ZeRO</strong></td>
+<td>Zero Redundancy Optimizer</td>
+<td>Removes replicated optimizer state, gradients, and then parameters in stages.</td>
+</tr>
+<tr>
+<td><strong>RDMA</strong></td>
+<td>Remote Direct Memory Access</td>
+<td>Moves data between registered memory on machines with little CPU involvement.</td>
+</tr>
+<tr>
+<td><strong>RPC / HTTP / API</strong></td>
+<td>Remote Procedure Call / Hypertext Transfer Protocol / Application Programming Interface</td>
+<td>Common ways to invoke a remote component or exposed service.</td>
+</tr>
+<tr>
+<td><strong>TITO</strong></td>
+<td>Token-In, Token-Out</td>
+<td>GLM-5's asynchronous design that exchanges exact tokens and behavior log-probabilities to reduce rollout/training mismatch.</td>
+</tr>
+<tr>
+<td><strong>SRS</strong></td>
+<td>Streaming Rollout System</td>
+<td>ByteDance Seed's system for continuing incomplete long generations while training only the newly generated segment.</td>
+</tr>
+<tr>
+<td><strong>TAD</strong></td>
+<td>Training-Agent Disaggregation</td>
+<td>Agent Lightning's separation of arbitrary agent execution/tracing from the learner and optimization runtime.</td>
+</tr>
+<tr>
+<td><strong>SPMD</strong></td>
+<td>Single Program, Multiple Data</td>
+<td>Every worker runs the same program over a different shard; distributed model operations synchronize at declared collectives.</td>
+</tr>
+<tr>
+<td><strong>veRL</strong></td>
+<td>Volcano Engine Reinforcement Learning</td>
+<td>A distributed post-training framework originating in HybridFlow; it coordinates rollout generation, reward/reference/value inference, and policy updates under configurable resource placement.</td>
+</tr>
+<tr>
+<td><strong>TRL</strong></td>
+<td>Transformer Reinforcement Learning</td>
+<td>Hugging Face's post-training library/project for supervised, preference, and RL workflows; a TRL configuration is an implementation artifact, not an algorithm.</td>
+</tr>
+<tr>
+<td><strong>WSD</strong></td>
+<td>Warmup-Stable-Decay</td>
+<td>A learning-rate schedule that warms to a peak, holds a long stable phase, then decays near the end of a planned token budget.</td>
+</tr>
+<tr>
+<td><strong>TTFT / ITL / QPS</strong></td>
+<td>Time to First Token / Inter-Token Latency / Queries per Second</td>
+<td>First-token delay / decode spacing / request throughput.</td>
+</tr>
+<tr>
+<td><strong>1F1B</strong></td>
+<td>One Forward, One Backward</td>
+<td>A pipeline schedule alternating forward and backward microbatches after warmup.</td>
+</tr>
+<tr>
+<td><strong>Mooncake</strong></td>
+<td>—</td>
+<td>Moonshot's KV-cache-centric serving architecture, separating prefill and decode pools and scheduling around reusable cache placement, load, and latency objectives.</td>
+</tr>
+<tr>
+<td><strong>WAL</strong></td>
+<td>Write-Ahead Log</td>
+<td>A durable record written before mutation for replay and recovery.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="precision-and-hardware">Precision and hardware<a class="headerlink" href="#precision-and-hardware" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Full name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FP32 / FP16 / FP8 / FP4</strong></td>
+<td>32-/16-/8-/4-bit floating point</td>
+<td>Bit width alone does not specify exponent layout, mantissa layout, or scaling.</td>
+</tr>
+<tr>
+<td><strong>BF16 / TF32</strong></td>
+<td>Brain Floating Point 16 / TensorFloat-32</td>
+<td>A 16-bit format with FP32-like exponent range / NVIDIA's reduced-mantissa matrix format.</td>
+</tr>
+<tr>
+<td><strong>E4M3 / E5M2</strong></td>
+<td>4 exponent + 3 mantissa bits / 5 exponent + 2 mantissa bits</td>
+<td>Two FP8 range/precision trade-offs.</td>
+</tr>
+<tr>
+<td><strong>MXFP4 / MXFP8</strong></td>
+<td>Microscaling 4-/8-bit floating point</td>
+<td>Low-precision values sharing scale metadata in small blocks.</td>
+</tr>
+<tr>
+<td><strong>NVFP4 / E2M1</strong></td>
+<td>NVIDIA 4-bit floating point / 1 sign bit, 2 exponent bits, and 1 mantissa bit</td>
+<td>NVIDIA's block-scaled FP4 training/inference format and its 4-bit element encoding; shared scaling metadata is part of the numerical format.</td>
+</tr>
+<tr>
+<td><strong>A100, A800, H100, H800</strong></td>
+<td>NVIDIA product names, not acronyms</td>
+<td>Accelerator variants with distinct compute, memory, and interconnect limits.</td>
+</tr>
+<tr>
+<td><strong>NVLink / NVSwitch</strong></td>
+<td>NVIDIA device interconnect / its switch fabric</td>
+<td>High-bandwidth GPU links / an all-to-all fabric connecting them.</td>
+</tr>
+<tr>
+<td><strong>RoCE</strong></td>
+<td>RDMA over Converged Ethernet</td>
+<td>Remote Direct Memory Access transported over Ethernet.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="agents-and-software">Agents and software<a class="headerlink" href="#agents-and-software" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Full name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>agent scaffold</strong></td>
+<td>—</td>
+<td>Runtime prompt construction, tool schema, context management, retries, stopping, and persistence around the model.</td>
+</tr>
+<tr>
+<td><strong>agent harness</strong></td>
+<td>—</td>
+<td>The executable loop and policy substrate that connects a model to context, tools, state, and host effects. “Harness” often emphasizes a reusable or modifiable runtime rather than a sealed end-user product.</td>
+</tr>
+<tr>
+<td><strong>context compaction</strong></td>
+<td>—</td>
+<td>Replaces older interaction history with a shorter generated or structured state so an agent can continue within a bounded context window. It is lossy unless the original session remains recoverable.</td>
+</tr>
+<tr>
+<td><strong>context reset / structured handoff</strong></td>
+<td>—</td>
+<td>Starts a fresh model context while carrying forward an explicit task-state artifact, such as active requirements, completed work, evidence, failures, and next steps. It trades continuity for a clean attention state.</td>
+</tr>
+<tr>
+<td><strong>ACP</strong></td>
+<td>Agent Client Protocol</td>
+<td>A protocol boundary through which an editor or other client can start, observe, and steer an agent implemented by a separate process. It is distinct from MCP, which primarily exposes tools and context to the agent.</td>
+</tr>
+<tr>
+<td><strong>MCP</strong></td>
+<td>Model Context Protocol</td>
+<td>An open protocol exposing tools and contextual resources to AI applications.</td>
+</tr>
+<tr>
+<td><strong>provider abstraction</strong></td>
+<td>—</td>
+<td>A runtime interface that normalizes model endpoints and streaming responses. A common interface does not erase vendor differences in reasoning fields, tool calls, caching, limits, or error behavior.</td>
+</tr>
+<tr>
+<td><strong>project trust</strong></td>
+<td>—</td>
+<td>A decision about whether project-local configuration, instructions, plugins, or executable extensions may load. It is an input-loading boundary, not automatically an operating-system sandbox.</td>
+</tr>
+<tr>
+<td><strong>GUI / CLI</strong></td>
+<td>Graphical User Interface / Command-Line Interface</td>
+<td>Visual point-and-type interaction / textual command interaction.</td>
+</tr>
+<tr>
+<td><strong>sandbox</strong></td>
+<td>—</td>
+<td>Isolation limiting filesystem, network, process, or credential access.</td>
+</tr>
+<tr>
+<td><strong>prompt injection</strong></td>
+<td>—</td>
+<td>Untrusted content that attempts to redirect an agent away from authorized instructions.</td>
+</tr>
+<tr>
+<td><strong>RAG</strong></td>
+<td>Retrieval-Augmented Generation</td>
+<td>Retrieves external passages or records and conditions generation on them; one-shot retrieval is not automatically an interactive agent environment.</td>
+</tr>
+<tr>
+<td><strong>reward hacking</strong></td>
+<td>—</td>
+<td>Raising the measured reward through unintended behavior rather than the desired outcome.</td>
+</tr>
+<tr>
+<td><strong>policy lag</strong></td>
+<td>—</td>
+<td>Difference between the rollout-generating policy and the newer learner policy.</td>
+</tr>
+<tr>
+<td><strong>JSON / XML</strong></td>
+<td>JavaScript Object Notation / Extensible Markup Language</td>
+<td>Two structured text formats.</td>
+</tr>
+<tr>
+<td><strong>UUID / SHA-256</strong></td>
+<td>Universally Unique Identifier / Secure Hash Algorithm 256-bit</td>
+<td>Decentralized identifiers / cryptographic artifact digests.</td>
+</tr>
+<tr>
+<td><strong>RNG</strong></td>
+<td>Random Number Generator</td>
+<td>Produces pseudorandom values for initialization, shuffling, and sampling; reproducibility needs the algorithm, seed, device, and counter/state, not a seed alone.</td>
+</tr>
+<tr>
+<td><strong>FAIL_TO_PASS / PASS_TO_PASS</strong></td>
+<td>failure-to-passing / passing-to-passing tests</td>
+<td>Tests fixed by a patch / already-passing tests that detect regressions.</td>
+</tr>
+<tr>
+<td><strong>SWE</strong></td>
+<td>Software Engineering</td>
+<td>The domain named in benchmarks such as SWE-bench.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="first-use-example">First-use example<a class="headerlink" href="#first-use-example" title="Permanent link">&para;</a></h2>
+<p>Bad:</p>
+<blockquote>
+<p>We train with GRPO in a POMDP and use OPD afterward.</p>
+</blockquote>
+<p>Good:</p>
+<blockquote>
+<p>We train with <strong>Group Relative Policy Optimization (GRPO)</strong>, a critic-free
+method that compares responses sampled for the same prompt. The interaction
+is a <strong>Partially Observable Markov Decision Process (POMDP)</strong> because the
+agent observes tool results rather than the complete environment state. We
+then apply <strong>On-Policy Distillation (OPD)</strong> on states sampled by the student.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

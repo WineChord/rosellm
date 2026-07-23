@@ -1,0 +1,3622 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/agentic-rl/algorithms/">
+      
+      
+        <link rel="prev" href="../derivations-and-code/">
+      
+      
+        <link rel="next" href="../data-and-environments/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Algorithms - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#algorithms-for-large-language-models-and-agentic-reinforcement-learning" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Algorithms
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-a-common-policy-gradient-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. A common policy-gradient template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-behavioral-cloning-and-supervised-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Behavioral cloning and Supervised Fine-Tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-reinforce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. REINFORCE
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. REINFORCE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reinforce-with-a-batch-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REINFORCE with a batch baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reinforce-and-related-stabilizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REINFORCE++ and related stabilizations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-reinforce-leave-one-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. REINFORCE Leave-One-Out
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-actorcritic-and-proximal-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Actor–critic and Proximal Policy Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Actor–critic and Proximal Policy Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-ppo-is-valuable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When PPO is valuable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-ppo-is-hard-for-llm-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why PPO is hard for LLM agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ppo-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PPO checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-group-relative-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Group Relative Policy Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Group Relative Policy Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advantages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grpo-is-not-inherently-agentic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GRPO is not inherently agentic
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-dr-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Dr. GRPO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-decoupled-clip-and-dynamic-sampling-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Decoupled Clip and Dynamic sAmpling Policy Optimization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-group-sequence-policy-optimization-and-sequence-level-ratios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Group Sequence Policy Optimization and sequence-level ratios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Group Sequence Policy Optimization and sequence-level ratios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gspo-token-for-multi-turn-credit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GSPO-token for multi-turn credit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-soft-adaptive-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Soft Adaptive Policy Optimization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-remax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. ReMax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-process-reward-and-value-free-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Process-reward and value-free methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Process-reward and value-free methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRIME
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicit-process-reward-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explicit process reward models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#potential-based-shaping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Potential-based shaping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-turn-level-and-hierarchical-agent-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Turn-level and hierarchical agent methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Turn-level and hierarchical agent methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#turn-level-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Turn-level advantages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-in-group-baselines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group-in-group baselines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hierarchical-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hierarchical decomposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branching-counterfactuals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branching counterfactuals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-off-policy-and-asynchronous-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Off-policy and asynchronous correction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-single-rollout-asynchronous-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Single-Rollout Asynchronous Optimization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-offline-preference-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Offline preference objectives
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. Offline preference objectives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-offline-preferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use offline preferences
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-model-based-search-and-self-play-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Model-based, search, and self-play extensions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. Model-based, search, and self-play extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#search-plus-policy-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search plus policy learning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learned-world-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learned world models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-play" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-play
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-algorithm-selection-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Algorithm selection matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-fair-algorithm-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Fair algorithm comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-ablation-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Ablation order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-a-common-policy-gradient-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. A common policy-gradient template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-behavioral-cloning-and-supervised-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Behavioral cloning and Supervised Fine-Tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-reinforce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. REINFORCE
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. REINFORCE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reinforce-with-a-batch-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REINFORCE with a batch baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reinforce-and-related-stabilizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REINFORCE++ and related stabilizations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-reinforce-leave-one-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. REINFORCE Leave-One-Out
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-actorcritic-and-proximal-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Actor–critic and Proximal Policy Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Actor–critic and Proximal Policy Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-ppo-is-valuable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When PPO is valuable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-ppo-is-hard-for-llm-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why PPO is hard for LLM agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ppo-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PPO checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-group-relative-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Group Relative Policy Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Group Relative Policy Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advantages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grpo-is-not-inherently-agentic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GRPO is not inherently agentic
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-dr-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Dr. GRPO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-decoupled-clip-and-dynamic-sampling-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Decoupled Clip and Dynamic sAmpling Policy Optimization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-group-sequence-policy-optimization-and-sequence-level-ratios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Group Sequence Policy Optimization and sequence-level ratios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Group Sequence Policy Optimization and sequence-level ratios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gspo-token-for-multi-turn-credit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GSPO-token for multi-turn credit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-soft-adaptive-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Soft Adaptive Policy Optimization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-remax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. ReMax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-process-reward-and-value-free-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Process-reward and value-free methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Process-reward and value-free methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRIME
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicit-process-reward-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explicit process reward models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#potential-based-shaping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Potential-based shaping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-turn-level-and-hierarchical-agent-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Turn-level and hierarchical agent methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Turn-level and hierarchical agent methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#turn-level-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Turn-level advantages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-in-group-baselines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group-in-group baselines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hierarchical-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hierarchical decomposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branching-counterfactuals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branching counterfactuals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-off-policy-and-asynchronous-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Off-policy and asynchronous correction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-single-rollout-asynchronous-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Single-Rollout Asynchronous Optimization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-offline-preference-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Offline preference objectives
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. Offline preference objectives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-offline-preferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use offline preferences
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-model-based-search-and-self-play-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Model-based, search, and self-play extensions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. Model-based, search, and self-play extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#search-plus-policy-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search plus policy learning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learned-world-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learned world models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-play" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-play
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-algorithm-selection-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Algorithm selection matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-fair-algorithm-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Fair algorithm comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-ablation-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Ablation order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="algorithms-for-large-language-models-and-agentic-reinforcement-learning">Algorithms for Large Language Models and Agentic Reinforcement Learning<a class="headerlink" href="#algorithms-for-large-language-models-and-agentic-reinforcement-learning" title="Permanent link">&para;</a></h1>
+<p>This chapter studies <strong>Large Language Model (LLM) Agentic Reinforcement Learning
+(Agentic RL)</strong>. An algorithm name is not a training recipe. The update depends on sampling,
+reward, credit unit, baseline, importance ratio, clipping, KL, loss reduction,
+data reuse, and policy lag. This chapter decomposes those choices and shows when
+the major algorithm families are appropriate.</p>
+<h2 id="1-a-common-policy-gradient-template">1. A common policy-gradient template<a class="headerlink" href="#1-a-common-policy-gradient-template" title="Permanent link">&para;</a></h2>
+<p>Most online methods in this chapter can be written schematically as</p>
+<div class="arithmatex">\[
+\widehat{\nabla J}(\theta)=
+\frac{1}{Z}\sum_{i,t,j}
+m_{i,t,j}\,w_{i,t,j}(\theta)\,
+\widehat A_{i,t,j}\,
+\nabla_\theta\log\pi_\theta(x_{i,t,j}\mid h_{i,t},x_{i,t,&lt;j})
+-\nabla_\theta\mathcal R(\theta).
+\]</div>
+<ul>
+<li><span class="arithmatex">\(i\)</span>: trajectory/sample</li>
+<li><span class="arithmatex">\(t\)</span>: environment turn</li>
+<li><span class="arithmatex">\(j\)</span>: policy-generated token</li>
+<li><span class="arithmatex">\(m\)</span>: action-token mask</li>
+<li><span class="arithmatex">\(w\)</span>: importance/clipping/truncation term</li>
+<li><span class="arithmatex">\(\widehat A\)</span>: advantage or centered return</li>
+<li><span class="arithmatex">\(Z\)</span>: token/turn/sequence/task normalization</li>
+<li><span class="arithmatex">\(\mathcal R\)</span>: KL, entropy, constraint, or auxiliary regularizer</li>
+</ul>
+<p>To compare two methods, fill in these six blanks rather than comparing their
+names.</p>
+<h2 id="2-behavioral-cloning-and-supervised-fine-tuning">2. Behavioral cloning and Supervised Fine-Tuning<a class="headerlink" href="#2-behavioral-cloning-and-supervised-fine-tuning" title="Permanent link">&para;</a></h2>
+<p><strong>Supervised Fine-Tuning (SFT)</strong> is behavioral cloning for model outputs. It
+minimizes negative log-likelihood of demonstrated policy tokens:</p>
+<div class="arithmatex">\[
+L_{\text{SFT}}=-\frac{1}{Z}\sum_{i,t,j}
+m_{i,t,j}\log\pi_\theta(x^*_{i,t,j}\mid h^*_{i,t},x^*_{i,t,&lt;j}).
+\]</div>
+<p>Strengths:</p>
+<ul>
+<li>stable, simple, and data-efficient when demonstrations are high quality;</li>
+<li>teaches syntax and provides support before online exploration;</li>
+<li>can distill expensive search/teacher trajectories.</li>
+</ul>
+<p>Limits:</p>
+<ul>
+<li>trains on expert-state distribution, not states induced by learner mistakes;</li>
+<li>weights every demonstrated token rather than task outcome;</li>
+<li>cannot exceed demonstration support through reward-driven exploration;</li>
+<li>success filtering can hide unsuccessful attempts and selection cost.</li>
+</ul>
+<p>SFT remains part of almost every practical Agentic RL pipeline, but it is not RL.</p>
+<h2 id="3-reinforce">3. REINFORCE<a class="headerlink" href="#3-reinforce" title="Permanent link">&para;</a></h2>
+<p>For sampled trajectory <span class="arithmatex">\(\tau_i\)</span>,</p>
+<div class="arithmatex">\[
+\widehat g=\frac{1}{B}\sum_i\sum_t
+(G_{i,t}-b(h_{i,t}))\nabla\log\pi_\theta(a_{i,t}\mid h_{i,t}).
+\]</div>
+<p>Use REINFORCE when:</p>
+<ul>
+<li>rollouts are genuinely on-policy;</li>
+<li>reward is cheap enough to sample many trajectories;</li>
+<li>a simple unbiased estimator is valuable for debugging;</li>
+<li>no reliable critic exists.</li>
+</ul>
+<p>Its primary problem is variance. A terminal binary reward on a forty-turn
+episode supplies weak evidence to early decisions. Baselines, reward-to-go,
+curricula, process rewards, and branching rollouts address different parts of
+that problem.</p>
+<h3 id="reinforce-with-a-batch-baseline">REINFORCE with a batch baseline<a class="headerlink" href="#reinforce-with-a-batch-baseline" title="Permanent link">&para;</a></h3>
+<p>Subtract a prompt/task-conditioned batch mean. If each task has one sample,
+mixing unrelated task difficulty into a global mean produces noisy credit. If a
+sample contributes to its own mean, the finite-batch estimator is scaled/coupled;
+a leave-one-out baseline has cleaner conditional independence.</p>
+<h3 id="reinforce-and-related-stabilizations">REINFORCE++ and related stabilizations<a class="headerlink" href="#reinforce-and-related-stabilizations" title="Permanent link">&para;</a></h3>
+<p>Modern “REINFORCE++” recipes combine REINFORCE-style critic-free advantages
+with PPO-derived engineering such as clipping, KL control, and normalization.
+The label is used differently across implementations. Inspect the actual loss,
+especially whether ratios are clipped, how rewards are normalized, and whether
+old-policy samples are reused. See Hu,
+<a href="https://arxiv.org/abs/2501.03262"><em>REINFORCE++</em></a> (2025) and the implementation
+used by the selected framework.</p>
+<h2 id="4-reinforce-leave-one-out">4. REINFORCE Leave-One-Out<a class="headerlink" href="#4-reinforce-leave-one-out" title="Permanent link">&para;</a></h2>
+<p><strong>REINFORCE Leave-One-Out (RLOO)</strong> uses other samples for the same task as a
+baseline for the current sample.</p>
+<p>For <span class="arithmatex">\(G\)</span> independent outputs on the same task,</p>
+<div class="arithmatex">\[
+\widehat A_i=R_i-\frac{1}{G-1}\sum_{k\ne i}R_k.
+\]</div>
+<p>RLOO removes the critic and uses other samples as a control variate. It is
+attractive when:</p>
+<ul>
+<li>tasks can be evaluated with a scalar outcome;</li>
+<li>multiple rollouts per task are affordable;</li>
+<li>within-task comparisons remove large difficulty variance;</li>
+<li>long-horizon state values are too expensive or unreliable.</li>
+</ul>
+<p>It still assigns coarse trajectory-level credit unless rewards/returns are
+defined per turn. With <span class="arithmatex">\(G=2\)</span>, advantages are exact opposites and highly noisy.
+As <span class="arithmatex">\(G\)</span> grows, rollout cost rises. Ahmadian et al. found simple REINFORCE-style
+methods competitive for RLHF when carefully tuned
+(<a href="https://arxiv.org/abs/2402.14740"><em>Back to Basics</em></a>, 2024).</p>
+<h2 id="5-actorcritic-and-proximal-policy-optimization">5. Actor–critic and Proximal Policy Optimization<a class="headerlink" href="#5-actorcritic-and-proximal-policy-optimization" title="Permanent link">&para;</a></h2>
+<p><strong>Proximal Policy Optimization (PPO)</strong> normally combines:</p>
+<ol>
+<li>on/near-policy rollouts under <span class="arithmatex">\(\pi_{\text{old}}\)</span>;</li>
+<li>a critic <span class="arithmatex">\(V_\phi(h_t)\)</span>;</li>
+<li>GAE advantages;</li>
+<li>clipped importance-ratio surrogate;</li>
+<li>value loss, entropy, and often reference KL;</li>
+<li>several minibatch epochs over one rollout buffer.</li>
+</ol>
+<p>The policy objective is</p>
+<div class="arithmatex">\[
+L^{\text{CLIP}}=
+\mathbb E\left[
+\min(\rho_t\hat A_t,
+\operatorname{clip}(\rho_t,1-\epsilon,1+\epsilon)\hat A_t)
+\right].
+\]</div>
+<h3 id="when-ppo-is-valuable">When PPO is valuable<a class="headerlink" href="#when-ppo-is-valuable" title="Permanent link">&para;</a></h3>
+<ul>
+<li>intermediate states are meaningful and a critic can learn them;</li>
+<li>reward arrives across turns and GAE reduces variance;</li>
+<li>rollouts are expensive enough that multiple epochs help;</li>
+<li>additional critic memory/compute is affordable;</li>
+<li>careful trust-region-like control matters.</li>
+</ul>
+<h3 id="why-ppo-is-hard-for-llm-agents">Why PPO is hard for LLM agents<a class="headerlink" href="#why-ppo-is-hard-for-llm-agents" title="Permanent link">&para;</a></h3>
+<ul>
+<li>a critic comparable in size to the actor is expensive;</li>
+<li>value prediction over long, diverse language histories is difficult;</li>
+<li>multiple epochs increase off-policy mismatch;</li>
+<li>token-level ratios do not directly constrain semantic-action change;</li>
+<li>variable lengths and sparse reward make loss/value normalization delicate;</li>
+<li>asynchronous collectors introduce additional behavior-policy lag.</li>
+</ul>
+<h3 id="ppo-checklist">PPO checklist<a class="headerlink" href="#ppo-checklist" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Are values predicted per token, turn boundary, or final sequence?</li>
+<li>Are time-limit truncations bootstrapped?</li>
+<li>Over which population are advantages normalized?</li>
+<li>Is value clipping used, and relative to which old value?</li>
+<li>How many optimizer epochs/minibatches reuse each sample?</li>
+<li>Is ratio clipping symmetric? Is there a target-KL early stop?</li>
+<li>Is reference KL a reward, loss, or both?</li>
+<li>What is the global loss denominator?</li>
+</ul>
+<h2 id="6-group-relative-policy-optimization">6. Group Relative Policy Optimization<a class="headerlink" href="#6-group-relative-policy-optimization" title="Permanent link">&para;</a></h2>
+<p>DeepSeekMath introduced <strong>Group Relative Policy Optimization (GRPO)</strong> to eliminate the
+learned critic. For each question/task, sample <span class="arithmatex">\(G\)</span> outputs, compute rewards,
+and estimate relative advantages, commonly</p>
+<div class="arithmatex">\[
+\hat A_i=
+\frac{R_i-\operatorname{mean}(R_{1:G})}
+{\operatorname{std}(R_{1:G})+\varepsilon}.
+\]</div>
+<p>A PPO-like clipped surrogate then compares current and old policy probabilities.
+Read the exact objective in DeepSeekMath
+(<a href="https://arxiv.org/abs/2402.03300">Shao et al., 2024, Section 3</a>); later
+implementations called “GRPO” differ in KL and normalization.</p>
+<h3 id="advantages">Advantages<a class="headerlink" href="#advantages" title="Permanent link">&para;</a></h3>
+<ul>
+<li>no critic model or value-loss tuning;</li>
+<li>within-task comparison reduces between-task difficulty variance;</li>
+<li>verifiable scalar rewards are easy to integrate;</li>
+<li>group sampling naturally supplies exploration and pass-rate statistics.</li>
+</ul>
+<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
+<ul>
+<li>group generation multiplies rollout cost;</li>
+<li>groups with uniform reward contribute no relative signal;</li>
+<li>group standard deviation is noisy and can distort prompt weighting;</li>
+<li>terminal reward is usually copied to all response tokens;</li>
+<li>token/sequence length normalization can bias toward or against long outputs;</li>
+<li>multi-turn trajectories need an additional credit-decomposition rule.</li>
+</ul>
+<h3 id="grpo-is-not-inherently-agentic">GRPO is not inherently agentic<a class="headerlink" href="#grpo-is-not-inherently-agentic" title="Permanent link">&para;</a></h3>
+<p>GRPO can optimize one generated math response or a multi-turn tool trajectory.
+The environment and credit unit determine whether the application is agentic.</p>
+<h2 id="7-dr-grpo">7. Dr. GRPO<a class="headerlink" href="#7-dr-grpo" title="Permanent link">&para;</a></h2>
+<p><em>Understanding R1-Zero-Like Training</em> identifies two important sources of bias
+in common GRPO implementations:</p>
+<ol>
+<li>dividing by group reward standard deviation changes the weight of prompts;</li>
+<li>averaging each response's token loss by its length changes response/token
+   weighting.</li>
+</ol>
+<p>Dr. GRPO removes these normalization choices in the analyzed objective, using a
+constant normalization instead
+(<a href="https://arxiv.org/abs/2503.20783">Liu et al., 2025</a>). The lesson is broader
+than one variant: an apparently harmless denominator defines which prompts and
+tokens dominate the update.</p>
+<p>Use controlled experiments. Removing normalization can increase raw gradient
+scale and require learning-rate/clipping changes; an ablation that changes both
+does not isolate estimator bias.</p>
+<h2 id="8-decoupled-clip-and-dynamic-sampling-policy-optimization">8. Decoupled Clip and Dynamic sAmpling Policy Optimization<a class="headerlink" href="#8-decoupled-clip-and-dynamic-sampling-policy-optimization" title="Permanent link">&para;</a></h2>
+<p><strong>Decoupled Clip and Dynamic sAmpling Policy Optimization (DAPO)</strong> reports an
+open large-scale reasoning-RL recipe built around four changes
+(<a href="https://arxiv.org/abs/2503.14476">Yu et al., 2025</a>):</p>
+<ol>
+<li><strong>clip-higher:</strong> separate lower/upper ratio bounds to preserve exploration;</li>
+<li><strong>dynamic sampling:</strong> discard groups with all-correct or all-incorrect rewards
+   and resample until a useful batch is formed;</li>
+<li><strong>token-level policy-gradient loss:</strong> aggregate over valid tokens rather than
+   first averaging each sample equally;</li>
+<li><strong>overlong reward shaping:</strong> avoid noisy hard truncation penalties near the
+   maximum length.</li>
+</ol>
+<p>Operational implications:</p>
+<ul>
+<li>dynamic sampling needs an attempt census and can be expensive as the policy
+  saturates or tasks are impossible;</li>
+<li>token-level aggregation changes the influence of response length;</li>
+<li>asymmetric clipping affects positive and negative advantage exploration;</li>
+<li>soft overlong penalties must not become the main learned proxy.</li>
+</ul>
+<p>DAPO is a recipe, not simply a replacement equation.</p>
+<h2 id="9-group-sequence-policy-optimization-and-sequence-level-ratios">9. Group Sequence Policy Optimization and sequence-level ratios<a class="headerlink" href="#9-group-sequence-policy-optimization-and-sequence-level-ratios" title="Permanent link">&para;</a></h2>
+<p>Token-level PPO clipping treats each token ratio separately even though reward
+often belongs to the complete response. <strong>Group Sequence Policy Optimization
+(GSPO)</strong> defines an importance ratio from sequence likelihood and applies sequence-level
+clipping/optimization
+(<a href="https://arxiv.org/abs/2507.18071">Zheng et al., <em>GSPO</em></a>, 2025).</p>
+<p>If sequence score uses a geometric mean,</p>
+<div class="arithmatex">\[
+\rho_i^{\text{seq}}=
+\exp\left(\frac{1}{L_i}\sum_j
+[\log\pi_\theta(x_{i,j})-\log\pi_{\text{old}}(x_{i,j})]
+\right),
+\]</div>
+<p>the length average avoids exponentially small/large raw products but defines a
+particular length normalization. Sequence clipping aligns the trust signal with
+sequence reward; it supplies less localized control over individual token
+changes. For multi-turn agents, decide whether the “sequence” is a turn or a
+complete trajectory.</p>
+<p>For <span class="arithmatex">\(G\)</span> responses to one query, the published objective is</p>
+<div class="arithmatex">\[
+J_{\mathrm{GSPO}}(\theta)
+=\frac1G\sum_{i=1}^{G}
+\min\left(
+\rho_i^{\mathrm{seq}}\widehat A_i,
+\operatorname{clip}(\rho_i^{\mathrm{seq}},1-\epsilon_l,1+\epsilon_h)
+\widehat A_i
+\right).
+\]</div>
+<p>The average is over responses, not over all response tokens. Consequently,
+each response has equal outer weight. Differentiating an unclipped response
+shows why its action tokens are weighted equally:</p>
+<div class="arithmatex">\[
+\nabla_\theta \rho_i^{\mathrm{seq}}
+=\rho_i^{\mathrm{seq}}\frac1{L_i}
+\sum_{t=1}^{L_i}\nabla_\theta
+\log\pi_\theta(y_{i,t}\mid x,y_{i,&lt;t}).
+\]</div>
+<p>This is a different estimator from multiplying every token by its own token
+ratio. It also means one outlier token can move the sequence ratio outside the
+trust band and suppress the complete sequence.</p>
+<h3 id="gspo-token-for-multi-turn-credit">GSPO-token for multi-turn credit<a class="headerlink" href="#gspo-token-for-multi-turn-credit" title="Permanent link">&para;</a></h3>
+<p>The paper defines a token-customizable variant for settings such as multi-turn
+RL. Let <code>sg</code> denote stop-gradient and</p>
+<div class="arithmatex">\[
+\rho_{i,t}^{\mathrm{GSPO-token}}
+=\operatorname{sg}(\rho_i^{\mathrm{seq}})
+\frac{\pi_\theta(y_{i,t}\mid x,y_{i,&lt;t})}
+{\operatorname{sg}[\pi_\theta(y_{i,t}\mid x,y_{i,&lt;t})]}.
+\]</div>
+<p>Numerically, the fraction is one, so every token sees the same sequence ratio.
+Its derivative flows only through token <span class="arithmatex">\(t\)</span>. If all token advantages equal</p>
+<div class="arithmatex">\[
+\widehat A_{i,t}=\widehat A_i,
+\]</div>
+<p>GSPO and GSPO-token have the same objective value and theoretical gradient. If
+turn/token advantages differ, GSPO-token preserves those differences while
+keeping a sequence-level clipping condition. The repository tests both the
+value and gradient equivalence rather than assuming the stop-gradient trick is
+cosmetic.</p>
+<p>Do not transfer the paper's tiny GSPO clip bounds mechanically. Its controlled
+Qwen3-30B-A3B run used left/right bounds <span class="arithmatex">\(3\times10^{-4}\)</span> and
+<span class="arithmatex">\(4\times10^{-4}\)</span>, while its GRPO baseline used <span class="arithmatex">\(0.2/0.27\)</span>, precisely
+because sequence and token ratios have different scales.</p>
+<h2 id="10-soft-adaptive-policy-optimization">10. Soft Adaptive Policy Optimization<a class="headerlink" href="#10-soft-adaptive-policy-optimization" title="Permanent link">&para;</a></h2>
+<p><strong>Soft Adaptive Policy Optimization (SAPO)</strong> replaces the binary hard-clipping
+gate with a differentiable token gate
+(<a href="https://arxiv.org/abs/2511.20347">Gao et al., 2025</a>). For token ratio</p>
+<div class="arithmatex">\[
+r_{i,t}=\exp(\log\pi_\theta-\log\pi_{\mathrm{old}}),
+\]</div>
+<p>choose a temperature by advantage sign,</p>
+<div class="arithmatex">\[
+\tau_{i,t}=\begin{cases}
+\tau_{\mathrm{pos}},&amp;\widehat A_{i,t}&gt;0,\\
+\tau_{\mathrm{neg}},&amp;\widehat A_{i,t}\le0,
+\end{cases}
+\]</div>
+<p>and define</p>
+<div class="arithmatex">\[
+f_{i,t}(r)=\frac{4}{\tau_{i,t}}
+\sigma[\tau_{i,t}(r-1)].
+\]</div>
+<p>The sequence-normalized objective is</p>
+<div class="arithmatex">\[
+J_{\mathrm{SAPO}}(\theta)
+=\frac1G\sum_{i=1}^{G}\frac1{L_i}
+\sum_{t=1}^{L_i}f_{i,t}(r_{i,t})\widehat A_{i,t}.
+\]</div>
+<p>This formula applies the smooth surrogate to the ratio itself; it is not
+<code>ratio × advantage × log-probability</code>. With</p>
+<div class="arithmatex">\[
+p_{i,t}=\sigma[\tau_{i,t}(r_{i,t}-1)],
+\]</div>
+<p>differentiation gives</p>
+<div class="arithmatex">\[
+\nabla_\theta J_{\mathrm{SAPO}}
+=\frac1G\sum_i\frac1{L_i}\sum_t
+\underbrace{4p_{i,t}(1-p_{i,t})}_{\text{smooth gradient gate}}
+r_{i,t}\widehat A_{i,t}
+\nabla_\theta\log\pi_\theta(y_{i,t}\mid x,y_{i,&lt;t}).
+\]</div>
+<p>At <span class="arithmatex">\(r=1\)</span>, the gate is exactly one for any positive temperature, so the
+on-policy gradient matches the unclipped ratio objective. Farther away, it
+decays continuously instead of switching to zero at a hard boundary. The paper
+uses <span class="arithmatex">\(\tau_{\mathrm{neg}}&gt;\tau_{\mathrm{pos}}\)</span>: a negative sampled-token
+update raises logits for a very large set of unsampled vocabulary items, so its
+off-policy gradient is damped faster.</p>
+<p>SAPO is token-adaptive, yet the paper derives a GSPO-like smooth sequence gate
+when steps are near on-policy and within-sequence log-ratio dispersion is low.
+That connection is conditional, not identity. A heterogeneous sequence retains
+useful near-on-policy tokens that hard sequence clipping might discard. The
+paper reports SAPO use for Qwen3-VL; it is not evidence that every later Qwen
+text model used the same objective.</p>
+<h2 id="11-remax">11. ReMax<a class="headerlink" href="#11-remax" title="Permanent link">&para;</a></h2>
+<p>ReMax uses a deterministic greedy rollout as a baseline for the stochastic
+sample, avoiding a critic
+(<a href="https://arxiv.org/abs/2310.10505">Li et al., 2023</a>). Conceptually,</p>
+<div class="arithmatex">\[
+\hat A=R(y_{\text{sample}})-R(y_{\text{greedy}}).
+\]</div>
+<p>It can be effective when an extra baseline rollout is cheaper than critic
+training and reward is sequence-level. In stochastic agent environments, both
+rollouts should share a controlled initial state/seed when interpreting the
+difference; otherwise environment randomness contaminates the baseline.</p>
+<h2 id="12-process-reward-and-value-free-methods">12. Process-reward and value-free methods<a class="headerlink" href="#12-process-reward-and-value-free-methods" title="Permanent link">&para;</a></h2>
+<h3 id="prime">PRIME<a class="headerlink" href="#prime" title="Permanent link">&para;</a></h3>
+<p>PRIME learns an implicit process reward from policy rollouts and outcome labels,
+then uses dense rewards during policy optimization
+(<a href="https://arxiv.org/abs/2502.01456">Cui et al., 2025</a>). It addresses sparse
+credit without requiring manually labeled reasoning steps. Its learned process
+signal can still be wrong or exploitable; validate it against interventions and
+held-out outcomes.</p>
+<h3 id="explicit-process-reward-models">Explicit process reward models<a class="headerlink" href="#explicit-process-reward-models" title="Permanent link">&para;</a></h3>
+<p>Train a model on human/AI/verifier labels for intermediate steps. The policy may
+optimize the sum of step rewards or use them to estimate advantages. Specify:</p>
+<ul>
+<li>label target and information visible to labeler;</li>
+<li>whether scores are calibrated across positions/tasks;</li>
+<li>how step count changes total reward;</li>
+<li>whether outcome reward is retained;</li>
+<li>adversarial robustness and policy/judge relationship.</li>
+</ul>
+<h3 id="potential-based-shaping">Potential-based shaping<a class="headerlink" href="#potential-based-shaping" title="Permanent link">&para;</a></h3>
+<p>Adding <span class="arithmatex">\(\gamma\Phi(s')-\Phi(s)\)</span> preserves optimal policies under standard
+conditions. Learned “progress” scores generally do not have this guarantee.</p>
+<h2 id="13-turn-level-and-hierarchical-agent-methods">13. Turn-level and hierarchical agent methods<a class="headerlink" href="#13-turn-level-and-hierarchical-agent-methods" title="Permanent link">&para;</a></h2>
+<p>Trajectory-level GRPO can treat a twenty-turn episode as one response, but this
+does not solve temporal credit. Agent-specific methods add structure.</p>
+<h3 id="turn-level-advantages">Turn-level advantages<a class="headerlink" href="#turn-level-advantages" title="Permanent link">&para;</a></h3>
+<p>Compute returns from each action boundary and apply the turn advantage to its
+generated tokens. This uses environment reward timing or a value/process model.
+It reduces credit distance but can reward locally useful actions that harm the
+final task unless downstream return remains included.</p>
+<h3 id="group-in-group-baselines">Group-in-group baselines<a class="headerlink" href="#group-in-group-baselines" title="Permanent link">&para;</a></h3>
+<p>GiGPO groups at both trajectory and step levels to exploit repeated/branched
+interaction structure
+(<a href="https://arxiv.org/abs/2505.10978">Feng et al., 2025</a>). Its value depends on
+meaningful state/action grouping; superficial text similarity is not causal
+equivalence.</p>
+<h3 id="hierarchical-decomposition">Hierarchical decomposition<a class="headerlink" href="#hierarchical-decomposition" title="Permanent link">&para;</a></h3>
+<p>Agent Lightning models arbitrary agent execution as transitions and decomposes
+credit across higher-level and lower-level decisions
+(<a href="https://arxiv.org/abs/2508.03680">Luo et al., 2025</a>). Hierarchical methods are
+useful when planner/subgoal/executor boundaries have operational meaning. They
+can misassign credit if the decomposition is imposed by a brittle parser.</p>
+<h3 id="branching-counterfactuals">Branching counterfactuals<a class="headerlink" href="#branching-counterfactuals" title="Permanent link">&para;</a></h3>
+<p>Clone an environment state, try multiple candidate actions or continuations,
+and compare downstream outcomes. This supplies state-conditional relative
+credit, but state cloning and extra rollouts are expensive. Shared randomness
+can reduce variance when transitions are stochastic.</p>
+<h2 id="14-off-policy-and-asynchronous-correction">14. Off-policy and asynchronous correction<a class="headerlink" href="#14-off-policy-and-asynchronous-correction" title="Permanent link">&para;</a></h2>
+<p>Agent rollouts are slow, so collectors frequently lag behind the trainer.
+Possible controls:</p>
+<ol>
+<li><strong>bounded staleness:</strong> reject trajectories older than <span class="arithmatex">\(K\)</span> versions;</li>
+<li><strong>ratio/KL gate:</strong> reject or downweight samples whose behavior/target
+   divergence exceeds a threshold;</li>
+<li><strong>truncated importance weights:</strong> trade bias for variance control;</li>
+<li><strong>V-trace:</strong> clipped off-policy actor–critic targets
+   (<a href="https://arxiv.org/abs/1802.01561">Espeholt et al., 2018</a>);</li>
+<li><strong>single-update consumption:</strong> avoid repeated reuse of already stale samples;</li>
+<li><strong>frequent lightweight weight broadcast:</strong> reduce lag at system cost;</li>
+<li><strong>fully off-policy methods/replay:</strong> require a different algorithmic analysis
+   than calling the data “near on-policy.”</li>
+</ol>
+<p>AReaL studies asynchronous language-model RL and staleness-aware training
+(<a href="https://arxiv.org/abs/2505.24298">Fu et al., 2025</a>). Measure lag both in
+versions and actual divergence; ten tiny updates can be closer than one large
+update.</p>
+<h2 id="15-single-rollout-asynchronous-optimization">15. Single-Rollout Asynchronous Optimization<a class="headerlink" href="#15-single-rollout-asynchronous-optimization" title="Permanent link">&para;</a></h2>
+<p><strong>Single-Rollout Asynchronous Optimization (SAO)</strong> addresses a structural
+mismatch between long asynchronous agent episodes and prompt-group methods
+(<a href="https://arxiv.org/abs/2607.07508">Hou et al., 2026</a>). It combines:</p>
+<ol>
+<li>one rollout per prompt, consumed as soon as it finishes;</li>
+<li>a learned critic because group size one has no group-relative baseline;</li>
+<li>two critic updates per actor update in the paper experiments;</li>
+<li>frozen critic-attention parameters with trainable Mixture-of-Experts
+   projections;</li>
+<li>skip-observation token-level Generalized Advantage Estimation; and</li>
+<li><strong>Direct Double-Sided Importance Sampling (DIS)</strong> from stored rollout
+   log-probabilities to current-policy log-probabilities.</li>
+</ol>
+<p>DIS keeps a token only when</p>
+<div class="arithmatex">\[
+1-\epsilon_l&lt;
+\exp(\log\pi_\theta-\log\pi_{\text{rollout}})
+&lt;1+\epsilon_h.
+\]</div>
+<p>Outside the interval its policy contribution is zero. Unlike PPO clipping,
+this masks both tails for either advantage sign. SAO is attractive when:</p>
+<ul>
+<li>trajectory lengths have a severe long tail;</li>
+<li>each environment state naturally yields one attempt;</li>
+<li>the learner and rollout service run concurrently;</li>
+<li>a critic can learn state-dependent baselines; and</li>
+<li>exact behavior tokens and log-probabilities are preserved.</li>
+</ul>
+<p>Its costs are a second large model, critic cold start, additional value updates,
+off-policy bias, and discarded tail tokens. The authors state that SAO was
+deployed in GLM-5.2's agentic-RL pipeline, but publish controlled hyperparameters
+only for Qwen3-30B-A3B. See the
+<a href="../derivations-and-code/#20-single-rollout-asynchronous-optimization-derived">full derivation</a>
+and <a href="../case-studies/glm/#113-sao-the-missing-algorithmic-link-du">GLM evidence analysis</a>.</p>
+<h2 id="16-offline-preference-objectives">16. Offline preference objectives<a class="headerlink" href="#16-offline-preference-objectives" title="Permanent link">&para;</a></h2>
+<p>Offline preference optimization is useful for bootstrap and alignment but is not
+an online agent algorithm by itself.</p>
+<h3 id="dpo">DPO<a class="headerlink" href="#dpo" title="Permanent link">&para;</a></h3>
+<p>For preferred <span class="arithmatex">\(y_w\)</span>, rejected <span class="arithmatex">\(y_l\)</span>, reference <span class="arithmatex">\(\pi_{\text{ref}}\)</span>,</p>
+<div class="arithmatex">\[
+L_{\text{DPO}}=-\mathbb E\log\sigma\left(
+\beta\log\frac{\pi_\theta(y_w\mid x)}{\pi_{\text{ref}}(y_w\mid x)}
+-\beta\log\frac{\pi_\theta(y_l\mid x)}{\pi_{\text{ref}}(y_l\mid x)}
+\right).
+\]</div>
+<p>It avoids reward-model and online-rollout infrastructure. For agent trajectories,
+the pair can be complete trajectories or segments, but fixed preferences do not
+automatically cover states induced by the updated policy.</p>
+<h3 id="when-to-use-offline-preferences">When to use offline preferences<a class="headerlink" href="#when-to-use-offline-preferences" title="Permanent link">&para;</a></h3>
+<ul>
+<li>safety/style/subjective outcomes lack robust scalar reward;</li>
+<li>online environment access is expensive or risky;</li>
+<li>human corrections are available;</li>
+<li>a conservative bootstrap is needed before exploration.</li>
+</ul>
+<p>Refresh data online or evaluate distribution shift if the trained policy moves
+beyond the comparison dataset.</p>
+<h2 id="17-model-based-search-and-self-play-extensions">17. Model-based, search, and self-play extensions<a class="headerlink" href="#17-model-based-search-and-self-play-extensions" title="Permanent link">&para;</a></h2>
+<h3 id="search-plus-policy-learning">Search plus policy learning<a class="headerlink" href="#search-plus-policy-learning" title="Permanent link">&para;</a></h3>
+<p>Tree search, best-of-N, beam search, and verifier-guided expansion can produce
+stronger trajectories. Options:</p>
+<ul>
+<li>distill selected trajectories with SFT;</li>
+<li>use search outcomes as policy-gradient samples with correct behavior
+  probabilities (often difficult);</li>
+<li>train value/process models from the search tree;</li>
+<li>improve a policy iteratively as in expert iteration.</li>
+</ul>
+<p>Do not report search-time and single-sample policies under the same compute
+budget without separation.</p>
+<h3 id="learned-world-models">Learned world models<a class="headerlink" href="#learned-world-models" title="Permanent link">&para;</a></h3>
+<p>A model of transitions can generate cheap experience or plan imagined futures.
+Model bias is especially dangerous when an LLM agent exploits simulated tool or
+user behavior that does not match the real environment. Alternate model
+learning with real-environment validation.</p>
+<h3 id="self-play">Self-play<a class="headerlink" href="#self-play" title="Permanent link">&para;</a></h3>
+<p>Use opponent/user/task-generator policies to create curricula. Population-based
+self-play can prevent overfitting to one opponent. Anchor progress to external
+tasks so agents do not learn private protocols that score well only against one
+another.</p>
+<h2 id="18-algorithm-selection-matrix">18. Algorithm selection matrix<a class="headerlink" href="#18-algorithm-selection-matrix" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Useful starting point</th>
+<th>Why</th>
+<th>Main warning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>High-quality demonstrations, weak initial policy</td>
+<td>SFT</td>
+<td>stable support acquisition</td>
+<td>covariate shift</td>
+</tr>
+<tr>
+<td>Scalar verified outcome, cheap multiple samples</td>
+<td>RLOO/GRPO</td>
+<td>no critic, within-task baseline</td>
+<td>coarse credit and group cost</td>
+</tr>
+<tr>
+<td>Meaningful intermediate states/rewards</td>
+<td>PPO + turn critic/GAE</td>
+<td>temporal credit and sample reuse</td>
+<td>critic cost/error</td>
+</tr>
+<tr>
+<td>Fully on-policy simple baseline</td>
+<td>REINFORCE + valid baseline</td>
+<td>transparent estimator</td>
+<td>high variance</td>
+</tr>
+<tr>
+<td>Concern about GRPO normalization bias</td>
+<td>Dr. GRPO-style ablation</td>
+<td>exposes denominator effects</td>
+<td>retune scale fairly</td>
+</tr>
+<tr>
+<td>Need open reasoning-RL recipe</td>
+<td>DAPO-style recipe</td>
+<td>exploration/dynamic sampling details</td>
+<td>selection and length effects</td>
+</tr>
+<tr>
+<td>Sequence reward and unstable token ratios</td>
+<td>GSPO</td>
+<td>aligns clipping and optimization with response reward</td>
+<td>one outlier can suppress a full sequence</td>
+</tr>
+<tr>
+<td>Need smooth token-adaptive off-policy attenuation</td>
+<td>SAPO</td>
+<td>continuous trust gate; keeps useful tokens</td>
+<td>temperatures and ratio dispersion require measurement</td>
+</tr>
+<tr>
+<td>Long stale asynchronous rollouts</td>
+<td>bounded lag + off-policy correction</td>
+<td>improves utilization</td>
+<td>bias/variance and version integrity</td>
+</tr>
+<tr>
+<td>Long-tail agent rollouts, one sample per changing state</td>
+<td>SAO-style actor–critic</td>
+<td>no prompt-group barrier; state baseline</td>
+<td>critic cost and DIS bias</td>
+</tr>
+<tr>
+<td>Sparse long-horizon reward</td>
+<td>value/process/branching/hierarchy</td>
+<td>denser credit</td>
+<td>learned proxy exploitation</td>
+</tr>
+<tr>
+<td>Subjective or safety preference</td>
+<td>reward model + PPO or DPO</td>
+<td>human/AI preference signal</td>
+<td>judge/reward overoptimization</td>
+</tr>
+<tr>
+<td>Expensive unsafe environment</td>
+<td>SFT/offline data + sandboxed conservative RL</td>
+<td>limits exploration risk</td>
+<td>weak coverage of novel states</td>
+</tr>
+</tbody>
+</table>
+<p>Start with the simplest estimator that can represent the credit structure, then
+add complexity only after a controlled diagnostic demonstrates the need.</p>
+<h2 id="19-fair-algorithm-comparison">19. Fair algorithm comparison<a class="headerlink" href="#19-fair-algorithm-comparison" title="Permanent link">&para;</a></h2>
+<p>Hold constant or account for:</p>
+<ul>
+<li>initial policy and tokenizer/template;</li>
+<li>unique task distribution and environment versions;</li>
+<li>total launched and accepted rollout tokens;</li>
+<li>number of environment executions and verifier/judge calls;</li>
+<li>accelerator-hours and wall-clock budget;</li>
+<li>sampling configuration and inference-time samples;</li>
+<li>reward function and all shaping;</li>
+<li>context/action/episode limits;</li>
+<li>loss normalization and global batch;</li>
+<li>evaluation scaffold, tools, seeds, and budgets;</li>
+<li>hyperparameter search budget.</li>
+</ul>
+<p>If GRPO samples eight outputs per prompt and PPO samples one, equal optimizer
+steps do not mean equal data or compute. If dynamic sampling discards easy/hard
+groups, report all attempted samples.</p>
+<h2 id="20-ablation-order">20. Ablation order<a class="headerlink" href="#20-ablation-order" title="Permanent link">&para;</a></h2>
+<p>When a run fails, change one axis at a time:</p>
+<ol>
+<li>verify masks, log-probabilities, ratios, rewards, and group/turn alignment;</li>
+<li>reproduce the update on a frozen offline batch;</li>
+<li>compare no-update evaluation to rule out environment drift;</li>
+<li>inspect curriculum difficulty and trainable-group fraction;</li>
+<li>vary baseline/advantage estimator;</li>
+<li>vary loss normalization;</li>
+<li>vary clipping/KL/learning rate;</li>
+<li>add process/value credit only after trajectory-level baseline is understood;</li>
+<li>introduce asynchrony only after synchronous parity.</li>
+</ol>
+<p>Algorithmic novelty cannot rescue a corrupted trajectory contract.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Ronald J. Williams,
+   <a href="https://doi.org/10.1007/BF00992696">“Simple Statistical Gradient-Following Algorithms for Connectionist Reinforcement Learning”</a>,
+   1992.</li>
+<li>John Schulman et al.,
+   <a href="https://arxiv.org/abs/1707.06347">“Proximal Policy Optimization Algorithms”</a>,
+   2017.</li>
+<li>Arash Ahmadian et al.,
+   <a href="https://arxiv.org/abs/2402.14740">“Back to Basics: Revisiting REINFORCE-Style Optimization for Learning from Human Feedback in LLMs”</a>,
+   2024.</li>
+<li>Zhihong Shao et al.,
+   <a href="https://arxiv.org/abs/2402.03300">“DeepSeekMath”</a>, 2024.</li>
+<li>Qiying Yu et al.,
+   <a href="https://arxiv.org/abs/2503.14476">“DAPO”</a>, 2025.</li>
+<li>Zichen Liu et al.,
+   <a href="https://arxiv.org/abs/2503.20783">“Understanding R1-Zero-Like Training”</a>,
+   2025.</li>
+<li>Sergey Levine et al.,
+   <a href="https://arxiv.org/abs/2005.01643">“Offline Reinforcement Learning: Tutorial, Review, and Perspectives on Open Problems”</a>,
+   2020.</li>
+<li>Zhenyu Hou, Yujiang Li, Jie Tang, and Yuxiao Dong,
+   <a href="https://arxiv.org/abs/2607.07508">“Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning”</a>,
+   2026.</li>
+<li>Chujie Zheng et al.,
+   <a href="https://arxiv.org/abs/2507.18071">“Group Sequence Policy Optimization”</a>,
+   2025.</li>
+<li>Chang Gao et al.,
+    <a href="https://arxiv.org/abs/2511.20347">“Soft Adaptive Policy Optimization”</a>,
+    2025.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

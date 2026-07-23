@@ -1,0 +1,3539 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/coding-agents/reasonix/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../../multimodal/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Reasonix History and System Comparison - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reasonix-history-architecture-and-coding-agent-comparison" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reasonix History and System Comparison
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive finding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revisions-inspected-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Revisions inspected locally
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-i-how-reasonix-began" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part I — How Reasonix began
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part I — How Reasonix began">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-the-repository-contains-two-histories-not-one-continuous-rewrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The repository contains two histories, not one continuous rewrite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-v001-was-a-thesis-not-a-generic-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. v0.0.1 was a thesis, not a generic product
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-first-benchmark-caused-a-public-thesis-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The first benchmark caused a public thesis correction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-the-typescript-line-rapidly-expanded-beyond-its-original-non-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The TypeScript line rapidly expanded beyond its original non-goals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-the-go-rewrite-reset-implementation-lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. The Go rewrite reset implementation lineage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-ii-the-current-reasonix-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part II — The current Reasonix architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part II — The current Reasonix architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-system-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. System topology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-provider-abstraction-extensible-but-deliberately-small" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Provider abstraction: extensible, but deliberately small
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-agent-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The agent loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-prefix-cache-stability-as-a-state-invariant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Prefix-cache stability as a state invariant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-tiered-context-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Tiered context management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-two-model-collaboration-is-session-separation-not-expert-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Two-model collaboration is session separation, not expert routing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-tools-and-mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Tools and MCP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-permission-is-not-sandboxing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Permission is not sandboxing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-why-the-project-still-calls-itself-deepseek-native" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Why the project still calls itself DeepSeek-native
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-iii-comparison-with-opencode-pi-codex-and-claude-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part III — Comparison with OpenCode, Pi, Codex, and Claude Code
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part III — Comparison with OpenCode, Pi, Codex, and Claude Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-level-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-level matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-origin-chronology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public-origin chronology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-opencode-a-platform-first-not-a-model-economics-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. OpenCode: a platform first, not a model-economics experiment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-pi-coding-agent-a-substrate-with-intentionally-less-built-in-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Pi Coding Agent: a substrate with intentionally less built-in policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-openai-codex-a-systems-engineered-openai-agent-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. OpenAI Codex: a systems-engineered OpenAI agent stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-claude-code-compare-behavior-not-unavailable-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Claude Code: compare behavior, not unavailable internals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-iv-what-the-comparison-does-and-does-not-prove" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part IV — What the comparison does and does not prove
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part IV — What the comparison does and does not prove">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-but-incorrect-conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common but incorrect conclusions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-task-quality-winner-is-established-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No task-quality winner is established here
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision guide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary sources
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primary sources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reasonix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reasonix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opencode-and-pi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenCode and Pi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codex-and-claude-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Codex and Claude Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unresolved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unresolved questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive finding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revisions-inspected-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Revisions inspected locally
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-i-how-reasonix-began" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part I — How Reasonix began
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part I — How Reasonix began">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-the-repository-contains-two-histories-not-one-continuous-rewrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The repository contains two histories, not one continuous rewrite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-v001-was-a-thesis-not-a-generic-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. v0.0.1 was a thesis, not a generic product
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-first-benchmark-caused-a-public-thesis-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The first benchmark caused a public thesis correction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-the-typescript-line-rapidly-expanded-beyond-its-original-non-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The TypeScript line rapidly expanded beyond its original non-goals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-the-go-rewrite-reset-implementation-lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. The Go rewrite reset implementation lineage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-ii-the-current-reasonix-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part II — The current Reasonix architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part II — The current Reasonix architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-system-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. System topology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-provider-abstraction-extensible-but-deliberately-small" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Provider abstraction: extensible, but deliberately small
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-agent-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The agent loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-prefix-cache-stability-as-a-state-invariant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Prefix-cache stability as a state invariant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-tiered-context-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Tiered context management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-two-model-collaboration-is-session-separation-not-expert-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Two-model collaboration is session separation, not expert routing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-tools-and-mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Tools and MCP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-permission-is-not-sandboxing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Permission is not sandboxing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-why-the-project-still-calls-itself-deepseek-native" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Why the project still calls itself DeepSeek-native
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-iii-comparison-with-opencode-pi-codex-and-claude-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part III — Comparison with OpenCode, Pi, Codex, and Claude Code
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part III — Comparison with OpenCode, Pi, Codex, and Claude Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-level-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-level matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-origin-chronology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public-origin chronology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-opencode-a-platform-first-not-a-model-economics-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. OpenCode: a platform first, not a model-economics experiment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-pi-coding-agent-a-substrate-with-intentionally-less-built-in-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Pi Coding Agent: a substrate with intentionally less built-in policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-openai-codex-a-systems-engineered-openai-agent-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. OpenAI Codex: a systems-engineered OpenAI agent stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-claude-code-compare-behavior-not-unavailable-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Claude Code: compare behavior, not unavailable internals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-iv-what-the-comparison-does-and-does-not-prove" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part IV — What the comparison does and does not prove
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part IV — What the comparison does and does not prove">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-but-incorrect-conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common but incorrect conclusions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-task-quality-winner-is-established-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No task-quality winner is established here
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision guide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary sources
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primary sources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reasonix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reasonix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opencode-and-pi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenCode and Pi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codex-and-claude-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Codex and Claude Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unresolved-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unresolved questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="reasonix-history-architecture-and-coding-agent-comparison">Reasonix: History, Architecture, and Coding-Agent Comparison<a class="headerlink" href="#reasonix-history-architecture-and-coding-agent-comparison" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-22.</p>
+<h2 id="executive-finding">Executive finding<a class="headerlink" href="#executive-finding" title="Permanent link">&para;</a></h2>
+<p>Reasonix is an independent, MIT-licensed coding-agent project owned by
+<code>esengine</code>; it is not a DeepSeek-AI repository or an official DeepSeek client.
+It began on 2026-04-21 as a TypeScript/Ink experiment whose differentiator was
+the economics and protocol behavior of DeepSeek models. On 2026-05-29, its
+maintainers created a second, unrelated Git root and imported a completed Go
+rewrite that had temporarily been developed as <code>duo</code>. The current default
+branch is this Go generation, released as Reasonix 1.x.</p>
+<p>The shortest fair characterization is:</p>
+<blockquote>
+<p>Reasonix started as a DeepSeek-specific cache experiment and evolved into a
+configurable Go agent platform that retains DeepSeek-oriented defaults,
+reasoning-field handling, and cache-stable session design.</p>
+</blockquote>
+<p>That is more precise than either “DeepSeek-only wrapper” or “fully neutral
+multi-provider framework.” Its provider registry can use OpenAI-compatible
+endpoints without code changes, but its identity and several architectural
+choices still come from DeepSeek's prefix-cache economics.</p>
+<h2 id="revisions-inspected-locally">Revisions inspected locally<a class="headerlink" href="#revisions-inspected-locally" title="Permanent link">&para;</a></h2>
+<p>The repositories were cloned under <code>/Users/mac/projects/github</code> and inspected
+at these revisions. The path records the local audit snapshot; it is not a
+portable installation requirement.</p>
+<table>
+<thead>
+<tr>
+<th>Project</th>
+<th>Local directory</th>
+<th>Revision inspected</th>
+<th>Default branch at inspection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reasonix</td>
+<td><code>deepseek-reasonix</code></td>
+<td><code>c53c13c178ba9d60b8ce600c24810cda0563282a</code></td>
+<td><code>main-v2</code></td>
+</tr>
+<tr>
+<td>OpenCode</td>
+<td><code>opencode</code></td>
+<td><code>0a601cf334b9a83cc2854108a2b860f25e6e7e8e</code></td>
+<td><code>dev</code></td>
+</tr>
+<tr>
+<td>Pi Coding Agent</td>
+<td><code>pi</code></td>
+<td><code>dd6bea41efa8caa7a10fe5a6401676dc5699f83f</code></td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>OpenAI Codex</td>
+<td><code>openai-codex</code></td>
+<td><code>963cda85aa2a4cfb85e52d771d22d9f3069951fa</code></td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>Claude Code</td>
+<td><code>claude-code</code></td>
+<td><code>ac062f33ab0ca7c62b9df648d0f2027fa9b969f0</code></td>
+<td><code>main</code></td>
+</tr>
+</tbody>
+</table>
+<p>“Picode” is ambiguous. This study interprets it as <strong>Pi Coding Agent</strong>, whose
+former <code>badlogic/pi-mono</code> GitHub location redirects to the current
+<code>earendil-works/pi</code> repository and whose executable remains <code>pi</code>. A different
+project named Picode would require a separate comparison.</p>
+<p>The existing <code>/Users/mac/projects/github/codex</code> directory was preserved because
+it was a source snapshot rather than a Git checkout. The fresh OpenAI repository
+therefore uses <code>openai-codex</code>.</p>
+<h2 id="part-i-how-reasonix-began">Part I — How Reasonix began<a class="headerlink" href="#part-i-how-reasonix-began" title="Permanent link">&para;</a></h2>
+<h3 id="1-the-repository-contains-two-histories-not-one-continuous-rewrite">1. The repository contains two histories, not one continuous rewrite<a class="headerlink" href="#1-the-repository-contains-two-histories-not-one-continuous-rewrite" title="Permanent link">&para;</a></h3>
+<p><code>git rev-list --max-parents=0 --all</code> returns two roots:</p>
+<table>
+<thead>
+<tr>
+<th>Root</th>
+<th>Date</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>e9e7ccc62237e0b6dca70849c3f5647ad639edb7</code></td>
+<td>2026-04-21</td>
+<td>TypeScript v0.0.1 lineage</td>
+</tr>
+<tr>
+<td><code>32a4c02e5446bb38eaf8efb7592bef3d249ea195</code></td>
+<td>2026-05-29</td>
+<td>clean-slate Go generation</td>
+</tr>
+</tbody>
+</table>
+<p>This matters. A normal rewrite retains parentage, so blame/log can connect new
+code to earlier decisions. Reasonix used an <strong>orphan branch</strong>: the Go root has
+no parent. The next commit says that the already-finished implementation was a
+“code-only import” and that its upstream <code>duo</code> history was not included. The
+public repository can therefore establish the import event and the resulting
+architecture, but it cannot reconstruct every design iteration made while
+<code>duo</code> was being developed. That interval has evidence class <strong>U — Unknown</strong>.</p>
+<h3 id="2-v001-was-a-thesis-not-a-generic-product">2. v0.0.1 was a thesis, not a generic product<a class="headerlink" href="#2-v001-was-a-thesis-not-a-generic-product" title="Permanent link">&para;</a></h3>
+<p>The first commit described three pillars:</p>
+<ol>
+<li><strong>Cache-First Loop.</strong> Keep an immutable prompt prefix, append new turns and
+   tool results, and isolate volatile state. DeepSeek's automatic prompt cache
+   rewards exact repeated prefixes; changing earlier bytes turns what could be
+   cached input into newly processed input.</li>
+<li><strong>R1 Thought Harvesting.</strong> Parse DeepSeek's separate <code>reasoning_content</code>
+   stream and carry selected planning signals into agent state.</li>
+<li><strong>Tool-call repair.</strong> Recover malformed or truncated tool calls, flatten
+   nested arguments, scavenge partial calls, and stop repeated call storms.</li>
+</ol>
+<p>The initial stack was Node.js 20+, TypeScript, ECMAScript modules, React, and
+Ink. Its README explicitly listed multi-agent orchestration, retrieval-augmented
+generation, multiple providers, and a web service as non-goals. The original
+identity was therefore unusually narrow: make DeepSeek inexpensive and robust
+inside long tool-using sessions, not build a universal coding-agent platform.</p>
+<h3 id="3-the-first-benchmark-caused-a-public-thesis-correction">3. The first benchmark caused a public thesis correction<a class="headerlink" href="#3-the-first-benchmark-caused-a-public-thesis-correction" title="Permanent link">&para;</a></h3>
+<p>On the launch day, an 18-run “harvest” experiment compared a baseline,
+DeepSeek reasoner, and reasoner-plus-harvesting across six math/logic tasks. The
+maintainer reported that the baseline and ordinary reasoner passed all six,
+while the harvesting mode had one timeout. The commit explicitly rejected the
+claim that harvesting improved answer accuracy and reframed its possible value
+as introspection or tool-sequence steering.</p>
+<p>This is historically important for two reasons:</p>
+<ul>
+<li>the project did not preserve all three original pillars as equally validated
+  product claims; and</li>
+<li>cache reuse, not harvested reasoning, remained the strongest measured part of
+  the initial thesis.</li>
+</ul>
+<p>The experiment is a project-authored artifact, not an independent reproduction.
+Its tiny task set cannot establish general coding quality, but it can establish
+what claim the project itself decided <strong>not</strong> to make.</p>
+<h3 id="4-the-typescript-line-rapidly-expanded-beyond-its-original-non-goals">4. The TypeScript line rapidly expanded beyond its original non-goals<a class="headerlink" href="#4-the-typescript-line-rapidly-expanded-beyond-its-original-non-goals" title="Permanent link">&para;</a></h3>
+<p>The legacy log shows a compressed product-discovery cycle:</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Public-history milestone</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-04-21</td>
+<td>transcript replay/diff, MCP client, <code>reasonix code</code> edit workflow</td>
+<td>observability and tools arrived immediately</td>
+</tr>
+<tr>
+<td>2026-04-22</td>
+<td>project memory and Plan Mode</td>
+<td>long-lived project state and role separation began</td>
+</tr>
+<tr>
+<td>2026-04-23</td>
+<td>subagents through skills</td>
+<td>the initial multi-agent non-goal was relaxed</td>
+</tr>
+<tr>
+<td>2026-04-26</td>
+<td>feature catch-up against Codex, Claude Code, and Cursor; semantic search</td>
+<td>competitive product breadth became explicit</td>
+</tr>
+<tr>
+<td>2026-04-28</td>
+<td>web dashboard</td>
+<td>the initial “no web UI” boundary was relaxed</td>
+</tr>
+<tr>
+<td>May 2026</td>
+<td>many 0.x releases, a Rust-TUI experiment, then return to Ink</td>
+<td>the team explored packaging and interaction architecture quickly</td>
+</tr>
+<tr>
+<td>2026-05-29</td>
+<td>v0.54.x era and Go orphan root</td>
+<td>incremental evolution ended in a replacement kernel</td>
+</tr>
+</tbody>
+</table>
+<p>This is not hypocrisy; non-goals often describe a release boundary rather than
+a permanent constitution. But it means the v0.0.1 README must not be used as a
+description of current Reasonix.</p>
+<h3 id="5-the-go-rewrite-reset-implementation-lineage">5. The Go rewrite reset implementation lineage<a class="headerlink" href="#5-the-go-rewrite-reset-implementation-lineage" title="Permanent link">&para;</a></h3>
+<p>The Go root says:</p>
+<ul>
+<li>kernel rewritten from TypeScript to Go;</li>
+<li>web client removed at the reset;</li>
+<li>desktop client rebuilt;</li>
+<li>legacy TypeScript retained separately.</li>
+</ul>
+<p>Twenty minutes later, commit <code>7de6a247...</code> imported 92 files and about 13,480
+inserted lines from <code>duo</code>, renamed every <code>duo</code> identifier to Reasonix, and
+described a registry core, OpenAI-compatible provider, built-in tools, MCP over
+standard input/output and HTTP, permissions, sandboxing, custom commands,
+references, and two-model collaboration. Both rewrite commits include a
+Claude-Opus co-author trailer. That trailer is evidence of credited assistance,
+not evidence that the model independently designed or authored the entire
+rewrite.</p>
+<p>Reasonix 1.0.0 was marked released on 2026-06-02. In the migration guide,
+“v1” means the legacy <strong>codebase generation</strong> even though it used 0.x semantic
+versions, while “v2” means the Go generation that uses 1.x releases. Branch
+labels and semantic versions therefore cross:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>legacy generation: branch v1    -&gt; releases 0.x
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Go generation:     branch main-v2 -&gt; releases 1.x
+</code></pre></div>
+<p>That naming is a frequent source of confusion.</p>
+<h2 id="part-ii-the-current-reasonix-architecture">Part II — The current Reasonix architecture<a class="headerlink" href="#part-ii-the-current-reasonix-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="1-system-topology">1. System topology<a class="headerlink" href="#1-system-topology" title="Permanent link">&para;</a></h3>
+<p>The present system is better pictured as a shared controller and event model
+behind several interfaces, not as a terminal script wrapped around one API:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>CLI/TUI       Wails desktop       VS Code / ACP       HTTP/SSE workbench
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    \               |                  |                    /
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>     +-------- transport-neutral controller and typed events --------+
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>                                  |
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>                         Agent or Coordinator
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                         /                  \
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>                 Provider registry       Tool registry
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>                        |                 /     |      \
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>              model endpoint       built-ins  MCP   subagents/skills
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>                                            |
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                                  permissions -&gt; sandbox -&gt; host OS
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>             session JSONL / archives / history / memory / compaction
+</code></pre></div>
+<p>The architecture document states an acyclic dependency direction from command
+surfaces into agent/plugin/config, then into tools/providers. This makes the
+agent loop reusable by terminal, HTTP streaming, Agent Client Protocol (ACP),
+desktop, and remote-workbench surfaces. The visible clients do not each
+implement an independent agent.</p>
+<h3 id="2-provider-abstraction-extensible-but-deliberately-small">2. Provider abstraction: extensible, but deliberately small<a class="headerlink" href="#2-provider-abstraction-extensible-but-deliberately-small" title="Permanent link">&para;</a></h3>
+<p>At the core is a Go <code>Provider</code> interface with a streaming method. Factories are
+registered by provider <strong>kind</strong>, while a configuration instance supplies name,
+base URL, model, API key, and extra options. The built-in <code>openai</code> kind speaks
+the OpenAI-compatible chat-completions protocol. A new compatible vendor is a
+configuration entry rather than a source-code branch.</p>
+<p>This creates two limits:</p>
+<ul>
+<li>it is genuinely no longer hard-locked to DeepSeek; but</li>
+<li>compatibility is initially protocol-shaped. A provider with semantics that
+  cannot be represented through this protocol or its extra fields needs a new
+  implementation, transformations, or a gateway.</li>
+</ul>
+<p>Reasonix also round-trips model reasoning fields where supported. This is more
+than displaying hidden thoughts: DeepSeek-style <code>reasoning_content</code> may need to
+be serialized back with the assistant turn so a following request remains
+valid and cache-compatible. Model-specific behavior therefore survives beneath
+the generic provider interface.</p>
+<h3 id="3-the-agent-loop">3. The agent loop<a class="headerlink" href="#3-the-agent-loop" title="Permanent link">&para;</a></h3>
+<p>The engineering specification describes the loop as:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>build request with tool schemas
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  -&gt; Provider.Stream
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  -&gt; emit text/reasoning deltas and accumulate tool-call deltas by index
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  -&gt; if there is no complete tool call, finish
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  -&gt; otherwise permission-check and execute each complete call
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  -&gt; append assistant call plus matching tool result
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  -&gt; repeat up to maxSteps
+</code></pre></div>
+<p>Incomplete streaming fragments are not exposed to the tool executor. Tool
+errors become observations for model self-correction rather than fatal process
+errors. A <code>context.Context</code> carries cancellation into provider and tool work.</p>
+<p>This loop is conceptually conventional; Reasonix's differentiation lies in the
+state invariants around it.</p>
+<h3 id="4-prefix-cache-stability-as-a-state-invariant">4. Prefix-cache stability as a state invariant<a class="headerlink" href="#4-prefix-cache-stability-as-a-state-invariant" title="Permanent link">&para;</a></h3>
+<p>Autoregressive providers compute key/value states for the request prefix. A
+server-side prefix cache can reuse that work only when a sufficiently long
+prefix is identical under the provider's cache-key rules. Agent scaffolds often
+damage reuse by rewriting system prompts, reordering tool schemas, inserting
+volatile clocks/status, or repeatedly summarizing early history.</p>
+<p>Reasonix's response is architectural:</p>
+<ul>
+<li>keep standing instructions and environment information stable and
+  deterministic;</li>
+<li>canonicalize tool schemas and avoid needless ordering changes;</li>
+<li>append messages and tool results rather than editing old turns;</li>
+<li>shorten old tool results deterministically before asking a model to summarize;</li>
+<li>make summary compaction infrequent and observable as a cache-reset point;</li>
+<li>keep planner and executor in separate sessions so switching models does not
+  mutate one shared prefix.</li>
+</ul>
+<p>This does <strong>not</strong> mean a conversation can grow forever without cache misses.
+Model context windows are finite, provider caches can evict entries, and a
+summary necessarily changes the subsequent request. It means the runtime tries
+to make invalidation low-frequency and intentional.</p>
+<h3 id="5-tiered-context-management">5. Tiered context management<a class="headerlink" href="#5-tiered-context-management" title="Permanent link">&para;</a></h3>
+<p>The inspected specification exposes three approximate pressure stages:</p>
+<ol>
+<li>At the tool-result snip ratio (default 0.6 of configured context), old large
+   results are replaced by deterministic head/tail forms while message pairing
+   remains intact.</li>
+<li>At the compaction ratio (default 0.8), stale tool results are archived and
+   pruned to placeholders; only if the request is still too large does a model
+   produce a digest.</li>
+<li>At the force ratio (default 0.9), a fold may proceed even when ordinary fold
+   economics would skip it.</li>
+</ol>
+<p>Recent results and errors are preferentially retained. User briefs below the
+pin budget and previous digests survive the fold verbatim; dropped originals
+are archived as JSON Lines. A BM25-based <code>history</code> tool can search saved session
+transcripts and archives, while a separate <code>memory</code> tool searches durable facts.</p>
+<p>There are three different notions here:</p>
+<ul>
+<li><strong>active context:</strong> bytes sent on the next model request;</li>
+<li><strong>durable transcript/archive:</strong> data retained for traceability or resumption;</li>
+<li><strong>retrievable memory/history:</strong> data that can be searched back into a later
+  turn.</li>
+</ul>
+<p>Conflating them leads to false claims such as “nothing is ever forgotten” or
+“the whole transcript is always in context.”</p>
+<h3 id="6-two-model-collaboration-is-session-separation-not-expert-routing">6. Two-model collaboration is session separation, not expert routing<a class="headerlink" href="#6-two-model-collaboration-is-session-separation-not-expert-routing" title="Permanent link">&para;</a></h3>
+<p>When <code>planner_model</code> differs from the executor, <code>Coordinator</code> maintains two
+independent histories:</p>
+<ul>
+<li>a lower-frequency planner receives standing memory and a filtered read-only
+  research tool set, then emits a concise plan;</li>
+<li>the full executor receives that plan as structured text and performs writes
+  and commands through the normal agent loop.</li>
+</ul>
+<p>This is application-level orchestration. It is unrelated to Mixture-of-Experts
+routing inside a neural network and does not jointly train the models. Its
+specific cache advantage comes from never swapping two providers inside one
+conversation prefix.</p>
+<h3 id="7-tools-and-mcp">7. Tools and MCP<a class="headerlink" href="#7-tools-and-mcp" title="Permanent link">&para;</a></h3>
+<p>Built-in tools implement a small interface: name, description, JSON Schema,
+and execute. A per-run registry combines enabled built-ins with external tools.
+External plugins are MCP servers reached through:</p>
+<ul>
+<li>a persistent local subprocess over JSON-RPC standard input/output;</li>
+<li>Streamable HTTP, including Server-Sent Events responses; or</li>
+<li>the legacy HTTP-plus-SSE transport.</li>
+</ul>
+<p>MCP tools are namespaced and their <code>readOnlyHint</code> annotations influence
+parallel dispatch and default permission classification. Reasonix explicitly
+warns that those annotations are assertions by an installed server, not a
+containment boundary against a malicious server. Project-discovered MCP
+configuration requires an identity-specific launch confirmation, whereas an
+explicit user installation is itself an authorization decision.</p>
+<p>This distinction is sound: <strong>tool metadata</strong>, <strong>permission policy</strong>, and
+<strong>process containment</strong> are separate trust layers.</p>
+<h3 id="8-permission-is-not-sandboxing">8. Permission is not sandboxing<a class="headerlink" href="#8-permission-is-not-sandboxing" title="Permanent link">&para;</a></h3>
+<p>Reasonix uses both:</p>
+<ul>
+<li>a per-call policy returns allow, ask, or deny, with deny taking precedence;
+  and</li>
+<li>a lower enforcement layer confines filesystem and shell effects where the
+  operating system provides a backend.</li>
+</ul>
+<p>At the inspected revision, documentation describes macOS Seatbelt
+(<code>sandbox-exec</code>) and Linux bubblewrap for shell confinement; Windows lacks an
+equivalent built-in operating-system shell sandbox. In enforcement mode, a
+missing backend causes shell execution to fail closed rather than silently run
+unconfined. File tools also apply workspace/read/write root rules.</p>
+<p>Approval protects intent; sandboxing limits effects after approval or model
+error. Neither completely neutralizes prompt injection, compromised build
+scripts, malicious MCP servers, or credentials deliberately placed inside an
+allowed boundary.</p>
+<h3 id="9-why-the-project-still-calls-itself-deepseek-native">9. Why the project still calls itself DeepSeek-native<a class="headerlink" href="#9-why-the-project-still-calls-itself-deepseek-native" title="Permanent link">&para;</a></h3>
+<p>“Native” here is a runtime-optimization claim, not ownership or model lineage.
+It refers mainly to:</p>
+<ul>
+<li>design around DeepSeek prefix-cache behavior and cached-input economics;</li>
+<li>explicit reasoning-stream handling and round-tripping;</li>
+<li>model presets, pricing, and defaults oriented toward DeepSeek;</li>
+<li>cache observability and separate-session orchestration.</li>
+</ul>
+<p>The current configuration-driven provider layer means “DeepSeek-native” no
+longer means “DeepSeek-only.” A more exact label would be <strong>DeepSeek-first,
+OpenAI-compatible multi-provider harness</strong>. Whether another provider receives
+equal quality depends on protocol fidelity, tool-call behavior, reasoning-field
+semantics, cache rules, and maintainer testing—not merely whether its endpoint
+accepts the request.</p>
+<h2 id="part-iii-comparison-with-opencode-pi-codex-and-claude-code">Part III — Comparison with OpenCode, Pi, Codex, and Claude Code<a class="headerlink" href="#part-iii-comparison-with-opencode-pi-codex-and-claude-code" title="Permanent link">&para;</a></h2>
+<h3 id="high-level-matrix">High-level matrix<a class="headerlink" href="#high-level-matrix" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Reasonix</th>
+<th>OpenCode</th>
+<th>Pi Coding Agent</th>
+<th>OpenAI Codex</th>
+<th>Claude Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>primary design center</td>
+<td>DeepSeek-efficient long sessions</td>
+<td>broad provider platform and clients</td>
+<td>minimal, user-modifiable harness</td>
+<td>OpenAI-native local/cloud coding system</td>
+<td>Anthropic-native integrated product</td>
+</tr>
+<tr>
+<td>current core</td>
+<td>Go</td>
+<td>TypeScript/Bun with Effect-based components</td>
+<td>TypeScript packages</td>
+<td>Rust workspace</td>
+<td>proprietary core; public plugins/artifacts</td>
+</tr>
+<tr>
+<td>provider posture</td>
+<td>OpenAI-compatible registry, DeepSeek-first</td>
+<td>broad provider/model normalization</td>
+<td>15+ providers and custom providers</td>
+<td>OpenAI/Codex service and Responses semantics</td>
+<td>Claude models and Anthropic service</td>
+</tr>
+<tr>
+<td>topology</td>
+<td>shared controller behind CLI/desktop/ACP/web</td>
+<td>HTTP server + OpenAPI/SDK + clients</td>
+<td>library/CLI/RPC/SDK in one small stack</td>
+<td>local core + app-server + IDE/app/cloud</td>
+<td>terminal/IDE/GitHub/remote product</td>
+</tr>
+<tr>
+<td>default product policy</td>
+<td>plan/executor, permissions, sandbox, memory</td>
+<td>build/plan agents, subagents, permissions</td>
+<td>intentionally omits built-in plan/subagent policy</td>
+<td>approvals, native OS sandbox, skills/MCP/multi-agent</td>
+<td>permissions, sandbox, subagents, hooks/plugins</td>
+</tr>
+<tr>
+<td>extension center</td>
+<td>TOML, built-ins, MCP, skills/hooks</td>
+<td>plugins, MCP, skills, agents, server API</td>
+<td>trusted in-process TypeScript extensions</td>
+<td>skills, MCP, plugins/connectors, app-server protocol</td>
+<td>skills, agents, hooks, MCP, plugins/marketplaces</td>
+</tr>
+<tr>
+<td>state emphasis</td>
+<td>append-oriented cache stability, archives, retrieval</td>
+<td>durable server/session state; V2 moving toward SQLite admission</td>
+<td>tree-structured JSONL sessions and branching</td>
+<td>typed threads/turns/events across clients</td>
+<td>resumable/checkpointed sessions by documented behavior</td>
+</tr>
+<tr>
+<td>built-in containment</td>
+<td>policy + macOS/Linux shell sandbox; Windows limitation</td>
+<td>permission rules; implementation-specific process controls</td>
+<td>no built-in sandbox by design</td>
+<td>deep cross-platform system sandbox and approval model</td>
+<td>documented permission/sandbox system; core not auditable</td>
+</tr>
+<tr>
+<td>open-source boundary</td>
+<td>core open under MIT</td>
+<td>core open under MIT</td>
+<td>core open under MIT</td>
+<td>local runtime open under Apache-2.0</td>
+<td>public repository all-rights-reserved, core absent</td>
+</tr>
+</tbody>
+</table>
+<h3 id="public-origin-chronology">Public-origin chronology<a class="headerlink" href="#public-origin-chronology" title="Permanent link">&para;</a></h3>
+<p>The earliest reachable Git commit and the creation time of the current GitHub
+repository are different facts. A repository can import or merge history older
+than the repository object itself, as OpenCode demonstrates.</p>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Current GitHub repository created</th>
+<th>Earliest relevant public root/milestone</th>
+<th>Caution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Code</td>
+<td>2025-02-22</td>
+<td>research-preview repository root, 2025-02-22</td>
+<td>root is a product page, not core source</td>
+</tr>
+<tr>
+<td>OpenAI Codex</td>
+<td>2025-04-13</td>
+<td>TypeScript CLI root, 2025-04-16</td>
+<td>Rust arrived in parallel eight days later</td>
+</tr>
+<tr>
+<td>OpenCode</td>
+<td>2025-04-30</td>
+<td>reachable Go root, 2025-03-21</td>
+<td>older and multiple roots reflect synchronized/merged history</td>
+</tr>
+<tr>
+<td>Pi</td>
+<td>2025-08-09</td>
+<td>general <code>pi</code> monorepo root, 2025-08-09</td>
+<td>coding-agent package appeared in October</td>
+</tr>
+<tr>
+<td>Reasonix</td>
+<td>2026-04-21</td>
+<td>TypeScript v0.0.1 root, 2026-04-21</td>
+<td>Go generation adds a second root on May 29</td>
+</tr>
+</tbody>
+</table>
+<p>These dates establish public artifact lineage, not the first private prototype,
+company decision, or idea. Those earlier events are unknown unless the
+maintainers disclose them.</p>
+<h3 id="1-opencode-a-platform-first-not-a-model-economics-experiment">1. OpenCode: a platform first, not a model-economics experiment<a class="headerlink" href="#1-opencode-a-platform-first-not-a-model-economics-experiment" title="Permanent link">&para;</a></h3>
+<p>OpenCode's visible history begins with a Go codebase on 2025-03-21, before the
+current GitHub repository's creation date. Its history includes synchronizations
+and merges from other roots, a phase combining a Go Bubble Tea TUI with a
+JavaScript/TypeScript server, and a 2025-11-02 commit that removed the Go TUI.
+The current default development branch is a TypeScript/Bun monorepo.</p>
+<p>Current OpenCode starts a server even when the user launches the TUI. The TUI
+is a client, the HTTP endpoint is described by OpenAPI, and generated SDKs let
+desktop, web, IDE, and programmatic clients share the same backend. That
+client/server boundary is more central than in Reasonix, whose specification
+starts from a compact Go kernel and transport-neutral controller.</p>
+<p>OpenCode also treats provider breadth as a first-class product problem. Its
+source contains extensive model-specific normalization around reasoning,
+caching, schemas, and provider options. This breadth is not “free neutrality”:
+the project carries compatibility code precisely because vendors differ.</p>
+<p>Its default agent concepts include full build and read-only plan roles, general
+subagents, fine-grained permission rules, MCP, skills, Language Server Protocol
+integration, and plugin-defined tools. At the inspected <code>dev</code> revision, an
+ongoing V2 session architecture separates durable prompt admission from model
+execution, uses a process-global per-session execution coordinator, and scopes
+model/tool/permission services to a workspace location. These are current
+development-branch contracts, not guaranteed stable-release behavior.</p>
+<p><strong>Practical difference from Reasonix:</strong> choose OpenCode when broad provider
+choice, multiple clients, server automation, and ecosystem scale are primary.
+Choose Reasonix when a small static Go distribution and explicit
+DeepSeek/cache-oriented behavior are primary. OpenCode can optimize caching,
+but cache stability is not its founding invariant.</p>
+<h3 id="2-pi-coding-agent-a-substrate-with-intentionally-less-built-in-policy">2. Pi Coding Agent: a substrate with intentionally less built-in policy<a class="headerlink" href="#2-pi-coding-agent-a-substrate-with-intentionally-less-built-in-policy" title="Permanent link">&para;</a></h3>
+<p>Pi's history did not start with a coding agent. The 2025-08-09 root created a
+three-package monorepo containing terminal UI, generic agent, and GPU-pod
+functionality. A coding-agent work-in-progress appeared on 2025-10-17; the
+package became <code>@mariozechner/pi-coding-agent</code> in November. In 2026 the project
+moved to Earendil Works, shed unrelated pod/messaging packages, and renamed its
+published package scope to <code>@earendil-works</code>.</p>
+<p>The current stack is deliberately layered:</p>
+<ul>
+<li><code>pi-ai</code> normalizes model providers;</li>
+<li><code>pi-agent-core</code> exposes a generic event-driven loop and state;</li>
+<li><code>pi-tui</code> supplies terminal components; and</li>
+<li><code>pi-coding-agent</code> assembles the coding product.</li>
+</ul>
+<p>Its loop distinguishes an outer queue of user follow-ups from an inner
+assistant/tool loop and exposes event streams, steering, optional parallel tool
+execution, and a <code>convertToLlm</code> boundary. The product supports interactive,
+print/JSON, RPC, and SDK modes. JSONL session records form a tree using message
+and parent identifiers, so branching does not require copying a linear chat.</p>
+<p>Pi's strongest difference is philosophical. It intentionally skips built-in
+subagents and plan mode, expecting extensions or packages to implement the
+workflow a user wants. Extensions are trusted TypeScript modules running in the
+same process with the user's permissions. Official security documentation is
+explicit that project trust only controls whether project-local settings and
+extensions load; it is <strong>not a sandbox</strong>. Real isolation must come from a
+container, virtual machine, micro-VM, or an extension that redirects execution.</p>
+<p><strong>Practical difference from Reasonix:</strong> Pi is the cleaner choice for embedding,
+teaching, or inventing a bespoke agent policy. Reasonix supplies more policy
+and containment out of the box. Pi's smaller core is flexibility, not an
+unfinished attempt to replicate every Claude Code feature.</p>
+<h3 id="3-openai-codex-a-systems-engineered-openai-agent-stack">3. OpenAI Codex: a systems-engineered OpenAI agent stack<a class="headerlink" href="#3-openai-codex-a-systems-engineered-openai-agent-stack" title="Permanent link">&para;</a></h3>
+<p>Codex CLI began as TypeScript on 2025-04-16. Only eight days later OpenAI
+imported an initial Rust implementation, explicitly citing standalone binaries,
+lower overhead, and direct access to Linux sandbox APIs. The implementations
+coexisted while Rust caught up; the TypeScript implementation was removed on
+2025-08-08.</p>
+<p>The current Rust workspace has a typed session/turn protocol, an asynchronous
+turn loop, and a <code>ToolRouter</code> that separates model-visible specifications from
+runtime handlers. Tools can declare parallel-call support. A large app-server
+JSON-RPC boundary exposes threads, turns, streaming events, configuration,
+skills, MCP, plugins/connectors, feedback, and other product operations to
+clients. This makes Codex both a local agent and a platform component behind
+IDE and desktop experiences.</p>
+<p>Codex's most visible architectural specialization is system safety. The open
+runtime contains native sandbox paths for macOS and Linux and Windows-specific
+isolation work, combined with approval and permission profiles. OpenAI's
+first-party architecture material describes the CLI as a cross-platform local
+agent and the app as reusing configurable system-level sandboxing.</p>
+<p>Its model layer is vertically integrated with OpenAI account/API authentication,
+Responses API items, Codex model behavior, and optional hosted/cloud services.
+That coupling can support model/runtime co-design, but it is not the provider
+neutrality offered by OpenCode or Pi.</p>
+<p><strong>Practical difference from Reasonix:</strong> Codex has a deeper open local systems
+surface, stronger cross-platform sandbox investment, and tighter model/product
+co-design. Reasonix is easier to point at arbitrary OpenAI-compatible providers
+and uniquely foregrounds cached-input economics. Neither repository opens the
+frontier model weights or every hosted backend component.</p>
+<h3 id="4-claude-code-compare-behavior-not-unavailable-internals">4. Claude Code: compare behavior, not unavailable internals<a class="headerlink" href="#4-claude-code-compare-behavior-not-unavailable-internals" title="Permanent link">&para;</a></h3>
+<p>Anthropic's public repository began on 2025-02-22 as a research-preview landing
+page. Its initial README said the preview was intended to learn how developers
+collaborate with Claude and listed reliability, long-running commands, and
+terminal rendering as improvement areas. The repository did not contain the
+CLI implementation then, and it does not contain the proprietary core now.
+Its current license states “all rights reserved” and points to Anthropic's
+commercial terms.</p>
+<p>The public tree is still useful: it contains plugins, agents, commands, skills,
+hooks examples, a development container, issue tooling, and a detailed
+changelog. First-party documentation describes:</p>
+<ul>
+<li>separate-context subagents with selectable models, tools, permission modes,
+  skills, MCP servers, and lifecycle hooks;</li>
+<li>foreground and background execution;</li>
+<li>declarative allow/ask/deny rules and several permission modes;</li>
+<li>hooks around tool, session, and subagent lifecycle events;</li>
+<li>MCP, skills, plugins, marketplaces, checkpoints/rewind, IDE and remote
+  surfaces.</li>
+</ul>
+<p>Those are <strong>D — Disclosed product contracts</strong>. They are not <strong>C — Confirmed core
+implementation artifacts</strong>. Claims about Claude Code's private scheduler,
+prompt assembly, exact compaction algorithm, internal persistence schema, or
+sandbox implementation must remain unknown unless Anthropic documents them.</p>
+<p><strong>Practical difference from Reasonix:</strong> Claude Code is a polished,
+Claude-specific, vertically integrated product with a broader disclosed
+workflow surface. Reasonix is source-auditable, model-configurable, and exposes
+its cache/context mechanics. A source-level claim about Reasonix can often be
+traced to Go; the analogous Claude Code claim usually stops at documentation or
+observed behavior.</p>
+<h2 id="part-iv-what-the-comparison-does-and-does-not-prove">Part IV — What the comparison does and does not prove<a class="headerlink" href="#part-iv-what-the-comparison-does-and-does-not-prove" title="Permanent link">&para;</a></h2>
+<h3 id="common-but-incorrect-conclusions">Common but incorrect conclusions<a class="headerlink" href="#common-but-incorrect-conclusions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Incorrect shortcut</th>
+<th>Correct interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“DeepSeek-native means DeepSeek made it.”</td>
+<td>It describes optimization posture; repository ownership is independent.</td>
+</tr>
+<tr>
+<td>“OpenAI-compatible means all providers behave identically.”</td>
+<td>Request shape may match while reasoning fields, tool calls, caching, limits, and errors differ.</td>
+</tr>
+<tr>
+<td>“Two models means multi-agent intelligence.”</td>
+<td>Reasonix's coordinator is two isolated sessions with a text handoff; capabilities depend on roles, tools, and models.</td>
+</tr>
+<tr>
+<td>“Project trust is a sandbox.”</td>
+<td>Trust controls loading of local configuration/code; sandboxing constrains runtime effects.</td>
+</tr>
+<tr>
+<td>“Permission prompts make execution safe.”</td>
+<td>Approval and containment cover different failure modes and both have gaps.</td>
+</tr>
+<tr>
+<td>“The project with more files or stars is better.”</td>
+<td>Community size and code surface are not controlled task-quality evaluations.</td>
+</tr>
+<tr>
+<td>“Claude Code's GitHub repository is its source.”</td>
+<td>It is a public product/plugin repository; the core remains proprietary.</td>
+</tr>
+<tr>
+<td>“An open CLI means the whole product is open.”</td>
+<td>Models, inference, account services, cloud runners, and control planes can remain closed.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="no-task-quality-winner-is-established-here">No task-quality winner is established here<a class="headerlink" href="#no-task-quality-winner-is-established-here" title="Permanent link">&para;</a></h3>
+<p>This study did not run the five agents on an identical commit, model, prompt,
+tool policy, budget, and sandbox. It therefore does not claim that one produces
+better patches. A defensible evaluation would control at least:</p>
+<ul>
+<li>exact model checkpoint and provider;</li>
+<li>context/tool schemas and repository instructions;</li>
+<li>token, wall-clock, and monetary budgets;</li>
+<li>permission and network policy;</li>
+<li>number of retries/subagents and human interventions;</li>
+<li>clean starting repository and deterministic tests;</li>
+<li>patch correctness, regression rate, security, latency, and cost.</li>
+</ul>
+<p>Provider-neutral harnesses make model control easier but not perfect because
+their prompts and protocol transforms still differ. Vendor-native agents may
+use private model features unavailable through a common endpoint.</p>
+<h2 id="decision-guide">Decision guide<a class="headerlink" href="#decision-guide" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>If the dominant requirement is...</th>
+<th>First system to examine</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>minimize DeepSeek long-session cached-input cost and inspect that behavior</td>
+<td><strong>Reasonix</strong></td>
+<td>cache stability is a named invariant with separate planner/executor sessions</td>
+</tr>
+<tr>
+<td>use many vendors through one product with TUI, desktop, web, and server APIs</td>
+<td><strong>OpenCode</strong></td>
+<td>provider normalization and client/server architecture are central</td>
+</tr>
+<tr>
+<td>embed a small agent loop or invent a custom workflow in TypeScript</td>
+<td><strong>Pi</strong></td>
+<td>layered SDK and trusted extensions, intentionally minimal policy</td>
+</tr>
+<tr>
+<td>use OpenAI models with strong local sandboxing and connected local/cloud surfaces</td>
+<td><strong>Codex</strong></td>
+<td>model/runtime co-design, Rust core, typed app-server, native isolation</td>
+</tr>
+<tr>
+<td>use Claude with Anthropic's full integrated workflow and accept a closed core</td>
+<td><strong>Claude Code</strong></td>
+<td>deep Claude product integration, subagents/hooks/plugins/remote features</td>
+</tr>
+</tbody>
+</table>
+<p>For high-risk unattended work, the deciding question should often be the
+containment boundary rather than the user interface. Pi's own documentation
+recommends external isolation; Reasonix documents platform gaps; Codex and
+Claude Code still require careful filesystem, network, secret, and approval
+configuration.</p>
+<h2 id="primary-sources">Primary sources<a class="headerlink" href="#primary-sources" title="Permanent link">&para;</a></h2>
+<h3 id="reasonix">Reasonix<a class="headerlink" href="#reasonix" title="Permanent link">&para;</a></h3>
+<ol>
+<li>GitHub API, <a href="https://api.github.com/repos/esengine/deepseek-reasonix">repository metadata</a>, verified 2026-07-22.</li>
+<li>esengine, <a href="https://github.com/esengine/deepseek-reasonix/commit/e9e7ccc62237e0b6dca70849c3f5647ad639edb7">initial TypeScript commit</a>, 2026-04-21.</li>
+<li>esengine, <a href="https://github.com/esengine/deepseek-reasonix/commit/fb5977743c3c1e75e3e42fc5887b474c0b8cb20b">harvest benchmark correction</a>, 2026-04-21.</li>
+<li>esengine, <a href="https://github.com/esengine/deepseek-reasonix/commit/32a4c02e5446bb38eaf8efb7592bef3d249ea195">Go orphan-root rewrite</a> and <a href="https://github.com/esengine/deepseek-reasonix/commit/7de6a2474fb913f1b94480e671e85276deb46270"><code>duo</code> code import</a>, 2026-05-29.</li>
+<li>Reasonix, revision-pinned <a href="https://github.com/esengine/deepseek-reasonix/blob/c53c13c178ba9d60b8ce600c24810cda0563282a/README.md">README</a>, <a href="https://github.com/esengine/deepseek-reasonix/blob/c53c13c178ba9d60b8ce600c24810cda0563282a/docs/SPEC.md">engineering specification</a>, and <a href="https://github.com/esengine/deepseek-reasonix/blob/c53c13c178ba9d60b8ce600c24810cda0563282a/docs/MIGRATING.md">migration guide</a>.</li>
+</ol>
+<h3 id="opencode-and-pi">OpenCode and Pi<a class="headerlink" href="#opencode-and-pi" title="Permanent link">&para;</a></h3>
+<ol>
+<li>GitHub API, <a href="https://api.github.com/repos/anomalyco/opencode">OpenCode metadata</a>; OpenCode, <a href="https://opencode.ai/docs/server/">server architecture</a> and <a href="https://opencode.ai/docs/agents/">agent/permission documentation</a>, verified 2026-07-22.</li>
+<li>OpenCode history, <a href="https://github.com/anomalyco/opencode/commit/4b0ea68d7af9a6031a7ffda7ad66e0cb83315750">initial visible root</a>, <a href="https://github.com/anomalyco/opencode/commit/f3da73553c45f17e04b1e77cb13eb0fca714d1bd">server/TUI synchronization</a>, and <a href="https://github.com/anomalyco/opencode/commit/f68374ad2223ddc213bdea9519ca6a699819ee0e">Go TUI removal</a>.</li>
+<li>OpenCode, revision-pinned <a href="https://github.com/anomalyco/opencode/tree/0a601cf334b9a83cc2854108a2b860f25e6e7e8e/packages/opencode/src/session">session source</a>, <a href="https://github.com/anomalyco/opencode/blob/0a601cf334b9a83cc2854108a2b860f25e6e7e8e/packages/opencode/src/provider/transform.ts">provider transforms</a>, and <a href="https://github.com/anomalyco/opencode/tree/0a601cf334b9a83cc2854108a2b860f25e6e7e8e/packages/opencode/src/tool">tool source</a>.</li>
+<li>GitHub API, <a href="https://api.github.com/repos/earendil-works/pi">Pi metadata</a>; Pi, <a href="https://pi.dev/">product and philosophy</a>, <a href="https://pi.dev/docs/latest/security">security boundary</a>, and <a href="https://pi.dev/docs/latest/extensions">extension model</a>, verified 2026-07-22.</li>
+<li>Pi history, <a href="https://github.com/earendil-works/pi/commit/a74c5da112c29466f182a03108337a488c785d76">initial monorepo</a>, <a href="https://github.com/earendil-works/pi/commit/ffc9be88679426fff067eae3831e399c4b0b7651">coding-agent start</a>, <a href="https://github.com/earendil-works/pi/commit/79ee33c3fc8d23aa75695dfc6d9826991b065d77">package naming</a>, and <a href="https://github.com/earendil-works/pi/commit/551385e40946d5531e823edea533410c816926ce">Earendil Works migration</a>.</li>
+<li>Pi, revision-pinned <a href="https://github.com/earendil-works/pi/blob/dd6bea41efa8caa7a10fe5a6401676dc5699f83f/packages/agent/src/agent-loop.ts">agent loop</a> and <a href="https://github.com/earendil-works/pi/tree/dd6bea41efa8caa7a10fe5a6401676dc5699f83f/packages/coding-agent">coding-agent package</a>.</li>
+</ol>
+<h3 id="codex-and-claude-code">Codex and Claude Code<a class="headerlink" href="#codex-and-claude-code" title="Permanent link">&para;</a></h3>
+<ol>
+<li>GitHub API, <a href="https://api.github.com/repos/openai/codex">OpenAI Codex metadata</a>; OpenAI, <a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Codex agent-loop engineering article</a> and <a href="https://openai.com/index/introducing-the-codex-app/">Codex app sandbox description</a>, verified 2026-07-22.</li>
+<li>OpenAI Codex history, <a href="https://github.com/openai/codex/commit/59a180ddec4adaf9760972cdb1eb89f06a81be8b">initial TypeScript commit</a>, <a href="https://github.com/openai/codex/commit/31d0d7a305305ad557035a2edcab60b6be5018d8">Rust import and rationale</a>, and <a href="https://github.com/openai/codex/commit/408c7ca142689136d887676def1bf41ea80bb2a9">TypeScript removal</a>.</li>
+<li>OpenAI Codex, revision-pinned <a href="https://github.com/openai/codex/blob/963cda85aa2a4cfb85e52d771d22d9f3069951fa/codex-rs/core/src/session/turn.rs">turn loop</a>, <a href="https://github.com/openai/codex/blob/963cda85aa2a4cfb85e52d771d22d9f3069951fa/codex-rs/core/src/tools/router.rs">tool router</a>, and <a href="https://github.com/openai/codex/blob/963cda85aa2a4cfb85e52d771d22d9f3069951fa/codex-rs/app-server/README.md">app-server protocol</a>.</li>
+<li>GitHub API, <a href="https://api.github.com/repos/anthropics/claude-code">Claude Code metadata</a>; Anthropic, <a href="https://github.com/anthropics/claude-code/commit/bd5ca708adf82c4b81857abf40fe36d9d9cc3d1c">initial public commit</a> and revision-pinned <a href="https://github.com/anthropics/claude-code/blob/ac062f33ab0ca7c62b9df648d0f2027fa9b969f0/LICENSE.md">license</a>.</li>
+<li>Anthropic, <a href="https://code.claude.com/docs/en/how-claude-code-works">how Claude Code works</a>, <a href="https://code.claude.com/docs/en/sub-agents">subagents</a>, <a href="https://code.claude.com/docs/en/permission-modes">permission modes</a>, and <a href="https://code.claude.com/docs/en/features-overview">extension features</a>, verified 2026-07-22.</li>
+</ol>
+<h2 id="unresolved-questions">Unresolved questions<a class="headerlink" href="#unresolved-questions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The omitted <code>duo</code> history prevents a complete causal reconstruction of the Go
+  rewrite. Only the imported result and commit explanation are public.</li>
+<li>Reasonix's project-authored cache case studies need independent reproduction
+  under fixed providers, cache retention, workloads, and prices.</li>
+<li>OpenCode's current <code>dev</code> branch is actively migrating session architecture;
+  release behavior must be checked against a tagged version before operational
+  deployment.</li>
+<li>Cross-harness quality and cost remain unevaluated under controlled models and
+  permissions.</li>
+<li>Claude Code's internal loop, prompt assembly, persistence, scheduler, and
+  exact sandbox implementation remain unavailable for source audit.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

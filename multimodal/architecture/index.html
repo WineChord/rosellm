@@ -1,0 +1,2581 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/multimodal/architecture/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../kimi/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Representation, Fusion, and Native Multimodality - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#representation-fusion-and-the-meaning-of-native-multimodality" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Representation, Fusion, and Native Multimodality
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-pixels-cannot-simply-be-text-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Why pixels cannot simply be text tokens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-complete-imagevideo-understanding-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The complete image/video understanding path
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The complete image/video understanding path">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-media-decoding-and-canonicalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Media decoding and canonicalization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-visual-tokenization-or-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Visual tokenization or encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-compression-resampling-and-projection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Compression, resampling, and projection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-sequence-assembly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Sequence assembly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-shared-reasoning-and-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Shared reasoning and decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-fusion-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Fusion architectures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-training-determines-how-integrated-the-components-become" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Training determines how integrated the components become
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-a-rigorous-native-multimodal-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. A rigorous native-multimodal checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-systems-consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Systems consequences
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Systems consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#context-and-attention-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context and attention cost
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batching-and-pipeline-imbalance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batching and pipeline imbalance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-evaluation-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Evaluation failure modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-pixels-cannot-simply-be-text-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Why pixels cannot simply be text tokens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-complete-imagevideo-understanding-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The complete image/video understanding path
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The complete image/video understanding path">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-media-decoding-and-canonicalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Media decoding and canonicalization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-visual-tokenization-or-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Visual tokenization or encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-compression-resampling-and-projection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Compression, resampling, and projection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-sequence-assembly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Sequence assembly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-shared-reasoning-and-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Shared reasoning and decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-fusion-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Fusion architectures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-training-determines-how-integrated-the-components-become" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Training determines how integrated the components become
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-a-rigorous-native-multimodal-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. A rigorous native-multimodal checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-systems-consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Systems consequences
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Systems consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#context-and-attention-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context and attention cost
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batching-and-pipeline-imbalance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batching and pipeline imbalance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-evaluation-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Evaluation failure modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="representation-fusion-and-the-meaning-of-native-multimodality">Representation, Fusion, and the Meaning of Native Multimodality<a class="headerlink" href="#representation-fusion-and-the-meaning-of-native-multimodality" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-22.</p>
+<h2 id="1-why-pixels-cannot-simply-be-text-tokens">1. Why pixels cannot simply be text tokens<a class="headerlink" href="#1-why-pixels-cannot-simply-be-text-tokens" title="Permanent link">&para;</a></h2>
+<p>An RGB image with height <span class="arithmatex">\(H\)</span> and width <span class="arithmatex">\(W\)</span> contains <span class="arithmatex">\(3HW\)</span> scalar channel
+values. A 1024 by 1024 image already has more than three million channel values;
+treating every channel value as an ordinary autoregressive position would make
+attention and generation prohibitively expensive.</p>
+<p>A Vision Transformer (ViT) first divides the image into patches of side length
+<span class="arithmatex">\(P\)</span>. Ignoring padding, the patch count is</p>
+<div class="arithmatex">\[
+N_{\text{patch}}
+=\frac{H}{P}\frac{W}{P}.
+\]</div>
+<p>Each flattened patch is linearly embedded into a vector. Position information
+is then added so attention can distinguish spatial locations. The result is a
+sequence of continuous visual vectors, not text-token identifiers.</p>
+<p>Video adds a time axis. A naive frame-wise path creates approximately
+<span class="arithmatex">\(T N_{\text{patch}}\)</span> vectors for <span class="arithmatex">\(T\)</span> sampled frames. Long-video models therefore
+sample frames, use temporal patches, pool neighboring frames, or route only a
+subset of spatiotemporal features. The sampling policy is part of model behavior:
+a model cannot reason about a moment that preprocessing discarded.</p>
+<h2 id="2-the-complete-imagevideo-understanding-path">2. The complete image/video understanding path<a class="headerlink" href="#2-the-complete-imagevideo-understanding-path" title="Permanent link">&para;</a></h2>
+<h3 id="21-media-decoding-and-canonicalization">2.1 Media decoding and canonicalization<a class="headerlink" href="#21-media-decoding-and-canonicalization" title="Permanent link">&para;</a></h3>
+<p>Before neural inference, ordinary software:</p>
+<ul>
+<li>decodes JPEG, PNG, WebP, PDF pages, or a video container;</li>
+<li>applies orientation and color conversion;</li>
+<li>selects frames or temporal clips;</li>
+<li>rescales, pads, tiles, or packs variable-resolution inputs; and</li>
+<li>records crop, page, frame, and coordinate metadata needed for grounding.</li>
+</ul>
+<p>This layer is architecturally important. Tiling preserves small text but
+increases token count and can break objects across boundaries. Downscaling is
+cheap but may erase fine detail. Native-resolution packing minimizes artificial
+resizing, yet its variable sequence lengths complicate batching and memory.</p>
+<h3 id="22-visual-tokenization-or-encoding">2.2 Visual tokenization or encoding<a class="headerlink" href="#22-visual-tokenization-or-encoding" title="Permanent link">&para;</a></h3>
+<p>There are two major representation types:</p>
+<ol>
+<li><strong>Continuous features.</strong> A ViT, convolutional network, or hybrid encoder emits
+   floating-point embeddings. These are preferred for understanding because
+   they retain rich features without forcing every patch into a finite codebook.</li>
+<li><strong>Discrete visual codes.</strong> A vector-quantized tokenizer maps image regions to
+   codebook identifiers. These identifiers can be predicted like word tokens and
+   decoded back into pixels, making them attractive for autoregressive media
+   generation.</li>
+</ol>
+<p>The terms “visual token” and “image token” are overloaded. In a Kimi K2.5-style
+input path they usually mean continuous embeddings occupying sequence
+positions. In a Chameleon-, Emu3-, or Janus-generation path they can mean
+discrete codebook indices. Only the latter can be directly sampled as categorical
+next-token outputs.</p>
+<h3 id="23-compression-resampling-and-projection">2.3 Compression, resampling, and projection<a class="headerlink" href="#23-compression-resampling-and-projection" title="Permanent link">&para;</a></h3>
+<p>The visual encoder width <span class="arithmatex">\(d_v\)</span> rarely equals the language-model embedding width
+<span class="arithmatex">\(d_l\)</span>. A projector maps</p>
+<div class="arithmatex">\[
+P_\phi:\mathbb R^{N_v\times d_v}
+\longrightarrow\mathbb R^{N'_v\times d_l}.
+\]</div>
+<p>An MLP projector may change only width, while a pixel-shuffle layer, convolution,
+Perceiver resampler, or query transformer also reduces sequence length from
+<span class="arithmatex">\(N_v\)</span> to <span class="arithmatex">\(N'_v\)</span>. Compression saves context and attention cost, but it creates an
+information bottleneck. OCR is a particularly hard test because one lost stroke
+can change a character.</p>
+<p>The projector is not merely a file-format converter. During training, it learns
+which visual distinctions must survive in the language embedding space. A very
+small adapter can align already strong representations; it cannot recover visual
+detail that the encoder or preprocessing discarded.</p>
+<h3 id="24-sequence-assembly">2.4 Sequence assembly<a class="headerlink" href="#24-sequence-assembly" title="Permanent link">&para;</a></h3>
+<p>Projected visual embeddings replace sentinel image positions or are inserted
+between text segments:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&lt;bos&gt; text tokens &lt;image_start&gt; v1 v2 ... vN &lt;image_end&gt; text tokens ...
+</code></pre></div>
+<p>They need not share token IDs with words. The model runner directly constructs
+an <code>inputs_embeds</code> tensor whose rows come from the text embedding table or the
+visual projector. Modality, two-dimensional, temporal, crop, and separator
+embeddings can be added before the shared transformer.</p>
+<p>With ordinary causal attention, later text tokens attend to all earlier visual
+positions. Some models use cross-attention instead: the language stream remains
+separate and selected layers query an external visual memory. Cross-attention
+can isolate compute and cache media once, while single-stream early fusion makes
+all ordinary self-attention layers available for cross-modal interaction.</p>
+<h3 id="25-shared-reasoning-and-decoding">2.5 Shared reasoning and decoding<a class="headerlink" href="#25-shared-reasoning-and-decoding" title="Permanent link">&para;</a></h3>
+<p>The language backbone performs the same layer operations over projected visual
+and text embeddings. A sparse MoE routes each sequence position through selected
+feed-forward experts, but the visual front end remains a separate computation.
+For understanding-only models, the output head predicts text vocabulary tokens.
+Coordinates, boxes, points, SVG, HTML, or tool calls are usually serialized as
+text or special tokens.</p>
+<p>This explains why an image-understanding model does not automatically generate
+images: its output head has learned a distribution over text vocabulary, not a
+distribution over image codes or continuous image latents.</p>
+<h2 id="3-fusion-architectures">3. Fusion architectures<a class="headerlink" href="#3-fusion-architectures" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Architecture</th>
+<th>Media path</th>
+<th>Cross-modal interaction</th>
+<th>Main trade-off</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>caption/OCR cascade</td>
+<td>media -&gt; separate model -&gt; text</td>
+<td>text-only LLM sees a description</td>
+<td>simple and replaceable, but loses unmentioned detail</td>
+</tr>
+<tr>
+<td>encoder + projector + decoder-only LLM</td>
+<td>ViT -&gt; MLP/resampler -&gt; input embeddings</td>
+<td>ordinary self-attention over one sequence</td>
+<td>dominant open VLM pattern; context cost grows with visual tokens</td>
+</tr>
+<tr>
+<td>encoder + cross-attention LLM</td>
+<td>media encoder stays external</td>
+<td>selected LLM layers query visual memory</td>
+<td>clean compute separation; extra architectural blocks</td>
+</tr>
+<tr>
+<td>shared discrete-token transformer</td>
+<td>image/video tokenizer -&gt; code IDs</td>
+<td>one autoregressive stream and vocabulary partitions</td>
+<td>supports interleaved understanding/generation; long visual sequences and quantization loss</td>
+</tr>
+<tr>
+<td>shared backbone with modality losses</td>
+<td>continuous image latents plus text tokens</td>
+<td>common transformer, next-token loss for text and diffusion/flow loss for images</td>
+<td>high-quality generation without discretizing every output patch</td>
+</tr>
+<tr>
+<td>tool-routed composition</td>
+<td>LLM plans; specialist models execute</td>
+<td>exchanged prompts, embeddings, or artifacts</td>
+<td>operationally strong but not one native model</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-training-determines-how-integrated-the-components-become">4. Training determines how integrated the components become<a class="headerlink" href="#4-training-determines-how-integrated-the-components-become" title="Permanent link">&para;</a></h2>
+<p>A common progression is:</p>
+<ol>
+<li><strong>Unimodal initialization.</strong> Start from a pretrained vision encoder and text
+   LLM. This provides strong local features and language knowledge.</li>
+<li><strong>Alignment.</strong> Freeze most components and train a projector or a small visual
+   module so image representations land in a useful language space.</li>
+<li><strong>Joint multimodal pretraining.</strong> Unfreeze some or all components and mix
+   captions, interleaved documents, OCR, grounding, image-code pairs, video, and
+   text. This is where the language backbone learns that visual embeddings are
+   first-class evidence.</li>
+<li><strong>Instruction tuning.</strong> Train response behavior and formatting. Freezing or
+   excluding vision here does not erase multimodal pretraining; Kimi K2.5's
+   “zero-vision SFT” is a concrete example.</li>
+<li><strong>Multimodal reinforcement learning.</strong> Apply verifiable rewards for OCR edit
+   distance, boxes, points, segmentation, counting, visual coding, or computer
+   use. This can improve both the visual policy and language reasoning path.</li>
+</ol>
+<p>Late attachment normally means visual features are added after the text model is
+already trained and only a limited adapter/SFT stage connects them. Early or
+continual fusion means visual data is present through a substantial backbone
+training phase. It does not mean the system has no visual encoder.</p>
+<h2 id="5-a-rigorous-native-multimodal-checklist">5. A rigorous native-multimodal checklist<a class="headerlink" href="#5-a-rigorous-native-multimodal-checklist" title="Permanent link">&para;</a></h2>
+<p>When a vendor uses “native,” ask:</p>
+<ol>
+<li>Were all claimed modalities included from initial pretraining, from a long
+   continued-pretraining stage, or only at SFT?</li>
+<li>Are media embeddings processed inside the main backbone or converted into
+   text by a separate service?</li>
+<li>Are the vision/audio front end, projector, and backbone jointly optimized?</li>
+<li>Are unimodal and cross-modal examples mixed throughout training?</li>
+<li>Is there one context that can interleave modalities and preserve references
+   across turns?</li>
+<li>Does the model emit media, or only text about media?</li>
+<li>Are image/video/audio output decoders inside the released checkpoint or
+   external tools?</li>
+<li>Does the technical report disclose these facts, or does only a product page
+   use the label?</li>
+</ol>
+<p>The result should be a vector, not a yes/no label. For example, Kimi K2.5 is
+sequence-native, deeply training-integrated through about 15T continued tokens,
+and backbone-shared after MoonViT projection, while remaining architecturally a
+MoonViT-3D + MLP + K2 MoE composition. It is not generation-native for images.</p>
+<p>Kimi K3 is API-native for image/video input and officially described as having
+native vision. Until its technical report and weights are released, its visual
+encoder, projector, fusion depth, training mixture, and media output decoder
+remain unknown.</p>
+<h2 id="6-systems-consequences">6. Systems consequences<a class="headerlink" href="#6-systems-consequences" title="Permanent link">&para;</a></h2>
+<h3 id="context-and-attention-cost">Context and attention cost<a class="headerlink" href="#context-and-attention-cost" title="Permanent link">&para;</a></h3>
+<p>If a prompt has <span class="arithmatex">\(N_t\)</span> text positions and <span class="arithmatex">\(N_v\)</span> visual positions, dense
+self-attention sees <span class="arithmatex">\(N_t+N_v\)</span> positions. The quadratic attention term scales as</p>
+<div class="arithmatex">\[
+O\left((N_t+N_v)^2d\right).
+\]</div>
+<p>Visual token compression therefore affects time to first token, memory, and how
+much textual context remains. It also affects fidelity; token count is an
+information budget, not just a billing unit.</p>
+<h3 id="batching-and-pipeline-imbalance">Batching and pipeline imbalance<a class="headerlink" href="#batching-and-pipeline-imbalance" title="Permanent link">&para;</a></h3>
+<p>Images have different resolutions and videos have different frame counts. If the
+vision encoder lives in pipeline stage zero, that stage receives variable work
+and memory while later language stages remain regular. Kimi K2.5's Decoupled
+Encoder Process replicates the relatively small vision encoder, load-balances
+visual forward passes, discards intermediate activations, trains the backbone,
+then recomputes the vision encoder for backward. The report claims about 90% of
+text-only training efficiency; this is a vendor result, not a universal number.</p>
+<h3 id="caching">Caching<a class="headerlink" href="#caching" title="Permanent link">&para;</a></h3>
+<p>Static visual embeddings can be cached, but media preprocessing, crop layout,
+model revision, and projector weights become cache identity. Video frame
+sampling also needs a deterministic manifest. Reusing a text prefix cache while
+silently changing visual embeddings is incorrect even if the visible prompt
+string is unchanged.</p>
+<h2 id="7-evaluation-failure-modes">7. Evaluation failure modes<a class="headerlink" href="#7-evaluation-failure-modes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Text prior masquerading as vision:</strong> the decoder guesses plausible document
+  content after visual detail was lost.</li>
+<li><strong>Tiling boundary loss:</strong> a table, object, or word is split across crops.</li>
+<li><strong>Reading-order failure:</strong> raster order disagrees with columns, captions, or
+  diagrams.</li>
+<li><strong>Temporal aliasing:</strong> sparse frame sampling misses a short event.</li>
+<li><strong>Grounding drift:</strong> the right concept is named but its coordinates are wrong.</li>
+<li><strong>modality conflict:</strong> visual tuning improves perception while degrading text,
+  or vice versa.</li>
+<li><strong>benchmark leakage:</strong> synthetic captions or OCR corpora overlap evaluation
+  content.</li>
+<li><strong>tool substitution:</strong> an external OCR or browser tool is credited to the base
+  model.</li>
+</ul>
+<p>A serious evaluation therefore records media preprocessing, resolution, visual
+token budget, frame policy, prompt, tool access, decoding settings, and whether
+the tested endpoint is a fixed checkpoint or a changing product.</p>
+<h2 id="primary-sources">Primary sources<a class="headerlink" href="#primary-sources" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Moonshot AI, <a href="https://arxiv.org/abs/2602.02276">Kimi K2.5: Visual Agentic Intelligence</a>,
+  Sections 4.2–4.5.</li>
+<li>Moonshot AI, <a href="https://www.kimi.com/blog/kimi-k3">Kimi K3 official technical blog</a>
+  and <a href="https://platform.kimi.com/docs/guide/kimi-k3-quickstart">API guide</a>.</li>
+<li>DeepSeek-AI, <a href="https://arxiv.org/abs/2412.10302">DeepSeek-VL2</a>.</li>
+<li>DeepSeek-AI, <a href="https://arxiv.org/abs/2510.18234">DeepSeek-OCR</a> and
+  <a href="https://arxiv.org/abs/2601.20552">DeepSeek-OCR 2</a>.</li>
+<li>Meta, <a href="https://arxiv.org/abs/2405.09818">Chameleon: Mixed-Modal Early-Fusion Foundation Models</a>.</li>
+<li>Meta, <a href="https://openreview.net/forum?id=SI2hI0frk6">Transfusion: Predict the Next Token and Diffuse Images with One
+  Multi-Modal Model</a>.</li>
+<li>BAAI, <a href="https://arxiv.org/abs/2409.18869">Emu3: Next-Token Prediction Is All You Need</a>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

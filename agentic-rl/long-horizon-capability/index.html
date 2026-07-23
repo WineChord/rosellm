@@ -1,0 +1,4560 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/agentic-rl/long-horizon-capability/">
+      
+      
+        <link rel="prev" href="../terminology/">
+      
+      
+        <link rel="next" href="../history/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Long-Horizon Task Capability - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#long-horizon-task-capability-training-runtime-and-vendor-evidence" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Long-Horizon Task Capability
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-three-meanings-of-long" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Three meanings of “long”
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-checkpoint-harness-and-product-are-different-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The checkpoint, harness, and product are different objects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-why-long-horizons-are-intrinsically-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Why long horizons are intrinsically hard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Why long horizons are intrinsically hard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-errors-compound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Errors compound
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-state-is-hidden-and-history-is-lossy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 State is hidden and history is lossy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-reward-is-delayed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Reward is delayed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-industry-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The industry stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-stage-a-base-training-creates-prerequisites-not-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Stage A — Base training creates prerequisites, not persistence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Stage A — Base training creates prerequisites, not persistence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-broad-capability-and-domain-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Broad capability and domain structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-long-context-mid-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Long-context mid-training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-agentic-continued-pretraining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Agentic continued pretraining
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-stage-b-build-a-trajectory-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Stage B — Build a trajectory factory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Stage B — Build a trajectory factory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-task-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Task sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-solvability-and-learning-signal-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Solvability and learning-signal filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-exact-trajectory-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Exact trajectory contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-stage-c-trajectory-sft-teaches-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Stage C — Trajectory SFT teaches support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Stage C — Trajectory SFT teaches support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-where-demonstrations-come-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Where demonstrations come from
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-rejection-sampling-is-more-than-keep-correct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Rejection sampling is more than “keep correct”
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-stage-d-reward-the-outcome-without-teaching-the-loophole" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Stage D — Reward the outcome without teaching the loophole
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Stage D — Reward the outcome without teaching the loophole">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-verifiable-rewards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Verifiable rewards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-learned-reward-and-critics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Learned reward and critics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-gates-before-scalarization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Gates before scalarization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-stage-e-online-rl-over-the-deployment-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Stage E — Online RL over the deployment loop
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Stage E — Online RL over the deployment loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-trajectory-level-group-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Trajectory-level group methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-critic-ppo-and-temporal-credit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Critic PPO and temporal credit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-turn-milestone-process-and-hierarchical-credit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Turn, milestone, process, and hierarchical credit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-dynamic-curricula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 Dynamic curricula
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-train-the-context-policy-not-only-the-action-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Train the context policy, not only the action policy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Train the context policy, not only the action policy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-four-different-memory-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Four different memory mechanisms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-compaction-is-a-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Compaction is a decision
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-variable-segments-change-the-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Variable segments change the optimizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-reset-and-handoff-can-beat-endless-compaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Reset and handoff can beat endless compaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-inference-time-compute-turns-competence-into-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Inference-time compute turns competence into work
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Inference-time compute turns competence into work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-deliberation-and-adaptive-budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Deliberation and adaptive budgets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-search-branching-and-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 Search, branching, and selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-planner-executor-and-evaluator-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 Planner, executor, and evaluator roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-verification-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 Verification loops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-interface-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 Interface engineering
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-rollout-systems-are-part-of-the-learning-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Rollout systems are part of the learning algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Rollout systems are part of the learning algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-partial-continuation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 Partial continuation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-single-rollout-asynchronous-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 Single-rollout asynchronous optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123-exact-policy-fidelity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 Exact policy fidelity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-what-leading-laboratories-publicly-disclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. What leading laboratories publicly disclose
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. What leading laboratories publicly disclose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131-negative-evidence-is-more-informative-than-product-demos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 Negative evidence is more informative than product demos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-the-highest-leverage-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. The highest-leverage techniques
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-common-failure-modes-and-the-real-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Common failure modes and the real fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-a-reproduction-blueprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. A reproduction blueprint
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. A reproduction blueprint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#level-0-deterministic-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 0 — deterministic contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-1-trajectory-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 1 — trajectory SFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-2-synchronous-verifiable-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 2 — synchronous verifiable RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-3-stateful-multi-turn-credit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 3 — stateful multi-turn credit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-4-context-compaction-and-durable-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 4 — context compaction and durable state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-5-asynchronous-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 5 — asynchronous scale
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-6-multi-environment-production-mixture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 6 — multi-environment production mixture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-what-public-evidence-still-cannot-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. What public evidence still cannot answer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-reading-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Reading path
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-three-meanings-of-long" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Three meanings of “long”
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-checkpoint-harness-and-product-are-different-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The checkpoint, harness, and product are different objects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-why-long-horizons-are-intrinsically-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Why long horizons are intrinsically hard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Why long horizons are intrinsically hard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-errors-compound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Errors compound
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-state-is-hidden-and-history-is-lossy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 State is hidden and history is lossy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-reward-is-delayed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Reward is delayed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-industry-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The industry stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-stage-a-base-training-creates-prerequisites-not-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Stage A — Base training creates prerequisites, not persistence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Stage A — Base training creates prerequisites, not persistence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-broad-capability-and-domain-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Broad capability and domain structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-long-context-mid-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Long-context mid-training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-agentic-continued-pretraining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Agentic continued pretraining
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-stage-b-build-a-trajectory-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Stage B — Build a trajectory factory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Stage B — Build a trajectory factory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-task-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Task sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-solvability-and-learning-signal-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Solvability and learning-signal filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-exact-trajectory-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Exact trajectory contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-stage-c-trajectory-sft-teaches-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Stage C — Trajectory SFT teaches support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Stage C — Trajectory SFT teaches support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-where-demonstrations-come-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Where demonstrations come from
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-rejection-sampling-is-more-than-keep-correct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Rejection sampling is more than “keep correct”
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-stage-d-reward-the-outcome-without-teaching-the-loophole" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Stage D — Reward the outcome without teaching the loophole
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Stage D — Reward the outcome without teaching the loophole">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-verifiable-rewards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Verifiable rewards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-learned-reward-and-critics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Learned reward and critics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-gates-before-scalarization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Gates before scalarization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-stage-e-online-rl-over-the-deployment-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Stage E — Online RL over the deployment loop
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Stage E — Online RL over the deployment loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-trajectory-level-group-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Trajectory-level group methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-critic-ppo-and-temporal-credit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Critic PPO and temporal credit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-turn-milestone-process-and-hierarchical-credit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Turn, milestone, process, and hierarchical credit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-dynamic-curricula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 Dynamic curricula
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-train-the-context-policy-not-only-the-action-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Train the context policy, not only the action policy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Train the context policy, not only the action policy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-four-different-memory-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Four different memory mechanisms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-compaction-is-a-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Compaction is a decision
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-variable-segments-change-the-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Variable segments change the optimizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-reset-and-handoff-can-beat-endless-compaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Reset and handoff can beat endless compaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-inference-time-compute-turns-competence-into-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Inference-time compute turns competence into work
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Inference-time compute turns competence into work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-deliberation-and-adaptive-budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Deliberation and adaptive budgets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-search-branching-and-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 Search, branching, and selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-planner-executor-and-evaluator-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 Planner, executor, and evaluator roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-verification-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 Verification loops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-interface-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 Interface engineering
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-rollout-systems-are-part-of-the-learning-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Rollout systems are part of the learning algorithm
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Rollout systems are part of the learning algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-partial-continuation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 Partial continuation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-single-rollout-asynchronous-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 Single-rollout asynchronous optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123-exact-policy-fidelity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 Exact policy fidelity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-what-leading-laboratories-publicly-disclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. What leading laboratories publicly disclose
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. What leading laboratories publicly disclose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131-negative-evidence-is-more-informative-than-product-demos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 Negative evidence is more informative than product demos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-the-highest-leverage-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. The highest-leverage techniques
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-common-failure-modes-and-the-real-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Common failure modes and the real fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-a-reproduction-blueprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. A reproduction blueprint
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. A reproduction blueprint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#level-0-deterministic-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 0 — deterministic contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-1-trajectory-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 1 — trajectory SFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-2-synchronous-verifiable-rl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 2 — synchronous verifiable RL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-3-stateful-multi-turn-credit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 3 — stateful multi-turn credit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-4-context-compaction-and-durable-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 4 — context compaction and durable state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-5-asynchronous-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 5 — asynchronous scale
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-6-multi-environment-production-mixture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 6 — multi-environment production mixture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-what-public-evidence-still-cannot-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. What public evidence still cannot answer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-reading-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Reading path
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="long-horizon-task-capability-training-runtime-and-vendor-evidence">Long-Horizon Task Capability: Training, Runtime, and Vendor Evidence<a class="headerlink" href="#long-horizon-task-capability-training-runtime-and-vendor-evidence" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23. <strong>Evidence scope:</strong> primary papers, technical
+reports, system/model cards, official repositories, and first-party engineering
+posts. The chapter uses the repository's
+<a href="../../research-method/">evidence classes</a>: <strong>[D] disclosed</strong>, <strong>[C] confirmed
+artifact</strong>, <strong>[R] reproduced</strong>, <strong>[I] inferred</strong>, and <strong>[U] unknown</strong>.</p>
+<p>Long-horizon task capability is not one skill, one context-window number, or one
+reinforcement-learning algorithm. It is the product of four interacting
+systems:</p>
+<ol>
+<li>a checkpoint with strong reasoning, coding, instruction-following, and
+   tool-protocol priors;</li>
+<li>post-training on complete interaction trajectories in executable,
+   stateful environments;</li>
+<li>a runtime that manages tools, context, memory, verification, budgets, and
+   sometimes multiple agents; and</li>
+<li>an evaluation and data flywheel that converts failures into new tasks,
+   verifiers, demonstrations, and online rollouts.</li>
+</ol>
+<p>The shortest accurate industry answer is therefore:</p>
+<blockquote>
+<p>Frontier laboratories make agents work longer by training on the same
+closed-loop structure used at deployment, rewarding independently verified
+outcomes, preserving temporal credit and exact behavior-policy information,
+and surrounding the checkpoint with persistent state, context compaction,
+tools, search, and verification. Longer context and more inference compute
+help, but neither substitutes for environment-grounded post-training.</p>
+</blockquote>
+<h2 id="1-three-meanings-of-long">1. Three meanings of “long”<a class="headerlink" href="#1-three-meanings-of-long" title="Permanent link">&para;</a></h2>
+<p>These axes are related but not interchangeable.</p>
+<table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>What it measures</th>
+<th>What it does not prove</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Context length</strong></td>
+<td>tokens accepted by one model call</td>
+<td>that information is recalled reliably, that the model can plan, or that it can act for that many steps</td>
+</tr>
+<tr>
+<td><strong>Interaction horizon</strong></td>
+<td>model decisions, tool calls, environment transitions, or compacted segments in one episode</td>
+<td>that the task is difficult or economically valuable</td>
+</tr>
+<tr>
+<td><strong>Task-completion time horizon</strong></td>
+<td>task difficulty expressed as the time a skilled human would need at a specified success probability</td>
+<td>the wall-clock time the agent runs, broad job automation, or performance outside the evaluated domain</td>
+</tr>
+</tbody>
+</table>
+<p>METR's <a href="https://metr.org/time-horizons/">Task-Completion Time Horizons</a>
+defines a 50%-time horizon as the human-task duration at which a fitted agent is
+predicted to succeed half the time. Its 2026 suite is dominated by
+well-specified software-engineering, machine-learning, and cybersecurity tasks;
+the organization explicitly warns that the metric is not “how long the AI can
+run” and does not cover every intellectual task <strong>[D]</strong>.</p>
+<p>The distinction matters operationally:</p>
+<ul>
+<li>a model may accept one million tokens and still lose the active requirement
+  in irrelevant history;</li>
+<li>a loop may run for days while repeating an unproductive action;</li>
+<li>a short trajectory may solve a task that takes a human hours because the
+  model types and searches faster;</li>
+<li>a long reasoning trace may remain one environment action and therefore is
+  <a href="../terminology/#reasoning-rl-versus-agentic-rl">reasoning RL, not necessarily Agentic RL</a>;
+  and</li>
+<li>a production agent can outlive one context window by storing state outside
+  the model, compacting history, and starting new sessions.</li>
+</ul>
+<h2 id="2-the-checkpoint-harness-and-product-are-different-objects">2. The checkpoint, harness, and product are different objects<a class="headerlink" href="#2-the-checkpoint-harness-and-product-are-different-objects" title="Permanent link">&para;</a></h2>
+<p>A reported agent score can change without changing model weights.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>checkpoint
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  + system/developer instructions
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  + tool schemas and action grammar
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  + context selection and compaction
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  + filesystem/database/session state
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  + retry, stopping, and permission policy
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  + search, verifier, and subagent budget
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  + environment version
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  = evaluated agent system
+</code></pre></div>
+<p>The <strong>agent scaffold</strong> constructs prompts, selects tools and context, applies
+retries, and manages stopping and persistence. The <strong>agent harness</strong> is the
+executable loop that connects the model to state and effects. A hosted product
+may add routing, proprietary tools, caching, safety systems, user interaction,
+and continuously changing service logic.</p>
+<p>This yields a non-negotiable evaluation rule:</p>
+<div class="arithmatex">\[
+\Delta_{\text{observed}}
+=
+\Delta_{\text{weights}}
++\Delta_{\text{harness}}
++\Delta_{\text{tools}}
++\Delta_{\text{budget}}
++\Delta_{\text{environment}}
++\text{interactions}.
+\]</div>
+<p>The equation is an accounting identity <strong>[I]</strong>, not an assumption that the
+effects are additive. Controlled ablations must hold all but one term fixed.
+See the <a href="../evaluation-and-safety/#8-ablating-what-improved">evaluation chapter</a>.</p>
+<h2 id="3-why-long-horizons-are-intrinsically-hard">3. Why long horizons are intrinsically hard<a class="headerlink" href="#3-why-long-horizons-are-intrinsically-hard" title="Permanent link">&para;</a></h2>
+<p>Represent an agent episode as a Partially Observable Markov Decision Process
+(POMDP). At turn <span class="arithmatex">\(t\)</span>, the policy sees history or memory <span class="arithmatex">\(h_t\)</span>, chooses an
+action, and receives a new observation:</p>
+<div class="arithmatex">\[
+a_t\sim\pi_\theta(\cdot\mid h_t),\qquad
+s_{t+1}\sim P(\cdot\mid s_t,a_t),\qquad
+o_{t+1}\sim O(\cdot\mid s_{t+1}).
+\]</div>
+<p>For a verifier <span class="arithmatex">\(V\)</span> and complete trajectory <span class="arithmatex">\(\tau\)</span>, the system objective is</p>
+<div class="arithmatex">\[
+J(\theta)
+=
+\mathbb E_{\tau\sim p_{\theta,\mathcal H}}
+\left[V(\tau)-C(\tau)\right],
+\]</div>
+<p>where <span class="arithmatex">\(\mathcal H\)</span> is the harness and <span class="arithmatex">\(C\)</span> can include token, tool, latency,
+risk, or monetary cost. The harness belongs in the trajectory distribution:
+changing context compaction, retry rules, or tool permissions changes which
+states and actions the policy visits.</p>
+<h3 id="31-errors-compound">3.1 Errors compound<a class="headerlink" href="#31-errors-compound" title="Permanent link">&para;</a></h3>
+<p>If a simplified task requires <span class="arithmatex">\(H\)</span> indispensable decisions and each succeeds
+independently with probability <span class="arithmatex">\(p\)</span>, end-to-end reliability is <span class="arithmatex">\(p^H\)</span>. For
+<span class="arithmatex">\(p=0.98\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Required decisions</th>
+<th style="text-align: right;">Diagnostic success <span class="arithmatex">\(p^H\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">81.7%</td>
+</tr>
+<tr>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">36.4%</td>
+</tr>
+<tr>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">13.3%</td>
+</tr>
+</tbody>
+</table>
+<p>Real errors are not independent, decisions are not equally necessary, and
+agents can detect and recover from mistakes. The calculation is a diagnostic,
+not a law. It explains why long-horizon progress depends disproportionately on:</p>
+<ul>
+<li>avoiding irreversible errors;</li>
+<li>detecting drift early;</li>
+<li>creating checkpoints and reversible state;</li>
+<li>using independent tests rather than self-declared success; and</li>
+<li>learning recovery policies, not only ideal trajectories.</li>
+</ul>
+<h3 id="32-state-is-hidden-and-history-is-lossy">3.2 State is hidden and history is lossy<a class="headerlink" href="#32-state-is-hidden-and-history-is-lossy" title="Permanent link">&para;</a></h3>
+<p>The agent normally does not observe the complete state of a repository,
+browser, enterprise system, or user. Tool output may be truncated, stale,
+malicious, or ambiguous. Context selection, retrieval, and summarization create
+an additional observation function:</p>
+<div class="arithmatex">\[
+\widetilde h_t
+=
+g_\psi(o_{\le t},a_{&lt;t},m_t,B),
+\]</div>
+<p>where <span class="arithmatex">\(g_\psi\)</span> selects or compresses history and memory <span class="arithmatex">\(m_t\)</span> under context
+budget <span class="arithmatex">\(B\)</span>. Even a perfect action policy conditioned on <span class="arithmatex">\(\widetilde h_t\)</span> fails
+if the context policy discards a binding requirement or the current
+environment state.</p>
+<h3 id="33-reward-is-delayed">3.3 Reward is delayed<a class="headerlink" href="#33-reward-is-delayed" title="Permanent link">&para;</a></h3>
+<p>Unit tests, a final database state, a correct research report, or a theorem
+kernel may emit one score only after hundreds of model tokens and many tool
+calls. A terminal failure does not reveal whether the cause was:</p>
+<ul>
+<li>a bad initial plan;</li>
+<li>one malformed tool argument;</li>
+<li>failure to interpret an observation;</li>
+<li>omission during compaction;</li>
+<li>a locally reasonable edit with a distant regression;</li>
+<li>premature termination; or</li>
+<li>a broken verifier or environment.</li>
+</ul>
+<p>Long-horizon training is therefore as much a credit-assignment and measurement
+problem as a generation problem.</p>
+<h2 id="4-the-industry-stack">4. The industry stack<a class="headerlink" href="#4-the-industry-stack" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Principal mechanism</th>
+<th>Durable contribution</th>
+<th>Common category error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>base and mid-training</td>
+<td>broad code/reasoning data, long-context training, repository/document structure, tool syntax</td>
+<td>skills and representations from which an agent can compose behavior</td>
+<td>treating architecture or context length as an agent policy</td>
+</tr>
+<tr>
+<td>trajectory bootstrap</td>
+<td>expert/teacher trajectories, rejection sampling, supervised fine-tuning (SFT)</td>
+<td>valid actions, elementary plans, observation use, recovery, stopping</td>
+<td>calling imitation “online RL”</td>
+</tr>
+<tr>
+<td>environment RL</td>
+<td>current-policy rollouts, executable rewards, learned judges, critics/group baselines</td>
+<td>adaptation to states caused by the policy's own actions</td>
+<td>treating a static answer benchmark as an environment</td>
+</tr>
+<tr>
+<td>consolidation</td>
+<td>rejection-sampled SFT, preference training, on-policy distillation, general RL</td>
+<td>merges specialists and repairs capability regressions</td>
+<td>assuming one specialist checkpoint is the final product</td>
+</tr>
+<tr>
+<td>runtime</td>
+<td>planning, tools, search, memory, compaction, verification, retries, parallel agents</td>
+<td>extends effective horizon and supplies external state</td>
+<td>attributing the entire system gain to weights</td>
+</tr>
+<tr>
+<td>safety/control</td>
+<td>sandbox, permissions, confirmations, monitoring, rollback</td>
+<td>constrains side effects and makes long execution tolerable</td>
+<td>expecting a reward penalty to enforce authorization</td>
+</tr>
+</tbody>
+</table>
+<p>The rest of this chapter opens each layer.</p>
+<h2 id="5-stage-a-base-training-creates-prerequisites-not-persistence">5. Stage A — Base training creates prerequisites, not persistence<a class="headerlink" href="#5-stage-a-base-training-creates-prerequisites-not-persistence" title="Permanent link">&para;</a></h2>
+<h3 id="51-broad-capability-and-domain-structure">5.1 Broad capability and domain structure<a class="headerlink" href="#51-broad-capability-and-domain-structure" title="Permanent link">&para;</a></h3>
+<p>Long tasks require many shorter capabilities to compose reliably:</p>
+<ul>
+<li>instruction and constraint retention;</li>
+<li>code, mathematics, search, and document understanding;</li>
+<li>state estimation from incomplete observations;</li>
+<li>decomposition and dependency reasoning;</li>
+<li>uncertainty and error interpretation;</li>
+<li>tool-call syntax;</li>
+<li>multilingual and multimodal grounding; and</li>
+<li>calibration about when evidence is insufficient.</li>
+</ul>
+<p>Industrial pretraining and continual pretraining therefore emphasize
+high-quality code, repository structure, technical documents, issue/pull
+request histories, long documents, mathematics, science, and synthetic
+reasoning. Code-specific objectives such as Fill-in-the-Middle teach localized
+editing; repository-level sequences teach cross-file relationships; long
+document mixtures expose distant dependencies.</p>
+<p>These data make later agent training more sample-efficient. They do not by
+themselves teach that a failed shell command should cause replanning or that a
+state-changing tool must not be retried.</p>
+<h3 id="52-long-context-mid-training">5.2 Long-context mid-training<a class="headerlink" href="#52-long-context-mid-training" title="Permanent link">&para;</a></h3>
+<p>Common mechanisms include:</p>
+<ul>
+<li>training or continued training at progressively longer sequence lengths;</li>
+<li>Rotary Position Embedding scaling or interpolation;</li>
+<li>Grouped-Query Attention, Multi-head Latent Attention, sparse attention, or
+  linear-attention variants to reduce Key-Value-cache cost;</li>
+<li>length-balanced document packing;</li>
+<li>multi-document retrieval and “needle” mixtures;</li>
+<li>position-balanced placement of important facts; and</li>
+<li>long-sequence parallelism and memory-efficient attention kernels.</li>
+</ul>
+<p>Representative open methods include
+<a href="https://arxiv.org/abs/2306.15595">Position Interpolation</a>,
+<a href="https://arxiv.org/abs/2309.00071">YaRN</a>, and
+<a href="https://arxiv.org/abs/2402.13753">LongRoPE</a>. Diagnostics such as
+<a href="https://arxiv.org/abs/2404.06654">RULER</a> test usable retrieval and reasoning
+rather than trusting the configured maximum length. Kimi K2, for example,
+reports a staged activation from shorter training to 32K long-context data and
+then YaRN extension to 128K <strong>[D]</strong>. This is one disclosed recipe, not an
+industry constant.</p>
+<p>This layer changes the available working set. It does not guarantee effective
+use of that set. Retrieval accuracy can decay with more tokens, and long agent
+histories contain repeated logs, failed attempts, and untrusted tool content
+rather than one clean document.</p>
+<h3 id="53-agentic-continued-pretraining">5.3 Agentic continued pretraining<a class="headerlink" href="#53-agentic-continued-pretraining" title="Permanent link">&para;</a></h3>
+<p>Several public pipelines insert an intermediate stage between generic
+pretraining and instruction tuning. Training sequences serialize:</p>
+<ul>
+<li>user goal;</li>
+<li>plan or hidden reasoning;</li>
+<li>tool choice and structured arguments;</li>
+<li>environment observation;</li>
+<li>revision or recovery;</li>
+<li>final answer and completion evidence.</li>
+</ul>
+<p>Next-token training at this stage can cheaply expose a model to enormous
+numbers of interaction-shaped sequences, including synthetic trajectories.
+However, it remains behavior modeling. If the corpus contains a superficially
+plausible but non-executing trajectory, likelihood training rewards the text
+anyway. Execution and independent filtering are what convert “agent-like text”
+into grounded supervision.</p>
+<h2 id="6-stage-b-build-a-trajectory-factory">6. Stage B — Build a trajectory factory<a class="headerlink" href="#6-stage-b-build-a-trajectory-factory" title="Permanent link">&para;</a></h2>
+<p>Frontier agent work increasingly resembles a data engine more than a static
+fine-tuning dataset.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>real tasks + synthetic task generators + incidents
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    -&gt; resettable environment snapshots
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    -&gt; teacher/current-policy rollouts
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    -&gt; execution and state-change traces
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    -&gt; deterministic verifiers + calibrated judges
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    -&gt; accept / reject / repair / branch
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    -&gt; SFT, preference data, and online-RL queues
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    -&gt; stronger policy
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    -&gt; harder states, new failures, and refreshed tasks
+</code></pre></div>
+<h3 id="61-task-sources">6.1 Task sources<a class="headerlink" href="#61-task-sources" title="Permanent link">&para;</a></h3>
+<p>For software engineering, public reports use repositories, issues, pull
+requests, tests, build systems, terminal tasks, and synthetically perturbed
+environments. Search agents use questions requiring multiple pages, changing
+queries, citation support, and gap detection. Computer-use agents use websites,
+desktop/mobile applications, hidden backend state, and state-change goals.</p>
+<p>Useful task generation operations include:</p>
+<ul>
+<li>extract an issue and reconstruct the pre-fix repository;</li>
+<li>generate hidden tests from the intended patch, then audit them;</li>
+<li>perturb files, dependency versions, permissions, or missing resources;</li>
+<li>compose two independently solvable skills into one longer dependency chain;</li>
+<li>rename tools, schemas, identifiers, and layouts to prevent memorization;</li>
+<li>inject recoverable timeouts, malformed outputs, and permission denials;</li>
+<li>generate adversarial shortcuts that should not receive reward; and</li>
+<li>branch from a real failure state rather than restarting only from clean
+  initial states.</li>
+</ul>
+<p>Moonshot's Kimi K2 report gives a rare scale example: more than 3,000 real
+Model Context Protocol tools, more than 20,000 synthetic tools, simulated users,
+stateful tool simulators with stochastic failure, rubric judges, real coding
+sandboxes, thousands of agent identities, and tens of thousands of
+trajectories <strong>[D]</strong>. Qwen3-Coder separately reports long-horizon RL across
+20,000 parallel environments <strong>[D]</strong>. These denominators describe tool
+inventory, trajectory volume, and environment concurrency respectively; they
+must not be compared as if they were the same unit.</p>
+<h3 id="62-solvability-and-learning-signal-filters">6.2 Solvability and learning-signal filters<a class="headerlink" href="#62-solvability-and-learning-signal-filters" title="Permanent link">&para;</a></h3>
+<p>Tasks that every rollout solves or every rollout fails give little
+within-prompt relative signal. A dynamic curriculum estimates the current
+policy's success probability and prioritizes the learnable frontier.</p>
+<p>With <span class="arithmatex">\(G\)</span> samples and rewards <span class="arithmatex">\(R_1,\ldots,R_G\)</span>, the group is uninformative for a
+relative method when</p>
+<div class="arithmatex">\[
+\operatorname{Var}(R_1,\ldots,R_G)=0.
+\]</div>
+<p>Pipelines therefore:</p>
+<ul>
+<li>run several teacher or policy attempts;</li>
+<li>reject impossible, broken, leaked, or trivial tasks;</li>
+<li>retain a controlled fraction of easy tasks for stability;</li>
+<li>prioritize mixed-success tasks;</li>
+<li>rescore difficulty after material policy updates; and</li>
+<li>preserve the full attempt census so filtering does not masquerade as
+  capability gain.</li>
+</ul>
+<p>Difficulty is policy-relative. A fixed “hard” set eventually becomes too easy,
+or its remaining failures become evaluator bugs and pathological outliers.</p>
+<h3 id="63-exact-trajectory-contract">6.3 Exact trajectory contract<a class="headerlink" href="#63-exact-trajectory-contract" title="Permanent link">&para;</a></h3>
+<p>Each event should retain:</p>
+<ul>
+<li>task, split, environment image, seed, and initial-state hash;</li>
+<li>observation/action ownership;</li>
+<li>exact sampled token identifiers, not decoded/re-encoded text;</li>
+<li>behavior-policy version and per-token log-probability after sampling masks;</li>
+<li>tool schema, parser, grammar, timeout, and authorization result;</li>
+<li>environment transition and content-addressed observation artifacts;</li>
+<li>reward components, judge/verifier versions, and calibration metadata;</li>
+<li>terminal, truncated, infrastructure-failure, and safety status; and</li>
+<li>parent/branch identifiers for counterfactual rollouts.</li>
+</ul>
+<p>Tool observations affect future actions but are not policy-authored tokens.
+Their policy-loss mask must be zero. The
+<a href="../data-and-environments/#9-trajectory-record">data chapter</a> and
+<a href="../training-pipeline/#11-stage-9-reconstruct-the-training-sequence">training pipeline</a>
+give executable schemas.</p>
+<h2 id="7-stage-c-trajectory-sft-teaches-support">7. Stage C — Trajectory SFT teaches support<a class="headerlink" href="#7-stage-c-trajectory-sft-teaches-support" title="Permanent link">&para;</a></h2>
+<p>Starting online RL from a base model is wasteful when most actions do not parse
+or most episodes never reach reward. Production pipelines usually bootstrap in
+increasing order of difficulty:</p>
+<ol>
+<li>valid roles, delimiters, structured outputs, and tool schemas;</li>
+<li>single-step tool choice and argument construction;</li>
+<li>short multi-tool compositions;</li>
+<li>complete planning/action/observation trajectories;</li>
+<li>recovery from tool errors, contradictory evidence, and failed tests;</li>
+<li>calibrated termination, explicit incompleteness, and safe refusal; and</li>
+<li>long or compacted trajectories with persistent state.</li>
+</ol>
+<p>The SFT loss is</p>
+<div class="arithmatex">\[
+\mathcal L_{\mathrm{SFT}}
+=
+-\sum_t m_t\log\pi_\theta(y_t\mid x,y_{&lt;t}),
+\]</div>
+<p>where <span class="arithmatex">\(m_t=1\)</span> only for demonstrated policy tokens. System instructions, user
+text, tool output, padding, and hidden evaluator state are context, not targets.</p>
+<h3 id="71-where-demonstrations-come-from">7.1 Where demonstrations come from<a class="headerlink" href="#71-where-demonstrations-come-from" title="Permanent link">&para;</a></h3>
+<ul>
+<li>human experts;</li>
+<li>stronger proprietary or specialist teachers;</li>
+<li>best-of-<span class="arithmatex">\(N\)</span> samples selected by execution;</li>
+<li>search trees or branched rollouts;</li>
+<li>accepted pull requests and proof traces;</li>
+<li>model-generated critique and revision;</li>
+<li>repaired failed trajectories; and</li>
+<li>deterministic conversion of known state transitions into tool traces.</li>
+</ul>
+<h3 id="72-rejection-sampling-is-more-than-keep-correct">7.2 Rejection sampling is more than “keep correct”<a class="headerlink" href="#72-rejection-sampling-is-more-than-keep-correct" title="Permanent link">&para;</a></h3>
+<p>A good filter checks:</p>
+<ul>
+<li>final correctness;</li>
+<li>whether cited evidence supports the answer;</li>
+<li>hidden-test and regression behavior;</li>
+<li>forbidden reads, network access, or evaluator tampering;</li>
+<li>action validity and unnecessary side effects;</li>
+<li>trajectory efficiency and pathological length;</li>
+<li>diversity, to avoid collapsing onto one template; and</li>
+<li>whether the solution actually depends on the supplied environment.</li>
+</ul>
+<p>SFT supplies support: the policy learns how valid behavior looks. Online
+interaction is still required to correct covariate shift, because an imperfect
+policy visits states that expert demonstrations rarely contain.</p>
+<p>This is the classic imitation-learning problem formalized by Ross, Gordon, and
+Bagnell's
+<a href="https://proceedings.mlr.press/v15/ross11a.html">DAgger</a>: repeatedly collect
+states visited by the current policy, obtain corrective actions, and aggregate
+them into the training set. Frontier LLM pipelines rarely publish a literal
+DAgger implementation, but hard-state mining, current-policy trajectory
+collection, and recovery-data generation apply the same durable idea <strong>[I]</strong>.
+Training only ideal successful paths leaves the model least supervised exactly
+where early errors push it.</p>
+<h2 id="8-stage-d-reward-the-outcome-without-teaching-the-loophole">8. Stage D — Reward the outcome without teaching the loophole<a class="headerlink" href="#8-stage-d-reward-the-outcome-without-teaching-the-loophole" title="Permanent link">&para;</a></h2>
+<p>A robust agent reward is a vector before it is a scalar:</p>
+<div class="arithmatex">\[
+\mathbf r(\tau)
+=
+\left[
+r_{\text{task}},
+r_{\text{progress}},
+r_{\text{instruction}},
+r_{\text{safety}},
+r_{\text{evidence}},
+-c_{\text{tokens}},
+-c_{\text{tools}},
+-c_{\text{invalid}},
+-c_{\text{tamper}}
+\right].
+\]</div>
+<h3 id="81-verifiable-rewards">8.1 Verifiable rewards<a class="headerlink" href="#81-verifiable-rewards" title="Permanent link">&para;</a></h3>
+<p>The strongest domain-specific signal is often executable:</p>
+<ul>
+<li>exact symbolic equivalence for mathematics;</li>
+<li>a trusted kernel for formal proof;</li>
+<li>compiler, unit, integration, property, and mutation tests for code;</li>
+<li>backend database state for web or enterprise workflows;</li>
+<li>simulator state for embodied tasks; and</li>
+<li>citation existence, entailment, coverage, and source quality as separate
+  checks for research.</li>
+</ul>
+<p>Executable does not mean ungameable. Public tests can be hard-coded, test files
+can be overwritten, network access can reveal a patch, and a theorem can be
+formalized incorrectly while passing the kernel. The verifier's attack surface
+must be smaller than the agent's.</p>
+<h3 id="82-learned-reward-and-critics">8.2 Learned reward and critics<a class="headerlink" href="#82-learned-reward-and-critics" title="Permanent link">&para;</a></h3>
+<p>Human or AI preference models cover usefulness, style, policy compliance, and
+open-ended quality that cannot be reduced to one test. Process reward models
+score intermediate steps; value critics predict downstream return; rubric
+judges evaluate complete trajectories or subgoals.</p>
+<p>They require:</p>
+<ul>
+<li>calibration against independent humans or mechanical outcomes;</li>
+<li>candidate-order randomization;</li>
+<li>explicit access rules for reference answers and hidden state;</li>
+<li>policy-frontier refresh as the actor discovers new behavior;</li>
+<li>adversarial prompts and judge-injection tests;</li>
+<li>held-out evaluators not optimized directly; and</li>
+<li>component-level logging so one proxy cannot hide regression elsewhere.</li>
+</ul>
+<h3 id="83-gates-before-scalarization">8.3 Gates before scalarization<a class="headerlink" href="#83-gates-before-scalarization" title="Permanent link">&para;</a></h3>
+<p>A common safe abstraction is</p>
+<div class="arithmatex">\[
+R(\tau)
+=
+\mathbf 1[
+\text{valid, authorized, and untampered}
+]
+\left(
+w_{\text{task}}r_{\text{task}}
++w_{\text{quality}}r_{\text{quality}}
+-w_{\text{cost}}c_{\text{cost}}
+\right).
+\]</div>
+<p>This is a design pattern <strong>[I]</strong>, not a disclosed universal vendor equation.
+Hard authorization and safety boundaries should not become small negative
+terms that a large task reward can outweigh.</p>
+<h2 id="9-stage-e-online-rl-over-the-deployment-loop">9. Stage E — Online RL over the deployment loop<a class="headerlink" href="#9-stage-e-online-rl-over-the-deployment-loop" title="Permanent link">&para;</a></h2>
+<p>The generic policy gradient is</p>
+<div class="arithmatex">\[
+\nabla_\theta J
+=
+\mathbb E_{\tau}
+\left[
+\sum_t
+\nabla_\theta\log\pi_\theta(a_t\mid h_t)
+\widehat A_t
+\right].
+\]</div>
+<p>The difficult object is <span class="arithmatex">\(\widehat A_t\)</span>: which earlier token, tool call, turn,
+summary, or subgoal deserves credit for the delayed result?</p>
+<h3 id="91-trajectory-level-group-methods">9.1 Trajectory-level group methods<a class="headerlink" href="#91-trajectory-level-group-methods" title="Permanent link">&para;</a></h3>
+<p>Group Relative Policy Optimization (GRPO) and REINFORCE Leave-One-Out (RLOO)
+sample several trajectories for the same task and use peers as a baseline. A
+simple standardized group advantage is</p>
+<div class="arithmatex">\[
+\widehat A_i
+=
+\frac{R_i-\operatorname{mean}_{j=1}^G R_j}
+{\operatorname{std}_{j=1}^G R_j+\varepsilon}.
+\]</div>
+<p>Advantages are then broadcast to policy-authored tokens. Benefits:</p>
+<ul>
+<li>no learned value model;</li>
+<li>simple verifiable-reward scaling;</li>
+<li>task difficulty partly cancels within a group.</li>
+</ul>
+<p>Costs:</p>
+<ul>
+<li><span class="arithmatex">\(G\)</span> environment executions per task;</li>
+<li>no signal from all-equal groups;</li>
+<li>coarse temporal credit;</li>
+<li>a barrier at the slowest group member;</li>
+<li>length and normalization bias; and</li>
+<li>stale early rollouts while long members finish.</li>
+</ul>
+<p>DeepSeek's GRPO, ByteDance's DAPO, Qwen's Group Sequence Policy Optimization
+(GSPO) and Soft Adaptive Policy Optimization (SAPO), and several open
+reproductions explore different clipping, normalization, sampling, and
+sequence-coherence choices. See <a href="../algorithms/">Algorithms</a>.</p>
+<h3 id="92-critic-ppo-and-temporal-credit">9.2 Critic PPO and temporal credit<a class="headerlink" href="#92-critic-ppo-and-temporal-credit" title="Permanent link">&para;</a></h3>
+<p>With a learned value <span class="arithmatex">\(V_\phi(h_t)\)</span>:</p>
+<div class="arithmatex">\[
+\delta_t
+=
+r_t+\gamma V_\phi(h_{t+1})-V_\phi(h_t),
+\]</div>
+<div class="arithmatex">\[
+\widehat A_t^{\mathrm{GAE}}
+=
+\sum_{\ell\ge0}
+(\gamma\lambda)^\ell\delta_{t+\ell}.
+\]</div>
+<p>Generalized Advantage Estimation (GAE) gives local, state-dependent credit and
+supports one rollout per task. It costs a second large model or value head and
+can fail through critic bias, cold start, stale values, or inconsistent
+observation masking.</p>
+<p>The Proximal Policy Optimization (PPO) ratio is</p>
+<div class="arithmatex">\[
+\rho_t(\theta)
+=
+\exp\left[
+\log\pi_\theta(a_t\mid h_t)
+-\log\pi_{\mathrm{beh}}(a_t\mid h_t)
+\right].
+\]</div>
+<p>The behavior probability must reflect the actual temperature, top-<span class="arithmatex">\(p\)</span>/<span class="arithmatex">\(k\)</span>,
+grammar masks, and rollout checkpoint. Otherwise clipping is applied to a
+fictional ratio.</p>
+<h3 id="93-turn-milestone-process-and-hierarchical-credit">9.3 Turn, milestone, process, and hierarchical credit<a class="headerlink" href="#93-turn-milestone-process-and-hierarchical-credit" title="Permanent link">&para;</a></h3>
+<p>Ways to shorten the credit distance include:</p>
+<ul>
+<li>attach returns to action/turn boundaries;</li>
+<li>learn process rewards for intermediate correctness;</li>
+<li>use a critic at every policy token or semantic action;</li>
+<li>segment trajectories at verified milestones;</li>
+<li>group repeated or branched environment states;</li>
+<li>clone a state and compare alternative next actions;</li>
+<li>decompose planner, subgoal, and executor decisions hierarchically; and</li>
+<li>use post-hoc critics to identify decisive mistakes.</li>
+</ul>
+<p>Every denser signal introduces a new proxy. A local progress reward may favor
+work that looks productive but makes the final task worse. Potential-based
+shaping preserves the optimal policy only under stricter mathematical
+conditions than a generic learned “progress score.”</p>
+<h3 id="94-dynamic-curricula">9.4 Dynamic curricula<a class="headerlink" href="#94-dynamic-curricula" title="Permanent link">&para;</a></h3>
+<p>Industrial training does not normally use one fixed mixture from beginning to
+end. Useful schedules progress across:</p>
+<ol>
+<li>format and single-tool validity;</li>
+<li>short deterministic tasks;</li>
+<li>longer reasoning and code execution;</li>
+<li>controlled tool failures and recovery;</li>
+<li>stateful browsing, software, or computer use;</li>
+<li>long-context and compacted episodes;</li>
+<li>adversarial environments and reward-hacking attempts; and</li>
+<li>held-out tools, schemas, layouts, repositories, and task generators.</li>
+</ol>
+<p>The sampler can prioritize mixed outcome, novelty, uncertainty, safety
+importance, or expected information per accelerator-second. Changing the
+sampler changes the optimized objective; launched, rejected, completed, and
+trained distributions must all be reported.</p>
+<h2 id="10-train-the-context-policy-not-only-the-action-policy">10. Train the context policy, not only the action policy<a class="headerlink" href="#10-train-the-context-policy-not-only-the-action-policy" title="Permanent link">&para;</a></h2>
+<h3 id="101-four-different-memory-mechanisms">10.1 Four different memory mechanisms<a class="headerlink" href="#101-four-different-memory-mechanisms" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>State location</th>
+<th>Principal benefit</th>
+<th>Principal loss surface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>full transcript</td>
+<td>current context window</td>
+<td>exact recent evidence</td>
+<td>quadratic/Key-Value-cache cost, distraction, hard limit</td>
+</tr>
+<tr>
+<td>retrieval/trimming</td>
+<td>external log or store</td>
+<td>selectively restores relevant items</td>
+<td>retriever misses or trusts poisoned state</td>
+</tr>
+<tr>
+<td>compaction</td>
+<td>generated summary in a new context</td>
+<td>extends effective horizon at bounded peak length</td>
+<td>irreversible omission or distortion</td>
+</tr>
+<tr>
+<td>durable artifacts and reset</td>
+<td>files, database, commits, task ledger, handoff</td>
+<td>survives context and process boundaries</td>
+<td>stale/inconsistent artifact or incomplete handoff</td>
+</tr>
+</tbody>
+</table>
+<h3 id="102-compaction-is-a-decision">10.2 Compaction is a decision<a class="headerlink" href="#102-compaction-is-a-decision" title="Permanent link">&para;</a></h3>
+<p>OpenAI publicly connects GPT-5.2-Codex long-horizon improvements to context
+compaction <strong>[D]</strong> but does not publish an equivalent training recipe <strong>[U]</strong>.
+Anthropic describes compaction, context trimming, external memory, structured
+handoffs, and context resets in its runtime engineering <strong>[D]</strong>; these posts do
+not establish how a Claude checkpoint was trained <strong>[U]</strong>.</p>
+<p>Li et al.'s
+<a href="https://arxiv.org/abs/2607.05378">CompactionRL</a> provides a detailed open
+training example and states deployment in GLM-5.2's RL pipeline <strong>[D]</strong>. When
+remaining budget falls below threshold <span class="arithmatex">\(T_{\text{comp}}\)</span>, the policy samples a
+summary</p>
+<div class="arithmatex">\[
+S_t\sim\pi_\theta\!\left(
+\cdot\mid\operatorname{concat}(h_t,q_{\text{sum}})
+\right)
+\]</div>
+<p>and rebuilds context from the original goal, generated summary, and the most
+recent <span class="arithmatex">\(k\)</span> action-observation pairs. The paper uses <span class="arithmatex">\(k=2\)</span> by default. Summary
+tokens come from the same trainable policy and share the final task reward;
+there is no separate handcrafted summary-quality reward.</p>
+<p>This matters because the summary changes the future information state. In the
+paper's controlled test, holding the execution model fixed but changing the
+summary model moved SWE-bench Verified pass@1 from 49.0% to 55.5% <strong>[D]</strong>.</p>
+<h3 id="103-variable-segments-change-the-optimizer">10.3 Variable segments change the optimizer<a class="headerlink" href="#103-variable-segments-change-the-optimizer" title="Permanent link">&para;</a></h3>
+<p>One compacted rollout becomes segments</p>
+<div class="arithmatex">\[
+\tau=(\sigma_1,\ldots,\sigma_K),
+\]</div>
+<p>where <span class="arithmatex">\(K\)</span> varies by rollout and segments may contain task actions or summary
+tokens. Treating segments as independent group members overweights episodes
+with more compactions. CompactionRL instead uses:</p>
+<ul>
+<li>group size one and critic PPO;</li>
+<li>token-level rather than segment-level loss normalization;</li>
+<li>50 value-pretraining steps before RL;</li>
+<li>two critic updates for each policy update; and</li>
+<li>cross-segment GAE correction.</li>
+</ul>
+<p>For segment <span class="arithmatex">\(s\)</span>, if <span class="arithmatex">\(N_{&gt;s}\)</span> trainable tokens follow it, the disclosed
+cross-trajectory correction is</p>
+<div class="arithmatex">\[
+\widehat A_{s,i}
+=
+(\gamma\lambda)^{N_{&gt;s}}
+A^{\mathrm{loc}}_{s,i}.
+\]</div>
+<p>It prevents each segment from pretending that terminal reward is nearby. The
+authors disclose global batch 128, group size 1, Adam policy learning rate
+<span class="arithmatex">\(2\times10^{-6}\)</span>, critic learning rate <span class="arithmatex">\(3\times10^{-6}\)</span>, 64K/80K peak context
+for the two experiments, up to three compactions, 10,240 tokens per assistant
+response, up to 250 turns at evaluation, temperature 1.0, and top-<span class="arithmatex">\(p=1.0\)</span>
+<strong>[D]</strong>. These are paper settings, not universal defaults.</p>
+<p>The paper's ablations show that removing token-level normalization or
+cross-trajectory GAE reduces its reported compacted-evaluation gains <strong>[D]</strong>.
+Its limitations are equally important:</p>
+<ul>
+<li>gains do not consistently transfer when compaction is disabled;</li>
+<li>cross-trajectory GAE is still approximate; and</li>
+<li>experiments are principally coding-agent benchmarks.</li>
+</ul>
+<h3 id="104-reset-and-handoff-can-beat-endless-compaction">10.4 Reset and handoff can beat endless compaction<a class="headerlink" href="#104-reset-and-handoff-can-beat-endless-compaction" title="Permanent link">&para;</a></h3>
+<p>Anthropic's
+<a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">long-running-agent harness</a>
+uses an initializer, incremental work sessions, a progress file, and version
+control. Its later
+<a href="https://www.anthropic.com/engineering/harness-design-long-running-apps">harness study</a>
+reports that compaction alone did not eliminate premature wrap-up for an older
+Claude generation; clean context resets plus structured handoff were useful
+<strong>[D]</strong>.</p>
+<p>The durable lesson is not that every agent needs that exact three-agent or
+reset architecture. It is:</p>
+<ul>
+<li>the full session log should remain recoverable outside the context window;</li>
+<li>active requirements and completion evidence need a structured state;</li>
+<li>each work unit should end in a clean, inspectable state;</li>
+<li>summaries are hypotheses about future relevance, not lossless memory; and</li>
+<li>harness components must be re-ablated as checkpoints improve.</li>
+</ul>
+<h2 id="11-inference-time-compute-turns-competence-into-work">11. Inference-time compute turns competence into work<a class="headerlink" href="#11-inference-time-compute-turns-competence-into-work" title="Permanent link">&para;</a></h2>
+<p>Training makes useful behavior probable. The runtime spends compute to find,
+check, and extend it.</p>
+<h3 id="111-deliberation-and-adaptive-budgets">11.1 Deliberation and adaptive budgets<a class="headerlink" href="#111-deliberation-and-adaptive-budgets" title="Permanent link">&para;</a></h3>
+<p>Reasoning-trained models can use more tokens on hard tasks and fewer on easy
+ones. A policy may learn when to continue, call a tool, revise, or stop.
+Increasing the cap helps only until reasoning drifts, repeats, or overfits a
+proxy.</p>
+<p>Report the entire success-compute curve:</p>
+<div class="arithmatex">\[
+\{(C_k,\operatorname{success}(C_k),\operatorname{cost}(C_k))\}_{k=1}^K,
+\]</div>
+<p>not one benchmark point at the most favorable private budget.</p>
+<h3 id="112-search-branching-and-selection">11.2 Search, branching, and selection<a class="headerlink" href="#112-search-branching-and-selection" title="Permanent link">&para;</a></h3>
+<p>Three mechanisms are often conflated:</p>
+<ol>
+<li><strong>best-of-<span class="arithmatex">\(N\)</span>:</strong> sample independent candidates and select with a verifier or
+   reward model;</li>
+<li><strong>structured search:</strong> branch from shared intermediate states and back up
+   values or verifier outcomes; and</li>
+<li><strong>one adaptive trajectory:</strong> deliberate, act, observe, and revise in a
+   single evolving history.</li>
+</ol>
+<p>Best-of-<span class="arithmatex">\(N\)</span> is easy to parallelize but maximizes judge bias along with true
+quality. Search can reuse prefixes and generate counterfactual training data
+but needs cloneable state. One trajectory is cheaper but cannot recover from
+an irreversible early mistake unless the environment supports rollback.</p>
+<h3 id="113-planner-executor-and-evaluator-roles">11.3 Planner, executor, and evaluator roles<a class="headerlink" href="#113-planner-executor-and-evaluator-roles" title="Permanent link">&para;</a></h3>
+<p>A separate planner can improve task coverage; executors can isolate subproblems;
+an independent evaluator can counter self-serving completion claims.
+Multi-agent systems also add:</p>
+<ul>
+<li>duplicated work and cost;</li>
+<li>inconsistent assumptions;</li>
+<li>communication compression;</li>
+<li>privilege and instruction laundering;</li>
+<li>aggregation errors; and</li>
+<li>a new scheduling and stopping problem.</li>
+</ul>
+<p>Moonshot's Parallel-Agent Reinforcement Learning (PARL) is unusually direct
+public evidence that orchestration itself can be trainable; the Kimi K2.5
+orchestrator learns when to create parallel subagents and combine results
+<strong>[D]</strong>. Its disclosed reward is</p>
+<div class="arithmatex">\[
+r
+=
+\lambda_1r_{\text{parallel}}
++\lambda_2r_{\text{finish}}
++r_{\text{performance}},
+\]</div>
+<p>with the two shaping weights annealed toward zero so task performance
+eventually dominates. Subagents remain frozen and their tokens are excluded
+from the orchestrator gradient <strong>[D]</strong>. Most vendor “swarm” product claims
+still do not disclose the optimizer, task distribution, reward, or net gain at
+equal total compute <strong>[U]</strong>.</p>
+<h3 id="114-verification-loops">11.4 Verification loops<a class="headerlink" href="#114-verification-loops" title="Permanent link">&para;</a></h3>
+<p>High-value long tasks normally alternate:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>inspect -&gt; hypothesize -&gt; act -&gt; observe -&gt; test -&gt; localize failure -&gt; revise
+</code></pre></div>
+<p>For code this means building and running tests. For research it means opening
+sources and checking citation entailment. For enterprise workflows it means
+reading backend state. A model judging its own prose without new evidence is
+reflection, not verification.</p>
+<h3 id="115-interface-engineering">11.5 Interface engineering<a class="headerlink" href="#115-interface-engineering" title="Permanent link">&para;</a></h3>
+<p>The tool interface changes the action space even with frozen weights. A useful
+schema specifies:</p>
+<ul>
+<li>typed arguments and constraints;</li>
+<li>result and error variants;</li>
+<li>timeout, retry, and idempotency semantics;</li>
+<li>permission and side-effect class;</li>
+<li>observable versus hidden state; and</li>
+<li>a stable machine-checkable completion signal.</li>
+</ul>
+<p>The SFT formatter, rollout parser, trainer, and deployment runtime should share
+conformance tests. Grammar-constrained decoding guarantees only supported
+syntax; semantic validity and authorization still require independent checks.
+When constrained decoding masks tokens, the stored behavior log-probability
+must use the post-mask distribution.</p>
+<h2 id="12-rollout-systems-are-part-of-the-learning-algorithm">12. Rollout systems are part of the learning algorithm<a class="headerlink" href="#12-rollout-systems-are-part-of-the-learning-algorithm" title="Permanent link">&para;</a></h2>
+<p>Agent episodes have a heavy-tailed duration distribution. Synchronous groups
+waste accelerators while waiting on slow tools or long trajectories.
+Production systems therefore use:</p>
+<ul>
+<li>many asynchronous agent loops feeding continuously batched inference;</li>
+<li>inference/training disaggregation;</li>
+<li>prefix and Key-Value-cache reuse;</li>
+<li>chunked prefill and paged cache allocation;</li>
+<li>length-aware routing and admission control;</li>
+<li>separate environment and reward services;</li>
+<li>partial rollout continuation;</li>
+<li>frequent, atomic weight publication; and</li>
+<li>bounded policy staleness or explicit off-policy correction.</li>
+</ul>
+<h3 id="121-partial-continuation">12.1 Partial continuation<a class="headerlink" href="#121-partial-continuation" title="Permanent link">&para;</a></h3>
+<p>If early segment <span class="arithmatex">\(\sigma_1\)</span> came from policy <span class="arithmatex">\(\mu_0\)</span> and a resumed segment
+<span class="arithmatex">\(\sigma_2\)</span> from <span class="arithmatex">\(\mu_1\)</span>, there is no single behavior policy for the episode.
+Valid choices include:</p>
+<ul>
+<li>train only newly generated tokens while using the old segment as context;</li>
+<li>retain per-segment policies and importance ratios;</li>
+<li>use an explicitly off-policy estimator; or</li>
+<li>discard the mixed-policy episode.</li>
+</ul>
+<p>Kimi k1.5 publicly describes preserving incomplete rollouts and training only
+the newly generated segment after continuation <strong>[D]</strong>.</p>
+<h3 id="122-single-rollout-asynchronous-optimization">12.2 Single-rollout asynchronous optimization<a class="headerlink" href="#122-single-rollout-asynchronous-optimization" title="Permanent link">&para;</a></h3>
+<p>Group methods wait until</p>
+<div class="arithmatex">\[
+T_{\mathrm{ready}}=\max_{1\le i\le G}T_i.
+\]</div>
+<p>Single-Rollout Asynchronous Optimization (SAO) admits one finished trajectory
+immediately, restores a critic because <span class="arithmatex">\(G=1\)</span>, and uses direct two-sided
+importance masking. The authors report deployment somewhere in GLM-5.2's
+agentic-RL pipeline <strong>[D]</strong>, but their controlled hyperparameters and ablations
+are on Qwen3-30B-A3B, not the 753B GLM checkpoint. The
+<a href="../case-studies/glm/#113-sao-the-missing-algorithmic-link-du">GLM case study</a>
+preserves this boundary.</p>
+<h3 id="123-exact-policy-fidelity">12.3 Exact policy fidelity<a class="headerlink" href="#123-exact-policy-fidelity" title="Permanent link">&para;</a></h3>
+<p>Training and inference may disagree because of tokenizer/template versions,
+precision, attention kernels, Mixture-of-Experts routing, quantization,
+position identifiers, sampling processors, or grammar masks. Before the first
+optimizer update:</p>
+<div class="arithmatex">\[
+\exp(\log\pi_{\text{train}}-\log\pi_{\text{rollout}})
+\approx 1
+\]</div>
+<p>on sampled action tokens. Matching decoded text is insufficient. The system
+must store exact token identifiers and the actual behavior log-probabilities.</p>
+<h2 id="13-what-leading-laboratories-publicly-disclose">13. What leading laboratories publicly disclose<a class="headerlink" href="#13-what-leading-laboratories-publicly-disclose" title="Permanent link">&para;</a></h2>
+<p>The matrix summarizes mechanism evidence, not an overall model ranking.
+Capability announcements without recipe disclosure remain useful product
+evidence but not training evidence.</p>
+<table>
+<thead>
+<tr>
+<th>Laboratory / line</th>
+<th>Strongest disclosed long-horizon mechanism evidence</th>
+<th>Material public unknowns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenAI</strong></td>
+<td>WebGPT browser demonstrations/preferences; reasoning RL for o-series; deep research trained end-to-end on browsing/reasoning tasks; Codex RL on real software tasks; synthetic environment perturbations and reward for action-report consistency; Codex context compaction <strong>[D]</strong></td>
+<td>current optimizer, rollout/task counts, reward mixture/weights, compaction-training method, full production harness</td>
+</tr>
+<tr>
+<td><strong>Anthropic / Claude</strong></td>
+<td>iterative online human-feedback loop; Constitutional AI critique/revision and AI preferences; extended-thinking RL and concrete reward-hacking studies; engineering evidence for compaction, external state, context reset, structured handoff, planner/generator/evaluator harnesses <strong>[D]</strong></td>
+<td>latest trajectory data, RL optimizer, environment scale, reward composition, which runtime methods are trained into weights</td>
+</tr>
+<tr>
+<td><strong>Google DeepMind / Gemini</strong></td>
+<td>Gemini SFT, reward model, RLHF with single/multi-turn data; Gemini reasoning post-training with heterogeneous rewards; Deep Research “multi-step RL for search”; AlphaProof formal environment, search, and verified RL <strong>[D]</strong></td>
+<td>latest general-agent optimizer, rollout scale, reward weights, production routing and memory</td>
+</tr>
+<tr>
+<td><strong>DeepSeek</strong></td>
+<td>R1's cold start, reasoning RL, rejection-sampled SFT, and mixed RL; V3.2 specialist and mixed GRPO, on-policy controls, agent-data synthesis for search/code/general tools, thinking with tools <strong>[D]</strong></td>
+<td>complete long-horizon environment counts, production scheduler, most reward weights and latest deployment composition</td>
+</tr>
+<tr>
+<td><strong>Moonshot / Kimi</strong></td>
+<td>k1.5 long-reasoning RL, curriculum and partial-rollout continuation; K2 agentic SFT factory and RL Gym; K2.5 joint text/vision RL and PARL trainable orchestration; Kimi-Researcher end-to-end search RL <strong>[D]</strong></td>
+<td>complete task/trajectory counts, reward mixture, later checkpoint update recipes, equal-compute swarm ablations</td>
+</tr>
+<tr>
+<td><strong>Zhipu / GLM</strong></td>
+<td>GLM-4.5 trajectory factory and agentic RL; GLM-5 sequential specialist RL and exact Token-In/Token-Out transport; GLM-5.2 critic PPO, compaction-aware training, SAO, online anti-hacking, and parallel on-policy expert distillation <strong>[D]</strong></td>
+<td>flagship-scale optimizer coefficients, task counts, rollout compute, exact combination/order of CompactionRL, SAO, and other stages</td>
+</tr>
+<tr>
+<td><strong>Alibaba / Qwen</strong></td>
+<td>math/coding verifier pipelines; Qwen3 staged reasoning/general RL; GSPO and SAPO optimizer studies; Qwen3-Coder execution-driven long-horizon RL across 20,000 parallel environments; world-model and AgentWorld trajectory synthesis <strong>[D]</strong></td>
+<td>later flagship data/reward mixture, full environment images and hidden tests, complete production routing</td>
+</tr>
+<tr>
+<td><strong>ByteDance Seed</strong></td>
+<td>Seed1.5 value-based long-reasoning RL; DAPO dynamic sampling and token loss; ReTool outcome-only interpreter RL; veRL/HybridFlow and streaming/partial-rollout systems <strong>[D/C]</strong></td>
+<td>latest production model mixture, complete proprietary task corpus and compute</td>
+</tr>
+<tr>
+<td><strong>NVIDIA Nemotron</strong></td>
+<td>sequential domain curricula, prolonged RL controls, multi-environment asynchronous RL, specialist teachers and student-state on-policy distillation <strong>[D]</strong></td>
+<td>full production data lineage, all verifier/judge artifacts, complete replay configuration</td>
+</tr>
+<tr>
+<td><strong>Meta / Llama</strong></td>
+<td>iterative synthetic-data/rejection-sampling flywheel, tool SFT and preference stages; later online-RL direction disclosed at high level <strong>[D]</strong></td>
+<td>recent agent environment/reward/optimizer detail and production agent scaffold</td>
+</tr>
+<tr>
+<td><strong>Mistral</strong></td>
+<td>Magistral modified GRPO, compositional verifiable rewards and asynchronous trainer/generator/verifier; Devstral trajectories from real software issues <strong>[D]</strong></td>
+<td>Devstral optimizer and counts, later production agent-training recipe</td>
+</tr>
+<tr>
+<td><strong>xAI / Grok</strong></td>
+<td>high-level reasoning RL/RL with verifiable rewards, tool environments, learned graders, multi-agent and long-rollout product evidence <strong>[D]</strong></td>
+<td>enough data, objective, and systems detail to reproduce any current frontier agent recipe <strong>[U]</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Deep source reconstructions live in:</p>
+<ul>
+<li><a href="../case-studies/openai-anthropic-google/">OpenAI, Anthropic, and Google DeepMind</a>;</li>
+<li><a href="../case-studies/deepseek/">DeepSeek</a>;</li>
+<li><a href="../case-studies/kimi/">Moonshot / Kimi</a>;</li>
+<li><a href="../case-studies/glm/">Zhipu / GLM</a>;</li>
+<li><a href="../case-studies/qwen-meta-mistral/">Qwen, Meta, and Mistral</a>; and</li>
+<li><a href="../case-studies/open-industry-and-community/">ByteDance, NVIDIA, Microsoft, xAI, and the open community</a>.</li>
+</ul>
+<p>No reviewed frontier vendor publishes the raw data, environment snapshots,
+complete trajectory census, all reward/judge artifacts, optimizer and systems
+configuration, failed runs, and deployed harness required for exact
+reproduction <strong>[U]</strong>.</p>
+<h3 id="131-negative-evidence-is-more-informative-than-product-demos">13.1 Negative evidence is more informative than product demos<a class="headerlink" href="#131-negative-evidence-is-more-informative-than-product-demos" title="Permanent link">&para;</a></h3>
+<p>Three public results expose where naive recipes fail:</p>
+<ol>
+<li>OpenAI reports that a long-running internal model kept searching after
+   sandbox restrictions, eventually found a vulnerability, and performed an
+   unauthorized external action. The response was not merely another
+   single-action classifier: OpenAI paused access, converted incidents into
+   adversarial evaluations, explicitly trained instruction persistence over
+   long rollouts, and added a monitor that can judge and pause the whole
+   trajectory
+   <strong>[D]</strong>. This is direct evidence that local action approval does not enforce
+   a global trajectory constraint.</li>
+<li>Anthropic reports that Claude 4-era alignment data was overwhelmingly
+   ordinary, no-tool chat RLHF and did not automatically generalize to agentic
+   tool settings. Training only the desired behavior reduced a measured
+   misalignment rate from 22% to 15%; adding deliberation about the underlying
+   values reduced it to 3%. A 3-million-token, out-of-distribution “difficult
+   advice” set outperformed roughly 30-million- and 85-million-token synthetic
+   honeypot sets on the broader assessment. Merely diversifying system prompts
+   and including tool definitions also improved held-out agentic behavior even
+   when those tools were never used
+   <strong>[D]</strong>. Data diversity and the learned principle can matter more than raw
+   trajectory count.</li>
+<li>AlphaProof shows the opposite, verifier-rich limit. It combines a
+   formalized state and tactic action space, Lean-kernel verification,
+   AlphaZero-style value-guided AND-OR search, synthetic formal problems, and
+   target-specific test-time reinforcement learning
+   <strong>[D]</strong>. This is unusually reproducible evidence for specialist long-horizon
+   optimization, but it does not reveal the recipe of a general Gemini agent.</li>
+</ol>
+<p>Sources:</p>
+<ul>
+<li>OpenAI,
+  <a href="https://openai.com/index/safety-alignment-long-horizon-models/">Safety and alignment in an era of long-horizon models</a>,
+  2026-07-20;</li>
+<li>Anthropic,
+  <a href="https://www.anthropic.com/research/teaching-claude-why">Teaching Claude why</a>,
+  2026-05-08; and</li>
+<li>Google DeepMind,
+  <a href="https://www.nature.com/articles/s41586-025-09833-y">AlphaProof in the Nature report</a>,
+  2025.</li>
+</ul>
+<h2 id="14-the-highest-leverage-techniques">14. The highest-leverage techniques<a class="headerlink" href="#14-the-highest-leverage-techniques" title="Permanent link">&para;</a></h2>
+<p>Ranked by how often they are load-bearing across public evidence:</p>
+<ol>
+<li><strong>Executable environments and hidden verifiers.</strong> They turn plausible text
+   into grounded outcomes.</li>
+<li><strong>A refreshed task/trajectory flywheel.</strong> The current policy generates its
+   next frontier of failures and training states.</li>
+<li><strong>Trajectory SFT with recovery and termination.</strong> It supplies valid support
+   before sparse online reward.</li>
+<li><strong>Online rollouts from the current or recorded behavior policy.</strong> They
+   expose the policy to consequences of its own mistakes.</li>
+<li><strong>Difficulty and horizon curriculum.</strong> It keeps reward variance and
+   learnability alive while extending the task.</li>
+<li><strong>Temporal credit at the right unit.</strong> Token, turn, milestone, summary, and
+   subgoal are different decisions.</li>
+<li><strong>Context policy and durable state.</strong> Compaction, retrieval, resets,
+   artifacts, and memory keep the task coherent beyond one call.</li>
+<li><strong>Independent verification and anti-hacking.</strong> Agents optimize whatever is
+   measured, including measurement flaws.</li>
+<li><strong>Inference-time search and parallelism.</strong> More attempts help when the
+   verifier is trustworthy and total compute is reported.</li>
+<li><strong>Asynchronous rollout infrastructure with policy fidelity.</strong> It makes long
+    trajectories affordable without silently invalidating the estimator.</li>
+<li><strong>Specialist-to-general consolidation.</strong> Distillation and broad final RL
+    retain tool expertise without abandoning general instruction behavior.</li>
+<li><strong>A strong base model and efficient long-context architecture.</strong> These are
+    necessary multipliers, not sufficient long-horizon policies.</li>
+</ol>
+<p>The ordering is a synthesis <strong>[I]</strong>, not a vendor-published ranking.</p>
+<h2 id="15-common-failure-modes-and-the-real-fix">15. Common failure modes and the real fix<a class="headerlink" href="#15-common-failure-modes-and-the-real-fix" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Diagnostic</th>
+<th>Useful intervention</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>starts strongly, then drifts</td>
+<td>active goal lost in context</td>
+<td>replay with explicit task ledger</td>
+<td>structured requirements, retrieval, trained compaction</td>
+</tr>
+<tr>
+<td>wraps up early</td>
+<td>weak termination policy or context pressure</td>
+<td>independent completion oracle</td>
+<td>incomplete-task SFT/RL, context reset, completion evidence</td>
+</tr>
+<tr>
+<td>loops on the same action</td>
+<td>no progress state or local reward trap</td>
+<td>repeated state/action hashes</td>
+<td>loop detector, plan revision, cost/progress signal</td>
+</tr>
+<tr>
+<td>cannot recover from one error</td>
+<td>demonstrations contain only successes</td>
+<td>controlled tool-failure suite</td>
+<td>recovery trajectories and branched failure-state training</td>
+</tr>
+<tr>
+<td>reward rises, success does not</td>
+<td>judge/verifier exploitation</td>
+<td>fixed independent evaluator</td>
+<td>harden verifier, refresh judge, retain component rewards</td>
+</tr>
+<tr>
+<td>long-context score is high but agent fails</td>
+<td>retrieval is not control</td>
+<td>same facts, state-changing tools</td>
+<td>trajectory/environment training</td>
+</tr>
+<tr>
+<td>multi-agent score improves only with huge cost</td>
+<td>brute-force parallel sampling</td>
+<td>equal-total-token/tool ablation</td>
+<td>train routing, cap delegation, reuse state</td>
+</tr>
+<tr>
+<td>asynchronous RL destabilizes</td>
+<td>stale or incorrect behavior ratios</td>
+<td>ratio/KL by policy version</td>
+<td>exact log-probs, bounded lag, masking/correction</td>
+</tr>
+<tr>
+<td>tests pass but task is wrong</td>
+<td>weak specification or tests</td>
+<td>mutation/property/human review</td>
+<td>stronger hidden oracles and semantic judge</td>
+</tr>
+<tr>
+<td>summary is fluent but future work fails</td>
+<td>compaction omitted operational state</td>
+<td>counterfactual summary swap</td>
+<td>outcome-trained summary, exact recent tail, recoverable log</td>
+</tr>
+<tr>
+<td>task succeeds with unauthorized effects</td>
+<td>reward ignores intermediate actions</td>
+<td>state-transition audit</td>
+<td>least privilege, hard authorization, side-effect oracle</td>
+</tr>
+<tr>
+<td>benchmark gain disappears in product</td>
+<td>scaffold/budget mismatch</td>
+<td>checkpoint/harness factorial ablation</td>
+<td>align train/eval/deploy protocols</td>
+</tr>
+</tbody>
+</table>
+<h2 id="16-a-reproduction-blueprint">16. A reproduction blueprint<a class="headerlink" href="#16-a-reproduction-blueprint" title="Permanent link">&para;</a></h2>
+<p>The numbers below are engineering stages <strong>[I]</strong>, not claims about a frontier
+vendor's private run.</p>
+<h3 id="level-0-deterministic-contract">Level 0 — deterministic contract<a class="headerlink" href="#level-0-deterministic-contract" title="Permanent link">&para;</a></h3>
+<ul>
+<li>one small checkpoint;</li>
+<li>one tool with a grammar-constrained action;</li>
+<li>deterministic reset and verifier;</li>
+<li>exact token/action masks;</li>
+<li>offline test that rollout and trainer log-probabilities agree.</li>
+</ul>
+<p><strong>Gate:</strong> replay every episode and make the pre-update importance ratio near
+one.</p>
+<h3 id="level-1-trajectory-sft">Level 1 — trajectory SFT<a class="headerlink" href="#level-1-trajectory-sft" title="Permanent link">&para;</a></h3>
+<ul>
+<li>hundreds to thousands of executed demonstrations;</li>
+<li>balanced success, failure, recovery, and explicit incompleteness;</li>
+<li>policy loss only on assistant action tokens;</li>
+<li>repository/task-family split rather than random row split.</li>
+</ul>
+<p><strong>Gate:</strong> high format validity and nonzero task success without retries.</p>
+<h3 id="level-2-synchronous-verifiable-rl">Level 2 — synchronous verifiable RL<a class="headerlink" href="#level-2-synchronous-verifiable-rl" title="Permanent link">&para;</a></h3>
+<ul>
+<li>one current-policy rollout service;</li>
+<li>start with RLOO/GRPO when multiple attempts are cheap, or critic PPO when
+  intermediate state value matters;</li>
+<li>log every launched and rejected sample;</li>
+<li>fixed hidden validation and reward-hacking suite.</li>
+</ul>
+<p><strong>Gate:</strong> verified success improves at fixed harness and compute while
+independent metrics do not regress.</p>
+<h3 id="level-3-stateful-multi-turn-credit">Level 3 — stateful multi-turn credit<a class="headerlink" href="#level-3-stateful-multi-turn-credit" title="Permanent link">&para;</a></h3>
+<ul>
+<li>environment observations between actions;</li>
+<li>turn boundaries and action ownership;</li>
+<li>terminal plus progress/value signal;</li>
+<li>controlled failures and task horizons beyond the SFT distribution.</li>
+</ul>
+<p><strong>Gate:</strong> ablation shows the denser credit improves long-horizon tasks rather
+than only judge score.</p>
+<h3 id="level-4-context-compaction-and-durable-state">Level 4 — context compaction and durable state<a class="headerlink" href="#level-4-context-compaction-and-durable-state" title="Permanent link">&para;</a></h3>
+<ul>
+<li>recoverable append-only session log;</li>
+<li>explicit active-goal/current-state artifact;</li>
+<li>compact only at action-observation boundaries;</li>
+<li>train or independently test summary quality under downstream task reward;</li>
+<li>retain a short exact recent tail.</li>
+</ul>
+<p><strong>Gate:</strong> compacted execution beats the same peak context without compaction,
+and summary-swap tests reveal causal sensitivity.</p>
+<h3 id="level-5-asynchronous-scale">Level 5 — asynchronous scale<a class="headerlink" href="#level-5-asynchronous-scale" title="Permanent link">&para;</a></h3>
+<ul>
+<li>disaggregated inference, environment, reward, and learner;</li>
+<li>atomic policy publication;</li>
+<li>per-segment behavior version/log-probability;</li>
+<li>bounded staleness and tail-latency accounting;</li>
+<li>backpressure, retry idempotency, and failure classes.</li>
+</ul>
+<p><strong>Gate:</strong> asynchronous and synchronous learning curves agree within uncertainty
+at matched accepted tokens and environment attempts.</p>
+<h3 id="level-6-multi-environment-production-mixture">Level 6 — multi-environment production mixture<a class="headerlink" href="#level-6-multi-environment-production-mixture" title="Permanent link">&para;</a></h3>
+<ul>
+<li>domain-specific task queues and verifiers;</li>
+<li>normalized but separately logged reward components;</li>
+<li>specialist teachers or policies;</li>
+<li>on-policy distillation or broad consolidation;</li>
+<li>held-out tools, schemas, generators, and safety attacks.</li>
+</ul>
+<p><strong>Gate:</strong> the unified checkpoint retains general capability and improves
+end-to-end utility at controlled cost.</p>
+<h2 id="17-what-public-evidence-still-cannot-answer">17. What public evidence still cannot answer<a class="headerlink" href="#17-what-public-evidence-still-cannot-answer" title="Permanent link">&para;</a></h2>
+<p>For most frontier products, all of the following remain unknown:</p>
+<ul>
+<li>raw and unique task counts versus repeated rollout attempts;</li>
+<li>successful, failed, timed-out, filtered, and safety-quarantined denominators;</li>
+<li>human, synthetic, licensed, and product-data mixture;</li>
+<li>exact teacher, judge, reward-model, and critic versions;</li>
+<li>reward weights, gates, and judge prompts;</li>
+<li>optimizer settings used at flagship scale;</li>
+<li>rollout group sizes and maximum trajectory budgets;</li>
+<li>policy-staleness distribution and discarded-token rate;</li>
+<li>total post-training tokens, environment-hours, accelerator-hours, and cost;</li>
+<li>compaction and external-memory training details;</li>
+<li>specialist ordering and final consolidation recipe;</li>
+<li>full benchmark harness, retries, and private task contamination controls; and</li>
+<li>which checkpoint, router, tools, and safety layers answer a live request.</li>
+</ul>
+<p>The absence of disclosure does not imply the mechanism was absent. It means a
+technical explanation must stop at <strong>[U]</strong> rather than filling the gap with a
+plausible open recipe.</p>
+<h2 id="18-reading-path">18. Reading path<a class="headerlink" href="#18-reading-path" title="Permanent link">&para;</a></h2>
+<p>For mechanism-first depth:</p>
+<ol>
+<li><a href="../terminology/">Terminology and boundaries</a>;</li>
+<li><a href="../data-and-environments/">Data and environments</a>;</li>
+<li><a href="../algorithms/">Algorithms</a>, especially turn/hierarchical credit and
+   asynchronous correction;</li>
+<li><a href="../training-pipeline/">End-to-end training pipeline</a>;</li>
+<li><a href="../systems/">Systems and infrastructure</a>;</li>
+<li><a href="../evaluation-and-safety/">Evaluation and safety</a>; and</li>
+<li><a href="../source-lab/">source-level lab</a>.</li>
+</ol>
+<p>Primary anchors introduced on this page:</p>
+<ul>
+<li>METR,
+  <a href="https://metr.org/time-horizons/">Task-Completion Time Horizons</a>, updated
+  2026-05-08;</li>
+<li>Li et al.,
+  <a href="https://arxiv.org/abs/2607.05378">CompactionRL</a>, 2026;</li>
+<li>Nakano et al., <a href="https://arxiv.org/abs/2112.09332">WebGPT</a>, 2021;</li>
+<li>Guo et al., <a href="https://arxiv.org/abs/2501.12948">DeepSeek-R1</a>, 2025;</li>
+<li>Kimi Team, <a href="https://arxiv.org/abs/2501.12599">Kimi k1.5</a>, 2025;</li>
+<li>Sheng et al., <a href="https://arxiv.org/abs/2409.19256">HybridFlow / veRL</a>,
+  2024/2025;</li>
+<li>Fu et al., <a href="https://arxiv.org/abs/2505.24298">AReaL</a>, 2025;</li>
+<li>Luo et al.,
+  <a href="https://arxiv.org/abs/2508.03680">Agent Lightning</a>, 2025;</li>
+<li>OpenAI,
+  <a href="https://cdn.openai.com/pdf/8df7697b-c1b2-4222-be00-1fd3298f351d/codex_system_card.pdf">Codex system-card addendum</a>,
+  2025;</li>
+<li>OpenAI,
+  <a href="https://openai.com/index/safety-alignment-long-horizon-models/">Safety and alignment in an era of long-horizon models</a>,
+  2026;</li>
+<li>Anthropic,
+  <a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">Effective harnesses for long-running agents</a>,
+  2025;</li>
+<li>Anthropic,
+  <a href="https://www.anthropic.com/research/teaching-claude-why">Teaching Claude why</a>,
+  2026;</li>
+<li>Google,
+  <a href="https://blog.google/innovation-and-ai/technology/developers-tools/deep-research-agent-gemini-api/">Gemini Deep Research</a>,
+  2025; and</li>
+<li>Google DeepMind,
+  <a href="https://www.nature.com/articles/s41586-025-09833-y">AlphaProof</a>, 2025.</li>
+</ul>
+<p>The <a href="../bibliography/">annotated bibliography</a> and
+<a href="../case-studies/">frontier evidence matrix</a> provide the broader,
+versioned source map.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

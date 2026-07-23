@@ -1,0 +1,3136 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/model-training-token-ledger/">
+      
+      
+        <link rel="prev" href="../documentation-quality/">
+      
+      
+        <link rel="next" href="../deepseek-release-timeline/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Model Training Token Ledger - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#model-training-token-ledger" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Model Training Token Ledger
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#counting-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Counting rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Counting rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#units-and-evidence-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Units and evidence labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-number-normally-measures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the number normally measures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multimodal-qualification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multimodal qualification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deepseek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeepSeek
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DeepSeek">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#text-and-code-foundation-lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Text and code foundation lineage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vision-theorem-proving-generation-and-ocr-branches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vision, theorem proving, generation, and OCR branches
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#moonshot-ai-kimi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moonshot AI / Kimi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zhipu-ai-zai-glm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zhipu AI / Z.ai GLM
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alibaba-qwen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alibaba Qwen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-chinese-model-lineages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Chinese model lineages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#international-reference-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        International reference points
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-numbers-do-and-do-not-imply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the numbers do and do not imply
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#counting-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Counting rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Counting rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#units-and-evidence-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Units and evidence labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-number-normally-measures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the number normally measures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multimodal-qualification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multimodal qualification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deepseek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeepSeek
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DeepSeek">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#text-and-code-foundation-lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Text and code foundation lineage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vision-theorem-proving-generation-and-ocr-branches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vision, theorem proving, generation, and OCR branches
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#moonshot-ai-kimi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moonshot AI / Kimi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zhipu-ai-zai-glm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zhipu AI / Z.ai GLM
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alibaba-qwen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alibaba Qwen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-chinese-model-lineages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Chinese model lineages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#international-reference-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        International reference points
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-numbers-do-and-do-not-imply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the numbers do and do not imply
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="model-training-token-ledger">Model Training Token Ledger<a class="headerlink" href="#model-training-token-ledger" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23. <strong>Scope:</strong> publicly disclosed text and
+multimodal foundation-model training exposure, with continued pretraining and
+post-training kept separate. Values are vendor-reported unless explicitly
+marked as a calculation or inference.</p>
+<p>This ledger answers a deceptively difficult question: “How many tokens was this
+model trained on?” A single number can describe a fresh base-model run, a
+continued-pretraining branch, a corpus before sampling, repeated exposure to the
+same material, multimodal positions, or even the maximum input length. Those
+quantities are not interchangeable.</p>
+<p>For DeepSeek release dates, including specialist branches and API-only updates,
+read the companion <a href="../deepseek-release-timeline/">DeepSeek release timeline</a>.
+For training mechanisms behind the numbers, continue to the detailed
+<a href="../agentic-rl/case-studies/deepseek/">DeepSeek</a>,
+<a href="../agentic-rl/case-studies/kimi/">Kimi</a>,
+<a href="../agentic-rl/case-studies/glm/">GLM</a>, and
+<a href="../agentic-rl/case-studies/qwen-meta-mistral/">Qwen</a> case studies.</p>
+<h2 id="executive-comparison">Executive comparison<a class="headerlink" href="#executive-comparison" title="Permanent link">&para;</a></h2>
+<p>The most useful current anchors are:</p>
+<table>
+<thead>
+<tr>
+<th>Vendor lineage</th>
+<th>Latest generation with a usable disclosure</th>
+<th style="text-align: right;">Public training-token statement</th>
+<th>Correct interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>V4-Flash / V4-Pro</td>
+<td style="text-align: right;">32T / 33T</td>
+<td>separate V4 pretraining exposures; exact unique data is unknown</td>
+</tr>
+<tr>
+<td>Alibaba Qwen</td>
+<td>Qwen3</td>
+<td style="text-align: right;">about 36T</td>
+<td>family pretraining exposure across three stages</td>
+</tr>
+<tr>
+<td>Zhipu AI / Z.ai</td>
+<td>GLM-5</td>
+<td style="text-align: right;">27T + 1T + 500B + 50B = 28.55T</td>
+<td>main pretraining plus three long-context/mid-training stages</td>
+</tr>
+<tr>
+<td>Moonshot Kimi</td>
+<td>K2</td>
+<td style="text-align: right;">15.5T</td>
+<td>fresh K2 processed exposure</td>
+</tr>
+<tr>
+<td>Moonshot Kimi</td>
+<td>K2.5</td>
+<td style="text-align: right;">about 15T additional</td>
+<td>continued pretraining from a near-final K2 checkpoint; about 30T cumulative lineage exposure is an inference</td>
+</tr>
+<tr>
+<td>Moonshot Kimi</td>
+<td>K3</td>
+<td style="text-align: right;">unknown</td>
+<td>architecture and product were announced, but the pretraining-token total was not public at the cutoff</td>
+</tr>
+<tr>
+<td>Alibaba Qwen</td>
+<td>Qwen3.5</td>
+<td style="text-align: right;">“tens of trillions”</td>
+<td>qualitative scale only; no exact total</td>
+</tr>
+<tr>
+<td>Zhipu AI / Z.ai</td>
+<td>GLM-5.1 / 5.2</td>
+<td style="text-align: right;">unknown added amount</td>
+<td>later post-training/product generations do not disclose a replacement base-token total</td>
+</tr>
+</tbody>
+</table>
+<p>DeepSeek-V4 therefore did not jump from V3's 14.8T to “more than 32T” merely
+because its context window became one million tokens. The
+<a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash/blob/a7aaed80dd2df27620eb534454253ea25eb11c7a/DeepSeek_V4.pdf">V4 report snapshot</a>
+states that V4-Flash processes 32T tokens and V4-Pro 33T tokens during
+pretraining. The <strong>one-million-token</strong> figure is the supported context length:
+the maximum sequence capacity at inference, not the size of the training run.</p>
+<h2 id="counting-rules">Counting rules<a class="headerlink" href="#counting-rules" title="Permanent link">&para;</a></h2>
+<h3 id="units-and-evidence-labels">Units and evidence labels<a class="headerlink" href="#units-and-evidence-labels" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>B</strong> means <span class="arithmatex">\(10^9\)</span> tokens and <strong>T</strong> means <span class="arithmatex">\(10^{12}\)</span> tokens.</li>
+<li><strong>[D] Disclosed:</strong> a primary source states the value.</li>
+<li><strong>[C] Confirmed artifact:</strong> a released model card, configuration, registry, or
+  source artifact establishes it.</li>
+<li><strong>[I] Inferred:</strong> arithmetic or lineage reasoning over disclosed stages; the
+  vendor did not publish the resulting total as one number.</li>
+<li><strong>[U] Unknown:</strong> public sources do not establish an exact value.</li>
+</ul>
+<h3 id="what-the-number-normally-measures">What the number normally measures<a class="headerlink" href="#what-the-number-normally-measures" title="Permanent link">&para;</a></h3>
+<p><strong>Training-token exposure</strong> is the number of token positions processed by the
+optimizer. It is not necessarily the number of unique tokens in the underlying
+corpus. If one token appears in five epochs, it contributes five processed
+tokens. Synthetic rewrites and repeated high-quality samples also count each
+time they are processed.</p>
+<p>Keep five quantities separate:</p>
+<ol>
+<li><strong>Corpus size:</strong> tokens available after or before filtering.</li>
+<li><strong>Fresh pretraining exposure:</strong> a model trained from initialization.</li>
+<li><strong>Continual Pretraining (CPT):</strong> additional next-token training of an
+   existing checkpoint.</li>
+<li><strong>Post-training:</strong> Supervised Fine-Tuning (SFT), preference optimization,
+   Reinforcement Learning (RL), and distillation.</li>
+<li><strong>Context length:</strong> positions accepted in one sequence or request.</li>
+</ol>
+<p>Tokenizer vocabularies and segmentation differ, so token totals are only
+approximate cross-vendor measures of data exposure. They do not directly
+measure information content, compute, quality, deduplication, or model
+capability.</p>
+<h3 id="multimodal-qualification">Multimodal qualification<a class="headerlink" href="#multimodal-qualification" title="Permanent link">&para;</a></h3>
+<p>A “token” in a multimodal report may be:</p>
+<ul>
+<li>an ordinary text token;</li>
+<li>a continuous visual embedding occupying a language-model sequence position;</li>
+<li>a discrete image-code token;</li>
+<li>a caption target used to train only a vision encoder; or</li>
+<li>a mixed sequence position processed by the joint model.</li>
+</ul>
+<p>This ledger preserves the report's unit and identifies stages that do not update
+the language backbone.</p>
+<h2 id="deepseek">DeepSeek<a class="headerlink" href="#deepseek" title="Permanent link">&para;</a></h2>
+<h3 id="text-and-code-foundation-lineage">Text and code foundation lineage<a class="headerlink" href="#text-and-code-foundation-lineage" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Model or branch</th>
+<th style="text-align: right;">Training-token disclosure</th>
+<th>Accounting note</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek-Coder v1</td>
+<td style="text-align: right;">1.8T at 4K + 200B at 16K = 2T</td>
+<td>fresh code-model training; the later 2B instruction tokens are post-training</td>
+<td>[D] <a href="https://arxiv.org/abs/2401.14196">paper</a>, <a href="https://github.com/deepseek-ai/DeepSeek-Coder">repository</a></td>
+</tr>
+<tr>
+<td>DeepSeek-LLM 7B / 67B</td>
+<td style="text-align: right;">2T</td>
+<td>fresh bilingual base training</td>
+<td>[D] <a href="https://arxiv.org/abs/2401.02954">report</a></td>
+</tr>
+<tr>
+<td>DeepSeekMoE 16B</td>
+<td style="text-align: right;">2T</td>
+<td>fresh MoE experiment on the DeepSeek bilingual corpus</td>
+<td>[D] <a href="https://arxiv.org/abs/2401.06066">report</a></td>
+</tr>
+<tr>
+<td>DeepSeekMath 7B</td>
+<td style="text-align: right;">+500B CPT</td>
+<td>initialized from Coder-v1.5; the recovered math corpus is 120B, not the processed total</td>
+<td>[D] <a href="https://arxiv.org/abs/2402.03300">report</a></td>
+</tr>
+<tr>
+<td>DeepSeek-V2-Lite</td>
+<td style="text-align: right;">5.7T</td>
+<td>separate smaller V2-family base run</td>
+<td>[D] <a href="https://arxiv.org/abs/2405.04434">V2 report</a>, Appendix C</td>
+</tr>
+<tr>
+<td>DeepSeek-V2</td>
+<td style="text-align: right;">8.1T</td>
+<td>fresh V2 base exposure</td>
+<td>[D] <a href="https://arxiv.org/abs/2405.04434">V2 report</a></td>
+</tr>
+<tr>
+<td>DeepSeek-Coder-V2</td>
+<td style="text-align: right;">4.2T inherited point + 6T CPT = 10.2T branch exposure</td>
+<td>starts from an intermediate V2 checkpoint, not the finished 8.1T V2</td>
+<td>[D] <a href="https://arxiv.org/abs/2406.11931">Coder-V2 report</a></td>
+</tr>
+<tr>
+<td>DeepSeek-V2.5 / V2.5-1210</td>
+<td style="text-align: right;">unknown added amount</td>
+<td>combines V2-0628 and Coder-V2-0724 capabilities; merge/training recipe is undisclosed</td>
+<td>[U] <a href="https://api-docs.deepseek.com/news/news0905/">release</a>, <a href="https://api-docs.deepseek.com/news/news1210/">update</a></td>
+</tr>
+<tr>
+<td>DeepSeek-V3</td>
+<td style="text-align: right;">14.8T</td>
+<td>processed base-pretraining exposure; unique corpus size is unknown</td>
+<td>[D] <a href="https://arxiv.org/abs/2412.19437">V3 report</a></td>
+</tr>
+<tr>
+<td>DeepSeek-R1-Zero / R1</td>
+<td style="text-align: right;">no separately disclosed broad pretraining</td>
+<td>both are post-trained from V3-Base; do not add an invented base-token count</td>
+<td>[U] <a href="https://arxiv.org/abs/2501.12948">R1 report</a></td>
+</tr>
+<tr>
+<td>V3-0324 / R1-0528</td>
+<td style="text-align: right;">unknown added amount</td>
+<td>post-training updates; no replacement broad-pretraining total</td>
+<td>[U] <a href="https://api-docs.deepseek.com/updates/">DeepSeek change log</a></td>
+</tr>
+<tr>
+<td>DeepSeek-V3.1-Base</td>
+<td style="text-align: right;">+630B at 32K + 209B at 128K = about 839B CPT</td>
+<td><strong>[I]</strong> 14.8T + 0.839T gives about 15.64T lineage exposure</td>
+<td>[D/I] <a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Base">model card</a></td>
+</tr>
+<tr>
+<td>DeepSeek-V3.2-Exp conversion</td>
+<td style="text-align: right;">2.1B indexer-only + 943.7B joint sparse continuation = about 945.8B</td>
+<td><strong>[I]</strong> adding V3, V3.1, and this conversion gives about 16.59T; production V3.2 may include undisclosed work</td>
+<td>[D/I] <a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp">report and repository</a></td>
+</tr>
+<tr>
+<td>DeepSeek-V3.2 / V3.2-Speciale</td>
+<td style="text-align: right;">no separately disclosed additional broad total</td>
+<td>production release follows the V3.2-Exp lineage; Speciale was a temporary reasoning variant</td>
+<td>[U] <a href="https://api-docs.deepseek.com/updates/">release log</a></td>
+</tr>
+<tr>
+<td>DeepSeek-V4-Flash</td>
+<td style="text-align: right;">32T</td>
+<td>V4 pretraining exposure; exact unique-token count unknown</td>
+<td>[D] <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash/blob/a7aaed80dd2df27620eb534454253ea25eb11c7a/DeepSeek_V4.pdf">V4 report snapshot</a></td>
+</tr>
+<tr>
+<td>DeepSeek-V4-Pro</td>
+<td style="text-align: right;">33T</td>
+<td>V4 pretraining exposure; not a one-trillion-token CPT claim over Flash</td>
+<td>[D] <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash/blob/a7aaed80dd2df27620eb534454253ea25eb11c7a/DeepSeek_V4.pdf">V4 report snapshot</a></td>
+</tr>
+</tbody>
+</table>
+<p>Two cumulative figures deserve special caution:</p>
+<ul>
+<li><strong>V3.1 about 15.64T</strong> and <strong>V3.2-Exp about 16.59T</strong> are ledger arithmetic,
+  not vendor headlines. Stage totals are rounded, and the exact starting
+  checkpoint or unreported intervening work may change the real number.</li>
+<li>R1's SFT and RL create a different policy from V3-Base but do not constitute
+  a newly disclosed 14.8T-scale pretraining run.</li>
+</ul>
+<h3 id="vision-theorem-proving-generation-and-ocr-branches">Vision, theorem proving, generation, and OCR branches<a class="headerlink" href="#vision-theorem-proving-generation-and-ocr-branches" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Branch</th>
+<th style="text-align: right;">Public token information</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek-VL 1.3B / 7B</td>
+<td style="text-align: right;">language checkpoints had processed about 500B / 2T text tokens; added joint vision-language exposure is not given as one total</td>
+<td>inherited text exposure is not multimodal exposure; <a href="https://arxiv.org/abs/2403.05525">report</a></td>
+</tr>
+<tr>
+<td>DeepSeek-VL2 Tiny / Small / 27B</td>
+<td style="text-align: right;">per model: 2B alignment + about 796.5–808.9B joint pretraining + about 19.5–20B SFT</td>
+<td>total stage exposure is about 818–831B, but includes different objectives and model-specific values; <a href="https://arxiv.org/abs/2412.10302">report</a></td>
+</tr>
+<tr>
+<td>Janus / JanusFlow / Janus-Pro</td>
+<td style="text-align: right;">training steps and mixture ratios are disclosed; a directly comparable token total is not</td>
+<td>image-code positions and text tokens are mixed; <a href="https://github.com/deepseek-ai/Janus">Janus repository</a></td>
+</tr>
+<tr>
+<td>DeepSeek-Prover V1 / V1.5</td>
+<td style="text-align: right;">V1.5 reports 9B SFT tokens; broad base exposure is inherited</td>
+<td>9B is formal-proof post-training, not fresh base pretraining; <a href="https://arxiv.org/abs/2408.08152">V1.5 report</a></td>
+</tr>
+<tr>
+<td>DeepSeek-Prover-V2</td>
+<td style="text-align: right;">based on V3-Base for 671B and Prover-V1.5 for 7B; added broad-token total unknown</td>
+<td>cold start and RL are disclosed at a high level, not as pretraining tokens; <a href="https://github.com/deepseek-ai/DeepSeek-Prover-V2">repository</a></td>
+</tr>
+<tr>
+<td>DeepSeekMath-V2</td>
+<td style="text-align: right;">built on V3.2-Exp-Base; added amount unknown</td>
+<td>verifier/generator post-training must not be added to the base ledger without a disclosed token total; <a href="https://github.com/deepseek-ai/DeepSeek-Math-V2">repository</a></td>
+</tr>
+<tr>
+<td>DeepSeek-OCR / OCR 2</td>
+<td style="text-align: right;">exact total unknown</td>
+<td>reported throughput or visual compression ratio is not a training-token count; <a href="https://github.com/deepseek-ai/DeepSeek-OCR">OCR</a>, <a href="https://github.com/deepseek-ai/DeepSeek-OCR-2">OCR 2</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="moonshot-ai-kimi">Moonshot AI / Kimi<a class="headerlink" href="#moonshot-ai-kimi" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Generation or branch</th>
+<th style="text-align: right;">Training-token disclosure</th>
+<th>Accounting note</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>moonshot-v1</code></td>
+<td style="text-align: right;">unknown</td>
+<td>product/API launch disclosed context, not training scale</td>
+<td>[U] <a href="https://platform.kimi.com/blog/posts/kimi-latest">official post</a></td>
+</tr>
+<tr>
+<td>Kimi k1.5</td>
+<td style="text-align: right;">unknown broad pretraining</td>
+<td>report is detailed about long-context RL and data operations but withholds the foundation-model total</td>
+<td>[U] <a href="https://arxiv.org/abs/2501.12599">report</a></td>
+</tr>
+<tr>
+<td>Moonlight</td>
+<td style="text-align: right;">5.7T</td>
+<td>fresh 16B-class MoE research run; released checkpoint includes the 5.2–5.7T cooldown</td>
+<td>[D] <a href="https://arxiv.org/abs/2502.16982">report</a></td>
+</tr>
+<tr>
+<td>Kimi-VL</td>
+<td style="text-align: right;">4.4T-stage program after selecting Moonlight at 5.2T</td>
+<td>2T + 0.1T trains the standalone vision encoder; joint language-backbone stages are 1.4T + 0.6T + 0.3T = 2.3T</td>
+<td>[D] <a href="https://arxiv.org/abs/2504.07491">report</a></td>
+</tr>
+<tr>
+<td>Kimi K2</td>
+<td style="text-align: right;">15.5T</td>
+<td>fresh 1.04T-total / 32.6B-active MoE pretraining exposure</td>
+<td>[D] <a href="https://github.com/MoonshotAI/Kimi-K2/blob/main/tech_report.pdf">report</a></td>
+</tr>
+<tr>
+<td>K2-Instruct-0905 / K2 Thinking / K2.6 / K2.7 Code</td>
+<td style="text-align: right;">unknown added broad amount</td>
+<td>capability and post-training releases do not disclose a replacement base total</td>
+<td>[U] <a href="https://github.com/MoonshotAI/Kimi-K2">K2 repository</a></td>
+</tr>
+<tr>
+<td>Kimi Linear</td>
+<td style="text-align: right;">1.4T first stage; released checkpoint through 5.7T</td>
+<td>separate research architecture, not a K2 or K3 token-total disclosure</td>
+<td>[D] <a href="https://arxiv.org/abs/2510.26692">report</a></td>
+</tr>
+<tr>
+<td>Kimi K2.5</td>
+<td style="text-align: right;">about 15T additional joint mixed tokens</td>
+<td>starts near the end of K2; <strong>[I]</strong> cumulative K2-line exposure is roughly 30T, not 30T unique data</td>
+<td>[D/I] <a href="https://arxiv.org/abs/2602.02276">report</a></td>
+</tr>
+<tr>
+<td>Kimi K2.5 vision stage</td>
+<td style="text-align: right;">about 1T caption-style tokens</td>
+<td>trains/aligned MoonViT with Moonlight before the joint K2.5 stage; do not silently add it to language-backbone exposure</td>
+<td>[D] <a href="https://arxiv.org/abs/2602.02276">K2.5 report</a></td>
+</tr>
+<tr>
+<td>Kimi K3</td>
+<td style="text-align: right;">unknown</td>
+<td>announced 2026-07-17; training report and exact exposure were pending at the cutoff</td>
+<td>[U] <a href="https://www.kimi.com/blog/kimi-k3">official announcement</a></td>
+</tr>
+</tbody>
+</table>
+<p>K2.5 illustrates why “latest model token count” can be misleading. Saying
+“K2.5 used 15T” is technically incomplete: that is a continued-pretraining
+stage on a near-final K2 backbone, not a from-scratch total.</p>
+<h2 id="zhipu-ai-zai-glm">Zhipu AI / Z.ai GLM<a class="headerlink" href="#zhipu-ai-zai-glm" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Generation</th>
+<th style="text-align: right;">Training-token disclosure</th>
+<th>Accounting note</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GLM-130B</td>
+<td style="text-align: right;">400B</td>
+<td>about half Chinese and half English</td>
+<td>[D] <a href="https://arxiv.org/abs/2210.02414">report</a></td>
+</tr>
+<tr>
+<td>ChatGLM-6B</td>
+<td style="text-align: right;">about 1T</td>
+<td>bilingual base exposure</td>
+<td>[D/C] <a href="https://arxiv.org/abs/2406.12793">family report</a>, <a href="https://github.com/THUDM/ChatGLM-6B">repository</a></td>
+</tr>
+<tr>
+<td>ChatGLM2-6B</td>
+<td style="text-align: right;">1.4T</td>
+<td>trained from scratch</td>
+<td>[D] <a href="https://github.com/THUDM/ChatGLM2-6B">repository</a></td>
+</tr>
+<tr>
+<td>ChatGLM3-6B</td>
+<td style="text-align: right;">unknown</td>
+<td>architecture and agent protocol are public; new training exposure is not</td>
+<td>[U] <a href="https://github.com/THUDM/ChatGLM3">repository</a></td>
+</tr>
+<tr>
+<td>proprietary GLM-4</td>
+<td style="text-align: right;">about 10T</td>
+<td>family report; exact flagship parameter count withheld</td>
+<td>[D] <a href="https://arxiv.org/abs/2406.12793">report</a></td>
+</tr>
+<tr>
+<td>GLM-4-9B</td>
+<td style="text-align: right;">10T</td>
+<td>open 9B branch</td>
+<td>[D] <a href="https://github.com/zai-org/GLM-4">GLM-4 repository</a></td>
+</tr>
+<tr>
+<td>GLM-4-32B-0414</td>
+<td style="text-align: right;">15T</td>
+<td>includes synthetic reasoning material</td>
+<td>[D] <a href="https://github.com/zai-org/GLM-4">GLM-4 repository</a></td>
+</tr>
+<tr>
+<td>GLM-Z1 family</td>
+<td style="text-align: right;">unknown added broad amount</td>
+<td>reasoning/post-training derivative; do not count it as a fresh 15T run</td>
+<td>[U] <a href="https://github.com/zai-org/GLM-4">GLM-4 repository</a></td>
+</tr>
+<tr>
+<td>GLM-4.5 / 4.5-Air</td>
+<td style="text-align: right;">headline 23T; components total about 23.1T</td>
+<td>15T general + 7T code/reasoning + 500B repository code + 500B synthetic reasoning + 100B long/agent</td>
+<td>[D] <a href="https://arxiv.org/abs/2508.06471">report</a></td>
+</tr>
+<tr>
+<td>GLM-4.6 / 4.7</td>
+<td style="text-align: right;">unknown added broad amount</td>
+<td>later model updates disclose capabilities and post-training, not a replacement pretraining total</td>
+<td>[U] <a href="https://github.com/zai-org/GLM-4.5">GLM-4.5 repository</a></td>
+</tr>
+<tr>
+<td>GLM-5</td>
+<td style="text-align: right;">27T + 1T + 500B + 50B = 28.55T</td>
+<td>27T main; then 32K, 128K, and 200K stages; vendor headline rounds to 28.5T</td>
+<td>[D] <a href="https://arxiv.org/abs/2602.15763">report</a></td>
+</tr>
+<tr>
+<td>GLM-5.1 / 5.2</td>
+<td style="text-align: right;">unknown added broad amount</td>
+<td>later post-training and agent releases; no exact replacement total</td>
+<td>[U] <a href="../agentic-rl/case-studies/glm/">GLM case study</a></td>
+</tr>
+</tbody>
+</table>
+<p>The apparent 23T versus 23.1T discrepancy for GLM-4.5 is rounding, not evidence
+of an extra hidden stage. Preserve both the headline and component sum.</p>
+<h2 id="alibaba-qwen">Alibaba Qwen<a class="headerlink" href="#alibaba-qwen" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Generation or branch</th>
+<th style="text-align: right;">Training-token disclosure</th>
+<th>Accounting note</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen 1.8B</td>
+<td style="text-align: right;">2.2T</td>
+<td>model-size-specific fresh training</td>
+<td>[D] <a href="https://qwenlm.github.io/blog/qwen/">official Qwen table</a></td>
+</tr>
+<tr>
+<td>Qwen 7B</td>
+<td style="text-align: right;">2.4T</td>
+<td>model-size-specific fresh training</td>
+<td>[D] <a href="https://qwenlm.github.io/blog/qwen/">official Qwen table</a></td>
+</tr>
+<tr>
+<td>Qwen 14B / 72B</td>
+<td style="text-align: right;">3.0T</td>
+<td>model-size-specific fresh training</td>
+<td>[D] <a href="https://qwenlm.github.io/blog/qwen/">official Qwen table</a></td>
+</tr>
+<tr>
+<td>Qwen1.5</td>
+<td style="text-align: right;">exact family-wide total not stated in its launch post</td>
+<td>later secondary summaries often collapse this to about 3T, but the release does not provide a clean per-size ledger</td>
+<td>[U] <a href="https://qwenlm.github.io/blog/qwen1.5/">official launch</a></td>
+</tr>
+<tr>
+<td>CodeQwen1.5-7B</td>
+<td style="text-align: right;">about 3T code-related tokens</td>
+<td>specialist code run, not the general Qwen1.5 total</td>
+<td>[D] <a href="https://qwenlm.github.io/blog/codeqwen1.5/">official launch</a></td>
+</tr>
+<tr>
+<td>Qwen2</td>
+<td style="text-align: right;">about 7T</td>
+<td>later Qwen2.5 report identifies the previous generation as 7T</td>
+<td>[D] <a href="https://arxiv.org/abs/2412.15115">Qwen2.5 report</a></td>
+</tr>
+<tr>
+<td>Qwen2.5</td>
+<td style="text-align: right;">up to 18T</td>
+<td>general family pretraining exposure</td>
+<td>[D] <a href="https://arxiv.org/abs/2412.15115">report</a></td>
+</tr>
+<tr>
+<td>Qwen2.5-Coder</td>
+<td style="text-align: right;">+5.5T CPT</td>
+<td>continues from Qwen2.5 architecture; not a separate from-scratch 5.5T total</td>
+<td>[D] <a href="https://arxiv.org/abs/2409.12186">report</a></td>
+</tr>
+<tr>
+<td>QwQ / Qwen2.5-Math post-training</td>
+<td style="text-align: right;">unknown new broad amount</td>
+<td>reasoning and math derivatives inherit Qwen2.5-family bases</td>
+<td>[U] <a href="https://qwenlm.github.io/blog/qwen2.5/">Qwen2.5 family launch</a></td>
+</tr>
+<tr>
+<td>Qwen3</td>
+<td style="text-align: right;">about 36T</td>
+<td>&gt;30T general + about 5T high-quality reasoning/code/STEM + hundreds of billions long context</td>
+<td>[D] <a href="https://qwenlm.github.io/blog/qwen3/">official launch</a></td>
+</tr>
+<tr>
+<td>Qwen3-Next</td>
+<td style="text-align: right;">15T</td>
+<td>separate architecture run on a uniformly sampled subset of the Qwen3 corpus</td>
+<td>[D] <a href="https://qwen.ai/blog?id=qwen3-next">official release</a></td>
+</tr>
+<tr>
+<td>Qwen3-Coder</td>
+<td style="text-align: right;">7.5T</td>
+<td>specialist pretraining, about 70% code</td>
+<td>[D] <a href="https://qwenlm.github.io/blog/qwen3-coder/">official launch</a></td>
+</tr>
+<tr>
+<td>Qwen3-Coder-Next</td>
+<td style="text-align: right;">“trillions” of CPT; about 600B repository-level slice</td>
+<td>exact full continued-pretraining exposure unknown</td>
+<td>[D/U] <a href="https://github.com/QwenLM/Qwen3-Coder/blob/main/qwen3_coder_next_tech_report.pdf">technical report</a></td>
+</tr>
+<tr>
+<td>Qwen3-Max</td>
+<td style="text-align: right;">36T</td>
+<td>proprietary trillion-parameter flagship run</td>
+<td>[D] <a href="https://qwen.ai/blog?id=qwen3-max">official release</a></td>
+</tr>
+<tr>
+<td>Qwen3.5</td>
+<td style="text-align: right;">“tens of trillions”</td>
+<td>exact exposure unknown</td>
+<td>[D/U] <a href="https://qwen.ai/blog?id=qwen3.5">official release</a></td>
+</tr>
+<tr>
+<td>Qwen3.6 / 3.7</td>
+<td style="text-align: right;">unknown added broad amount</td>
+<td>model releases do not provide a replacement exact total</td>
+<td>[U] <a href="../agentic-rl/case-studies/qwen-meta-mistral/">Qwen lineage case study</a></td>
+</tr>
+</tbody>
+</table>
+<p>“Up to 18T” in the Qwen2.5 launch is a family headline. It should not be
+silently converted into a guarantee that every size saw an identical schedule
+unless its model card says so.</p>
+<h2 id="other-chinese-model-lineages">Other Chinese model lineages<a class="headerlink" href="#other-chinese-model-lineages" title="Permanent link">&para;</a></h2>
+<p>This section provides representative primary-source anchors. It is not a claim
+that every commercial checkpoint from each vendor has a public recipe.</p>
+<table>
+<thead>
+<tr>
+<th>Lineage</th>
+<th>Model</th>
+<th style="text-align: right;">Training-token disclosure</th>
+<th>Evidence and boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Baichuan</td>
+<td>Baichuan-7B</td>
+<td style="text-align: right;">1.2T</td>
+<td><a href="https://arxiv.org/abs/2309.10305">model report</a></td>
+</tr>
+<tr>
+<td>Baichuan</td>
+<td>Baichuan 2 7B / 13B</td>
+<td style="text-align: right;">2.6T</td>
+<td><a href="https://arxiv.org/abs/2309.10305">report</a></td>
+</tr>
+<tr>
+<td>Baichuan</td>
+<td>Baichuan-M1</td>
+<td style="text-align: right;">20T</td>
+<td>medical/general model trained from scratch; <a href="https://arxiv.org/abs/2502.12671">report</a></td>
+</tr>
+<tr>
+<td>01.AI Yi</td>
+<td>Yi 6B / 34B</td>
+<td style="text-align: right;">about 3T processed; 3.1T constructed corpus</td>
+<td>corpus size and exposure are close but not identical labels; <a href="https://arxiv.org/abs/2403.04652">report</a></td>
+</tr>
+<tr>
+<td>01.AI Yi</td>
+<td>Yi-1.5</td>
+<td style="text-align: right;">+500B CPT</td>
+<td>continued training, not a fresh 500B run; <a href="https://github.com/01-ai/Yi-1.5">repository</a></td>
+</tr>
+<tr>
+<td>InternLM</td>
+<td>InternLM2 family</td>
+<td style="text-align: right;">about 2.0–2.6T depending on size</td>
+<td>model-size-specific totals; <a href="https://arxiv.org/abs/2403.17297">report</a></td>
+</tr>
+<tr>
+<td>InternLM</td>
+<td>InternLM3-8B</td>
+<td style="text-align: right;">4T</td>
+<td><a href="https://github.com/InternLM/InternLM">official repository</a></td>
+</tr>
+<tr>
+<td>Tencent Hunyuan</td>
+<td>Hunyuan-Large</td>
+<td style="text-align: right;">7T, including about 1.5T synthetic</td>
+<td><a href="https://arxiv.org/abs/2411.02265">report</a></td>
+</tr>
+<tr>
+<td>Tencent Hunyuan</td>
+<td>Hunyuan-A13B</td>
+<td style="text-align: right;">20T main + 300B annealing</td>
+<td>long-context stage is additional but not fully quantified; <a href="https://github.com/Tencent-Hunyuan/Hunyuan-A13B/blob/main/report/Hunyuan_A13B_Technical_Report.pdf">technical report</a></td>
+</tr>
+<tr>
+<td>MiniMax</td>
+<td>MiniMax-Text-01</td>
+<td style="text-align: right;"><strong>[I]</strong> about 11.758T from disclosed stages</td>
+<td>7.2T + 3.2T + 1T + 300B + 32B + 26B; report does not headline the sum; <a href="https://arxiv.org/abs/2501.08313">report</a></td>
+</tr>
+<tr>
+<td>MiniMax</td>
+<td>MiniMax-VL-01</td>
+<td style="text-align: right;">+512B vision-language tokens</td>
+<td>continued multimodal training; <a href="https://arxiv.org/abs/2501.08313">report</a></td>
+</tr>
+<tr>
+<td>Xiaomi MiMo</td>
+<td>MiMo-7B</td>
+<td style="text-align: right;">25T</td>
+<td>fresh 7B reasoning-oriented base run; <a href="https://arxiv.org/abs/2505.07608">report</a></td>
+</tr>
+<tr>
+<td>Xiaomi MiMo</td>
+<td>MiMo-VL</td>
+<td style="text-align: right;">2.4T multimodal pretraining</td>
+<td>separate visual-language program; <a href="https://arxiv.org/abs/2506.03569">report</a></td>
+</tr>
+<tr>
+<td>Skywork</td>
+<td>Skywork-13B</td>
+<td style="text-align: right;">more than 3.2T</td>
+<td>bilingual base run; <a href="https://arxiv.org/abs/2310.19341">report</a></td>
+</tr>
+<tr>
+<td>Baidu ERNIE</td>
+<td>ERNIE 4.5 / 5.0</td>
+<td style="text-align: right;">exact token total unknown</td>
+<td>architecture and multimodal training objectives are disclosed, but not a comparable exposure total; <a href="https://arxiv.org/abs/2602.04705">ERNIE 5.0 report</a></td>
+</tr>
+<tr>
+<td>ByteDance Seed</td>
+<td>Seed flagship generations</td>
+<td style="text-align: right;">exact broad total unknown</td>
+<td>papers disclose selected post-training/system recipes, not a full base-token ledger</td>
+</tr>
+<tr>
+<td>StepFun</td>
+<td>Step series</td>
+<td style="text-align: right;">exact broad total unknown</td>
+<td>public capability/model releases do not establish an auditable family-wide total</td>
+</tr>
+</tbody>
+</table>
+<p>The MiniMax sum is a useful but fragile derived value: it assumes the listed
+training stages are sequential and non-overlapping. It must remain <strong>[I]</strong>, not
+be repeated as a vendor-claimed headline.</p>
+<h2 id="international-reference-points">International reference points<a class="headerlink" href="#international-reference-points" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Vendor</th>
+<th>Generation</th>
+<th style="text-align: right;">Training-token disclosure</th>
+<th>Evidence and boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI</td>
+<td>GPT-3</td>
+<td style="text-align: right;">300B</td>
+<td><a href="https://arxiv.org/abs/2005.14165">paper</a></td>
+</tr>
+<tr>
+<td>OpenAI</td>
+<td>GPT-3.5, GPT-4, GPT-4o, o-series, GPT-5 family</td>
+<td style="text-align: right;">unknown</td>
+<td>no exact comparable base-pretraining total in public model reports</td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>Llama 1 7B / 13B</td>
+<td style="text-align: right;">1T</td>
+<td><a href="https://arxiv.org/abs/2302.13971">Llama paper</a></td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>Llama 1 33B / 65B</td>
+<td style="text-align: right;">1.4T</td>
+<td><a href="https://arxiv.org/abs/2302.13971">Llama paper</a></td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>Llama 2</td>
+<td style="text-align: right;">2T</td>
+<td>all released sizes; <a href="https://arxiv.org/abs/2307.09288">report</a></td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>Llama 3.1 405B</td>
+<td style="text-align: right;">15.6T</td>
+<td><a href="https://arxiv.org/abs/2407.21783">report</a></td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>Llama 3.3 70B</td>
+<td style="text-align: right;">more than 15T</td>
+<td><a href="https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md">model card</a></td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>Llama 4 Scout / Maverick</td>
+<td style="text-align: right;">about 40T / 22T</td>
+<td>model-specific totals; <a href="https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md">model card</a></td>
+</tr>
+<tr>
+<td>Google</td>
+<td>Gemma 1 2B / 7B</td>
+<td style="text-align: right;">3T / 6T</td>
+<td><a href="https://arxiv.org/abs/2403.08295">report</a></td>
+</tr>
+<tr>
+<td>Google</td>
+<td>Gemma 2 2B / 9B / 27B</td>
+<td style="text-align: right;">2T / 8T / 13T</td>
+<td><a href="https://storage.googleapis.com/deepmind-media/gemma/gemma-2-report.pdf">report</a></td>
+</tr>
+<tr>
+<td>Google</td>
+<td>Gemma 3 1B / 4B / 12B / 27B</td>
+<td style="text-align: right;">2T / 4T / 12T / 14T</td>
+<td><a href="https://ai.google.dev/gemma/docs/core/model_card_3">official model card</a></td>
+</tr>
+<tr>
+<td>Google</td>
+<td>Gemini generations</td>
+<td style="text-align: right;">unknown exact total</td>
+<td>corpus categories and safety/evaluation evidence do not expose a comparable token count</td>
+</tr>
+<tr>
+<td>Mistral AI</td>
+<td>Mistral, Mixtral, Large, Small, Medium, Magistral, Devstral</td>
+<td style="text-align: right;">generally unknown</td>
+<td>open weights/configurations do not reveal exact broad-pretraining exposure</td>
+</tr>
+<tr>
+<td>Anthropic</td>
+<td>Claude generations</td>
+<td style="text-align: right;">unknown</td>
+<td>no exact comparable base-pretraining total</td>
+</tr>
+<tr>
+<td>xAI</td>
+<td>Grok generations</td>
+<td style="text-align: right;">unknown</td>
+<td>no exact comparable base-pretraining total</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-numbers-do-and-do-not-imply">What the numbers do and do not imply<a class="headerlink" href="#what-the-numbers-do-and-do-not-imply" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>More tokens is not automatically more unique data.</strong> K2's semantic
+   rewriting, GLM/Qwen synthetic data, and repeated high-quality subsets can
+   increase processed exposure without increasing source-document count by the
+   same factor.</li>
+<li><strong>A continuation is not a fresh model total.</strong> K2.5's about 15T, Coder-V2's
+   6T, Qwen2.5-Coder's 5.5T, and V3.1's 839B all begin from existing
+   checkpoints.</li>
+<li><strong>Context length is a different axis.</strong> A one-million-token context says
+   how much one request can hold, not how many tokens trained the model.</li>
+<li><strong>Model-size rows can differ.</strong> Qwen 1 and Gemma publish different exposure
+   by parameter size; family headlines should not erase those distinctions.</li>
+<li><strong>Tokens do not determine compute alone.</strong> Dense versus sparse MoE
+   activation, sequence length, multimodal encoders, MTP, optimizer,
+   checkpointing, hardware utilization, and failed runs all affect cost.</li>
+<li><strong>Unknown is a result.</strong> For Claude, Gemini, GPT-4+, Mistral flagships,
+   ERNIE, Seed, Step, and many later update checkpoints, an exact public total
+   does not exist. Third-party estimates should not be promoted to disclosures.</li>
+</ol>
+<h2 id="audit-checklist">Audit checklist<a class="headerlink" href="#audit-checklist" title="Permanent link">&para;</a></h2>
+<p>Before copying any number from this page, retain:</p>
+<ul>
+<li>exact model/checkpoint name;</li>
+<li>fresh pretraining versus CPT versus post-training;</li>
+<li>text-only versus mixed/visual positions;</li>
+<li>corpus size versus processed exposure;</li>
+<li>disclosed versus calculated/inferred status;</li>
+<li>tokenizer and model-size differences; and</li>
+<li>source date and report version.</li>
+</ul>
+<p>Without those fields, a clean-looking comparison table becomes less accurate
+than leaving the value unknown.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

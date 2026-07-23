@@ -1,0 +1,4106 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/evaluation/hallucination-vendors/">
+      
+      
+        <link rel="prev" href="../hallucination/">
+      
+      
+        <link rel="next" href="../hallucination-operations/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Disclosed Vendor Practices - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#what-leading-model-vendors-disclose-about-hallucination-control" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Disclosed Vendor Practices
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-cross-vendor-conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Cross-vendor conclusions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Cross-vendor conclusions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-publicly-visible-production-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The publicly visible production pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#particularly-concrete-disclosed-training-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particularly concrete disclosed training examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-disclosure-gaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common disclosure gaps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-openai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. OpenAI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. OpenAI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factuality-calibrated-failure-and-tool-use-post-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factuality, calibrated failure, and tool-use post-training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webgpt-search-and-deep-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebGPT, search, and deep research
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make-abstention-score-better-than-guessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Make abstention score better than guessing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-anthropic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Anthropic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Anthropic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#honesty-as-a-training-objective-with-undisclosed-implementation-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Honesty as a training objective, with undisclosed implementation detail
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-research-search-retrieval-and-citations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production research, search, retrieval, and citations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-useful-retrieval-technique-not-evidence-of-claudes-private-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A useful retrieval technique, not evidence of Claude's private stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-google-and-google-deepmind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Google and Google DeepMind
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Google and Google DeepMind">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factuality-focused-adaptation-and-learned-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factuality-focused adaptation and learned search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grounding-output-side-checking-and-user-visible-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grounding, output-side checking, and user-visible verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieval-sufficiency-specialized-grounding-and-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieval sufficiency, specialized grounding, and evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-microsoft-and-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Microsoft and Azure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Microsoft and Azure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phi-4-train-the-answer-versus-refuse-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phi-4: train the answer-versus-refuse boundary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-groundedness-and-retrieval-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Azure groundedness and retrieval controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-meta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Meta
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Meta">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llama-3-factuality-and-abstention-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Llama 3 factuality and abstention training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product-retrieval-and-an-event-level-circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product retrieval and an event-level circuit breaker
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-amazon-and-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Amazon and AWS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Amazon and AWS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#amazon-nova" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amazon Nova
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bedrock-and-amazon-q-product-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bedrock and Amazon Q product controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cohere" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Cohere
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Cohere">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-a-trains-rag-and-tool-use-as-expert-specializations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command A trains RAG and tool use as expert specializations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-mistral-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Mistral AI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Mistral AI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-and-product-disclosures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model and product disclosures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-xai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. xAI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. xAI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#grok-factuality-post-training-and-production-distribution-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grok factuality post-training and production-distribution evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-sources-and-a-released-production-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search, sources, and a released production prompt
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-nvidia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. NVIDIA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. NVIDIA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-detailed-tool-hallucination-experiment-that-was-not-the-release-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A detailed tool-hallucination experiment that was not the release recipe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nemo-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NeMo Guardrails
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-deepseek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. DeepSeek
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. DeepSeek">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verifiable-search-questions-and-generative-reward-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifiable search questions and generative reward models
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-alibaba-qwen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Alibaba Qwen
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Alibaba Qwen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factuality-verification-and-a-rag-specific-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factuality verification and a RAG-specific reward
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#end-to-end-research-agents-and-product-citations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-end research agents and product citations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-moonshot-ai-kimi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Moonshot AI / Kimi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Moonshot AI / Kimi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sentence-level-unsupported-claim-detection-inside-the-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sentence-level unsupported-claim detection inside the reward
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-agent-reinforcement-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search-agent reinforcement learning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-zhipu-ai-glm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Zhipu AI / GLM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Zhipu AI / GLM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-page-search-data-and-trajectory-level-outcome-rewards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-page search data and trajectory-level outcome rewards
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-baidu-ernie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Baidu ERNIE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-tencent-hunyuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Tencent Hunyuan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-bytedance-seed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. ByteDance Seed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-minimax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. MiniMax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-how-to-compare-a-new-vendor-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. How to compare a new vendor claim
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agentic-rl/case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agentic-rl/bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-cross-vendor-conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Cross-vendor conclusions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Cross-vendor conclusions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-publicly-visible-production-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The publicly visible production pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#particularly-concrete-disclosed-training-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particularly concrete disclosed training examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-disclosure-gaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common disclosure gaps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-openai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. OpenAI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. OpenAI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factuality-calibrated-failure-and-tool-use-post-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factuality, calibrated failure, and tool-use post-training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webgpt-search-and-deep-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebGPT, search, and deep research
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make-abstention-score-better-than-guessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Make abstention score better than guessing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-anthropic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Anthropic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Anthropic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#honesty-as-a-training-objective-with-undisclosed-implementation-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Honesty as a training objective, with undisclosed implementation detail
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-research-search-retrieval-and-citations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production research, search, retrieval, and citations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-useful-retrieval-technique-not-evidence-of-claudes-private-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A useful retrieval technique, not evidence of Claude's private stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-google-and-google-deepmind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Google and Google DeepMind
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Google and Google DeepMind">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factuality-focused-adaptation-and-learned-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factuality-focused adaptation and learned search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grounding-output-side-checking-and-user-visible-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grounding, output-side checking, and user-visible verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieval-sufficiency-specialized-grounding-and-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieval sufficiency, specialized grounding, and evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-microsoft-and-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Microsoft and Azure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Microsoft and Azure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phi-4-train-the-answer-versus-refuse-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phi-4: train the answer-versus-refuse boundary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-groundedness-and-retrieval-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Azure groundedness and retrieval controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-meta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Meta
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Meta">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llama-3-factuality-and-abstention-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Llama 3 factuality and abstention training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product-retrieval-and-an-event-level-circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product retrieval and an event-level circuit breaker
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-amazon-and-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Amazon and AWS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Amazon and AWS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#amazon-nova" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amazon Nova
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bedrock-and-amazon-q-product-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bedrock and Amazon Q product controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cohere" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Cohere
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Cohere">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-a-trains-rag-and-tool-use-as-expert-specializations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command A trains RAG and tool use as expert specializations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-mistral-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Mistral AI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Mistral AI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-and-product-disclosures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model and product disclosures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-xai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. xAI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. xAI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#grok-factuality-post-training-and-production-distribution-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grok factuality post-training and production-distribution evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-sources-and-a-released-production-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search, sources, and a released production prompt
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-nvidia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. NVIDIA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. NVIDIA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-detailed-tool-hallucination-experiment-that-was-not-the-release-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A detailed tool-hallucination experiment that was not the release recipe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nemo-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NeMo Guardrails
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-deepseek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. DeepSeek
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. DeepSeek">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verifiable-search-questions-and-generative-reward-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifiable search questions and generative reward models
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-alibaba-qwen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Alibaba Qwen
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Alibaba Qwen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factuality-verification-and-a-rag-specific-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factuality verification and a RAG-specific reward
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#end-to-end-research-agents-and-product-citations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-end research agents and product citations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-moonshot-ai-kimi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Moonshot AI / Kimi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Moonshot AI / Kimi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sentence-level-unsupported-claim-detection-inside-the-reward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sentence-level unsupported-claim detection inside the reward
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-agent-reinforcement-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search-agent reinforcement learning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-zhipu-ai-glm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Zhipu AI / GLM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Zhipu AI / GLM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-page-search-data-and-trajectory-level-outcome-rewards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-page search data and trajectory-level outcome rewards
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-baidu-ernie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Baidu ERNIE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-tencent-hunyuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Tencent Hunyuan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-bytedance-seed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. ByteDance Seed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-minimax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. MiniMax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-how-to-compare-a-new-vendor-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. How to compare a new vendor claim
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="what-leading-model-vendors-disclose-about-hallucination-control">What Leading Model Vendors Disclose About Hallucination Control<a class="headerlink" href="#what-leading-model-vendors-disclose-about-hallucination-control" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23.</p>
+<p>This is an evidence audit, not a ranking. It asks which hallucination controls a
+vendor has publicly confirmed for a named model, product, experiment, or
+customer-facing platform. It does not fill gaps in proprietary training or
+serving stacks by analogy.</p>
+<p>Evidence labels follow the <a href="../../research-method/">research standard</a>:</p>
+<ul>
+<li><strong>D — disclosed:</strong> a first-party source or author paper states the practice;</li>
+<li><strong>C — confirmed artifact:</strong> released code, configuration, prompt, data, or
+  weights directly establish it;</li>
+<li><strong>R — reproduced:</strong> RoseLLM retained a reproducible run and artifacts;</li>
+<li><strong>I — inferred:</strong> the conclusion depends on named evidence and assumptions;</li>
+<li><strong>U — unknown:</strong> public evidence is absent or insufficient.</li>
+</ul>
+<p>The object label is equally important:</p>
+<ul>
+<li><strong>model training</strong> describes how a checkpoint was trained;</li>
+<li><strong>evaluation</strong> describes a test, not necessarily a mitigation;</li>
+<li><strong>product</strong> describes a deployed user surface around one or more models;</li>
+<li><strong>API/cloud control</strong> is functionality a customer may choose to add;</li>
+<li><strong>research prototype</strong> is not automatically in a released model or product.</li>
+</ul>
+<p>An Azure, Bedrock, Vertex AI, or NeMo guardrail does not prove that every model
+served by that platform was trained with the same method. A product citation
+does not prove claim–source entailment. A model trained to call search does not
+prove that every live answer searched.</p>
+<h2 id="1-cross-vendor-conclusions">1. Cross-vendor conclusions<a class="headerlink" href="#1-cross-vendor-conclusions" title="Permanent link">&para;</a></h2>
+<h3 id="the-publicly-visible-production-pattern">The publicly visible production pattern<a class="headerlink" href="#the-publicly-visible-production-pattern" title="Permanent link">&para;</a></h3>
+<p>Leading systems repeatedly expose five layers:</p>
+<ol>
+<li><strong>post-training for honesty, factuality, tool use, or abstention;</strong></li>
+<li><strong>search, retrieval, databases, code, and other external tools;</strong></li>
+<li><strong>citations or source-local provenance;</strong></li>
+<li><strong>verifiers, groundedness checks, model cards, and private evaluations;</strong></li>
+<li><strong>product policies that ask, abstain, block, correct, or escalate.</strong></li>
+</ol>
+<p>The exact online router, source ranker, reward decomposition, verifier
+threshold, cache policy, incident rule, and model mixture are usually <strong>U</strong>.
+Public evidence therefore supports a layered industry pattern, not a complete
+reverse-engineered recipe for any frontier product.</p>
+<h3 id="particularly-concrete-disclosed-training-examples">Particularly concrete disclosed training examples<a class="headerlink" href="#particularly-concrete-disclosed-training-examples" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Vendor / model</th>
+<th>Disclosed control</th>
+<th>Why the evidence is unusually useful</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI InstructGPT</td>
+<td>human demonstrations, preference model, PPO, and truthfulness/closed-domain hallucination evaluation</td>
+<td>connects a named post-training pipeline to measured truthfulness changes</td>
+</tr>
+<tr>
+<td>OpenAI WebGPT / deep research</td>
+<td>browser/search trajectories, source-visible preferences, candidate selection, and later end-to-end research-agent RL</td>
+<td>makes evidence collection part of the learned policy</td>
+</tr>
+<tr>
+<td>Microsoft Phi-4</td>
+<td>self-knowledge probes, answer/refuse SFT, bogus unanswerable questions, and DPO ordering <code>correct &gt; refuse &gt; wrong</code></td>
+<td>directly targets the answer-versus-abstain boundary</td>
+</tr>
+<tr>
+<td>Meta Llama 3</td>
+<td>generate factual probes from pretraining text, sample repeatedly, and train refusals where the model does not reliably know</td>
+<td>explicitly teaches knowledge limits rather than adding facts</td>
+</tr>
+<tr>
+<td>Cohere Command A</td>
+<td>separate RAG and tool-use SFT/RL experts, then merge and polish them</td>
+<td>exposes a grounded/tool trajectory as a dedicated training specialization</td>
+</tr>
+<tr>
+<td>Tencent Hunyuan-A13B</td>
+<td>hallucination-focused reward model, reference-aware and reference-free hallucination detectors, and online RL</td>
+<td>exposes a multi-scorer factuality pipeline rather than only a search product</td>
+</tr>
+<tr>
+<td>Alibaba Qwen3</td>
+<td>a RAG-specific reward that favors accurate use of retrieved context</td>
+<td>explicitly names hallucination reduction in a released model's RL objective</td>
+</tr>
+<tr>
+<td>Moonshot Kimi K2</td>
+<td>sentence-level grounded-factuality judge within a multi-task RL Gym</td>
+<td>names a factuality reward component for a released model family</td>
+</tr>
+<tr>
+<td>Kimi-Researcher</td>
+<td>end-to-end RL over multi-turn real search and browsing</td>
+<td>trains evidence acquisition and recovery rather than one-shot RAG</td>
+</tr>
+<tr>
+<td>DeepSeek-V3.2</td>
+<td>multi-agent construction and verification of 50,275 search tasks, followed by search-environment RL and generative judging</td>
+<td>combines verifiable evidence-seeking data with a named factual-reliability objective</td>
+</tr>
+<tr>
+<td>Zhipu GLM-4.5</td>
+<td>cross-page search questions and trajectory rewards based on final-answer accuracy</td>
+<td>gives a concrete search-agent recipe while also exposing outcome-only limits</td>
+</tr>
+<tr>
+<td>xAI Grok 4.1</td>
+<td>post-training aimed at factual hallucinations plus atomic-fact evaluation on sampled production queries</td>
+<td>connects post-training to a live-distribution audit, though the loss remains undisclosed</td>
+</tr>
+<tr>
+<td>NVIDIA Nemotron 3 Nano experiment</td>
+<td>on-policy preference pairs penalizing calls to nonexistent tools</td>
+<td>detailed tool-hallucination ablation, explicitly not the final release recipe</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-disclosure-gaps">Common disclosure gaps<a class="headerlink" href="#common-disclosure-gaps" title="Permanent link">&para;</a></h3>
+<p>For most vendors, the following remain <strong>U</strong>:</p>
+<ul>
+<li>exact factuality or abstention data and mixture weights;</li>
+<li>online source authority and diversity rules;</li>
+<li>retrieval, reranking, and evidence-sufficiency thresholds;</li>
+<li>claim-level citation entailment checks;</li>
+<li>how model, search, and product routes change by query;</li>
+<li>cache freshness and contradiction handling;</li>
+<li>severe-error monitoring and incident circuit breakers;</li>
+<li>complete reward composition and independent audit sets; and</li>
+<li>causal ablations separating checkpoint, prompt, search, retry, and verifier.</li>
+</ul>
+<p>The absence of disclosure is not proof that a control is absent. It prevents a
+public claim that the control is used.</p>
+<h2 id="2-openai">2. OpenAI<a class="headerlink" href="#2-openai" title="Permanent link">&para;</a></h2>
+<h3 id="factuality-calibrated-failure-and-tool-use-post-training">Factuality, calibrated failure, and tool-use post-training<a class="headerlink" href="#factuality-calibrated-failure-and-tool-use-post-training" title="Permanent link">&para;</a></h3>
+<p>OpenAI's public record spans several generations; it should not be compressed
+into a claim that one historical recipe is the current production stack.</p>
+<p><strong>[D — model training and evaluation]</strong></p>
+<ul>
+<li><a href="https://arxiv.org/abs/2203.02155">InstructGPT</a> used human demonstrations,
+  preference comparisons, a reward model, proximal policy optimization (PPO),
+  and explicit TruthfulQA and closed-domain hallucination evaluations. It is
+  evidence that post-training can change truthfulness, not a complete
+  description of current ChatGPT.</li>
+<li>The <a href="https://cdn.openai.com/gpt-5-system-card.pdf">GPT-5 System Card</a>,
+  Section 3.7, says factuality was a post-training focus, including effective
+  browsing and factual answers without browsing. On a representative
+  production-prompt evaluation, the reported fraction of responses containing
+  a factual error was 26% lower for <code>main</code> than GPT-4o and 65% lower for
+  <code>thinking</code> than o3. The audit extracted claims and checked them with a
+  web-enabled model grader, then human-reviewed a sample; 75% agreement is a
+  grader–human agreement rate, not model accuracy.</li>
+<li>The same card's “deception” work includes environments in which a task is
+  impossible, a browser fails, an attachment is absent, or the request is
+  underspecified. The desired behavior is to report the limitation instead of
+  fabricating a tool result or claiming completion. This is honest-failure
+  training, not a universal fact checker.</li>
+<li>The <a href="https://cdn.openai.com/pdf/2221c875-02dc-4789-800b-e7758f3722c1/o3-and-o4-mini-system-card.pdf">o3 and o4-mini System
+  Card</a>
+  describes large-scale reinforcement learning and learned use of web search,
+  Python, files, and images during reasoning.</li>
+</ul>
+<p><strong>[D — evaluation and production-feedback audit]</strong> The <a href="https://deploymentsafety.openai.com/gpt-5-6/gpt-5-6.pdf">GPT-5.6
+System Card</a>,
+Section 6.1, evaluates de-identified historical conversations that users had
+flagged for factual errors. It separately measures whether a new answer has any
+error and whether it repeats the specific reported error. That confirms a
+production-failure-to-evaluation loop; it does not show direct online learning
+from an individual report.</p>
+<p><strong>[U]</strong> The factuality data, reward terms and weights, browser curriculum,
+router, release gates, and live thresholds for current products are not public.</p>
+<h3 id="webgpt-search-and-deep-research">WebGPT, search, and deep research<a class="headerlink" href="#webgpt-search-and-deep-research" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2112.09332">WebGPT paper</a> gives a historically
+precise research recipe: a constrained browser, about 6,000 demonstrations,
+21,500 pairwise comparisons, behavior cloning, a reward model, PPO, and
+best-of-<span class="arithmatex">\(N\)</span> candidate selection. The strongest reported 175B system used
+behavior cloning plus best-of-64 and returned source citations. <strong>[D —
+research prototype]</strong> It does not establish the current ChatGPT Search stack.</p>
+<p>OpenAI says <a href="https://openai.com/index/introducing-chatgpt-search/">ChatGPT search</a>
+used a fine-tuned GPT-4o, synthetic data including distilled outputs from
+o1-preview, third-party search, partner content, and links to web sources.
+<strong>[D — product disclosure]</strong></p>
+<p><a href="https://openai.com/index/introducing-deep-research/">Deep research</a> is
+described as end-to-end reinforcement learning on difficult browsing and
+reasoning tasks, with learned planning, repeated search, backtracking, Python
+use, and citations. <strong>[D — product/model training]</strong> The same official source
+lists residual failures: hallucinated facts or inferences, difficulty
+distinguishing authoritative information from rumors, weak uncertainty
+calibration, and citation-formatting errors. Those limitations are as
+important as the training disclosure.</p>
+<p>Current APIs expose model-selected
+<a href="https://developers.openai.com/api/docs/guides/tools-web-search">web search</a>,
+<a href="https://developers.openai.com/api/docs/guides/tools-file-search">file search</a>,
+consulted-source lists, inline URL annotations, and deep-research tool traces.
+<strong>[C — API/product]</strong> A retrieved URL or valid pointer does not establish
+source quality, completeness, or claim–source entailment.</p>
+<h3 id="make-abstention-score-better-than-guessing">Make abstention score better than guessing<a class="headerlink" href="#make-abstention-score-better-than-guessing" title="Permanent link">&para;</a></h3>
+<p>OpenAI's <a href="https://model-spec.openai.com/2025-04-11.html">Model Spec</a> asks
+models to express uncertainty and clarify missing information. <strong>[D —
+behavioral specification]</strong> A specification is a training target and product
+norm, not evidence that every answer complies.</p>
+<p>The research note <a href="https://openai.com/index/why-language-models-hallucinate/">Why language models
+hallucinate</a> argues
+that next-token learning leaves rare facts statistically uncertain and that
+accuracy-only leaderboards reward guessing. Its SimpleQA example reports
+GPT-5-thinking-mini at 22% correct, 26% wrong, and 52% abstain, versus o4-mini
+at 24% correct, 75% wrong, and 1% abstain. <strong>[D — research/evaluation]</strong> The
+proposal is to penalize confident errors more heavily and give abstention
+credit; it is not disclosure of every production loss.</p>
+<p>OpenAI's <a href="https://openai.com/index/how-confessions-can-keep-language-models-honest/">Confessions
+prototype</a>
+separates the task answer from a second report in which the model admits
+errors, uncertainty, or reward hacking, and trains an independent reward model
+only on the confession. <strong>[D — research prototype]</strong> It is explicitly not a
+deployed ChatGPT feature.</p>
+<p>Structured Outputs constrains a response to a supplied JSON Schema. <strong>[D —
+API control]</strong> It prevents many protocol and extra-field failures, but it does
+not validate factual field values.</p>
+<h2 id="3-anthropic">3. Anthropic<a class="headerlink" href="#3-anthropic" title="Permanent link">&para;</a></h2>
+<h3 id="honesty-as-a-training-objective-with-undisclosed-implementation-detail">Honesty as a training objective, with undisclosed implementation detail<a class="headerlink" href="#honesty-as-a-training-objective-with-undisclosed-implementation-detail" title="Permanent link">&para;</a></h3>
+<p>Anthropic's current
+<a href="https://www.anthropic.com/news/claude-new-constitution">constitution</a>
+is used across multiple training stages. Claude generates material for
+understanding the constitution, dialogues, candidate answers, and rankings
+that are then used in training. The constitution calls for honesty, calibrated
+confidence, acknowledgement of uncertainty, and no fabricated sources.
+<strong>[D — model-training norm]</strong></p>
+<p>This continues a lineage from
+<a href="https://arxiv.org/abs/2212.08073">Constitutional AI</a>: the 2022 prototype had
+the model critique and revise responses for SFT, then used AI comparisons to
+train a preference model and reinforcement learning from AI feedback (RLAIF).
+<strong>[D — historical research recipe]</strong> That paper primarily targeted
+harmlessness, and Anthropic says its process has evolved; it is not the full
+2026 factuality recipe.</p>
+<p>The <a href="https://www-cdn.anthropic.com/2f9323abbcc4abe219577539efe19a623c9ca2bd/Claude%20Fable%205%20%26%20Claude%20Mythos%205%20System%20Card.pdf">Fable 5 and Mythos 5 System
+Card</a>,
+Section 6.3.3, states a direct behavioral objective: answer accurately when
+confident, decline when uncertain, and do not invent facts, citations, or
+capabilities. <strong>[D — model training]</strong> Exact data, losses, reward weights, and
+stage composition remain <strong>U</strong>.</p>
+<p>Anthropic also evaluates closed-book questions as correct, incorrect, or
+abstained and reports a <code>correct - incorrect</code> net score, so a bad guess is worse
+than abstention. It tests false premises, missing attachments, unavailable
+tools, missing citations, multiple languages, and pressure to accept an
+incorrect premise. Two selected difficult hallucination sets still showed
+only 87% and 82% non-hallucination rates for Mythos 5, demonstrating residual
+failure. <strong>[D — evaluation]</strong> The sets are intentionally hard and are not
+production incidence estimates.</p>
+<h3 id="production-research-search-retrieval-and-citations">Production research, search, retrieval, and citations<a class="headerlink" href="#production-research-search-retrieval-and-citations" title="Permanent link">&para;</a></h3>
+<p>Anthropic's <a href="https://www.anthropic.com/engineering/multi-agent-research-system">multi-agent research-system engineering
+report</a>
+describes a lead agent that delegates parallel searches to subagents, adapts
+the plan as evidence arrives, and passes the final report to a separate
+CitationAgent that locates citations in the collected documents. Human testing
+found a preference for search-engine-optimized content farms, so the team
+added heuristics favoring authoritative and primary sources. <strong>[D/C —
+production product and artifact]</strong></p>
+<p>The research system is evaluated by model judges on factual accuracy, citation
+accuracy, completeness, source quality, and tool efficiency, alongside manual
+testing for rare hallucinations and source bias that automated tests missed.
+The disclosed internal improvement is not a universal accuracy rate, and
+multiple agents can propagate a shared bad premise.</p>
+<p>Claude API
+<a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool">web search</a>
+lets the model decide when and how often to search, supports domain controls,
+and requires citations. A later tool version lets Claude write and run code to
+filter search results before placing relevant material in context. <strong>[C —
+API/product]</strong> Filtering improves relevance and context efficiency; it does not
+guarantee source authority or factual entailment.</p>
+<p>The <a href="https://platform.claude.com/docs/en/build-with-claude/citations">Citations API</a>
+returns an exact passage plus page or character ranges in supplied documents.
+<strong>[C — API]</strong> It confirms that a pointer resolves to input text, not that the
+text is true, that the claim follows from it, or that all material claims are
+covered.</p>
+<h3 id="a-useful-retrieval-technique-not-evidence-of-claudes-private-stack">A useful retrieval technique, not evidence of Claude's private stack<a class="headerlink" href="#a-useful-retrieval-technique-not-evidence-of-claudes-private-stack" title="Permanent link">&para;</a></h3>
+<p><a href="https://www.anthropic.com/engineering/contextual-retrieval">Contextual Retrieval</a>
+prepends document-level context to each chunk before embedding and BM25
+indexing. In Anthropic's experiment, embedding plus BM25 reduced top-20
+retrieval failure from 5.7% to 2.9%; reranking reduced it to 1.9%. <strong>[D —
+customer method/research experiment]</strong> This is a concrete method for builders,
+not confirmation that Claude.ai internally uses the same RAG pipeline.</p>
+<p>Anthropic's developer guidance recommends explicitly allowing “I don't know,”
+extracting verbatim evidence before answering long documents, checking every
+claim against a quotation, withdrawing unsupported claims, best-of-<span class="arithmatex">\(N\)</span>, and
+iterative revision. <strong>[D — customer guidance]</strong> These are not disclosures of
+the production model stack.</p>
+<p><strong>Still unknown:</strong> current pretraining fact selection, factuality rewards,
+search ranking, citation-entailment thresholds, release gates, model routing,
+and live error rates.</p>
+<h2 id="4-google-and-google-deepmind">4. Google and Google DeepMind<a class="headerlink" href="#4-google-and-google-deepmind" title="Permanent link">&para;</a></h2>
+<h3 id="factuality-focused-adaptation-and-learned-search">Factuality-focused adaptation and learned search<a class="headerlink" href="#factuality-focused-adaptation-and-learned-search" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://storage.googleapis.com/deepmind-media/gemini/gemini_1_report.pdf">Gemini 1 Technical
+Report</a>,
+Section 5.1.6, explicitly describes factuality-focused adaptation for three
+behaviors: closed-book factuality, attribution to user-provided context, and
+hedging on unanswerable questions. In the reported final adaptation stage,
+error fell from 6.7% to 3.8%, attribution score (AIS) rose from 40.2% to 60.0%,
+and hedging rose from 0% to 69.3%. <strong>[D — model training and evaluation]</strong>
+The data, objective, and mixture weights are not disclosed.</p>
+<p>The <a href="https://storage.googleapis.com/deepmind-media/gemini/gemini_v2_5_report.pdf">Gemini 2.5 Technical
+Report</a>
+states that Gemini 2.0 was trained to call Google Search natively and that 2.5
+learns interleaved thought, search, follow-up queries, and fact checking. It
+also describes more reinforcement-learning compute, verifiable rewards,
+model-generated rewards, and complex multi-step tool environments. <strong>[D —
+model training]</strong> Those broad reward classes do not disclose a dedicated
+factuality loss, weight, or search curriculum.</p>
+<p>Historical DeepMind prototypes expose more algorithmic detail:</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2203.11147">GopherCite</a> used human-preference
+  reinforcement learning for open-book question answering, selected evidence
+  passages, quoted them, and could abstain. On the least-certain third of
+  questions, abstention raised the reported human-rated quality to 90% on
+  Natural Questions and 80% on ELI5. <strong>[D — research prototype]</strong></li>
+<li><a href="https://arxiv.org/abs/2209.14375">Sparrow</a> combined Google Search, a
+  preference reward model, a 23-rule reward model, an evidence-support
+  auxiliary objective, eight-candidate reranking, actor-critic learning, and
+  self-play. Human raters judged 78% of its evidence-supported claims as
+  supported. <strong>[D — research prototype]</strong></li>
+</ul>
+<p>Neither prototype is proof of current Gemini architecture; GopherCite also
+shows that apparently supportive evidence can still support a false answer.</p>
+<h3 id="grounding-output-side-checking-and-user-visible-verification">Grounding, output-side checking, and user-visible verification<a class="headerlink" href="#grounding-output-side-checking-and-user-visible-verification" title="Permanent link">&para;</a></h3>
+<p>Gemini API <a href="https://ai.google.dev/gemini-api/docs/google-search?hl=en">Grounding with Google
+Search</a> lets the
+model decide whether to search, issue one or more queries, consume results, and
+return query/result metadata with text-span-aligned URL citations. It can be
+combined with URL context and code execution. <strong>[C — API/product]</strong></p>
+<p>Google Cloud's <a href="https://cloud.google.com/generative-ai-app-builder/docs/check-grounding?hl=en">Check Grounding
+API</a>
+compares an answer with up to 200 supplied facts and returns overall and
+claim-level support scores, source spans, and citations; its documented
+criterion requires a whole sentence to be entailed by the facts. <strong>[C —
+API/cloud control]</strong> It checks support relative to supplied evidence, not
+whether that evidence is true.</p>
+<p><a href="https://blog.google/products-and-platforms/products/gemini/google-gemini-deep-research/">Gemini Deep
+Research</a>
+shows the user an editable plan, then iterates search, reading, and follow-up
+search before producing a linked report. The Gemini Apps
+<a href="https://support.google.com/gemini/answer/14143489?hl=en">double-check feature</a>
+performs a new search for similar or contradictory material and colors
+statements accordingly. <strong>[C — product]</strong> Google explicitly warns that a green
+link may not have been used to generate the original answer, similarity is not
+entailment, and the feature can be wrong.</p>
+<h3 id="retrieval-sufficiency-specialized-grounding-and-evaluation">Retrieval sufficiency, specialized grounding, and evaluation<a class="headerlink" href="#retrieval-sufficiency-specialized-grounding-and-evaluation" title="Permanent link">&para;</a></h3>
+<p>Google research finds that RAG can make a model more confidently wrong when
+the retrieved context is insufficient; its
+<a href="https://research.google/blog/deeper-insights-into-retrieval-augmented-generation-the-role-of-sufficient-context/">sufficient-context work</a>
+separates whether the evidence is adequate from whether an answer looks
+plausible. <strong>[D — research]</strong></p>
+<p><a href="https://research.google/blog/grounding-ai-in-reality-with-a-little-help-from-data-commons/">DataGemma</a>
+explores two specialized routes over Data Commons: retrieval-interleaved
+generation, in which the model emits calls for exact statistics while writing,
+and RAG over a natural-language corpus generated from the database. The Gemma
+variants are fine-tuned to decide when to ask the external source. <strong>[D —
+research prototype]</strong></p>
+<p>The <a href="https://deepmind.google/blog/facts-grounding-a-new-benchmark-for-evaluating-the-factuality-of-large-language-models/">FACTS Grounding
+benchmark</a>
+first checks task compliance, then uses cross-family model judges calibrated on
+a held-out human set to judge complete grounding over 1,719 long-document
+examples. The later <a href="https://deepmind.google/blog/facts-benchmark-suite-systematically-evaluating-the-factuality-of-large-language-models/">FACTS
+Suite</a>
+separates parametric, search, multimodal, and supplied-context factuality and
+gives every model the same search tool. At its release, every tested model
+scored below 70% overall. <strong>[D — evaluation]</strong> A benchmark is not proof of a
+production gate or an estimate of live error incidence.</p>
+<p>Google DeepMind's <a href="https://deepmind.google/research/publications/85420/">SAFE and LongFact
+work</a> decomposes a long
+answer into atomic claims, generates search queries for each, judges support,
+and combines precision with coverage. On roughly 16,000 facts, SAFE agreed
+with crowd workers 72% of the time; on 100 disagreements, an adjudication
+favored SAFE 76% of the time. <strong>[D — research evaluator]</strong> There is no public
+evidence that SAFE is the Gemini production checker or training reward.</p>
+<p><strong>Still unknown:</strong> the current Gemini factuality data and reward mixture,
+search/ranking implementation, claim thresholds, release gates, live
+incidence, and how thumbs-down reports enter training.</p>
+<h2 id="5-microsoft-and-azure">5. Microsoft and Azure<a class="headerlink" href="#5-microsoft-and-azure" title="Permanent link">&para;</a></h2>
+<h3 id="phi-4-train-the-answer-versus-refuse-boundary">Phi-4: train the answer-versus-refuse boundary<a class="headerlink" href="#phi-4-train-the-answer-versus-refuse-boundary" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2412.08905">Phi-4 Technical Report</a>, Section 4.4
+and Appendix A.1, provides one of the clearest public abstention recipes.</p>
+<p><strong>[D — model training]</strong></p>
+<ol>
+<li>Run a base model several times on factual trivia questions and estimate
+   whether it reliably answers correctly.</li>
+<li>For knowledge the model usually has, create SFT examples mapping the
+   question to the correct answer.</li>
+<li>For knowledge it usually lacks, create examples mapping the question to a
+   refusal.</li>
+<li>Add plausible-looking but unanswerable synthetic questions.</li>
+<li>Construct DPO preferences so a correct answer beats refusal, while refusal
+   beats a wrong answer.</li>
+</ol>
+<p>On the report's SimpleQA analysis, wrong answers fell from <strong>90.0%</strong> in the base
+model to <strong>15.8%</strong> in the final model, while abstention rose from <strong>6.8%</strong> to
+<strong>81.1%</strong>; correct answers stayed around 3%. The principal effect was safer
+selective answering, not acquisition of more trivia knowledge. The report also
+notes that an F1-style score can punish this trade-off.</p>
+<p><strong>[U]</strong> The complete factuality-data size, thresholds, mixture weights, and
+transfer to current Microsoft products are not public.</p>
+<h3 id="azure-groundedness-and-retrieval-controls">Azure groundedness and retrieval controls<a class="headerlink" href="#azure-groundedness-and-retrieval-controls" title="Permanent link">&para;</a></h3>
+<p><strong>[D — API/cloud control]</strong></p>
+<ul>
+<li>Azure AI Content Safety
+  <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/content-filter-groundedness">groundedness detection</a>
+  compares an answer with supplied sources. It supports a binary mode and a
+  reasoning mode that localizes unsupported spans; a correction option can be
+  configured.</li>
+<li>Azure OpenAI On Your Data returns source text, title, URL, path, chunk ID,
+  retrieval score, and filtering information through its
+  <a href="https://learn.microsoft.com/en-us/azure/ai-services/openai/references/on-your-data">API response fields</a>.</li>
+<li>Microsoft's own
+  <a href="https://learn.microsoft.com/en-us/azure/foundry-classic/openai/how-to/on-your-data-best-practices?view=foundry-classic">best-practices page</a>
+  warns that <code>inScope=true</code> is not a hard guarantee: models may still answer
+  outside the retrieved domain and citations may be missing.</li>
+<li>Microsoft 365 Copilot describes permission-aware organizational grounding
+  through the
+  <a href="https://learn.microsoft.com/en-us/microsoftsearch/semantic-index-for-copilot">Semantic Index and Microsoft Graph</a>,
+  with web search for current information.</li>
+</ul>
+<p>These are deployed or customer-configurable system layers. They do not disclose
+the internal training of every hosted model or prove that every attached
+citation entails its claim.</p>
+<h3 id="structural-controls">Structural controls<a class="headerlink" href="#structural-controls" title="Permanent link">&para;</a></h3>
+<p>Azure
+<a href="https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/structured-outputs">Structured Outputs</a>
+constrains a response to a JSON Schema. <strong>[D — API/cloud control]</strong> This is
+valuable for tool names, arguments, required fields, and types. It does not make
+the field values factually correct.</p>
+<p><strong>Still unknown:</strong> current Copilot model routing, retriever and reranker,
+citation-entailment checks, online thresholds, and incident policies.</p>
+<h2 id="6-meta">6. Meta<a class="headerlink" href="#6-meta" title="Permanent link">&para;</a></h2>
+<h3 id="llama-3-factuality-and-abstention-training">Llama 3 factuality and abstention training<a class="headerlink" href="#llama-3-factuality-and-abstention-training" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2407.21783">Llama 3 model-family report</a>, Sections
+3.1.2, 4, 4.3.5, and 4.3.6, discloses several relevant controls.</p>
+<p><strong>[D — model training]</strong></p>
+<ul>
+<li>Pretraining data undergoes deduplication, quality filtering, and knowledge
+  classification; scaling experiments inform the data mixture.</li>
+<li>Post-training iterates SFT, a reward model, rejection sampling, and DPO, with
+  roughly 10–30 candidate responses sampled per prompt before reward-model
+  selection.</li>
+<li>For factuality, Meta generates factual questions from pretraining passages,
+  samples the model repeatedly, and checks correctness and informativeness
+  against the passage. Questions that elicit informative but persistently wrong
+  answers become refusal examples. The stated objective is to teach the model
+  the boundary of what it knows, not add new facts during post-training.</li>
+<li>Llama 3 is trained on human and synthetic trajectories for Brave Search,
+  Python, and Wolfram Alpha, including ReAct-style and multi-step tool use.</li>
+</ul>
+<p><strong>[U]</strong> Public sources omit the factual-probe dataset size, thresholds, loss
+weights, and whether Llama 4 retained the same factuality pipeline.</p>
+<h3 id="product-retrieval-and-an-event-level-circuit-breaker">Product retrieval and an event-level circuit breaker<a class="headerlink" href="#product-retrieval-and-an-event-level-circuit-breaker" title="Permanent link">&para;</a></h3>
+<p><strong>[D — product]</strong> Meta AI's Llama 3 launch describes use of
+<a href="https://about.fb.com/news/2024/04/meta-ai-assistant-built-with-llama-3/">real-time web information</a>.
+Later news partnerships add publisher material and article links.</p>
+<p>Meta also disclosed a concrete production failure response after the July 2024
+attempted assassination of Donald Trump. During the initial breaking-news
+period, it configured Meta AI not to answer related questions because reliable
+information was sparse, then updated the system as facts became available.
+Meta's
+<a href="https://about.fb.com/news/2024/07/review-of-fact-checking-label-and-meta-ai-responses/">post-incident account</a>
+also acknowledges that erroneous responses still occurred. This is direct
+evidence of a topic-level temporary abstention/circuit breaker, not evidence of
+perfect execution.</p>
+<p>The <a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/">Llama 4 release</a>
+discloses a light SFT, online RL, and light DPO pipeline with easy-example
+filtering. <strong>[D — model training]</strong> It does not specifically disclose a
+hallucination mitigation recipe.</p>
+<p><strong>Still unknown:</strong> current Meta AI model routing, search ranking, evidence
+sufficiency, citation checking, live thresholds, and whether the Llama 3
+knowledge-probe method continues in later checkpoints.</p>
+<h2 id="7-amazon-and-aws">7. Amazon and AWS<a class="headerlink" href="#7-amazon-and-aws" title="Permanent link">&para;</a></h2>
+<h3 id="amazon-nova">Amazon Nova<a class="headerlink" href="#amazon-nova" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://www.amazon.science/publications/the-amazon-nova-family-of-models-technical-report-and-model-card">Amazon Nova technical report and model
+card</a>
+describes quality-filtered public, licensed, and proprietary data; SFT; a human
+preference reward model; DPO/PPO; truthfulness and robustness data in
+responsible-AI work; feedback of risk examples into later SFT/RLHF; and runtime
+input/output moderation. <strong>[D — model training]</strong></p>
+<p>The report also evaluates:</p>
+<ul>
+<li>erroneous tool calls when no applicable tool exists through the BFCL
+  Irrelevance slice; and</li>
+<li>a specific RAG experiment on CRAG with disclosed parsing, chunking, top-20
+  retrieval, and GPT-4 Turbo judging.</li>
+</ul>
+<p>These are useful evaluations. The report does not disclose a Phi-4- or
+Llama-3-like general factual-abstention training recipe, and the CRAG
+experiment is not proof of the Bedrock production retrieval stack.</p>
+<h3 id="bedrock-and-amazon-q-product-controls">Bedrock and Amazon Q product controls<a class="headerlink" href="#bedrock-and-amazon-q-product-controls" title="Permanent link">&para;</a></h3>
+<p><strong>[D — API/cloud control or product]</strong></p>
+<ul>
+<li>Bedrock
+  <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-contextual-grounding-check.html">Contextual Grounding Checks</a>
+  score whether a response is supported by the supplied source and relevant to
+  the query, with configurable thresholds. AWS notes important scope limits:
+  conversational QA is not the intended case, source-external additions are
+  considered ungrounded, and streaming can expose text before a later check.</li>
+<li>Bedrock
+  <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/automated-reasoning-checks-concepts.html">Automated Reasoning</a>
+  translates natural-language policy into logical rules and uses a solver to
+  check consistency. A valid result covers only the formalized policy; the
+  translation and any out-of-policy fact may still be wrong.</li>
+<li>Bedrock Knowledge Bases
+  <a href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_agent-runtime_RetrieveAndGenerate.html">RetrieveAndGenerate</a>
+  supports retrieval, reranking, query decomposition, and source-chunk
+  citations.</li>
+<li>Amazon Q Business
+  <a href="https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/hallucination-reduction.html">hallucination reduction</a>
+  evaluates RAG responses and may modify an answer when it detects a
+  high-confidence inconsistency; it also provides granular source attribution.</li>
+</ul>
+<p><strong>[U]</strong> The detectors, thresholds, current model routes, and correction
+algorithm are not publicly reconstructible.</p>
+<h2 id="8-cohere">8. Cohere<a class="headerlink" href="#8-cohere" title="Permanent link">&para;</a></h2>
+<h3 id="command-a-trains-rag-and-tool-use-as-expert-specializations">Command A trains RAG and tool use as expert specializations<a class="headerlink" href="#command-a-trains-rag-and-tool-use-as-expert-specializations" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://cohere.com/research/papers/command-a-technical-report.pdf">Command A Technical Report</a>,
+Sections 3.1–3.3, discloses an unusually explicit grounded-training pipeline.</p>
+<p><strong>[D — model training]</strong></p>
+<ol>
+<li>Train separate SFT experts for code, safety, RAG, math, multilingual work,
+   and general long context, then merge them.</li>
+<li>Train and merge corresponding RL experts.</li>
+<li>Polish the merged model with best-of-<span class="arithmatex">\(N\)</span>, offline preference optimization,
+   and online RL.</li>
+<li>For RAG and tool use, build trajectories containing reasoning, JSON tool
+   calls, tool results, and a final answer that cites the tool output.</li>
+<li>Use human and synthetic examples, SFT, and offline Cohere Preference
+   Group Optimization; multi-reviewer annotation requires a majority.</li>
+</ol>
+<p>The report evaluates a private enterprise RAG set with more than 10,000
+snippets and human ground truth, including answerable and unanswerable cases.
+Vendor-reported results are useful for the named system, not an independent
+universal RAG ranking.</p>
+<p>Cohere's own <a href="https://docs.cohere.com/v1/docs/retrieval-augmented-generation-rag">RAG documentation</a>
+states that retrieval and citations cannot guarantee accuracy or eliminate
+hallucination; sources may be stale, wrong, or biased. <strong>[D — API guidance]</strong></p>
+<p><code>strict_tools</code> and
+<a href="https://docs.cohere.com/v2/docs/structured-outputs">Structured Outputs</a>
+constrain schemas, tool names, arguments, and types. <strong>[D — API control]</strong> They
+do not verify factual values or faithful use of tool results.</p>
+<p><strong>Still unknown:</strong> the RAG data volume, citation reward, full loss composition,
+current product retrieval, and online claim-level error rates.</p>
+<h2 id="9-mistral-ai">9. Mistral AI<a class="headerlink" href="#9-mistral-ai" title="Permanent link">&para;</a></h2>
+<h3 id="model-and-product-disclosures">Model and product disclosures<a class="headerlink" href="#model-and-product-disclosures" title="Permanent link">&para;</a></h3>
+<p>Mistral's <a href="https://mistral.ai/news/mistral-large-2407/">Large 2 release</a>
+states that fine-tuning focused on reducing hallucinations and making the model
+more cautious and discerning. <strong>[D — model training]</strong> No data construction,
+loss, refusal threshold, factuality benchmark, or ablation is disclosed, so the
+claim cannot support a more specific recipe.</p>
+<p>Mistral API documentation says its models are trained to answer from documents
+and expose source-bound
+<a href="https://docs.mistral.ai/studio-api/conversations/citations">citations</a>.
+Le Chat combines pretrained knowledge with web/news information and citations;
+the <a href="https://mistral.ai/news/mistral-afp/">AFP partnership</a> supplies a
+verifiable news archive. <strong>[D — API/product]</strong></p>
+<p>Mistral's 2026
+<a href="https://mistral.ai/news/search-toolkit/">Search Toolkit</a> separates ingestion,
+retrieval, and evaluation and exposes hybrid lexical/vector search. Its
+<a href="https://mistral.ai/fr/news/llm-as-rag-judge/">RAG-judge guide</a> evaluates
+context relevance, groundedness, and answer relevance. <strong>[D — customer method
+and product guidance]</strong> These sources do not establish the exact live Le Chat
+ranker or verifier.</p>
+<p>Structured output constrains JSON Schema. <strong>[D — API control]</strong> It does not
+prove factual content.</p>
+<p><strong>Still unknown:</strong> factuality training details, live source ranking,
+citation-entailment verification, routing, and thresholds.</p>
+<h2 id="10-xai">10. xAI<a class="headerlink" href="#10-xai" title="Permanent link">&para;</a></h2>
+<h3 id="grok-factuality-post-training-and-production-distribution-evaluation">Grok factuality post-training and production-distribution evaluation<a class="headerlink" href="#grok-factuality-post-training-and-production-distribution-evaluation" title="Permanent link">&para;</a></h3>
+<p>xAI's <a href="https://x.ai/news/grok-4-1">Grok 4.1 release</a> says post-training
+specifically targeted factual hallucinations for information-seeking prompts.
+It evaluates stratified real production queries and a 500-biography FActScore
+set with web search enabled, decomposing answers into atomic claims and
+separating major and minor factual errors. <strong>[D — model training and
+evaluation]</strong></p>
+<p>The complete training data, reward, abstention objective, and causal ablation
+are <strong>U</strong>.</p>
+<h3 id="search-sources-and-a-released-production-prompt">Search, sources, and a released production prompt<a class="headerlink" href="#search-sources-and-a-released-production-prompt" title="Permanent link">&para;</a></h3>
+<p>xAI released a revision-pinned
+<a href="https://github.com/xai-org/grok-prompts/blob/a7c186f5ccac95875c0041aed60398f6ecb6d6c7/ask_grok_system_prompt.j2">Ask Grok system prompt</a>
+that instructs the product to use real-time search for facts and primary
+sources, open pages to verify search information, diversify sources on complex
+or disputed topics, and express uncertainty. <strong>[C — product artifact]</strong> A real
+prompt is stronger evidence than generic advice, but it does not prove
+compliance or source correctness.</p>
+<p>The older <a href="https://x.ai/news/grok/model-card">Grok-1 model card</a> already states
+that deployment uses search and databases to improve factuality while external
+information still does not eliminate hallucination. Current APIs expose
+<a href="https://docs.x.ai/developers/tools/web-search">web search</a>,
+X search, code execution,
+<a href="https://docs.x.ai/developers/tools/collections-search">collection retrieval</a>,
+and <a href="https://docs.x.ai/developers/tools/citations">citations</a>.
+<strong>[D — API/product]</strong> The citation documentation notes that listed URLs are
+sources encountered by the model; that alone does not prove every URL informed
+the final claim.</p>
+<p>Structured output and strict tool arguments constrain protocol, not semantic
+truth. Safety refusal and deception evaluations in Grok system cards are also
+not interchangeable with open-world factual hallucination.</p>
+<p><strong>Still unknown:</strong> live search/reranking internals, citation entailment, route
+selection, verifier thresholds, and incident policy.</p>
+<h2 id="11-nvidia">11. NVIDIA<a class="headerlink" href="#11-nvidia" title="Permanent link">&para;</a></h2>
+<h3 id="a-detailed-tool-hallucination-experiment-that-was-not-the-release-recipe">A detailed tool-hallucination experiment that was not the release recipe<a class="headerlink" href="#a-detailed-tool-hallucination-experiment-that-was-not-the-release-recipe" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://research.nvidia.com/labs/nemotron/files/NVIDIA-Nemotron-3-Nano-Technical-Report.pdf">Nemotron 3 Nano Technical Report</a>,
+Appendix C, defines tool hallucination as invoking a tool that was not declared.
+It samples 32 on-policy solutions for 1,000 mathematics and 1,000 STEM
+questions, then constructs about 50,000 preference examples in which undeclared
+tool calls are rejected. <strong>[D — research experiment]</strong></p>
+<p>The DPO ablation reduced the report's AIME25 tool-hallucination rate from 1.25%
+to zero and GPQA from 8.33% to 0.7%, while improving accuracy. The report
+explicitly says the final released model did <strong>not</strong> use that DPO recipe because
+RL produced similar results. This is strong method evidence and weak evidence
+for the final checkpoint recipe; it covers tool calls, not general factuality.</p>
+<h3 id="nemo-guardrails">NeMo Guardrails<a class="headerlink" href="#nemo-guardrails" title="Permanent link">&para;</a></h3>
+<p>NeMo Guardrails exposes
+<a href="https://docs.nvidia.com/nemo/guardrails/configure-guardrails/guardrail-catalog/fact-checking">fact-checking rails</a>
+that compare a RAG answer with retrieved chunks, use a self-check prompt or
+specialized models, apply thresholds, and optionally fail closed when a check
+does not complete. It also supports consistency-oriented hallucination
+evaluation. <strong>[D — open customer-side control]</strong></p>
+<p>This does not prove that NVIDIA-hosted models use the rail by default or that
+the selected judge reliably follows it.</p>
+<h2 id="12-deepseek">12. DeepSeek<a class="headerlink" href="#12-deepseek" title="Permanent link">&para;</a></h2>
+<h3 id="verifiable-search-questions-and-generative-reward-models">Verifiable search questions and generative reward models<a class="headerlink" href="#verifiable-search-questions-and-generative-reward-models" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2512.02556">DeepSeek-V3.2
+report</a>, Section 3.2.3, describes a search
+training-data pipeline aimed at long-tail entities. One agent searches and
+generates questions; multiple answer agents respond; a verifier with search
+access checks answers over several rounds. A sample is retained only when the
+correct answer can be verified, wrong candidates can be falsified, and search
+materially helps. The disclosed corpus has <strong>50,275 search tasks</strong>. <strong>[D —
+model training]</strong></p>
+<p>DeepSeek trains specialists for search, general agents, and code, then mixes
+them in Group Relative Policy Optimization (GRPO). Verifiable tasks use
+rule-based outcome, length, and language-consistency rewards; open tasks use
+per-prompt rubrics and a generative reward model (GenRM). The search objective
+explicitly includes factual reliability. Training connects to a real web
+search API, code environment, and Jupyter while preserving reasoning and tool
+history across calls. <strong>[D — model training]</strong></p>
+<p>The <a href="https://arxiv.org/abs/2606.19348">DeepSeek-V4 report</a> further describes
+rule/test rewards for easy-to-verify tasks and rubric-guided RL plus a
+reinforcement-trained generative judge and online multi-teacher distillation
+for harder tasks. Its service description says the web/app uses primarily RAG
+in non-thinking mode and iterative search/fetch in thinking mode. <strong>[D —
+model training and product]</strong> The latter does not establish behavior for every
+open checkpoint or API call.</p>
+<p>DeepSeek's <a href="https://api-docs.deepseek.com/guides/anthropic_api/">Anthropic-compatible API
+documentation</a> says the
+generic <code>citations</code> field is ignored and <code>search_result</code> input is unsupported,
+although a web-search tool result is supported. <strong>[D — API boundary]</strong> This
+prevents an unsupported claim that the compatibility layer offers a complete
+citation contract.</p>
+<p><strong>Still unknown:</strong> epistemic-refusal thresholds, calibrated confidence,
+claim-level citation rewards, production hallucination rates, citation
+coverage, and live alerting.</p>
+<h2 id="13-alibaba-qwen">13. Alibaba Qwen<a class="headerlink" href="#13-alibaba-qwen" title="Permanent link">&para;</a></h2>
+<h3 id="factuality-verification-and-a-rag-specific-reward">Factuality verification and a RAG-specific reward<a class="headerlink" href="#factuality-verification-and-a-rag-specific-reward" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2412.15115">Qwen2.5 Technical Report</a> describes more
+than one million post-training examples. Offline RL factuality verification
+uses structured data, code sandboxes, instruction verifiers, and multiple
+critics; the online reward model includes truthfulness, defined to include
+factual accuracy, contextual support, and absence of false or unsupported
+content. <strong>[D — model training]</strong></p>
+<p>The <a href="https://arxiv.org/abs/2505.09388">Qwen3 Technical Report</a>, Section 4.4,
+states that general RL spans more than 20 task families and that agents
+interact with real environments. For RAG it introduces a task-specific reward
+that favors an accurate answer adapted to the retrieved context in order to
+minimize hallucination. The reward stack includes deterministic rules, a
+reference-aware Qwen2.5-72B judge, and a reference-free scalar reward model.
+<strong>[D — model training]</strong> This is one of the most direct published
+RAG-specific anti-hallucination reward statements.</p>
+<p>For a reasoning stage, Qwen3 retains only verifiable questions and removes
+wrong, duplicate, guessed, internally inconsistent, and language-mixed
+trajectories; the disclosed set contains 3,995 query–verifier pairs. This
+small, curated stage is not the model's entire post-training set.</p>
+<h3 id="end-to-end-research-agents-and-product-citations">End-to-end research agents and product citations<a class="headerlink" href="#end-to-end-research-agents-and-product-citations" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2510.24701">Tongyi DeepResearch</a> uses Search, Visit,
+Python, Scholar, and file-parsing tools. Agentic continued pretraining expands
+the context from 32K to 128K; the team samples a web knowledge graph, injects
+uncertainty, synthesizes verifiable questions, and runs on-policy GRPO using
+binary correct-answer rewards, continually removing universally easy or
+impossible tasks. The
+<a href="https://github.com/Alibaba-NLP/DeepResearch">official repository</a> is a
+released artifact. <strong>[D/C — model training and artifact]</strong></p>
+<p>The Alibaba Cloud <a href="https://help.aliyun.com/en/model-studio/web-search-agent-guide">Web Search
+Agent</a> exposes
+source filtering, query rewriting, vertical sources, automatic or forced
+search, and optional numbered source links. <strong>[D — product]</strong> This does not
+show that the base checkpoint learned citation entailment.</p>
+<p>Qwen2.5 explicitly cautions that a reward model performing well on a standalone
+benchmark may still perform poorly when optimized downstream because of
+Goodhart-style overoptimization. <strong>[D — disclosed limitation]</strong></p>
+<p><strong>Still unknown:</strong> evidence-based refusal thresholds, calibrated confidence,
+citation-coverage rewards, production hallucination telemetry, and current
+online gates.</p>
+<h2 id="14-moonshot-ai-kimi">14. Moonshot AI / Kimi<a class="headerlink" href="#14-moonshot-ai-kimi" title="Permanent link">&para;</a></h2>
+<h3 id="sentence-level-unsupported-claim-detection-inside-the-reward">Sentence-level unsupported-claim detection inside the reward<a class="headerlink" href="#sentence-level-unsupported-claim-detection-inside-the-reward" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2507.20534">Kimi K2 Technical Report</a> describes more
+than 3,000 real Model Context Protocol (MCP) tools, about 20,000 synthetic
+tools, thousands of agents, stateful simulation, and real sandboxes. Rubric
+judges filter trajectories. <strong>[D — model training]</strong></p>
+<p>More unusually, K2 trains a sentence-level faithfulness judge to detect factual
+claims unsupported by the provided context and uses that judge directly as a
+reward model. A self-critique rubric separately evaluates helpfulness,
+reasoning, factuality, and safety. Online rollouts from verifiable tasks
+continually update the critic, while math, code, and instruction-following use
+answer verifiers, tests/sandboxes, or rules plus model judges. <strong>[D — model
+training]</strong> This is stronger evidence than a generic claim that the product
+“uses RAG.”</p>
+<p>The report also discloses an important failure mode: preference rubrics may
+favor confident, singular answers and penalize hedging or qualification,
+creating overconfidence. Calibrated uncertainty is listed as future work.
+<strong>[D — disclosed limitation]</strong></p>
+<h3 id="search-agent-reinforcement-learning">Search-agent reinforcement learning<a class="headerlink" href="#search-agent-reinforcement-learning" title="Permanent link">&para;</a></h3>
+<p><a href="https://moonshotai.github.io/Kimi-Researcher/">Kimi-Researcher</a> connects to
+live search, a text browser, and code tools; automatically synthesizes and
+validates questions; filters ambiguous, wrong, and overly easy tasks; and uses
+REINFORCE with final-answer correctness, allowing more than 50 interaction
+steps. <strong>[D — research/product model training]</strong> The reward concerns the final
+answer, not necessarily every citation.</p>
+<p>Kimi's <a href="https://www.kimi.com/help/features/search">Search product
+documentation</a> says Agentic Search
+is built with end-to-end agentic RL, decides when to search, filters for
+relevance, authority, and freshness across more than 100 vetted source types,
+and attaches source links to search-based answers. <strong>[D — product claim]</strong> The
+public record does not provide a citation-entailment reward or an independent
+reproduction.</p>
+<p>K2 reports offline grounding and faithfulness evaluations including FACTS
+Grounding, HHEM/Vectara, and FaithJudge. <strong>[D — evaluation]</strong> Production
+claim-level monitoring, calibrated output probabilities, and citation
+precision remain <strong>U</strong>.</p>
+<h2 id="15-zhipu-ai-glm">15. Zhipu AI / GLM<a class="headerlink" href="#15-zhipu-ai-glm" title="Permanent link">&para;</a></h2>
+<h3 id="multi-page-search-data-and-trajectory-level-outcome-rewards">Multi-page search data and trajectory-level outcome rewards<a class="headerlink" href="#multi-page-search-data-and-trajectory-level-outcome-rewards" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://arxiv.org/abs/2508.06471">GLM-4.5 Technical Report</a>, Section 3.3,
+constructs search questions from multi-hop knowledge graphs. Human annotators
+extract and selectively mask information across multiple pages so that the
+answer requires cross-page search. <strong>[D — model training]</strong></p>
+<p>The entire search trajectory is rewarded by final-answer accuracy; a malformed
+tool call terminates the trajectory with zero reward. The team iterates
+self-distillation, and the reported ablation shows that allowing more browsing
+rounds continues to improve BrowseComp. Holistic RL also includes factual
+correctness in human feedback and varies AI-judge rubrics according to whether
+objective ground truth exists. <strong>[D — model training]</strong></p>
+<p>Zhipu's <a href="https://docs.z.ai/guides/tools/web-search">Web Search API</a> returns
+structured title, URL, and summary fields and can prompt a model to emit
+<code>[Source: ref_n]</code>. <strong>[D — API/product]</strong> This exposes inspectable sources but
+does not establish that every generated claim is entailed.</p>
+<p>The <a href="https://arxiv.org/abs/2507.01006">GLM-4.5V/4.6V
+report</a> states a critical limit of
+outcome-only rewards: a coincidentally correct final answer can reinforce a
+hallucinated intermediate rationale, motivating process-level hallucination
+detection. It also reports reward hacking and collapse under weak verifiers.
+<strong>[D — disclosed limitation]</strong></p>
+<p><strong>Still unknown:</strong> epistemic abstention, probability calibration, citation
+coverage, production claim-level rates, and live monitoring.</p>
+<h2 id="16-baidu-ernie">16. Baidu ERNIE<a class="headerlink" href="#16-baidu-ernie" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://arxiv.org/abs/2602.04705">ERNIE 5.0 report</a> describes a unified
+verifier, an unbiased replay buffer, training–inference consistency controls,
+success/entropy-aware masking of already learned samples, and annealed
+step-by-step hints for difficult zero-reward tasks. It reports SimpleQA,
+ChineseSimpleQA, and BrowseComp-ZH and attributes post-training gains to
+factual recall and answer calibration. <strong>[D — model training/evaluation]</strong>
+It does not disclose a fact-specific verifier or a calibrated-refusal
+algorithm.</p>
+<p>Baidu Cloud's <a href="https://cloud.baidu.com/doc/qianfan/s/Imh4stpo0">knowledge-base
+documentation</a> presents RAG
+as a product control for stale knowledge and hallucination. <strong>[D —
+API/cloud control]</strong> Claim-level rewards, refusal thresholds, and production
+monitoring remain <strong>U</strong>.</p>
+<h2 id="17-tencent-hunyuan">17. Tencent Hunyuan<a class="headerlink" href="#17-tencent-hunyuan" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://raw.githubusercontent.com/Tencent-Hunyuan/Hunyuan-A13B/main/report/Hunyuan_A13B_Technical_Report.pdf">Hunyuan-A13B Technical
+Report</a>,
+Section 3.2, provides one of the most explicit Chinese-vendor recipes.
+Knowledge-QA data passes multiple validation and critic filters; long-context
+training uses a hallucination-focused reward model plus online RL; knowledge
+QA combines hallucination detectors with and without reference answers and a
+user-experience model; finance, law, and medicine use consistency rewards to
+find unstable samples. The pipeline spans 16 subtasks and more than 30 scoring
+services. <strong>[D — model training]</strong></p>
+<p>The report evaluates end-to-end RAG on FRAMES. Tencent Cloud's
+<a href="https://cloud.tencent.com/document/product/1823/132358">TokenHub search
+documentation</a>
+returns search results and source annotations, but permits a fallback to the
+model's internal knowledge when search fails. <strong>[D — product]</strong> A search
+switch therefore does not guarantee that a particular response was grounded.</p>
+<p>The reward functions, citation entailment, calibrated refusal, and production
+monitoring thresholds remain <strong>U</strong>.</p>
+<h2 id="18-bytedance-seed">18. ByteDance Seed<a class="headerlink" href="#18-bytedance-seed" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://arxiv.org/abs/2504.13914">Seed-Thinking-v1.5
+report</a> removes bad questions, escalates
+reference answers disputed by multiple strong models to experts, uses
+Seed-Verifier for semantic equivalence, and applies a separate
+Seed-Thinking-Verifier to reward-hacking and uncertain-boundary cases.
+Non-verifiable tasks use pairwise generative reward modeling. <strong>[D — model
+training]</strong></p>
+<p>The report says SFT reduces hallucination, but its SimpleQA result is 12.9% and
+it explicitly identifies factual memory as weak. The <a href="https://arxiv.org/abs/2607.00248">Seed2.0 Model
+Card</a> expands factual, long-form factuality,
+and search evaluations without enough detail to carry the Seed 1.5 recipe
+forward. <strong>[D — evaluation; U — transfer to a later recipe]</strong> Search-grounded
+rewards, citation training, refusal thresholds, and production telemetry are
+not public.</p>
+<h2 id="19-minimax">19. MiniMax<a class="headerlink" href="#19-minimax" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://arxiv.org/abs/2501.08313">MiniMax-01 report</a> describes a
+truthfulness pipeline of multi-response sampling, claim decomposition and
+clustering, crowd verification, LLM comparison, and truthfulness scoring. It
+also trains a search router with SFT and removes questions the model already
+knows, calibrating search decisions around the checkpoint's knowledge
+boundary. <strong>[D — model training]</strong></p>
+<p>The <a href="https://arxiv.org/abs/2605.26494">MiniMax-M2 series
+report</a> requires multiple sources and
+cross-checking for open-web tasks. Each problem has an evidence specification;
+a trajectory is accepted only when its answer actually rests on retrieved
+evidence rather than model memory. Report rubrics also score transparency,
+uncertainty, and risk disclosure. <strong>[D — model training]</strong></p>
+<p>MiniMax's <a href="https://platform.minimax.io/docs/token-plan/prompting-best-practices">prompting
+guide</a>
+recommends allowing refusal, requiring quotations/citations, and constraining
+source, time, and version. <strong>[D — deployment guidance]</strong> It is not evidence of
+intrinsic calibration in every checkpoint.</p>
+<p>Citation-entailment rewards, numerical confidence, online refusal thresholds,
+and production hallucination monitoring remain <strong>U</strong>.</p>
+<h2 id="20-how-to-compare-a-new-vendor-claim">20. How to compare a new vendor claim<a class="headerlink" href="#20-how-to-compare-a-new-vendor-claim" title="Permanent link">&para;</a></h2>
+<p>For every future disclosure, record:</p>
+<ol>
+<li><strong>object:</strong> checkpoint training, research prototype, product, API, cloud
+   option, or evaluation;</li>
+<li><strong>model and date:</strong> immutable version, mode, tools, and verified-through
+   date;</li>
+<li><strong>failure class:</strong> open-world fact, supplied-context grounding, citation,
+   tool, multimodal, code, or calibration;</li>
+<li><strong>intervention:</strong> data, loss/reward, retrieval, tool, decoder, verifier,
+   abstention, UI, monitoring, or human control;</li>
+<li><strong>measurement:</strong> answerable/unanswerable mix, abstention policy, atomic
+   claims, sources, judge, repeated runs, and budget;</li>
+<li><strong>trade-off:</strong> accuracy, wrong-answer rate, coverage, cost, latency, and
+   over-refusal;</li>
+<li><strong>causal evidence:</strong> matched ablation or only a bundled release comparison;</li>
+<li><strong>residual failures:</strong> what the source explicitly says remains; and</li>
+<li><strong>unknowns:</strong> details that public evidence cannot establish.</li>
+</ol>
+<p>This prevents a customer feature from becoming a claim about proprietary
+training, a benchmark from becoming a production guarantee, or a citation
+badge from becoming proof of truth.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

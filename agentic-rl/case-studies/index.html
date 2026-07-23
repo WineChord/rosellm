@@ -1,0 +1,2741 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/agentic-rl/case-studies/">
+      
+      
+        <link rel="prev" href="../source-lab/">
+      
+      
+        <link rel="next" href="deepseek/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Evidence Matrix - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#frontier-lab-case-studies-evidence-matrix" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Evidence Matrix
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#evidence-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidence labels
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-a-reading-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choose a reading route
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latest-public-generation-at-the-cutoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Latest public generation at the cutoff
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#broader-lineage-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Broader lineage coverage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#longitudinal-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Longitudinal pattern
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disclosure-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disclosure comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generation-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generation milestones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimization-and-consolidation-mechanisms-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimization and consolidation mechanisms at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-production-artifact-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The production artifact chain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-the-model-tables-correctly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the model tables correctly
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading the model tables correctly">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameter-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter accounting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token accounting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost accounting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benchmark-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benchmark accounting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-public-evidence-supports-about-real-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the public evidence supports about “real operations”
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primary-source-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary-source policy
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="frontier-lab-case-studies-evidence-matrix">Frontier-Lab Case Studies: Evidence Matrix<a class="headerlink" href="#frontier-lab-case-studies-evidence-matrix" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-19.</p>
+<p>These studies reconstruct publicly disclosed reinforcement-learning (RL)
+training pipelines across the major lineages:</p>
+<ul>
+<li>generation-by-generation studies of <a href="deepseek/">DeepSeek</a>,
+  <a href="glm/">Zhipu AI / General Language Model (GLM)</a>, and
+  <a href="kimi/">Moonshot AI / Kimi</a>;</li>
+<li>the preference, constitutional, reasoning, tool, and embodied-agent lineage
+  across <a href="openai-anthropic-google/">OpenAI, Anthropic, and Google DeepMind</a>;</li>
+<li>the open-weight and technical-report lineage across
+  <a href="qwen-meta-mistral/">Alibaba Qwen, Meta, and Mistral</a>; and</li>
+<li>industrial and reproducible components from
+  <a href="open-industry-and-community/">ByteDance Seed, NVIDIA, Microsoft, xAI, and the open community</a>.</li>
+</ul>
+<p>The source base is limited to official papers, model and system cards,
+repositories, release notes, and first-party engineering posts. A chapter may
+explain a mechanism from first principles, but it attributes that mechanism to
+a laboratory only when a primary source does.</p>
+<p>For a cross-vendor quantitative view, start with the
+<a href="../../model-training-token-ledger/">model training token ledger</a>. For dated
+DeepSeek checkpoint, specialist, and API events, use the
+<a href="../../deepseek-release-timeline/">DeepSeek release timeline</a>.</p>
+<p>The word “actual” has a strict meaning here: <strong>actually disclosed by a primary
+source</strong>. A technically plausible pipeline is not evidence that a company used
+it. Public weights do not reveal data lineage, internal ablations, production
+routing, system prompts, online updates, or unreleased safety layers.</p>
+<h2 id="evidence-labels">Evidence labels<a class="headerlink" href="#evidence-labels" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>[D] Disclosed:</strong> stated directly in a primary source.</li>
+<li><strong>[C] Confirmed artifact:</strong> visible in released weights, configuration, or
+  source code.</li>
+<li><strong>[R] Reproduced:</strong> rerun by this repository with recorded artifacts.</li>
+<li><strong>[I] Inference:</strong> conclusion from disclosed facts and stated assumptions.</li>
+<li><strong>[U] Unknown:</strong> absent, contradictory, ambiguous, or not verifiable.</li>
+</ul>
+<p>Vendor-reported benchmark results are always identified as such; they are not
+independent reproductions.</p>
+<h2 id="choose-a-reading-route">Choose a reading route<a class="headerlink" href="#choose-a-reading-route" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Start here</th>
+<th>Then read</th>
+<th>What you should be able to reconstruct</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Learn the complete operational object</td>
+<td><a href="../">Curriculum</a></td>
+<td><a href="../training-pipeline/">training pipeline</a>, <a href="../systems/">systems</a>, then this matrix</td>
+<td>Every artifact from task creation through rollout, reward, update, evaluation, and deployment</td>
+</tr>
+<tr>
+<td>Understand critic-free reasoning RL</td>
+<td><a href="deepseek/">DeepSeekMath and R1</a></td>
+<td><a href="qwen-meta-mistral/">Qwen, Group Sequence Policy Optimization (GSPO), and Soft Adaptive Policy Optimization (SAPO)</a>, then <a href="open-industry-and-community/">open recipes</a></td>
+<td>Group construction, advantage normalization, token aggregation, clipping, entropy, and data curriculum</td>
+</tr>
+<tr>
+<td>Understand long-horizon actor-critic RL</td>
+<td><a href="glm/">GLM-5 and GLM-5.2</a></td>
+<td><a href="../derivations-and-code/#20-single-rollout-asynchronous-optimization-derived">Single-Rollout Asynchronous Optimization (SAO) derivation and implementation</a>, then <a href="open-industry-and-community/">industrial asynchronous systems</a></td>
+<td>Value targets, skipped observations, policy lag, importance correction, and streaming rollout scheduling</td>
+</tr>
+<tr>
+<td>Understand preference and constitutional alignment</td>
+<td><a href="openai-anthropic-google/">OpenAI, Anthropic, and Google DeepMind</a></td>
+<td><a href="../../glossary/#reward-and-evaluation-vocabulary">reward and evaluation vocabulary</a></td>
+<td>Comparison collection, reward-model fitting, policy optimization, AI feedback, rule rewards, and their failure modes</td>
+</tr>
+<tr>
+<td>Understand data and environment operations</td>
+<td><a href="../data-and-environments/">Data and environments</a></td>
+<td><a href="deepseek/">DeepSeek</a>, <a href="glm/">GLM</a>, <a href="kimi/">Kimi</a>, and <a href="open-industry-and-community/">open industry</a></td>
+<td>Task provenance, reset semantics, executable verification, hidden splits, anti-hacking, and trajectory schemas</td>
+</tr>
+<tr>
+<td>Build a small reproduction</td>
+<td><a href="../derivations-and-code/">Derivations and code</a></td>
+<td><a href="../source-lab/">source-level lab</a>, then one case chapter</td>
+<td>A pinned, tested mechanism reproduction whose claims stay inside its evidence boundary</td>
+</tr>
+</tbody>
+</table>
+<h2 id="latest-public-generation-at-the-cutoff">Latest public generation at the cutoff<a class="headerlink" href="#latest-public-generation-at-the-cutoff" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Latest public generation</th>
+<th>Disclosed architecture</th>
+<th style="text-align: right;">Context window</th>
+<th>Agentic post-training disclosure</th>
+<th>Critical unknown</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>V4 preview release (2026-04-24)</td>
+<td>Flash 284B total / 13B active; Pro 1.6T / 49B mixture of experts (MoE)</td>
+<td style="text-align: right;">1M tokens</td>
+<td>&gt;10 Group Relative Policy Optimization (GRPO) specialists merged by full-vocabulary multi-teacher on-policy distillation; million-token fault-tolerant rollouts and the DeepSeek Elastic Compute (DSec) sandbox platform described</td>
+<td>accelerator count, duration, cost, exact task/reward volumes</td>
+</tr>
+<tr>
+<td>Zhipu AI</td>
+<td>GLM-5.2 (2026-06-16)</td>
+<td>753B hosted checkpoint; SAO paper rounds to 750B total / 40B active; earlier family convention 744B / 40B</td>
+<td style="text-align: right;">1M tokens</td>
+<td>SAO is explicitly reported as deployed; critic Proximal Policy Optimization (PPO) for variable compacted sub-traces; token-level advantages/loss; &gt;10 domain-specialist models merged with parallel on-policy distillation; online anti-hack guard</td>
+<td>GLM-specific SAO/PPO hyperparameters and stage scope, task volume, hardware and cost</td>
+</tr>
+<tr>
+<td>Moonshot AI</td>
+<td>K3 (2026-07-17)</td>
+<td>2.8T total; 896 experts, 16 selected per token; Kimi Delta Attention (KDA) + Attention Residuals (AttnRes) + LatentMoE</td>
+<td style="text-align: right;">1M tokens</td>
+<td>product demonstrations disclose long agent runs, but K3 training/RL report was still pending</td>
+<td>active parameters, data/tokens, RL algorithm, environments, hardware and cost</td>
+</tr>
+</tbody>
+</table>
+<p>K3 full weights were announced for 2026-07-27, after this verification cutoff.
+No later claims are inferred from the announcement.</p>
+<h2 id="broader-lineage-coverage">Broader lineage coverage<a class="headerlink" href="#broader-lineage-coverage" title="Permanent link">&para;</a></h2>
+<p>“Most detailed public anchor” is deliberately different from “newest product.”
+The newest release often exposes less training detail than an earlier paper.</p>
+<table>
+<thead>
+<tr>
+<th>Lineage</th>
+<th>Most detailed public anchor for learning</th>
+<th>What the anchor exposes</th>
+<th>Later-generation boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI</td>
+<td>InstructGPT; WebGPT for browser actions</td>
+<td>prompt/comparison collection, reward model, PPO, Kullback-Leibler (KL) control, pretraining auxiliary loss; browser action schema, behavioral cloning (BC), PPO experiment, and best-of-<span class="arithmatex">\(N\)</span></td>
+<td>o-series, Codex, deep research, computer use, and GPT-5.x disclose capability and mechanism direction, not an equivalent full recipe</td>
+</tr>
+<tr>
+<td>Anthropic</td>
+<td>Helpful and Harmless Assistant; Constitutional AI</td>
+<td>iterative human preference collection; critique/revision Supervised Fine-Tuning (SFT); AI preference labels; PPO and KL; red-team flywheel</td>
+<td>Claude 3.7 and later reveal reasoning-RL behavior and safety evidence, but not exact data, optimizer, reward weights, or compute</td>
+</tr>
+<tr>
+<td>Google DeepMind</td>
+<td>Playhouse; Sparrow; Reinforcement Learning from AI Feedback (RLAIF); Gemini 2.5</td>
+<td>embodied temporal-progress reward; search/rules/Advantage Actor-Critic (A2C); AI-label REINFORCE; heterogeneous verifier/generative/human-critic rewards and complex environments</td>
+<td>Gemini 3.x publishes newer capability/model-card evidence without a replacement source-level RL recipe</td>
+</tr>
+<tr>
+<td>Alibaba Qwen</td>
+<td>Qwen2.5-Math; Qwen3; GSPO; SAPO</td>
+<td>math data and verifier factory, staged reasoning/general RL, sequence-ratio and smooth-ratio objectives, coding environments</td>
+<td>Qwen3-Coder/AgentWorld and later models add environment and agent scale; exact newest production mixtures remain partial</td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>Llama 2 and Llama 3 reports</td>
+<td>classic actor-critic Reinforcement Learning from Human Feedback (RLHF), iterative preference data, reward transforms, synthetic-data flywheel, tool annotations, and rejection sampling</td>
+<td>Llama 4 and Muse releases disclose later capabilities and high-level online/multi-agent training, not comparable run manifests</td>
+</tr>
+<tr>
+<td>Mistral</td>
+<td>Magistral</td>
+<td>modified GRPO, compositional reward, data filtering, exact small-model settings, asynchronous generation/verification, and negative results</td>
+<td>Devstral and later unified products disclose real agent trajectories/capability but not an equally exact optimizer recipe</td>
+</tr>
+<tr>
+<td>ByteDance Seed</td>
+<td>Seed1.5-Thinking; Decoupled Clip and Dynamic sAmpling Policy Optimization (DAPO); ReTool; HybridFlow/veRL</td>
+<td>value-based long-CoT RL, verifier and cold-start operations, streaming rollouts, open critic-free recipe, tool-interpreter RL, distributed dataflow</td>
+<td>Seed2.0 capability disclosures do not establish that every earlier recipe or hyperparameter was retained</td>
+</tr>
+<tr>
+<td>NVIDIA</td>
+<td>Llama-Nemotron, AceReason, ProRL, Cascade 1/2, Nemotron 3</td>
+<td>architecture transformation, distillation, domain curricula, prolonged/cascaded/unified RL, multi-environment asynchrony, Multi-Domain On-Policy Distillation (MOPD), and failure accounting</td>
+<td>each generation changes base model and stage graph; do not splice settings into one fictional “Nemotron recipe”</td>
+</tr>
+<tr>
+<td>Microsoft</td>
+<td>rStar2-Agent; Agent Lightning</td>
+<td>exact math/Python action data and GRPO with Resample-on-Correct (GRPO-RoC) stages; runtime/learner separation and hierarchical trajectory credit</td>
+<td>Agent Lightning is a framework and rStar2 is a recipe; neither proves the private training of every Microsoft model</td>
+</tr>
+<tr>
+<td>xAI</td>
+<td>Grok 4/4.1 Fast/4.5 first-party releases</td>
+<td>scale direction, broad verifiable tasks, simulated tool environments, model graders, asynchronous hours-long software rollouts</td>
+<td>architecture, data mixture, optimizer, reward coefficients, exact tasks, and full compute for the latest agent training remain unknown</td>
+</tr>
+<tr>
+<td>Open community</td>
+<td>Open-R1, OpenThoughts, AReaL, PRIME, Skywork-OR1, Search-R1, GiGPO, OpenRLHF, slime</td>
+<td>inspectable data/configs, distillation, asynchronous correction, process reward, entropy control, retrieval agents, step credit, and programmable training stacks</td>
+<td>components come from different checkpoints, revisions, tasks, and assumptions; combining them is a new experiment, not an existing reproduced frontier run</td>
+</tr>
+</tbody>
+</table>
+<h2 id="longitudinal-pattern">Longitudinal pattern<a class="headerlink" href="#longitudinal-pattern" title="Permanent link">&para;</a></h2>
+<p>The DeepSeek, GLM, and Kimi lineages show a broadly similar capability factory,
+with important implementation differences:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curated pretraining
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  -&gt; domain and long-context mid-training
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -&gt; broad SFT / cold start
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  -&gt; specialist reasoning, code, search, tool, and preference training
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -&gt; executable or generated agent environments
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  -&gt; online RL with rules, tests, learned/generative judges, and anti-hacking
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  -&gt; distillation/consolidation into one general checkpoint
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  -&gt; deployment-compatible low precision and long-context serving
+</code></pre></div>
+<p>This diagram is a comparative abstraction. The exact sequence differs:</p>
+<ul>
+<li>DeepSeek V3.2 consolidated specialists with mixed GRPO; V4 replaces the final
+  consolidation with multi-teacher On-Policy Distillation (OPD).</li>
+<li>GLM-5 uses sequential reasoning → agentic → general RL plus cross-stage
+  distillation; GLM-5.2 moves irregular compacted long-horizon traces from
+  group-relative optimization to critic PPO.</li>
+<li>Moonshot k1.5 and K2 use a value-model-free sequence log-ratio objective;
+  K2.5 adds token-ratio clipping, multimodal RL, and Parallel-Agent
+  Reinforcement Learning (PARL) for a learned multi-agent orchestrator.</li>
+<li>K3's training sequence was not public at the cutoff, so K2.5 is the latest
+  deeply documented Moonshot post-training recipe.</li>
+</ul>
+<h2 id="disclosure-comparison">Disclosure comparison<a class="headerlink" href="#disclosure-comparison" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>DeepSeek</th>
+<th>GLM</th>
+<th>Kimi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Major open weights</td>
+<td>Extensive</td>
+<td>Extensive for recent open series</td>
+<td>Extensive for K2/K2.5 and research models; K3 pending at cutoff</td>
+</tr>
+<tr>
+<td>Architecture reports/configs</td>
+<td>Detailed for many generations</td>
+<td>Detailed since GLM-4.5/GLM-5</td>
+<td>Detailed for Moonlight/K2/K2.5; K3 high-level only</td>
+</tr>
+<tr>
+<td>Pretraining tokens</td>
+<td>Often disclosed</td>
+<td>Disclosed for major reports</td>
+<td>Disclosed for Moonlight/K2/K2.5 continuation</td>
+</tr>
+<tr>
+<td>Exact source mixture</td>
+<td>Usually unknown</td>
+<td>Usually unknown</td>
+<td>Usually unknown</td>
+</tr>
+<tr>
+<td>Optimizer/schedule</td>
+<td>Detailed in flagship reports</td>
+<td>Detailed in flagship reports</td>
+<td>Detailed for Moonlight/K2; partial elsewhere</td>
+</tr>
+<tr>
+<td>Agent task/environment counts</td>
+<td>V3.2 discloses 85,267 tasks and &gt;1,800 environments</td>
+<td>GLM-5 discloses &gt;10K Software Engineering (SWE) environments and thousands of terminal tasks; totals incomplete</td>
+<td>K2 discloses &gt;3K real and &gt;20K synthetic tools; trajectory totals are broad</td>
+</tr>
+<tr>
+<td>RL hyperparameters</td>
+<td>Very detailed for revised R1; partial later</td>
+<td>Detailed for GLM-5 reasoning RL; agent RL partial; 5.2 PPO partial</td>
+<td>k1.5 objective detailed; many exact coefficients/counts absent</td>
+</tr>
+<tr>
+<td>Training hardware/cost</td>
+<td>V2/V3/R1 unusually detailed; V4 absent</td>
+<td>GLM-130B detailed; later flagship totals absent</td>
+<td>topology details for K2; total accelerator count/time/cost absent</td>
+</tr>
+<tr>
+<td>Complete training code/data</td>
+<td>No</td>
+<td>No; Slime is a strong public framework, not a frozen full recipe</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Production orchestration</td>
+<td>Partially described</td>
+<td>Partially described</td>
+<td>Partially described</td>
+</tr>
+</tbody>
+</table>
+<p>“Open weights” should not be rewritten as “fully open source and reproducible.”
+None of the three releases a complete raw corpus, all reward/prompts, full
+training orchestration, optimizer state, and exact production stack for the
+latest flagship model.</p>
+<h2 id="generation-milestones">Generation milestones<a class="headerlink" href="#generation-milestones" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Capability milestone</th>
+<th>DeepSeek</th>
+<th>GLM</th>
+<th>Kimi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Early instruction/preference alignment</td>
+<td>DeepSeek Large Language Model (LLM): SFT + Direct Preference Optimization (DPO)</td>
+<td>ChatGLM: SFT + RLHF at high level</td>
+<td>early Kimi recipe undisclosed</td>
+</tr>
+<tr>
+<td>Critic-free verifiable RL</td>
+<td>DeepSeekMath introduces GRPO</td>
+<td>GLM-Z1 / later expert RL; details mature in 4.5/5</td>
+<td>k1.5 value-model-free mirror-descent-like objective</td>
+</tr>
+<tr>
+<td>Long reasoning production pipeline</td>
+<td>R1/R1-Zero</td>
+<td>GLM-Z1 and GLM-5 reasoning RL</td>
+<td>k1.5</td>
+</tr>
+<tr>
+<td>Explicit production agentic RL</td>
+<td>V3.1/V3.2</td>
+<td>GLM-4.5</td>
+<td>K2</td>
+</tr>
+<tr>
+<td>Multimodal agent RL</td>
+<td>specialized branches; flagship disclosures vary</td>
+<td>GLM-4.5V/4.6V</td>
+<td>K2.5</td>
+</tr>
+<tr>
+<td>Trainable multi-agent orchestration</td>
+<td>not comparably disclosed in reviewed flagship report</td>
+<td>sub-agent workflows supported; exact orchestration training varies</td>
+<td>K2.5 PARL/Agent Swarm</td>
+</tr>
+<tr>
+<td>Million-token flagship</td>
+<td>V4</td>
+<td>GLM-5.2</td>
+<td>K3</td>
+</tr>
+<tr>
+<td>Latest consolidation</td>
+<td>multi-teacher OPD</td>
+<td>parallel OPD + critic PPO for compact traces</td>
+<td>K3 unknown; K2.5 unified RL/PARL documented</td>
+</tr>
+</tbody>
+</table>
+<h2 id="optimization-and-consolidation-mechanisms-at-a-glance">Optimization and consolidation mechanisms at a glance<a class="headerlink" href="#optimization-and-consolidation-mechanisms-at-a-glance" title="Permanent link">&para;</a></h2>
+<p>The names below do not denote interchangeable losses. They change the sampling
+unit, baseline, trust mechanism, credit unit, or even whether the operation is
+reinforcement learning at all.</p>
+<table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>Experience and baseline</th>
+<th>Update control</th>
+<th>Operational reason to use it</th>
+<th>Principal implementation hazard</th>
+<th>Case evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Classic RLHF PPO</td>
+<td>current-policy responses; learned reward and value models; usually a fixed reference policy</td>
+<td>token likelihood-ratio clipping, KL shaping/penalty, and value clipping</td>
+<td>optimize subjective preferences while controlling drift</td>
+<td>reward/value calibration, policy/reference token mismatch, stale rollouts, and large memory footprint</td>
+<td>InstructGPT and Anthropic Helpful and Harmless / Constitutional AI in <a href="openai-anthropic-google/">OpenAI/Anthropic/Google</a></td>
+</tr>
+<tr>
+<td>GRPO</td>
+<td><span class="arithmatex">\(G\)</span> responses for one prompt; group-relative return replaces a learned critic</td>
+<td>PPO-like token ratio, with implementation-dependent normalization and KL</td>
+<td>verifiable reasoning where many samples can be scored cheaply</td>
+<td>uniform-reward groups, response-length bias, group-variance bias, and <span class="arithmatex">\(G\)</span>-fold rollout cost</td>
+<td>DeepSeekMath/R1 in <a href="deepseek/">DeepSeek</a> and Qwen-family use in <a href="qwen-meta-mistral/">Qwen/Meta/Mistral</a></td>
+</tr>
+<tr>
+<td>DAPO</td>
+<td>critic-free response groups plus dynamic resampling of informative groups</td>
+<td>asymmetric low/high clipping, token-global aggregation, and overlong shaping</td>
+<td>keep learning after many prompts become uniformly easy or hard</td>
+<td>hidden resampling cost, changed prompt distribution, length incentives, and denominator changes</td>
+<td>ByteDance recipe in <a href="open-industry-and-community/">open industry</a></td>
+</tr>
+<tr>
+<td>GSPO / GSPO-token</td>
+<td>response groups; scalar or customized token advantages</td>
+<td>one length-normalized sequence ratio; GSPO-token uses a stop-gradient carrier to preserve chosen token credit</td>
+<td>align the trust unit with sequence-level reward while retaining an optional token-credit path</td>
+<td>geometric-mean ratio is not the raw sequence-density ratio; wrong <code>detach</code> placement silently changes gradients</td>
+<td><a href="qwen-meta-mistral/">Qwen lineage</a> and <a href="../derivations-and-code/#17-derive-gspo-and-the-gspo-token-gradient-carrier">derivation</a></td>
+</tr>
+<tr>
+<td>SAPO</td>
+<td>normally group-relative advantages; no value critic in the published Qwen experiments</td>
+<td>sigmoid surrogate with separate temperatures for positive and negative advantage</td>
+<td>replace a hard clip boundary with a smooth gradient gate</td>
+<td>confusing the gate <span class="arithmatex">\(4p(1-p)\)</span> with the full log-policy gradient coefficient <span class="arithmatex">\(4p(1-p)\,r\,\hat A\)</span></td>
+<td><a href="qwen-meta-mistral/">Qwen lineage</a> and <a href="../derivations-and-code/#18-derive-sapos-smooth-trust-gate">derivation</a></td>
+</tr>
+<tr>
+<td>Kimi k1.5/K2 objective</td>
+<td><span class="arithmatex">\(K\)</span> old-policy responses and group-centered outcomes; no token/state value model</td>
+<td>squared sequence log-ratio toward an analytically reward-tilted target</td>
+<td>avoid premature local credit judgments in self-correcting long reasoning</td>
+<td>a whole-sequence objective still needs exact length, truncation, old-policy, and minibatch semantics</td>
+<td><a href="kimi/#45-value-model-free-policy-optimization-d">Kimi</a></td>
+</tr>
+<tr>
+<td>SAO</td>
+<td>one completed trajectory at a time; learned critic; skip-observation Generalized Advantage Estimation (GAE)</td>
+<td>direct rollout-to-current-policy ratio with strict two-sided masking</td>
+<td>train on highly variable, long agent rollouts without waiting to form a group</td>
+<td>masked data loss, critic/policy clock mismatch, corrupted observation masks, and unbounded policy lag</td>
+<td>GLM-5.2 evidence in <a href="glm/">GLM</a> and <a href="../source-lab/#10-sao-as-a-source-level-experiment">source lab</a></td>
+</tr>
+<tr>
+<td>Decoupled asynchronous PPO</td>
+<td>queued behavior-policy samples, a recent proximal snapshot, and the current learner</td>
+<td>outer behavior-to-proximal correction plus inner proximal PPO ratio</td>
+<td>overlap rollout and training while distinguishing two sources of policy drift</td>
+<td>version metadata loss, high-variance importance weights, and non-replayable environment state</td>
+<td>AReaL in <a href="open-industry-and-community/">open industry</a></td>
+</tr>
+<tr>
+<td>PARL</td>
+<td>orchestrator trajectories; subagents frozen and excluded from the orchestrator gradient</td>
+<td>task reward plus annealed parallelism/finish shaping</td>
+<td>learn whether, what, and how to delegate under a wall-time objective</td>
+<td>serial collapse, meaningless spawning, context leakage, and confusing total work with critical-path time</td>
+<td>K2.5 Agent Swarm in <a href="kimi/#116-parl-agent-swarm-d">Kimi</a></td>
+</tr>
+<tr>
+<td>OPD / MOPD</td>
+<td>states sampled by the student; teacher token distributions on those states</td>
+<td>supervised distribution matching, not a policy-gradient advantage</td>
+<td>consolidate specialist capabilities without training only on teacher-state data</td>
+<td>teacher/domain routing, tokenizer equality, state coverage, and capability interference</td>
+<td>DeepSeek V4, GLM-5, and NVIDIA in the corresponding case chapters</td>
+</tr>
+</tbody>
+</table>
+<p>Read the executable PPO, GRPO, SAO, GSPO, GSPO-token, and SAPO reference
+implementations in the <a href="../source-lab/">source-level lab</a>. A forward value
+matching a paper equation is not enough: tests also check gradients, masks,
+normalization denominators, and invariances.</p>
+<h2 id="the-production-artifact-chain">The production artifact chain<a class="headerlink" href="#the-production-artifact-chain" title="Permanent link">&para;</a></h2>
+<p>A real training operation is easier to understand as a chain of versioned
+artifacts than as one optimizer name. At every arrow, record the producer,
+schema, version, unit, filters, and rejected count.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Required artifact</th>
+<th>Minimum fields for an auditable run</th>
+<th>Typical silent failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Task acquisition</td>
+<td>immutable raw-task record</td>
+<td>source/license, acquisition time, content hash, language/domain, sensitive-data flags</td>
+<td>benchmark or evaluation artifacts leak into training</td>
+</tr>
+<tr>
+<td>2. Task normalization</td>
+<td>canonical task contract</td>
+<td>initial-state constructor, permitted tools, success predicate, budgets, termination causes</td>
+<td>a formatter changes the problem or makes the answer visible</td>
+</tr>
+<tr>
+<td>3. Split construction</td>
+<td>provenance-aware split manifest</td>
+<td>semantic cluster, repository/problem family, timestamp, generator lineage, split hash</td>
+<td>near-duplicates or generated siblings cross train/test boundaries</td>
+</tr>
+<tr>
+<td>4. Environment build</td>
+<td>pinned executable image</td>
+<td>image digest, dependencies, network/credential policy, reset/replay method, hidden tests</td>
+<td>the reward depends on mutable packages, web pages, or clock state</td>
+</tr>
+<tr>
+<td>5. Cold start</td>
+<td>demonstration/SFT trajectory</td>
+<td>observation/action roles, tokenizer and template, policy-action mask, author/teacher, validation result</td>
+<td>tool observations are trained as if the policy emitted them</td>
+</tr>
+<tr>
+<td>6. Rollout request</td>
+<td>sampling envelope</td>
+<td>policy/checkpoint hash, temperature, top-<span class="arithmatex">\(p\)</span>/top-<span class="arithmatex">\(k\)</span>, seed, maximum tokens/actions/time, scaffold version</td>
+<td>“same model” evaluations use different hidden inference budgets</td>
+</tr>
+<tr>
+<td>7. Event trace</td>
+<td>append-only trajectory</td>
+<td>exact token identifiers (IDs) and log-probabilities, action parse, observation bytes/hash, timestamps, policy version per segment</td>
+<td>retokenization or transcript reconstruction changes the sampled action</td>
+</tr>
+<tr>
+<td>8. Reward vector</td>
+<td>unscalarized grader outputs</td>
+<td>grader/verifier version, raw component values, confidence, failure code, hidden-test access</td>
+<td>one scalar hides which proxy was exploited or unavailable</td>
+</tr>
+<tr>
+<td>9. Admission/filtering</td>
+<td>attempt census</td>
+<td>accepted, rejected, truncated, timed out, duplicate, invalid, uniformly rewarded, and resampled counts</td>
+<td>the learner sees a different task distribution than the reported prompt set</td>
+</tr>
+<tr>
+<td>10. Credit assignment</td>
+<td>return/advantage tensor</td>
+<td>reward-to-action mapping, bootstrap boundaries, <span class="arithmatex">\(\gamma\)</span>, <span class="arithmatex">\(\lambda\)</span>, group baseline, normalization axes</td>
+<td>delayed terminal reward is copied across observations or padding tokens</td>
+</tr>
+<tr>
+<td>11. Policy update</td>
+<td>immutable optimizer batch</td>
+<td>behavior/reference/proximal/current log-probabilities, masks, ratios, clips, KL, entropy, denominators</td>
+<td>an implementation with the same algorithm name optimizes a different estimator</td>
+</tr>
+<tr>
+<td>12. Weight publication</td>
+<td>checkpoint lineage event</td>
+<td>parent hash, optimizer state, data window, update index, numerical health, rollout-consumer acknowledgement</td>
+<td>rollout workers silently mix incompatible policy versions</td>
+</tr>
+<tr>
+<td>13. Evaluation</td>
+<td>frozen protocol bundle</td>
+<td>task and environment versions, scaffold, sampling budget, trials/seeds, cost, confidence interval</td>
+<td>a model gain is actually a router, tool, judge, or test-time-compute gain</td>
+</tr>
+<tr>
+<td>14. Deployment gate</td>
+<td>signed release decision</td>
+<td>safety/quality thresholds, regression owners, authority limits, canary, rollback hash, incident telemetry</td>
+<td>offline success is mistaken for permission to take irreversible actions</td>
+</tr>
+</tbody>
+</table>
+<p>The chain also explains why no reviewed frontier release is fully reproducible:
+the public sources disclose different subsets of these artifacts. An equation,
+weights, or a model card can be valuable without being a complete run manifest.</p>
+<h2 id="reading-the-model-tables-correctly">Reading the model tables correctly<a class="headerlink" href="#reading-the-model-tables-correctly" title="Permanent link">&para;</a></h2>
+<h3 id="parameter-accounting">Parameter accounting<a class="headerlink" href="#parameter-accounting" title="Permanent link">&para;</a></h3>
+<p>Always distinguish:</p>
+<ul>
+<li>total versus active parameters per token;</li>
+<li>main model versus Multi-Token Prediction (MTP) modules;</li>
+<li>inclusion/exclusion of embeddings/output head;</li>
+<li>stored checkpoint tensors versus report convention.</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>DeepSeek-V3 is reported as 671B/37B, while hosted files can total 685B when
+  MTP modules are included.</li>
+<li>GLM-4.5 report counts can exclude embeddings/output and differ from hosting
+  totals.</li>
+<li>K3 discloses 2.8T total and selected experts but not active parameters; simple
+  <code>total × selected / experts</code> arithmetic would omit dense/shared components.</li>
+</ul>
+<h3 id="token-accounting">Token accounting<a class="headerlink" href="#token-accounting" title="Permanent link">&para;</a></h3>
+<p>“Trained on 15.5T tokens” means processed token exposure, not 15.5T unique
+tokens. Continued pretraining, repeated high-quality data, synthetic rewrites,
+and cooldown phases may reuse underlying documents. Do not sum stage totals
+unless the report defines them as additive.</p>
+<h3 id="cost-accounting">Cost accounting<a class="headerlink" href="#cost-accounting" title="Permanent link">&para;</a></h3>
+<p>DeepSeek V3's approximately $5.576M figure uses a disclosed $2/H800-hour
+rental-equivalent and covers listed runs. It does not establish full company
+development cost. The absence of a Kimi/GLM cost figure does not justify
+estimating it from model size without hardware, utilization, restarts, and
+training-token details.</p>
+<h3 id="benchmark-accounting">Benchmark accounting<a class="headerlink" href="#benchmark-accounting" title="Permanent link">&para;</a></h3>
+<p>Long-reasoning and agent results can use:</p>
+<ul>
+<li>64K–100K reasoning-token caps;</li>
+<li>hundreds or thousands of tool calls;</li>
+<li>multiple parallel rollouts and aggregation;</li>
+<li>different context-overflow policies;</li>
+<li>model-specific scaffolds and sandboxes;</li>
+<li>vendor or learned judges.</li>
+</ul>
+<p>Case-study tables retain these settings near the score. Cross-vendor numerical
+rankings are avoided when protocols are not aligned.</p>
+<h2 id="what-the-public-evidence-supports-about-real-operations">What the public evidence supports about “real operations”<a class="headerlink" href="#what-the-public-evidence-supports-about-real-operations" title="Permanent link">&para;</a></h2>
+<p>Across the reviewed cases, the sources collectively support frontier
+post-training operations that can involve:</p>
+<ol>
+<li>task and environment mining/generation;</li>
+<li>tool/schema/user/agent synthesis;</li>
+<li>high-concurrency sandbox execution;</li>
+<li>exact token/log-probability transport from rollout to trainer;</li>
+<li>executable rewards where possible and learned/generative judges elsewhere;</li>
+<li>online anti-hacking and hidden validation;</li>
+<li>specialist models/teachers and on-policy distillation;</li>
+<li>asynchronous collection, versioned weight sync, packing, and fault recovery;</li>
+<li>repeated SFT/distillation/RL/curriculum loops rather than one final RL job;</li>
+<li>deployment-compatible low precision, sparse attention, and long context.</li>
+</ol>
+<p>The sources do <strong>not</strong> establish the complete live Application Programming
+Interface (API) workflow, real user-data use beyond explicit disclosures,
+continuous online learning, hidden safety rules, or model routing. Those remain
+<strong>[U]</strong>.</p>
+<h2 id="primary-source-policy">Primary-source policy<a class="headerlink" href="#primary-source-policy" title="Permanent link">&para;</a></h2>
+<p>Each vendor chapter cites the exact official paper, model card, repository, or
+release post next to claims. Secondary media and unauthenticated benchmark
+tables are excluded from the factual pipeline. See the repository-wide
+<a href="../../research-method/">research standard</a> for contradiction and freshness
+rules.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,4461 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/agentic-rl/case-studies/glm/">
+      
+      
+        <link rel="prev" href="../deepseek/">
+      
+      
+        <link rel="next" href="../kimi/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Zhipu GLM - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#zhipu-ai-glm-from-blank-infilling-to-compaction-aware-agentic-reinforcement-learning" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Zhipu GLM
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation-and-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#readers-terminology-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reader's terminology key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-three-related-lineages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Three related lineages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-glm-blank-infilling-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. GLM: blank-infilling foundation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-glm-130b-bilingual-large-scale-pretraining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. GLM-130B: bilingual large-scale pretraining
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. GLM-130B: bilingual large-scale pretraining">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecturedata-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture/data [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-operation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training operation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-chatglm-generations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. ChatGLM generations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. ChatGLM generations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chatglm-130b-and-chatglm-6b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChatGLM-130B and ChatGLM-6B
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chatglm2-6b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChatGLM2-6B
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chatglm3-6b-native-agent-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChatGLM3-6B: native agent protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-glm-4-and-all-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. GLM-4 and All Tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. GLM-4 and All Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#proprietary-glm-4-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proprietary GLM-4 [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-4-all-tools-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4 All Tools [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-4-9b-cd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4-9B [C/D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-glm-4-0414-and-glm-z1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. GLM-4-0414 and GLM-Z1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. GLM-4-0414 and GLM-Z1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glm-4-32b-0414-cd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4-32B-0414 [C/D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-z1-32b-0414-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-Z1-32B-0414 [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-z1-air" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-Z1-Air
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-glm-45-first-detailed-production-agentic-rl-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. GLM-4.5: first detailed production agentic-RL factory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. GLM-4.5: first detailed production agentic-RL factory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-architecture-dc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Architecture [D/C]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-pretrainingdata-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Pretraining/data [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-post-training-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Post-training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-agent-trajectory-factory-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Agent trajectory factory [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-agentic-rl-d-with-equation-caveat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 Agentic RL [D with equation caveat]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-other-rl-and-infrastructure-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 Other RL and infrastructure [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-glm-46-and-glm-47" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. GLM-4.6 and GLM-4.7
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. GLM-4.6 and GLM-4.7">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glm-46" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4.6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-47" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4.7
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-47-flash-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4.7-Flash [C]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-glm-5-full-agentic-engineering-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. GLM-5: full agentic engineering pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. GLM-5: full agentic engineering pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-architectureaccounting-dcu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Architecture/accounting [D/C/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-pretraining-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Pretraining [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-mlamuon-splitmtpdsa-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 MLA/Muon Split/MTP/DSA [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-sft-and-loss-masks-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 SFT and loss masks [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95-sequential-rl-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.5 Sequential RL [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#96-agent-environments-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.6 Agent environments [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#97-asynchronous-optimization-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.7 Asynchronous optimization [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#98-on-policy-cross-stage-distillation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.8 On-policy cross-stage distillation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-glm-51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. GLM-5.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-glm-52-latest-disclosed-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. GLM-5.2: latest disclosed generation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. GLM-5.2: latest disclosed generation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-architecture-and-1m-context-dc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Architecture and 1M context [D/C]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-compaction-aware-critic-ppo-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 Compaction-aware critic PPO [D/U]
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.2 Compaction-aware critic PPO [D/U]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trainable-compaction-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trainable compaction [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-loss-and-cross-trajectory-gae-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token loss and cross-trajectory GAE [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-sao-the-missing-algorithmic-link-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 SAO: the missing algorithmic link [D/U]
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.3 SAO: the missing algorithmic link [D/U]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-group-optimization-becomes-a-systems-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why group optimization becomes a systems problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#direct-double-sided-importance-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Direct Double-Sided Importance Sampling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restoring-a-critic-at-group-size-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restoring a critic at group size one
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-experiments-establishand-what-they-do-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the experiments establish—and what they do not
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-parallel-on-policy-expert-distillation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 Parallel on-policy expert distillation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-online-anti-hacking-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 Online anti-hacking [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#116-vendor-reported-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6 Vendor-reported results
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-adjacent-agent-training-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Adjacent agent-training research
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Adjacent agent-training research">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agenttuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AgentTuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autowebglm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoWebGLM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webrl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebRL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoglm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoGLM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-multimodalgui-branch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Multimodal/GUI branch
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Multimodal/GUI branch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cogagent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CogAgent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-45v-rlcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4.5V / RLCS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-46v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4.6V
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-reconstructed-disclosed-production-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Reconstructed disclosed production workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-source-level-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Source-level map
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Source-level map">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model implementations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slime
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#readers-terminology-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reader's terminology key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-three-related-lineages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Three related lineages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-glm-blank-infilling-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. GLM: blank-infilling foundation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-glm-130b-bilingual-large-scale-pretraining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. GLM-130B: bilingual large-scale pretraining
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. GLM-130B: bilingual large-scale pretraining">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecturedata-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture/data [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-operation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training operation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-chatglm-generations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. ChatGLM generations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. ChatGLM generations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chatglm-130b-and-chatglm-6b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChatGLM-130B and ChatGLM-6B
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chatglm2-6b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChatGLM2-6B
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chatglm3-6b-native-agent-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChatGLM3-6B: native agent protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-glm-4-and-all-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. GLM-4 and All Tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. GLM-4 and All Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#proprietary-glm-4-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proprietary GLM-4 [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-4-all-tools-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4 All Tools [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-4-9b-cd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4-9B [C/D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-glm-4-0414-and-glm-z1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. GLM-4-0414 and GLM-Z1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. GLM-4-0414 and GLM-Z1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glm-4-32b-0414-cd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4-32B-0414 [C/D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-z1-32b-0414-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-Z1-32B-0414 [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-z1-air" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-Z1-Air
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-glm-45-first-detailed-production-agentic-rl-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. GLM-4.5: first detailed production agentic-RL factory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. GLM-4.5: first detailed production agentic-RL factory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-architecture-dc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Architecture [D/C]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-pretrainingdata-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Pretraining/data [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-post-training-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Post-training [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-agent-trajectory-factory-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Agent trajectory factory [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-agentic-rl-d-with-equation-caveat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 Agentic RL [D with equation caveat]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-other-rl-and-infrastructure-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 Other RL and infrastructure [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-glm-46-and-glm-47" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. GLM-4.6 and GLM-4.7
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. GLM-4.6 and GLM-4.7">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glm-46" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4.6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-47" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4.7
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-47-flash-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4.7-Flash [C]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-glm-5-full-agentic-engineering-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. GLM-5: full agentic engineering pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. GLM-5: full agentic engineering pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-architectureaccounting-dcu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Architecture/accounting [D/C/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-pretraining-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Pretraining [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-mlamuon-splitmtpdsa-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 MLA/Muon Split/MTP/DSA [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-sft-and-loss-masks-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 SFT and loss masks [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95-sequential-rl-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.5 Sequential RL [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#96-agent-environments-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.6 Agent environments [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#97-asynchronous-optimization-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.7 Asynchronous optimization [D/U]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#98-on-policy-cross-stage-distillation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.8 On-policy cross-stage distillation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-glm-51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. GLM-5.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-glm-52-latest-disclosed-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. GLM-5.2: latest disclosed generation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. GLM-5.2: latest disclosed generation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-architecture-and-1m-context-dc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Architecture and 1M context [D/C]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-compaction-aware-critic-ppo-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 Compaction-aware critic PPO [D/U]
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.2 Compaction-aware critic PPO [D/U]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trainable-compaction-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trainable compaction [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-loss-and-cross-trajectory-gae-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token loss and cross-trajectory GAE [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-sao-the-missing-algorithmic-link-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 SAO: the missing algorithmic link [D/U]
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.3 SAO: the missing algorithmic link [D/U]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-group-optimization-becomes-a-systems-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why group optimization becomes a systems problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#direct-double-sided-importance-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Direct Double-Sided Importance Sampling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restoring-a-critic-at-group-size-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restoring a critic at group size one
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-experiments-establishand-what-they-do-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the experiments establish—and what they do not
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-parallel-on-policy-expert-distillation-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 Parallel on-policy expert distillation [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-online-anti-hacking-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 Online anti-hacking [D]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#116-vendor-reported-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6 Vendor-reported results
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-adjacent-agent-training-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Adjacent agent-training research
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Adjacent agent-training research">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agenttuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AgentTuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autowebglm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoWebGLM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webrl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebRL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoglm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoGLM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-multimodalgui-branch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Multimodal/GUI branch
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Multimodal/GUI branch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cogagent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CogAgent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-45v-rlcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4.5V / RLCS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glm-46v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GLM-4.6V
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-reconstructed-disclosed-production-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Reconstructed disclosed production workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-source-level-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Source-level map
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Source-level map">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model implementations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slime
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="zhipu-ai-glm-from-blank-infilling-to-compaction-aware-agentic-reinforcement-learning">Zhipu AI / GLM: From Blank Infilling to Compaction-Aware Agentic Reinforcement Learning<a class="headerlink" href="#zhipu-ai-glm-from-blank-infilling-to-compaction-aware-agentic-reinforcement-learning" title="Permanent link">&para;</a></h1>
+<p><strong>Verified through:</strong> 2026-07-23. Sources are official papers, repositories,
+configs, model cards, and Zhipu/Z.ai releases. Vendor benchmarks are labeled as
+such.</p>
+<h2 id="readers-terminology-key">Reader's terminology key<a class="headerlink" href="#readers-terminology-key" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>General Language Model (GLM):</strong> the original research name for the
+  autoregressive blank-infilling foundation; later it became a product-family
+  name rather than one unchanged architecture.</li>
+<li><strong>Supervised Fine-Tuning (SFT):</strong> imitation learning on curated answers or
+  tool trajectories.</li>
+<li><strong>Reinforcement Learning from Human Feedback (RLHF):</strong> policy optimization
+  from human preferences, usually mediated by a learned reward model.</li>
+<li><strong>Proximal Policy Optimization (PPO):</strong> actor–critic policy optimization with
+  bounded/clipped probability-ratio movement.</li>
+<li><strong>Generalized Advantage Estimation (GAE):</strong> a weighted mixture of
+  temporal-difference residuals for lower-variance credit assignment.</li>
+<li><strong>Group Relative Policy Optimization (GRPO):</strong> critic-free optimization from
+  within-prompt response-group comparisons.</li>
+<li><strong>Single-Rollout Asynchronous Optimization (SAO):</strong> one-rollout-per-prompt
+  actor–critic training with direct double-sided importance masking; its authors
+  report deployment in GLM-5.2.</li>
+<li><strong>CompactionRL:</strong> critic-based Proximal Policy Optimization that jointly
+  trains ordinary agent actions and model-generated context summaries under the
+  final task reward; its authors report deployment in GLM-5.2.</li>
+<li><strong>Token-In, Token-Out (TITO):</strong> GLM-5's exact-token/log-probability transport
+  between rollout and training services.</li>
+<li><strong>Mixture of Experts (MoE):</strong> sparse activation of a few feed-forward experts
+  per token.</li>
+<li><strong>Multi-head Latent Attention (MLA), Multi-Token Prediction (MTP), and
+  DeepSeek Sparse Attention (DSA):</strong> respectively compressed attention state,
+  prediction of multiple future tokens, and selected-token sparse attention.</li>
+<li><strong>On-Policy Distillation (OPD):</strong> teacher supervision evaluated on states
+  sampled by the student.</li>
+<li><strong>Key-Value (KV) cache:</strong> stored attention keys and values reused during
+  decoding.</li>
+</ul>
+<h2 id="1-three-related-lineages">1. Three related lineages<a class="headerlink" href="#1-three-related-lineages" title="Permanent link">&para;</a></h2>
+<p>Do not collapse every GLM-branded paper into one production chain.</p>
+<ol>
+<li><strong>Foundation models:</strong> GLM → GLM-130B → ChatGLM → GLM-4 → GLM-4.5 →
+   GLM-5 → GLM-5.2.</li>
+<li><strong>Agent-training research:</strong> AgentTuning → AutoWebGLM → WebRL → AutoGLM →
+   production recipes disclosed in GLM-4.5/5/5.2.</li>
+<li><strong>Perception/action:</strong> CogAgent, GLM-4V/4.5V/4.6V, GUI grounding and
+   multimodal tools.</li>
+</ol>
+<p>AgentTuning used Llama-2, not ChatGLM. WebRL experimentally used GLM-4-9B, but
+its exact algorithm is not proven to be the commercial GLM-4 recipe. The first
+unusually detailed production agentic-RL disclosure is GLM-4.5; GLM-5 deepens
+it; GLM-5.2 changes the optimizer for irregular long-horizon compacted traces.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>instruction SFT + opaque RLHF
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  -&gt; native tool protocol/function calling
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -&gt; tool trajectories + executable environments
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  -&gt; reasoning/agent/general experts
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -&gt; agentic RL with environment rewards
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  -&gt; self/cross-stage on-policy distillation
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  -&gt; asynchronous long-horizon rollout
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  -&gt; compaction-aware critic PPO + online anti-hacking
+</code></pre></div>
+<h2 id="2-glm-blank-infilling-foundation">2. GLM: blank-infilling foundation<a class="headerlink" href="#2-glm-blank-infilling-foundation" title="Permanent link">&para;</a></h2>
+<p>Primary source: <a href="https://arxiv.org/abs/2103.10360">GLM</a>, Section 2 and Figure 2,
+pp. 2–4.</p>
+<p>GLM removes continuous spans, replaces each with a mask, and autoregressively
+reconstructs spans in random order:</p>
+<div class="arithmatex">\[
+p(B\mid A)=
+\prod_{i=1}^{m}\prod_{t=1}^{|B_{\pi_i}|}
+p(b_{\pi_i,t}\mid A,B_{\pi_{&lt;i}},b_{\pi_i,&lt;t}).
+\]</div>
+<p>The attention mask has:</p>
+<ul>
+<li>Part A: corrupted input with bidirectional visibility;</li>
+<li>Part B: autoregressive visibility to A, completed spans, and the current span
+  prefix.</li>
+</ul>
+<p>Two-dimensional positions encode the removed mask location and within-span
+offset. Different masking patterns support understanding, seq2seq generation,
+and left-to-right modeling. This is pretraining, not RL or agent interaction.</p>
+<h2 id="3-glm-130b-bilingual-large-scale-pretraining">3. GLM-130B: bilingual large-scale pretraining<a class="headerlink" href="#3-glm-130b-bilingual-large-scale-pretraining" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://arxiv.org/abs/2210.02414">report</a>, Sections 2–3 and Appendix
+Table 11; <a href="https://github.com/THUDM/GLM-130B">repository</a>.</p>
+<h3 id="architecturedata-d">Architecture/data [D]<a class="headerlink" href="#architecturedata-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>130B dense; 70 layers; hidden 12,288; 96 heads; FFN 32,768; context 2,048.</li>
+<li>FP16, DeepNorm post-LN, RoPE, GeGLU.</li>
+<li>400B tokens: about 200B English and 200B Chinese.</li>
+<li>Raw pools: ~1.2T Pile English tokens, ~1.0T WuDao Chinese tokens, plus 250GB
+  Chinese web text.</li>
+<li>95% self-supervised blank infilling: 30% short <code>[MASK]</code>, 70% prefix <code>[gMASK]</code>.</li>
+<li>Short spans use Poisson <span class="arithmatex">\(\lambda=3\)</span> and mask 15%.</li>
+<li>5% multitask instruction pretraining from 74 prompted datasets.</li>
+</ul>
+<h3 id="training-operation-d">Training operation [D]<a class="headerlink" href="#training-operation-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>May 6–July 3, 2022.</li>
+<li>96 DGX-A100 nodes × 8 40GB A100 = 768 GPUs.</li>
+<li>DP 24 × TP 4 × PP 8.</li>
+<li>Global batch warmup 192 → 4,224.</li>
+<li>AdamW .9/.95, decay .1.</li>
+<li>LR <span class="arithmatex">\(10^{-7}\to8\times10^{-5}\)</span>, cosine to <span class="arithmatex">\(8\times10^{-6}\)</span>.</li>
+<li>Dropout .1; gradient clip 1.0.</li>
+<li>Hardware utilization 43.3%; model FLOP utilization 32.5%.</li>
+<li>DeepNorm and 0.1 embedding-gradient shrinkage for stability.</li>
+</ul>
+<p>This report is a strong distributed-pretraining reference, not agentic RL.</p>
+<h2 id="4-chatglm-generations">4. ChatGLM generations<a class="headerlink" href="#4-chatglm-generations" title="Permanent link">&para;</a></h2>
+<h3 id="chatglm-130b-and-chatglm-6b">ChatGLM-130B and ChatGLM-6B<a class="headerlink" href="#chatglm-130b-and-chatglm-6b" title="Permanent link">&para;</a></h3>
+<p>Sources: <a href="https://arxiv.org/abs/2406.12793">family report</a>, pp. 2–4;
+<a href="https://github.com/THUDM/ChatGLM-6B">ChatGLM-6B</a>.</p>
+<p><strong>ChatGLM-130B [D]:</strong> GLM-130B post-trained with manually constructed
+prompt-response data, SFT, and RLHF. <strong>[U]</strong> SFT/preference count, label
+operation, reward model, PPO, compute, and duration.</p>
+<p><strong>ChatGLM-6B [C/D]:</strong> 6.2B; 28 layers; hidden 4,096; 32 heads; FFN 16,384;
+vocabulary 130,528; 2D positions; ~1T bilingual pretraining tokens; ~2K context;
+SFT, “feedback bootstrap,” and RLHF at high level. The exact feedback/RL
+operation is <strong>[U]</strong>. INT4 deployment at about 6GB drove adoption but is not an
+agent-training fact.</p>
+<h3 id="chatglm2-6b">ChatGLM2-6B<a class="headerlink" href="#chatglm2-6b" title="Permanent link">&para;</a></h3>
+<p><a href="https://github.com/THUDM/ChatGLM2-6B">Repository</a>:</p>
+<ul>
+<li>trained from scratch on 1.4T bilingual tokens;</li>
+<li>28 layers, hidden 4,096, 32 query heads, 2 MQA KV groups;</li>
+<li>FFN 13,696; vocabulary 65,024; FlashAttention;</li>
+<li>base context 32K, dialogue alignment at 8K;</li>
+<li>human-preference alignment disclosed only at high level.</li>
+</ul>
+<p>The transition is MQA and longer context, not yet an agentic-RL report.</p>
+<h3 id="chatglm3-6b-native-agent-protocol">ChatGLM3-6B: native agent protocol<a class="headerlink" href="#chatglm3-6b-native-agent-protocol" title="Permanent link">&para;</a></h3>
+<p><a href="https://github.com/THUDM/ChatGLM3">Repository</a>: 28 layers, hidden 4,096, 32 Q
+heads/2 MQA KV groups, FFN 13,696, standard 8K and separate 32K checkpoint.</p>
+<p>This release openly supports native function calls, code interpreter, complex
+agent workflows, and structured tool protocol. It demonstrates an agent
+interface, not end-to-end environment RL. Data tokens/training steps are <strong>[U]</strong>.</p>
+<h2 id="5-glm-4-and-all-tools">5. GLM-4 and All Tools<a class="headerlink" href="#5-glm-4-and-all-tools" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://arxiv.org/abs/2406.12793">technical report</a>, pp. 4–7 and
+Tables 7–9; <a href="https://github.com/zai-org/GLM-4">repository</a>.</p>
+<h3 id="proprietary-glm-4-du">Proprietary GLM-4 [D/U]<a class="headerlink" href="#proprietary-glm-4-du" title="Permanent link">&para;</a></h3>
+<ul>
+<li>~10T pretraining tokens.</li>
+<li>Mostly English/Chinese plus smaller 24-language collection.</li>
+<li>Web, Wikipedia, books, code, papers; exact/fuzzy dedup + quality filtering.</li>
+<li>~150K BBPE vocabulary merging Chinese/multilingual tokens into <code>cl100k_base</code>.</li>
+<li>RMSNorm, SwiGLU, 2D RoPE, GQA, QKV-only bias, FFN ~10/3 hidden.</li>
+<li>128K context.</li>
+<li>SFT, RLHF, safety alignment; preferences cover safety, factuality, relevance,
+  helpfulness, and overall human preference.</li>
+<li>Prompts from internal/third-party authentic human sources.</li>
+</ul>
+<p><strong>[U]</strong> parameters/layers/hardware, exact mixture, SFT/preference counts, reward
+architecture, PPO settings, annotation cost.</p>
+<h3 id="glm-4-all-tools-d">GLM-4 All Tools [D]<a class="headerlink" href="#glm-4-all-tools-d" title="Permanent link">&para;</a></h3>
+<p>Additional alignment for intent, planning, browser, Python, CogView3, custom
+functions/APIs, knowledge retrieval, and recursive tool execution/feedback. The
+report describes the interaction loop but not trajectory count or explicit
+agent-RL environments. The browser information score 78.08 versus 67.12 for the
+compared GPT-4 setting is vendor-run (Table 9).</p>
+<h3 id="glm-4-9b-cd">GLM-4-9B [C/D]<a class="headerlink" href="#glm-4-9b-cd" title="Permanent link">&para;</a></h3>
+<ul>
+<li>40 layers; hidden 4,096; 32 query heads/2 MQA KV; FFN 13,696;
+  vocabulary 151,552.</li>
+<li>10T multilingual tokens at native 8K.</li>
+<li>Chat checkpoint 128K; experimental checkpoint 1M.</li>
+<li>Report says same post-training pipeline/data as GLM-4-0520.</li>
+<li>Browsing, Python, retrieval, function calling.</li>
+</ul>
+<h2 id="6-glm-4-0414-and-glm-z1">6. GLM-4-0414 and GLM-Z1<a class="headerlink" href="#6-glm-4-0414-and-glm-z1" title="Permanent link">&para;</a></h2>
+<p>Primary source: <a href="https://github.com/zai-org/GLM-4">GLM-4 repository</a>.</p>
+<h3 id="glm-4-32b-0414-cd">GLM-4-32B-0414 [C/D]<a class="headerlink" href="#glm-4-32b-0414-cd" title="Permanent link">&para;</a></h3>
+<ul>
+<li>dense 32B-class; 61 layers; hidden 6,144; 48 query/2 KV heads; FFN 23,040;
+  vocabulary 151,552;</li>
+<li>native 32K, YaRN recommended for 128K;</li>
+<li>15T high-quality tokens including synthetic reasoning;</li>
+<li>chat post-training uses human preferences, rejection sampling, and RL for
+  instruction following, engineering code, and function calls;</li>
+<li>exact RL algorithm/environments <strong>[U]</strong>.</li>
+</ul>
+<h3 id="glm-z1-32b-0414-d">GLM-Z1-32B-0414 [D]<a class="headerlink" href="#glm-z1-32b-0414-d" title="Permanent link">&para;</a></h3>
+<p>Derived with cold-start data; extended math/code/logic RL; general-domain RL
+with pairwise-ranking feedback. <code>GLM-Z1-Rumination-32B</code> adds search during long
+reasoning plus rubric/answer grading.</p>
+<h3 id="glm-z1-air">GLM-Z1-Air<a class="headerlink" href="#glm-z1-air" title="Permanent link">&para;</a></h3>
+<p><a href="https://docs.bigmodel.cn/cn/guide/models/text/glm-z1">Official documentation</a>
+states cold start, extended math/code/logic RL, and pairwise-ranking general RL;
+128K context and up to 32K output for Air. Parameter count, architecture,
+pretraining tokens, rewards, optimizer, steps, and hardware are <strong>[U]</strong>. Do not
+repeat unsupported third-party “32B” claims for proprietary Z1-Air.</p>
+<h2 id="7-glm-45-first-detailed-production-agentic-rl-factory">7. GLM-4.5: first detailed production agentic-RL factory<a class="headerlink" href="#7-glm-45-first-detailed-production-agentic-rl-factory" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://arxiv.org/abs/2508.06471">technical report</a>,
+<a href="https://github.com/zai-org/GLM-4.5">repository</a>,
+<a href="https://huggingface.co/zai-org/GLM-4.5/blob/main/config.json">flagship config</a>,
+<a href="https://huggingface.co/zai-org/GLM-4.5-Air/blob/main/config.json">Air config</a>.</p>
+<h3 id="71-architecture-dc">7.1 Architecture [D/C]<a class="headerlink" href="#71-architecture-dc" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th style="text-align: right;">Total / active</th>
+<th style="text-align: right;">Layers</th>
+<th style="text-align: right;">Hidden</th>
+<th style="text-align: right;">Routed / active</th>
+<th style="text-align: right;">Shared</th>
+<th>Attention</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GLM-4.5</td>
+<td style="text-align: right;">355B / 32B</td>
+<td style="text-align: right;">3 dense + 89 MoE + 1 MTP</td>
+<td style="text-align: right;">5,120</td>
+<td style="text-align: right;">160 / 8</td>
+<td style="text-align: right;">1</td>
+<td>GQA 96 Q / 8 KV</td>
+</tr>
+<tr>
+<td>GLM-4.5-Air</td>
+<td style="text-align: right;">106B / 12B</td>
+<td style="text-align: right;">1 dense + 45 MoE + 1 MTP</td>
+<td style="text-align: right;">4,096</td>
+<td style="text-align: right;">128 / 8</td>
+<td style="text-align: right;">1</td>
+<td>GQA 96 Q / 8 KV</td>
+</tr>
+</tbody>
+</table>
+<p>QK normalization, partial RoPE, sigmoid-gate loss-free balancing. Flagship dense
+FFN 12,288/expert 1,536; Air dense 10,944/expert 1,408. Public context 131,072.
+The report excludes embeddings/output in parameter accounting; hosting totals
+around 358B are not necessarily a contradiction.</p>
+<h3 id="72-pretrainingdata-d">7.2 Pretraining/data [D]<a class="headerlink" href="#72-pretrainingdata-d" title="Permanent link">&para;</a></h3>
+<p>Headline 23T tokens; Figure 3 components total about 23.1T:</p>
+<ul>
+<li>15T general;</li>
+<li>7T code/reasoning;</li>
+<li>500B repository code;</li>
+<li>500B synthetic reasoning;</li>
+<li>100B long-context/agent data.</li>
+</ul>
+<p>Operations: web quality buckets with repeated highest-quality data; MinHash and
+semantic dedup; FineWeb2-derived multilingual data; language-specific code
+classifiers; FIM; code-related web retrieval; LLM scoring for math/science.</p>
+<p>Mid-training adds repository files/issues/PRs/commits, teacher-generated
+reasoning, context 4K → 32K → 128K, long documents, synthetic agent trajectories,
+and best-fit packing.</p>
+<p>Optimization:</p>
+<ul>
+<li>Muon for most parameters; special handling for embeddings/bias/RMSNorm;</li>
+<li>5 Newton–Schulz steps; momentum .95; update RMS .2;</li>
+<li>LR <span class="arithmatex">\(2.5\times10^{-4}\to2.5\times10^{-5}\)</span>;</li>
+<li>token batch 16M → 64M over first 500B;</li>
+<li>weight decay .1; no dropout; RoPE base 10K → 1M;</li>
+<li>MTP loss .3 first 15T then .1.</li>
+</ul>
+<p>GPU count, duration, and total FLOPs are <strong>[U]</strong>.</p>
+<h3 id="73-post-training-d">7.3 Post-training [D]<a class="headerlink" href="#73-post-training-d" title="Permanent link">&para;</a></h3>
+<p>Stage 1 trains reasoning, agent, and general experts; Stage 2 unifies them by
+self-distillation into a model with direct and thinking modes.</p>
+<ul>
+<li>“Millions” of SFT samples up to 128K.</li>
+<li>Expert-model data across reasoning, general chat, agents, and long context.</li>
+<li>Filters: repetition, truncation, reasoning quality, correctness, reward-model
+  quality, tool protocol, terminal state.</li>
+<li>Remove roughly easiest 50% prompts: reported +2–4%.</li>
+<li>Four candidates + filters on hard prompts: another reported +1–2%.</li>
+</ul>
+<h3 id="74-agent-trajectory-factory-d">7.4 Agent trajectory factory [D]<a class="headerlink" href="#74-agent-trajectory-factory-d" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Collect real frameworks, APIs, MCP servers, and tools.</li>
+<li>Synthesize more tool sets.</li>
+<li>Generate one/multi-step tasks.</li>
+<li>Let an LLM generate trajectories.</li>
+<li>Simulate users as needed.</li>
+<li>Run multiple judge agents.</li>
+<li>Retain successful trajectories.</li>
+<li>Validate XML-like tool protocol, parameters, and terminal state.</li>
+</ol>
+<p>XML-like calls reduce escaping failures for embedded code compared with JSON.</p>
+<h3 id="75-agentic-rl-d-with-equation-caveat">7.5 Agentic RL [D with equation caveat]<a class="headerlink" href="#75-agentic-rl-d-with-equation-caveat" title="Permanent link">&para;</a></h3>
+<p><strong>Web:</strong> multihop questions from knowledge graphs; selective human obfuscation
+across pages; final-answer reward.</p>
+<p><strong>Software engineering:</strong> real issues/PRs; executable tests; distributed hardened
+sandbox; test reward; invalid format stops with zero reward.</p>
+<p>Sample <span class="arithmatex">\(K\)</span> traces per prompt and center outcome rewards:</p>
+<div class="arithmatex">\[
+A_i=r(x,y_i)-\frac1K\sum_jr(x,y_j).
+\]</div>
+<p>Only generated tokens are optimized. The operation iterates:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>agent RL -&gt; collect successful/high-quality trajectories
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>         -&gt; self-distill with SFT
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>         -&gt; construct harder prompts/environments
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>         -&gt; repeat RL
+</code></pre></div>
+<p>More allowed turns improves reported outcomes, demonstrating inference-time
+interaction scaling.</p>
+<p><strong>Critical caveat:</strong> the report's printed objective contains only the sum of
+centered rewards, which is identically zero:</p>
+<div class="arithmatex">\[
+\sum_i(r_i-\bar r)=0.
+\]</div>
+<p>It omits the necessary score-function/log-probability term. A plausible intended
+gradient is</p>
+<div class="arithmatex">\[
+\mathbb E\left[\frac1K\sum_iA_i\sum_t
+\nabla_\theta\log\pi_\theta(y_{i,t}\mid x,y_{i,&lt;t})\right],
+\]</div>
+<p>possibly with clipping/importance correction, but exact implementation is not
+recoverable from the printed GLM-4.5 equation. Do not reproduce it uncritically.</p>
+<h3 id="76-other-rl-and-infrastructure-d">7.6 Other RL and infrastructure [D]<a class="headerlink" href="#76-other-rl-and-infrastructure-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>~5,000 holistic preference prompts.</li>
+<li>Capability taxonomy: 7 major, 33 intermediate, 139 fine categories.</li>
+<li>Human preference RM + AI rubrics.</li>
+<li>Instruction taxonomy: 7 major, 151 minor categories.</li>
+<li>Function-call reward requires exact schema/name/arguments/fields.</li>
+<li>End-to-end tools use rule or judge completion rewards.</li>
+<li>MCP/AgentGym environments and simulated users.</li>
+</ul>
+<p><a href="https://github.com/THUDM/slime">Slime</a> connects Megatron, SGLang engines/router,
+data buffer, and custom environments/rewards. Reasoning/general RL commonly use
+synchronous colocation; long software rollouts use disaggregated asynchrony.
+BF16 training, online blockwise FP8 rollout, dedicated pools, periodic weight
+sync, concurrent Docker environments, HTTP interfaces, dynamic sampling. Total
+production GPU count is <strong>[U]</strong>.</p>
+<h2 id="8-glm-46-and-glm-47">8. GLM-4.6 and GLM-4.7<a class="headerlink" href="#8-glm-46-and-glm-47" title="Permanent link">&para;</a></h2>
+<h3 id="glm-46">GLM-4.6<a class="headerlink" href="#glm-46" title="Permanent link">&para;</a></h3>
+<p><a href="https://z.ai/blog/glm-4.6">Official release</a>: same published 355B/32B family,
+config retains 92 transformer layers, context about 200K (<code>202752</code>). Improved
+code/reasoning/tools/search. Vendor CC-Bench reports about 15% fewer tokens than
+4.5 and 48.6% win rate versus Claude Sonnet 4 under that setup; trajectories are
+released at <a href="https://huggingface.co/datasets/zai-org/CC-Bench-trajectories">CC-Bench</a>.</p>
+<p><strong>[U]</strong> extra pretraining, post-training samples, environments, rewards, steps,
+compute. Same architecture does not prove same training.</p>
+<h3 id="glm-47">GLM-4.7<a class="headerlink" href="#glm-47" title="Permanent link">&para;</a></h3>
+<p><a href="https://z.ai/blog/glm-4.7">Official release</a>: same flagship scale/~200K;
+interleaved thinking before responses/tools, preserved thinking across turns,
+turn-level toggle. Vendor scores include SWE-bench 73.8, multilingual 66.7,
+Terminal-Bench 2.0 41.0, HLE 42.8; protocol remains source-specific.</p>
+<h3 id="glm-47-flash-c">GLM-4.7-Flash [C]<a class="headerlink" href="#glm-47-flash-c" title="Permanent link">&para;</a></h3>
+<p><a href="https://huggingface.co/zai-org/GLM-4.7-Flash/blob/main/config.json">Config</a>:
+~30B/3B active; 47 layers; hidden 2,048; 64 routed/4 active + 1 shared; expert
+FFN 1,536; MLA query rank 768/KV rank 512; 20 heads; context 202,752. Later GLM-5
+DSA experiments on this shape are not proof of the original released checkpoint's
+training process.</p>
+<h2 id="9-glm-5-full-agentic-engineering-pipeline">9. GLM-5: full agentic engineering pipeline<a class="headerlink" href="#9-glm-5-full-agentic-engineering-pipeline" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://arxiv.org/abs/2602.15763">technical report</a>,
+<a href="https://github.com/zai-org/GLM-5">repository</a>,
+<a href="https://huggingface.co/zai-org/GLM-5/blob/main/config.json">config</a>,
+<a href="https://z.ai/blog/glm-5">release</a>.</p>
+<h3 id="91-architectureaccounting-dcu">9.1 Architecture/accounting [D/C/U]<a class="headerlink" href="#91-architectureaccounting-dcu" title="Permanent link">&para;</a></h3>
+<p>Headline 744B total/40B active, 256 experts, ~200K, MLA + DeepSeek Sparse
+Attention, shared-parameter MTP.</p>
+<p>Public config: hidden 6,144; 3 dense initial layers; 8 routed active + 1 shared;
+dense FFN 12,288; expert FFN 2,048; 64 MLA heads; query rank 2,048; KV rank 512;
+Q/K head 256 (192 non-RoPE + 64 RoPE); V head 256; DSA index 32×128, top-k
+2,048; vocabulary 154,880; context 202,752; one MTP.</p>
+<p>Report says 80 layers; config says 78; hosting can show ~754B rather than 744B.
+The accounting/convention difference is unresolved <strong>[U]</strong>.</p>
+<h3 id="92-pretraining-d">9.2 Pretraining [D]<a class="headerlink" href="#92-pretraining-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>27T main pretraining.</li>
+<li>1T mid-training at 32K.</li>
+<li>500B at 128K.</li>
+<li>50B at 200K.</li>
+<li>Sum 28.55T, rounded headline 28.5T.</li>
+</ul>
+<p>Data operations: DCLM-style embedding web classifier; world-knowledge classifier;
+unique-token code-quality signal; Software Heritage metadata repair;
+language-specific lower-resource code filtering; LLM scoring for math/science;
+the math/science slice explicitly excludes synthetic/AI/template-generated data;
+~10M issue–PR pairs; ~160B unique filtered repository tokens; repositories,
+diffs, issues, PRs; natural long documents and synthetic long agent trajectories.</p>
+<h3 id="93-mlamuon-splitmtpdsa-d">9.3 MLA/Muon Split/MTP/DSA [D]<a class="headerlink" href="#93-mlamuon-splitmtpdsa-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Muon Split orthogonalizes each head's projections separately.</li>
+<li>Three shared-parameter MTP layers during training.</li>
+<li>Vendor-reported acceptance length 2.76 versus 2.55 for compared V3.2.</li>
+</ul>
+<p>DSA conversion after dense mid-training:</p>
+<ol>
+<li>freeze base; warm indexer 1,000 steps;</li>
+<li>14 × 202,752 tokens/step (~2.84M); max indexer LR <span class="arithmatex">\(5\times10^{-3}\)</span>;</li>
+<li>joint sparse adaptation 20B tokens;</li>
+<li>top-k 2,048;</li>
+<li>freeze indexer during RL;</li>
+<li>use deterministic <code>torch.topk</code>; nondeterministic top-k caused rapid RL
+   degradation and entropy collapse.</li>
+</ol>
+<p>Reported long-sequence attention-compute saving ~1.5–2×.</p>
+<h3 id="94-sft-and-loss-masks-d">9.4 SFT and loss masks [D]<a class="headerlink" href="#94-sft-and-loss-masks-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>General, reasoning, code-agent, long-context SFT to 202,752 tokens.</li>
+<li>Interleaved/preserved/turn-level thinking.</li>
+<li>Hard prompts filtered against GLM-4.7.</li>
+<li>Coding/agent trajectories from execution environments.</li>
+<li>Expert RL + rejection sampling improve trajectory quality.</li>
+<li>Incorrect action segments stay in context but receive zero loss, allowing the
+  later correction to be trained without reinforcing the error:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>correct policy action       loss mask 1
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>tool/environment result     loss mask 0
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>incorrect action segment    loss mask 0
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>later corrected action      loss mask 1
+</code></pre></div>
+<h3 id="95-sequential-rl-d">9.5 Sequential RL [D]<a class="headerlink" href="#95-sequential-rl-d" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>reasoning RL -&gt; agentic RL -&gt; general RL
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>             -&gt; on-policy cross-stage distillation
+</code></pre></div>
+<p>Cross-stage distillation mitigates forgetting.</p>
+<p>Reasoning RL:</p>
+<ul>
+<li>GRPO + IcePop-like train/inference mismatch suppression;</li>
+<li>no KL regularization;</li>
+<li>mismatch bound <span class="arithmatex">\(\beta=2\)</span>;</li>
+<li>PPO clip <span class="arithmatex">\(\epsilon_l=.2,\epsilon_h=.28\)</span>;</li>
+<li>group 32, batch 32, fully on-policy;</li>
+<li>math, science, code, tool-integrated reasoning;</li>
+<li>difficulty: rarely solved by 4.7 but solvable by strong teachers;</li>
+<li>domain binary judges.</li>
+</ul>
+<p>IcePop suppresses token gradients when the rollout/training probability ratio
+falls outside <span class="arithmatex">\([1/\beta,\beta]\)</span>.</p>
+<h3 id="96-agent-environments-d">9.6 Agent environments [D]<a class="headerlink" href="#96-agent-environments-d" title="Permanent link">&para;</a></h3>
+<p><strong>Software engineering:</strong> &gt;10,000 verifiable environments over thousands of
+repos in Python, Java, Go, C, C++, JS, TS, PHP, Ruby; RepoLaunch; FAIL_TO_PASS and
+PASS_TO_PASS.</p>
+<p><strong>Terminal:</strong> draft task → construction agent creates Harbor/Docker/tests →
+refinement agent validates task/rubric → web-derived tasks self-validate. Scale:
+thousands of tasks; &gt;90% Docker-build success.</p>
+<p><strong>Search:</strong> discovered URLs form a &gt;2M-page world-knowledge graph; sample
+low/medium-frequency entities and multihop neighborhoods; reject if solved
+without tools in one of eight attempts or too easy for current agents;
+bidirectionally verify unique answer/evidence.</p>
+<p><strong>Context management:</strong> vendor BrowseComp 55.3 → 62.0 by retaining latest five
+interactions; hierarchical discard at 32K reaches 75.9.</p>
+<p><strong>Slides/artifacts:</strong> SFT then multilevel-reward RL, rejection and loss-masked
+fine-tuning; rewards over static markup, rendered image, and content; explicit
+reward-hacking discussion.</p>
+<h3 id="97-asynchronous-optimization-du">9.7 Asynchronous optimization [D/U]<a class="headerlink" href="#97-asynchronous-optimization-du" title="Permanent link">&para;</a></h3>
+<ul>
+<li>separate inference/training GPU pools;</li>
+<li>central multi-task orchestrator, &gt;1,000 concurrent rollouts;</li>
+<li>token-in/token-out gateway preserves exact IDs/metadata;</li>
+<li>rollout log-probabilities define behavior policy.</li>
+</ul>
+<div class="arithmatex">\[
+r_t(\theta)=\exp[
+\log\pi_\theta(a_t\mid s_t)-
+\log\pi_{\text{rollout}}(a_t\mid s_t)].
+\]</div>
+<p>Double-sided rejection:</p>
+<div class="arithmatex">\[
+f(r_t)=
+\begin{cases}
+r_t,&amp;1-\epsilon_l&lt;r_t&lt;1+\epsilon_h,\\
+0,&amp;\text{otherwise}.
+\end{cases}
+\]</div>
+<ul>
+<li>record rollout weight versions;</li>
+<li>drop trajectories older than an undisclosed lag <span class="arithmatex">\(\tau\)</span>;</li>
+<li>exclude environment crashes;</li>
+<li>after GRPO filtering, if &gt;half a group remains, repeat valid samples to pad;
+  otherwise drop group;</li>
+<li>route all turns in one rollout to same DP rank for KV locality;</li>
+<li>reset optimizer state after some rollout-weight refreshes.</li>
+</ul>
+<p>Exact sync interval, <span class="arithmatex">\(\tau\)</span>, and hardware are <strong>[U]</strong>.</p>
+<h3 id="98-on-policy-cross-stage-distillation-d">9.8 On-policy cross-stage distillation [D]<a class="headerlink" href="#98-on-policy-cross-stage-distillation-d" title="Permanent link">&para;</a></h3>
+<p>Teacher evaluates student-generated tokens; advantage derives from teacher–
+student log-probability difference. Group 1, batch 1,024; teacher logits served
+through inference infrastructure. Because student produces the state/action
+distribution, this is not offline teacher imitation.</p>
+<h2 id="10-glm-51">10. GLM-5.1<a class="headerlink" href="#10-glm-51" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://z.ai/blog/glm-5.1">release</a>,
+<a href="https://docs.z.ai/guides/llm/glm-5.1">docs</a>,
+<a href="https://huggingface.co/zai-org/GLM-5.1/blob/main/config.json">config</a>.</p>
+<p>Same 744B/40B, ~200K family. Release emphasizes hundreds of optimization rounds,
+thousands of calls, up to eight-hour tasks, and long coding/system case studies.
+These are product evaluations, not training disclosures. Added tokens, RL
+environments, algorithm changes, reward, and compute are <strong>[U]</strong>.</p>
+<h2 id="11-glm-52-latest-disclosed-generation">11. GLM-5.2: latest disclosed generation<a class="headerlink" href="#11-glm-52-latest-disclosed-generation" title="Permanent link">&para;</a></h2>
+<p>Sources: <a href="https://z.ai/blog/glm-5.2">official release</a> (2026-06-16),
+<a href="https://huggingface.co/zai-org/GLM-5.2/blob/main/config.json">config</a>,
+<a href="https://arxiv.org/abs/2603.12201">IndexCache paper</a>,
+<a href="https://arxiv.org/abs/2607.05378">CompactionRL paper</a>,
+<a href="https://arxiv.org/abs/2607.07508">SAO paper</a>,
+<a href="https://github.com/zai-org/GLM-5">GLM-5 repository</a>.</p>
+<p>No official GLM-5.3 source was found by the cutoff.</p>
+<h3 id="111-architecture-and-1m-context-dc">11.1 Architecture and 1M context [D/C]<a class="headerlink" href="#111-architecture-and-1m-context-dc" title="Permanent link">&para;</a></h3>
+<ul>
+<li>the public checkpoint is counted as 753B by Hugging Face; the SAO paper
+  rounds the model to 750B total/40B active (<code>750B-A40B</code>); earlier Z.ai
+  material describes the family as 744B/40B, so parameter-count convention is
+  material and should always be named;</li>
+<li>context 1,048,576; public config still 78 hidden layers;</li>
+<li>RoPE theta 8M; DSA top-k 2,048.</li>
+</ul>
+<p><strong>IndexShare:</strong> one DSA indexer per four-layer block. The first layer computes
+top-k indices; next three reuse them. Claimed per-token FLOP reduction is 2.9× at
+1M. Introduced during 128K mid-training.</p>
+<p><strong>MTP:</strong> share top-k indices and KV cache across prediction steps; shared step
+parameters; add rejection sampling and end-to-end total-variation loss.</p>
+<table>
+<thead>
+<tr>
+<th>Seven-step ablation</th>
+<th style="text-align: right;">Acceptance length</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseline</td>
+<td style="text-align: right;">4.56</td>
+</tr>
+<tr>
+<td>+ IndexShare + KVShare</td>
+<td style="text-align: right;">5.10</td>
+</tr>
+<tr>
+<td>+ rejection sampling</td>
+<td style="text-align: right;">5.29</td>
+</tr>
+<tr>
+<td>+ end-to-end TV loss</td>
+<td style="text-align: right;">5.47</td>
+</tr>
+</tbody>
+</table>
+<p>Vendor-reported +20% over baseline.</p>
+<h3 id="112-compaction-aware-critic-ppo-du">11.2 Compaction-aware critic PPO [D/U]<a class="headerlink" href="#112-compaction-aware-critic-ppo-du" title="Permanent link">&para;</a></h3>
+<p>Super-long trajectories compact into a variable number of sub-traces with very
+different lengths. Group-relative optimization becomes awkward when one rollout
+yields two trainable sub-traces and another ten. The official release says
+GLM-5.2 moved to:</p>
+<ul>
+<li>critic-based PPO;</li>
+<li>individual-rollout learning;</li>
+<li>token-level advantage estimation;</li>
+<li>all compacted sub-traces retained;</li>
+<li>token-level loss to handle length imbalance.</li>
+</ul>
+<p>Li et al.'s 2026
+<a href="https://arxiv.org/abs/2607.05378">CompactionRL</a> states that the method was
+deployed in GLM-5.2's reinforcement-learning (RL) pipeline <strong>[D]</strong>. Its
+controlled experiments use GLM-4.7-Flash (30B-A3B) and a
+Supervised Fine-Tuning (SFT) checkpoint derived from GLM-4.5-Air (106B-A30B),
+not GLM-5.2 itself. This distinction is essential: the paper discloses a
+mechanism and smaller-scale configuration, not the flagship's complete
+resolved run.</p>
+<h4 id="trainable-compaction-d">Trainable compaction [D]<a class="headerlink" href="#trainable-compaction-d" title="Permanent link">&para;</a></h4>
+<p>Let the current interaction history contain assistant actions and environment
+observations. When the unused context budget drops below
+<span class="arithmatex">\(T_{\mathrm{comp}}\)</span>, the policy samples a summary</p>
+<div class="arithmatex">\[
+S_t\sim\pi_\theta\!\left(
+\cdot\mid\operatorname{concat}(h_t,q_{\mathrm{sum}})
+\right)
+\]</div>
+<p>and reconstructs context from the system prompt, original user goal, summary,
+and the most recent action-observation pairs. The paper keeps the last two
+pairs by default. It treats each action plus its observation as atomic so a
+tool call is not separated from its result.</p>
+<p>The summary is not an external fixed model. Summary tokens and ordinary
+execution tokens are sampled by the same trainable policy and receive the same
+terminal task reward. The authors do not add a handcrafted summary-quality
+reward. Holding the execution model fixed while swapping three summary models
+moved reported SWE-bench Verified pass@1 from 49.0% to 55.5%, establishing that
+the summary policy alone can materially change downstream success under this
+scaffold <strong>[D]</strong>.</p>
+<h4 id="token-loss-and-cross-trajectory-gae-d">Token loss and cross-trajectory GAE [D]<a class="headerlink" href="#token-loss-and-cross-trajectory-gae-d" title="Permanent link">&para;</a></h4>
+<p>One complete rollout becomes a variable sequence</p>
+<div class="arithmatex">\[
+\tau=(\sigma_1,\ldots,\sigma_K)
+\]</div>
+<p>of execution and summary segments. Treating these segments as independent
+group members would overrepresent episodes with more compactions. CompactionRL
+therefore uses group-size-one critic PPO and normalizes the policy loss across
+all generated tokens rather than averaging segments.</p>
+<p>A naive segment-local Generalized Advantage Estimation (GAE) calculation makes
+terminal reward appear artificially close to every earlier segment. If
+<span class="arithmatex">\(N_{&gt;s}\)</span> trainable tokens occur after segment <span class="arithmatex">\(s\)</span>, CompactionRL applies</p>
+<div class="arithmatex">\[
+\widehat A_{s,i}
+=(\gamma\lambda)^{N_{&gt;s}}A^{\mathrm{loc}}_{s,i},
+\]</div>
+<p>so credit reflects approximate distance to the end of the concatenated
+rollout.</p>
+<p>The disclosed experimental configuration is:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Published value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>global batch / group</td>
+<td>128 / 1</td>
+</tr>
+<tr>
+<td>policy / critic learning rate</td>
+<td><span class="arithmatex">\(2\times10^{-6}\)</span> / <span class="arithmatex">\(3\times10^{-6}\)</span></td>
+</tr>
+<tr>
+<td>critic initialization</td>
+<td>same checkpoint as actor; 50 value-pretraining steps</td>
+</tr>
+<tr>
+<td>actor/critic updates</td>
+<td>one / two per batch</td>
+</tr>
+<tr>
+<td>peak context</td>
+<td>64K for 30B-A3B; 80K for 106B-A30B</td>
+</tr>
+<tr>
+<td>response/compaction limit</td>
+<td>10,240 tokens per assistant response; at most three compactions</td>
+</tr>
+<tr>
+<td>evaluation</td>
+<td>temperature 1.0, top-<span class="arithmatex">\(p=1.0\)</span>, at most 250 turns</td>
+</tr>
+</tbody>
+</table>
+<p>On the 106B-A30B experiment, removing token-level loss normalization changes
+reported compacted evaluation from 66.8% to 60.0% on SWE-bench Verified and
+24.5% to 21.3% on Terminal-Bench 2.0; removing cross-trajectory GAE changes
+them to 63.0% and 22.5% <strong>[D]</strong>. These are vendor-author ablations on a sampled
+SWE-bench set and a named harness, not independent product measurements.</p>
+<p>The paper also reports an important negative boundary: CompactionRL gains do
+not consistently transfer to single-window evaluation with compaction disabled,
+and its cross-trajectory GAE is still an approximation. <strong>[U]</strong> for GLM-5.2:
+critic architecture, resolved <span class="arithmatex">\(\gamma/\lambda\)</span>, clipping, value/entropy
+coefficients, batch, optimizer, task mixture, and how CompactionRL interacts
+with SAO. “Uses PPO” and “deployed in the pipeline” do not reconstruct the
+flagship update.</p>
+<h3 id="113-sao-the-missing-algorithmic-link-du">11.3 SAO: the missing algorithmic link [D/U]<a class="headerlink" href="#113-sao-the-missing-algorithmic-link-du" title="Permanent link">&para;</a></h3>
+<p>The user-visible GLM-5.2 release predates a more precise primary source. Hou,
+Li, Tang, and Dong's 2026 paper
+<a href="https://arxiv.org/abs/2607.07508">Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning</a>
+introduces <strong>Single-Rollout Asynchronous Optimization (SAO)</strong> and states in the
+abstract that SAO was deployed in the agentic-RL pipeline used to train the
+open GLM-5.2 model. Two authors performed the work while interning at Z.AI.
+This is direct author disclosure <strong>[D]</strong>, not proof that every GLM-5.2 RL stage
+used SAO.</p>
+<h4 id="why-group-optimization-becomes-a-systems-problem">Why group optimization becomes a systems problem<a class="headerlink" href="#why-group-optimization-becomes-a-systems-problem" title="Permanent link">&para;</a></h4>
+<p><strong>Group Relative Policy Optimization (GRPO)</strong> samples <span class="arithmatex">\(G\)</span> answers for one
+prompt and needs the group before it can compute relative advantages. If
+rollout durations are <span class="arithmatex">\(T_1,\ldots,T_G\)</span>, a synchronous group becomes ready at</p>
+<div class="arithmatex">\[
+T_{\text{ready}}=\max_i T_i,
+\]</div>
+<p>so finished workers wait for the longest member. Long coding episodes make the
+tail large. Meanwhile the learner may update, so a late group can contain
+tokens produced by stale rollout-policy versions. SAO sets <span class="arithmatex">\(G=1\)</span>: each
+trajectory enters training as soon as it finishes. That removes the
+within-prompt group barrier but also removes GRPO's group-mean baseline.</p>
+<h4 id="direct-double-sided-importance-sampling">Direct Double-Sided Importance Sampling<a class="headerlink" href="#direct-double-sided-importance-sampling" title="Permanent link">&para;</a></h4>
+<p>SAO uses <strong>Direct Double-Sided Importance Sampling (DIS)</strong>. For an action token
+recorded with rollout-engine log-probability
+<span class="arithmatex">\(\log\pi_{\text{rollout}}(a_t\mid s_t)\)</span>, it recomputes</p>
+<div class="arithmatex">\[
+r_t(\theta)=\exp\!\left[
+\log\pi_\theta(a_t\mid s_t)-
+\log\pi_{\text{rollout}}(a_t\mid s_t)
+\right].
+\]</div>
+<p>It drops a separate <span class="arithmatex">\(\pi_{\text{old}}\)</span> and gates the token with</p>
+<div class="arithmatex">\[
+f(r;\epsilon_l,\epsilon_h)=
+\begin{cases}
+r,&amp;1-\epsilon_l&lt;r&lt;1+\epsilon_h,\\
+0,&amp;\text{otherwise}.
+\end{cases}
+\]</div>
+<p>The paper prints</p>
+<div class="arithmatex">\[
+L(\theta)=\widehat{\mathbb E}_t\!\left[
+f(r_t;\epsilon_l,\epsilon_h)\widehat A_t
+\log\pi_\theta(a_t\mid s_t)
+\right].
+\]</div>
+<p>This is strict <strong>two-sided masking</strong>, not ordinary Proximal Policy Optimization
+(PPO) clipping. PPO saturates only the direction in which the objective would
+improve too far; DIS gives <em>zero</em> gradient contribution outside the interval
+regardless of advantage sign. The paper does not mark whether <span class="arithmatex">\(f(r_t)\)</span> is
+stop-gradient. A literal autodifferentiation through both <span class="arithmatex">\(r_t\)</span> and
+<span class="arithmatex">\(\log\pi_\theta\)</span> adds an extra derivative term, so a source-level
+reproduction must resolve this implementation detail rather than silently
+assuming one interpretation <strong>[U]</strong>.</p>
+<h4 id="restoring-a-critic-at-group-size-one">Restoring a critic at group size one<a class="headerlink" href="#restoring-a-critic-at-group-size-one" title="Permanent link">&para;</a></h4>
+<p>With no same-prompt comparison group, SAO learns a value model
+<span class="arithmatex">\(V_\phi(s_t)\)</span>:</p>
+<ol>
+<li>run <span class="arithmatex">\(K=2\)</span> critic updates for every actor update in the reported
+   experiments;</li>
+<li>freeze the critic's full-attention parameters and optimize its
+   Mixture-of-Experts (MoE) projections, because full attention updates had
+   much larger gradient norms;</li>
+<li>scale value-model pretraining to reduce cold-start error, although the paper
+   does not disclose the corpus size; and</li>
+<li>estimate token advantages with a length-adaptive form of Generalized
+   Advantage Estimation (GAE).</li>
+</ol>
+<p>For an agent trace <span class="arithmatex">\([a_0,o_0,a_1,o_1,\ldots]\)</span>, where <span class="arithmatex">\(a_i\)</span> is a model action
+and <span class="arithmatex">\(o_i\)</span> is an environment observation, skip-observation GAE bridges from
+the last token <span class="arithmatex">\(a_{i,N}\)</span> directly to the first token of the next model action:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\delta_i
+  &amp;=r_i+\gamma V_\phi(a_{i+1,0})-V_\phi(a_{i,N}),\\
+\widehat A(a_{i,N})
+  &amp;=\delta_i+\gamma\lambda\widehat A(a_{i+1,0}).
+\end{aligned}
+\]</div>
+<p>Observation tokens are not sampled by the policy and therefore receive no
+policy loss or artificial token-to-token value transition. The <em>next action's
+state still includes the observation in its context</em>; “skip observation” must
+not be misread as hiding tool feedback from the model.</p>
+<h4 id="what-the-experiments-establishand-what-they-do-not">What the experiments establish—and what they do not<a class="headerlink" href="#what-the-experiments-establishand-what-they-do-not" title="Permanent link">&para;</a></h4>
+<p>The controlled experiments use <strong>Qwen3-30B-A3B</strong>, not GLM-5.2:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Published experimental value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>math/tool initialization</td>
+<td>three-epoch SFT of Qwen3-30B-A3B-Thinking-2507 on GPT-OSS-120B-generated tool traces</td>
+</tr>
+<tr>
+<td>asynchronous batch/group</td>
+<td>128 trajectories / one rollout per prompt</td>
+</tr>
+<tr>
+<td>maximum length</td>
+<td>128K tokens</td>
+</tr>
+<tr>
+<td>actor learning rate</td>
+<td><span class="arithmatex">\(10^{-6}\)</span></td>
+</tr>
+<tr>
+<td>reasoning DIS interval</td>
+<td><span class="arithmatex">\((1-0.3,1+5.0)=(0.7,6.0)\)</span></td>
+</tr>
+<tr>
+<td>coding DIS interval</td>
+<td><span class="arithmatex">\((1-0.8,1+3.0)=(0.2,4.0)\)</span></td>
+</tr>
+<tr>
+<td>critic</td>
+<td>learning rate <span class="arithmatex">\(5\times10^{-6}\)</span>, 10-step warmup, two updates per actor update</td>
+</tr>
+<tr>
+<td>coding scaffold</td>
+<td>OpenHands, at most 300 turns, 128K context</td>
+</tr>
+</tbody>
+</table>
+<p>Vendor-author-reported outcomes are 97.3 versus 84.2 on AIME 2025, 74.8
+versus 54.8 on BeyondAIME, 88.3 versus 76.0 on HMMT November 2025, and 74.0
+versus 55.8 on IMOAnswerBench for SAO versus the reported GRPO baseline.
+SWE-bench Verified is 29.8 for SAO, 27.0 for GRPO+DIS, and 23.0 for the base
+checkpoint. The paper reports vanilla GRPO collapse around 160 steps, while
+SAO remains stable for roughly 1,000; these are one paper's controlled results,
+not independent evidence of GLM-5.2's gain.</p>
+<p>The correct production statement is narrow:</p>
+<ul>
+<li><strong>[D]</strong> SAO was deployed somewhere in GLM-5.2's agentic-RL pipeline.</li>
+<li><strong>[I]</strong> Its single-rollout/critic design naturally explains the official
+  release's move to individual-rollout learning for irregular compacted traces.</li>
+<li><strong>[U]</strong> which GLM-5.2 stages, domains, rewards, task counts, rollout counts,
+  coefficients, batch sizes, compute, and ablation deltas used SAO.</li>
+<li><strong>[U]</strong> whether SAO was the only actor optimizer or the final consolidation
+  optimizer; the release separately discloses parallel OPD for expert merging.</li>
+</ul>
+<p>Transferring the Qwen experiment's <span class="arithmatex">\(K=2\)</span>, learning rates, or very wide DIS
+intervals to a 753B checkpoint would turn disclosed evidence into fiction.</p>
+<h3 id="114-parallel-on-policy-expert-distillation-d">11.4 Parallel on-policy expert distillation [D]<a class="headerlink" href="#114-parallel-on-policy-expert-distillation-d" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Slime supports white-box/black-box rollout, compact traces, and sub-agent
+  workflows.</li>
+<li>More than ten expert models merged into the final checkpoint by parallel OPD.</li>
+<li>Complete OPD reportedly takes about two days.</li>
+<li>KV-cache FP8 and flexible rollout/training resource organization.</li>
+<li>Hardware count/type <strong>[U]</strong>.</li>
+</ul>
+<h3 id="115-online-anti-hacking-d">11.5 Online anti-hacking [D]<a class="headerlink" href="#115-online-anti-hacking-d" title="Permanent link">&para;</a></h3>
+<p>Coding rewards can be exploited by reading evaluation artifacts, copying
+answers, recovering upstream commits, downloading target source, or chained tool
+leakage. GLM-5.2 uses:</p>
+<ol>
+<li>high-recall rule filter for suspicious actions;</li>
+<li>LLM intent judge for precision.</li>
+</ol>
+<p>During RL and evaluation, calls are monitored; detected hacks are blocked;
+dummy information is returned; the rollout continues. Continuing avoids turning
+every suspicion into terminal zero, preserves later correction data, and reduces
+collapse risk. The hard external block—not a negative reward alone—prevents the
+prohibited action.</p>
+<h3 id="116-vendor-reported-results">11.6 Vendor-reported results<a class="headerlink" href="#116-vendor-reported-results" title="Permanent link">&para;</a></h3>
+<p>Terminal-Bench 2.1 81.0, SWE-bench Pro 62.1, NL2Repo 48.9, HLE 40.5 / 54.7 with
+tools, GPQA-Diamond 91.2, MCP-Atlas public 76.8, Tool-Decathlon 48.2. The release
+has harness/token/sandbox/judge footnotes; retain them in any score comparison.</p>
+<h2 id="12-adjacent-agent-training-research">12. Adjacent agent-training research<a class="headerlink" href="#12-adjacent-agent-training-research" title="Permanent link">&para;</a></h2>
+<h3 id="agenttuning">AgentTuning<a class="headerlink" href="#agenttuning" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2310.12823">Paper</a>: 35,341 attempted trajectories; 1,866
+successful across six tasks; GPT-4-0613 generation; reward-one filtering; mix
+AgentInstruct with ShareGPT-like data at ratio .2. Experiments use Llama-2, so
+this is a general research result, not ChatGLM production evidence.</p>
+<h3 id="autowebglm">AutoWebGLM<a class="headerlink" href="#autowebglm" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2404.03648">Paper</a>, Section 4/Appendix A; based on
+ChatGLM3-6B. Humans select tasks and record browser operations; GPT-4 fills
+step intentions; curriculum SFT goes atomic → complex. DPO samples 20 responses
+per prompt and keeps mixed success/failure prompts; ~13K preferences; LR
+<span class="arithmatex">\(10^{-6}\)</span>, batch 64, <span class="arithmatex">\(\beta=.15\)</span>, auxiliary SFT weight .8. Rejection
+fine-tuning: ~15K MiniWoB++ trajectories/66K steps and 240 WebArena/2K; LR
+<span class="arithmatex">\(10^{-5}\)</span>, batch 32.</p>
+<h3 id="webrl">WebRL<a class="headerlink" href="#webrl" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2411.02337">Paper</a>; GLM-4-9B experiment. Binary environment
+reward; outcome RM emits YES/NO from instruction/action history/final HTML;
+12,200 RM examples from 1,186 source tasks + rollouts; LR <span class="arithmatex">\(5\times10^{-6}\)</span>,
+batch 128, four epochs. Eight curriculum phases; each creates 500 GPT-4o-derived
+tasks from current failures. Critic/feasibility filter; KL-constrained
+actor–critic with GAE <span class="arithmatex">\(\lambda=.5,\gamma=.9\)</span>; replay with tightening
+perplexity; actor/critic LR <span class="arithmatex">\(10^{-6}\)</span>, batch 128. Reported success 6.1 → 43.0.</p>
+<h3 id="autoglm">AutoGLM<a class="headerlink" href="#autoglm" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2411.00820">Paper</a>: separates planning and grounding,
+browser/Android environments, progressive weak-to-strong self-evolving online
+curriculum RL with GLM-4-9B planners. Strong research evidence; not proof of an
+identical flagship recipe.</p>
+<h2 id="13-multimodalgui-branch">13. Multimodal/GUI branch<a class="headerlink" href="#13-multimodalgui-branch" title="Permanent link">&para;</a></h2>
+<h3 id="cogagent">CogAgent<a class="headerlink" href="#cogagent" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2312.08914">Paper</a>,
+<a href="https://github.com/zai-org/CogAgent">repository</a>: 18B dual-resolution visual
+architecture up to 1,120×1,120, GUI grounding/navigation; later 9B checkpoint
+based on GLM-4V-9B.</p>
+<h3 id="glm-45v-rlcs">GLM-4.5V / RLCS<a class="headerlink" href="#glm-45v-rlcs" title="Permanent link">&para;</a></h3>
+<p><a href="https://arxiv.org/abs/2507.01006">Report</a>: 220M OCR images, 40M natural grounding
+boxes, GUI data; pretraining seq 8,192, batch 1,536, 120K steps; SFT seq 32,768,
+batch 32; RLVR + RLHF; GUI reward combines action correctness and IoU; grounding
+IoU; QA exact/semantic; GRPO + RLCS difficulty-aware resampling. Report warns a
+weak verifier in one domain can collapse other domains; selected setup uses
+large batches, no KL/entropy loss, top-p 1.</p>
+<h3 id="glm-46v">GLM-4.6V<a class="headerlink" href="#glm-46v" title="Permanent link">&para;</a></h3>
+<p><a href="https://z.ai/blog/glm-4.6v">Release</a>: synthetic agent data, URL multimodal values
+inside extended MCP, draft → image selection → polish, visual feedback for
+correction. CogView3 is an external tool available to GLM-4 All Tools, not proof
+that its generator training is part of the language model.</p>
+<h2 id="14-reconstructed-disclosed-production-workflow">14. Reconstructed disclosed production workflow<a class="headerlink" href="#14-reconstructed-disclosed-production-workflow" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>web/code/science/books/repos/issues/PRs
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  -&gt; exact/fuzzy/semantic dedup
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  -&gt; domain/language quality classifiers
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  -&gt; staged base pretraining
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  -&gt; repository/reasoning/long-context mid-training
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  -&gt; cold-start SFT for reasoning and agent protocols
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  -&gt; executable environments + synthesized tools/tasks
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  -&gt; multiple specialist trajectories
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  -&gt; verify tests/answers/formats/terminal state
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  -&gt; reasoning RL
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  -&gt; web/SWE/terminal/tool agentic RL
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>  -&gt; general preference/instruction RL
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  -&gt; self/cross-stage/parallel on-policy distillation
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  -&gt; harder environments and new rollouts
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  -&gt; anti-hack/safety/regression evaluation
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>  -&gt; serving-compatible deployment
+</code></pre></div>
+<p>Complete raw sources, private/copyrighted proportions, annotation staffing/cost,
+most SFT/preference counts, exact reward-model sizes, safety taxonomy, most RL
+steps, post-130B GPU totals, base-training duration/FLOPs, and production API
+routing remain <strong>[U]</strong>.</p>
+<h2 id="15-source-level-map">15. Source-level map<a class="headerlink" href="#15-source-level-map" title="Permanent link">&para;</a></h2>
+<h3 id="model-implementations">Model implementations<a class="headerlink" href="#model-implementations" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://github.com/huggingface/transformers/tree/main/src/transformers/models/glm4_moe">Transformers GLM-4 MoE</a></li>
+<li><a href="https://github.com/huggingface/transformers/tree/main/src/transformers/models/glm_moe_dsa">Transformers GLM MoE DSA</a></li>
+<li><a href="https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/models/glm4_moe_mtp.py">vLLM GLM-4.5 MTP</a></li>
+<li><a href="https://github.com/sgl-project/sglang/blob/main/python/sglang/srt/models/glm4_moe.py">SGLang GLM-4 MoE</a></li>
+</ul>
+<h3 id="slime">Slime<a class="headerlink" href="#slime" title="Permanent link">&para;</a></h3>
+<p>Repository: <a href="https://github.com/THUDM/slime">THUDM/slime</a>. The paths below were
+inspected at commit <code>fb42ae456fac8166afb604f13b30d22bb3c75053</code>:</p>
+<ul>
+<li><a href="https://github.com/THUDM/slime/blob/fb42ae456fac8166afb604f13b30d22bb3c75053/slime/ray/rollout.py"><code>slime/ray/rollout.py</code></a>:
+  SGLang engines/router, generation, buffer, metrics.</li>
+<li><a href="https://github.com/THUDM/slime/blob/fb42ae456fac8166afb604f13b30d22bb3c75053/slime/backends/megatron_utils/loss.py"><code>slime/backends/megatron_utils/loss.py</code></a>:
+  advantages, PPO loss, rollout/train mismatch, token importance masks.</li>
+<li><a href="https://github.com/THUDM/slime/blob/fb42ae456fac8166afb604f13b30d22bb3c75053/slime/utils/ppo_utils.py"><code>slime/utils/ppo_utils.py</code></a>:
+  approximate KL, clipped PPO, CISPO, sequence masking, GRPO utilities.</li>
+<li><a href="https://github.com/THUDM/slime/blob/fb42ae456fac8166afb604f13b30d22bb3c75053/slime/agent/trajectory.py"><code>slime/agent/trajectory.py</code></a>:
+  token-in/token-out traces, branching, drift realignment, exact masks.</li>
+<li><a href="https://github.com/THUDM/slime/blob/fb42ae456fac8166afb604f13b30d22bb3c75053/slime/rollout/on_policy_distillation.py"><code>slime/rollout/on_policy_distillation.py</code></a>:
+  teacher log-probs and OPD samples.</li>
+<li><a href="https://github.com/THUDM/slime/blob/fb42ae456fac8166afb604f13b30d22bb3c75053/examples/coding_agent_rl/generate.py"><code>examples/coding_agent_rl/generate.py</code></a>:
+  sandbox boot, coding agent, patch extraction/evaluation.</li>
+<li><a href="https://github.com/THUDM/slime/blob/fb42ae456fac8166afb604f13b30d22bb3c75053/examples/coding_agent_rl/swe.py"><code>examples/coding_agent_rl/swe.py</code></a>:
+  clean SWE rewards and failing/passing tests.</li>
+<li><a href="https://github.com/THUDM/slime/blob/fb42ae456fac8166afb604f13b30d22bb3c75053/examples/search-r1/generate_with_search.py"><code>examples/search-r1/generate_with_search.py</code></a>:
+  multi-turn search and exact token/log-prob tracking.</li>
+<li><a href="https://github.com/THUDM/slime/blob/fb42ae456fac8166afb604f13b30d22bb3c75053/slime/rollout/fully_async_rollout.py"><code>slime/rollout/fully_async_rollout.py</code></a>:
+  asynchronous in-flight queue.</li>
+</ul>
+<p>Current Slime evolves beyond each model release. It is an executable reference,
+not automatically a frozen copy of GLM-4.5/5/5.2 internal training.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

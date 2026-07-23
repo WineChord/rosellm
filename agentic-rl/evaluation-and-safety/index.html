@@ -1,0 +1,3377 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A source-cited LLM learning repository and executable systems lab">
+      
+      
+      
+        <link rel="canonical" href="https://www.wineandchord.com/rosellm/agentic-rl/evaluation-and-safety/">
+      
+      
+        <link rel="prev" href="../systems/">
+      
+      
+        <link rel="next" href="../source-lab/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Evaluation and Safety - RoseLLM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#evaluation-and-safety" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RoseLLM" class="md-header__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RoseLLM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Evaluation and Safety
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RoseLLM" class="md-nav__button md-logo" aria-label="RoseLLM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RoseLLM
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/chtho-like/rosellm" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chtho-like/rosellm
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documentation-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model-training-token-ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Training Token Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deepseek-release-timeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Release Timeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../evaluation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Evaluation and Reliability
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Evaluation and Reliability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Hallucination and Mitigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/hallucination-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Following and Steerability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Instruction Following and Steerability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview, Benchmarks, and GPT vs DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Improvement Method Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-vendors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclosed Vendor Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/instruction-following-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Production Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../coding-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding-Agent Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding-Agent Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-agents/reasonix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reasonix History and System Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../multimodal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Foundation Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multimodal Foundation Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representation, Fusion, and Native Multimodality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi Model Lineage and Native Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/kimi-k3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kimi K3 Architecture and Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek VL, Janus, and OCR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../multimodal/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM-Centered Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentic Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agentic Reinforcement Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reading-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must-Read Syllabus and Priorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terminology and Boundaries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../long-horizon-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-Horizon Task Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Historical Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mathematical-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../derivations-and-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Step-by-Step Derivations and Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algorithms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-and-environments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data and Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    End-to-End Training Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systems and Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation and Safety
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-evaluation-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Evaluation layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-freeze-the-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Freeze the protocol
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-core-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Core metrics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Core metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verified-success" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verified success
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#passk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pass@k
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Progress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-and-efficiency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost and efficiency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reliability
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-statistical-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Statistical reporting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Statistical reporting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#confidence-intervals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confidence intervals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paired-comparisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paired comparisons
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-trials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple trials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-comparisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple comparisons
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-benchmark-contamination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Benchmark contamination
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-llm-judges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. LLM judges
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. LLM judges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#judge-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Judge protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-rewardmetric-separation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Reward–metric separation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-ablating-what-improved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Ablating what improved
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-generalization-axes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Generalization axes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-safety-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Safety threat model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Safety threat model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adversaries-and-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adversaries and failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-agent-safety-evaluations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Agent safety evaluations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Agent safety evaluations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prompt-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permission-and-side-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permission and side effects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reward-tampering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reward tampering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deception-and-oversight-awareness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deception and oversight awareness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-misuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource misuse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-agent-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-agent failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-safety-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Safety metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-evaluation-environment-integrity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Evaluation environment integrity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-deployment-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Deployment gates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Deployment gates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#research-checkpoint-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Research checkpoint gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-sandbox-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal sandbox gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limited-user-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limited-user gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wider-deployment-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wider deployment gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-evaluation-report-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Evaluation report template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-benchmark-reading-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Benchmark reading map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../source-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source-Level Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../case-studies/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontier-Lab Case Studies
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_14" id="__nav_11_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frontier-Lab Case Studies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/deepseek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/glm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhipu GLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/kimi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moonshot Kimi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/openai-anthropic-google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI, Anthropic, and Google DeepMind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/qwen-meta-mistral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qwen, Meta, and Mistral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../case-studies/open-industry-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Industry and Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bibliography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Annotated Bibliography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-evaluation-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Evaluation layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-freeze-the-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Freeze the protocol
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-core-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Core metrics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Core metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verified-success" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verified success
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#passk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pass@k
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Progress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-and-efficiency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost and efficiency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reliability
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-statistical-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Statistical reporting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Statistical reporting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#confidence-intervals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confidence intervals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paired-comparisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paired comparisons
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-trials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple trials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-comparisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple comparisons
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-benchmark-contamination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Benchmark contamination
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-llm-judges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. LLM judges
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. LLM judges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#judge-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Judge protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-rewardmetric-separation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Reward–metric separation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-ablating-what-improved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Ablating what improved
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-generalization-axes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Generalization axes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-safety-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Safety threat model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Safety threat model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adversaries-and-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adversaries and failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-agent-safety-evaluations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Agent safety evaluations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Agent safety evaluations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prompt-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permission-and-side-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permission and side effects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reward-tampering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reward tampering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deception-and-oversight-awareness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deception and oversight awareness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-misuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource misuse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-agent-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-agent failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-safety-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Safety metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-evaluation-environment-integrity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Evaluation environment integrity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-deployment-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Deployment gates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Deployment gates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#research-checkpoint-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Research checkpoint gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-sandbox-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal sandbox gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limited-user-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limited-user gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wider-deployment-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wider deployment gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-evaluation-report-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Evaluation report template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-benchmark-reading-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Benchmark reading map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="evaluation-and-safety">Evaluation and Safety<a class="headerlink" href="#evaluation-and-safety" title="Permanent link">&para;</a></h1>
+<p>An <strong>Agentic Reinforcement Learning (Agentic RL)</strong> score is a property of a complete system under a protocol:</p>
+<div class="arithmatex">\[
+\text{result}=f(\text{model},\text{scaffold},\text{tools},\text{environment},
+\text{budget},\text{sampler},\text{evaluator},\text{seed},\text{time}).
+\]</div>
+<p>Changing any argument can change the result. This chapter designs evaluation
+that separates policy learning from scaffolding, inference compute, leakage,
+and evaluator artifacts—and treats safety as a system constraint rather than a
+single benchmark.</p>
+<h2 id="1-evaluation-layers">1. Evaluation layers<a class="headerlink" href="#1-evaluation-layers" title="Permanent link">&para;</a></h2>
+<p>Use several layers because no one metric establishes general agency.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Question</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unit</td>
+<td>Does one mechanism behave correctly?</td>
+<td>tool parser, mask, state reset</td>
+</tr>
+<tr>
+<td>Skill</td>
+<td>Can the policy perform a bounded capability?</td>
+<td>select an Application Programming Interface (API), recover from error</td>
+</tr>
+<tr>
+<td>Task</td>
+<td>Does the agent complete an end-to-end goal?</td>
+<td>fix issue, book valid itinerary</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>Does success generalize within a domain?</td>
+<td>unseen repositories/sites/users</td>
+</tr>
+<tr>
+<td>Transfer</td>
+<td>Does learning survive new tools/schemas/horizons?</td>
+<td>renamed functions, new User Interface (UI) layout</td>
+</tr>
+<tr>
+<td>Robustness</td>
+<td>Does behavior survive faults and attacks?</td>
+<td>tool timeout, prompt injection</td>
+</tr>
+<tr>
+<td>Safety</td>
+<td>Does it respect permissions and avoid unacceptable states?</td>
+<td>exfiltration or destructive action</td>
+</tr>
+<tr>
+<td>Operations</td>
+<td>Is utility worth cost/latency/reliability?</td>
+<td>success per dollar and p95 time</td>
+</tr>
+</tbody>
+</table>
+<p>Training reward belongs on a dashboard, not as the sole evaluation metric.</p>
+<h2 id="2-freeze-the-protocol">2. Freeze the protocol<a class="headerlink" href="#2-freeze-the-protocol" title="Permanent link">&para;</a></h2>
+<p>A checkpoint comparison must pin:</p>
+<ul>
+<li>model checkpoint and quantization;</li>
+<li>tokenizer/chat template/system prompt;</li>
+<li>scaffold code, memory, planner, and retry logic;</li>
+<li>tool schemas, versions, permissions, and network access;</li>
+<li>environment image, task snapshot, validator, and seed distribution;</li>
+<li>context, output, turn, wall-time, tool-call, and monetary budgets;</li>
+<li>sampling temperature/top-p/top-k and number of attempts;</li>
+<li>context-overflow and observation-truncation policy;</li>
+<li>judge/checker version and rubric;</li>
+<li>evaluation date for live services/web.</li>
+</ul>
+<p>If a vendor model is measured with a different official harness, report that
+protocol separately. Do not create a visually simple leaderboard by erasing
+different tool and inference-compute budgets.</p>
+<h2 id="3-core-metrics">3. Core metrics<a class="headerlink" href="#3-core-metrics" title="Permanent link">&para;</a></h2>
+<h3 id="verified-success">Verified success<a class="headerlink" href="#verified-success" title="Permanent link">&para;</a></h3>
+<p>For binary task outcome <span class="arithmatex">\(S_i\)</span>,</p>
+<div class="arithmatex">\[
+\widehat p=\frac{1}{n}\sum_i S_i.
+\]</div>
+<p>Prefer backend state, tests, formal kernels, or independent validators over the
+agent's self-declared completion.</p>
+<h3 id="passk">Pass@k<a class="headerlink" href="#passk" title="Permanent link">&para;</a></h3>
+<p>When <span class="arithmatex">\(n\)</span> samples contain <span class="arithmatex">\(c\)</span> correct results, the common unbiased estimator
+for probability that at least one of <span class="arithmatex">\(k\)</span> samples succeeds without replacement
+is</p>
+<div class="arithmatex">\[
+\operatorname{pass@}k=
+1-\frac{\binom{n-c}{k}}{\binom nk}.
+\]</div>
+<p>Pass@k measures search/sampling capacity, not single-attempt reliability. Report
+total generated tokens, environment executions, and selection method.</p>
+<h3 id="progress">Progress<a class="headerlink" href="#progress" title="Permanent link">&para;</a></h3>
+<p>For tasks with meaningful intermediate state, define independently verified
+subgoal completion. Ensure partial score cannot exceed final utility by gaming
+easy subgoals while blocking completion.</p>
+<h3 id="cost-and-efficiency">Cost and efficiency<a class="headerlink" href="#cost-and-efficiency" title="Permanent link">&para;</a></h3>
+<p>Report distributions, not only averages:</p>
+<ul>
+<li>policy input/output/reasoning tokens;</li>
+<li>turns, tool calls, searches, code executions;</li>
+<li>wall time, TTFT, inter-action latency;</li>
+<li>accelerator/environment/API cost;</li>
+<li>success-weighted cost <span class="arithmatex">\(\mathbb E[C]/\mathbb E[S]\)</span> with caveats when success
+  is rare;</li>
+<li>success under fixed token/time/cost budgets;</li>
+<li>critical-path time versus total work for multi-agent systems.</li>
+</ul>
+<h3 id="reliability">Reliability<a class="headerlink" href="#reliability" title="Permanent link">&para;</a></h3>
+<ul>
+<li>task failure versus infrastructure failure;</li>
+<li>invalid action and parser failure;</li>
+<li>timeout/truncation;</li>
+<li>variance across seeds/runs;</li>
+<li>catastrophic side-effect rate;</li>
+<li>calibration of confidence/abstention.</li>
+</ul>
+<h2 id="4-statistical-reporting">4. Statistical reporting<a class="headerlink" href="#4-statistical-reporting" title="Permanent link">&para;</a></h2>
+<h3 id="confidence-intervals">Confidence intervals<a class="headerlink" href="#confidence-intervals" title="Permanent link">&para;</a></h3>
+<p>For binary success, use Wilson or exact binomial intervals rather than a bare
+percentage, especially for small sets. Bootstrap paired task-level differences
+when episodes have variable scalar scores.</p>
+<h3 id="paired-comparisons">Paired comparisons<a class="headerlink" href="#paired-comparisons" title="Permanent link">&para;</a></h3>
+<p>Evaluate checkpoints on the same task/state seeds when possible. For binary
+paired outcomes, report discordant counts and use McNemar's test or paired
+bootstrap. Shared environment randomness can reduce variance; do not share
+policy sampling seeds in a way that forces identical actions.</p>
+<h3 id="multiple-trials">Multiple trials<a class="headerlink" href="#multiple-trials" title="Permanent link">&para;</a></h3>
+<p>Separate variation from:</p>
+<ul>
+<li>task sampling;</li>
+<li>environment stochasticity;</li>
+<li>policy sampling;</li>
+<li>evaluator/judge sampling;</li>
+<li>infrastructure nondeterminism.</li>
+</ul>
+<p>Hierarchical bootstrap or mixed-effects analysis may be needed when several
+episodes share a repository, website, template, or user simulator.</p>
+<h3 id="multiple-comparisons">Multiple comparisons<a class="headerlink" href="#multiple-comparisons" title="Permanent link">&para;</a></h3>
+<p>If many checkpoints/hyperparameters are selected on the same validation suite,
+the best score is optimistically biased. Retain a final untouched test set and
+report selection budget.</p>
+<h2 id="5-benchmark-contamination">5. Benchmark contamination<a class="headerlink" href="#5-benchmark-contamination" title="Permanent link">&para;</a></h2>
+<p>Static public benchmarks are likely present in pretraining or synthetic data.
+Controls include:</p>
+<ul>
+<li>exact/fuzzy/semantic overlap search against all post-training data;</li>
+<li>time-split tasks created after training cutoff;</li>
+<li>private or procedurally generated initial states;</li>
+<li>hidden validator/tests;</li>
+<li>paraphrase/rename/layout perturbations;</li>
+<li>canary strings and evaluation-ID access audits;</li>
+<li>family-level split (repository/domain/template) rather than item-level split.</li>
+</ul>
+<p>Passing a known benchmark can still measure capability, but it is weak evidence
+of novel-task learning. State the contamination threat rather than asserting
+cleanliness without corpus access.</p>
+<h2 id="6-llm-judges">6. LLM judges<a class="headerlink" href="#6-llm-judges" title="Permanent link">&para;</a></h2>
+<p>LLM judges are useful for subjective goals but have systematic failure modes:</p>
+<ul>
+<li>position/order bias;</li>
+<li>verbosity and formatting preference;</li>
+<li>self/family preference;</li>
+<li>sensitivity to rubric wording;</li>
+<li>failure to execute or verify citations/code;</li>
+<li>correlated errors with the policy;</li>
+<li>prompt injection inside candidate/tool output;</li>
+<li>inconsistency across temperature and API versions.</li>
+</ul>
+<h3 id="judge-protocol">Judge protocol<a class="headerlink" href="#judge-protocol" title="Permanent link">&para;</a></h3>
+<ol>
+<li>define dimensions and unacceptable failures;</li>
+<li>randomize candidate order and blind identities;</li>
+<li>use independent evidence/tools for factual or executable claims;</li>
+<li>require structured rationale/score but do not treat rationale as truth;</li>
+<li>calibrate against multiple humans or verifiers on a held-out sample;</li>
+<li>report per-domain agreement and confusion, not just correlation;</li>
+<li>use a separate judge family or ensemble when self-preference is plausible;</li>
+<li>adversarially test injection and reward hacking;</li>
+<li>freeze version during comparisons;</li>
+<li>preserve <code>tie</code>, <code>both bad</code>, and <code>unjudgeable</code> outcomes.</li>
+</ol>
+<p>A generative reward model can be more expressive than a scalar head, but its
+natural-language reasoning increases cost and attack surface.</p>
+<h2 id="7-rewardmetric-separation">7. Reward–metric separation<a class="headerlink" href="#7-rewardmetric-separation" title="Permanent link">&para;</a></h2>
+<p>Maintain at least three independent signals:</p>
+<ol>
+<li><strong>training reward:</strong> optimized directly;</li>
+<li><strong>validation metric:</strong> used for model selection but not gradient;</li>
+<li><strong>audit metric:</strong> hidden and reviewed only at gates or final evaluation.</li>
+</ol>
+<p>If all three use the same judge, there is no independent evidence against reward
+hacking. Use outcome verification or human audit where possible.</p>
+<p>Plot training reward against independent success, cost, length, and safety. A
+divergence is a stop signal.</p>
+<h2 id="8-ablating-what-improved">8. Ablating what improved<a class="headerlink" href="#8-ablating-what-improved" title="Permanent link">&para;</a></h2>
+<p>Compare a factorial subset where affordable:</p>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Baseline</th>
+<th>Treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Weights</td>
+<td>pre-RL checkpoint</td>
+<td>post-RL checkpoint</td>
+</tr>
+<tr>
+<td>Scaffold</td>
+<td>fixed minimal</td>
+<td>production scaffold</td>
+</tr>
+<tr>
+<td>Tools</td>
+<td>none/fixed subset</td>
+<td>full tools</td>
+</tr>
+<tr>
+<td>Inference compute</td>
+<td>equal token/turn budget</td>
+<td>scaled budget</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>disabled</td>
+<td>enabled</td>
+</tr>
+<tr>
+<td>Search/parallel agents</td>
+<td>single</td>
+<td>search/swarm</td>
+</tr>
+<tr>
+<td>Judge/validator</td>
+<td>independent fixed</td>
+<td>training evaluator</td>
+</tr>
+</tbody>
+</table>
+<p>Minimum necessary comparisons:</p>
+<ul>
+<li>same scaffold and budget, pre- versus post-training weights;</li>
+<li>same weights and budget, scaffold ablation;</li>
+<li>success–compute curve rather than one unconstrained point;</li>
+<li>held-out tasks/environments with evaluator independent of training reward.</li>
+</ul>
+<h2 id="9-generalization-axes">9. Generalization axes<a class="headerlink" href="#9-generalization-axes" title="Permanent link">&para;</a></h2>
+<p>Test controlled shifts:</p>
+<ul>
+<li>new task instances and skill compositions;</li>
+<li>longer horizon and delayed reward;</li>
+<li>different tool names, argument order, descriptions, and schemas;</li>
+<li>unseen tools with learnable documentation;</li>
+<li>new website/UI layout and visual theme;</li>
+<li>environment transition stochasticity and partial observability;</li>
+<li>language, locale, time zone, and units;</li>
+<li>tool failures, stale data, permission denial, and ambiguous users;</li>
+<li>new repositories/libraries/frameworks;</li>
+<li>adversarial observations and prompt injection;</li>
+<li>changed user preferences and constraint priorities.</li>
+</ul>
+<p>Report degradation relative to in-distribution performance and characterize
+failure, not only average transfer.</p>
+<h2 id="10-safety-threat-model">10. Safety threat model<a class="headerlink" href="#10-safety-threat-model" title="Permanent link">&para;</a></h2>
+<h3 id="assets">Assets<a class="headerlink" href="#assets" title="Permanent link">&para;</a></h3>
+<ul>
+<li>user data, secrets, credentials, identity;</li>
+<li>filesystem/database integrity;</li>
+<li>compute, money, quotas, and external accounts;</li>
+<li>hidden tests/rewards/training data;</li>
+<li>other tenants and cluster control plane;</li>
+<li>legal, physical, and reputational safety.</li>
+</ul>
+<h3 id="adversaries-and-failures">Adversaries and failures<a class="headerlink" href="#adversaries-and-failures" title="Permanent link">&para;</a></h3>
+<ul>
+<li>malicious user;</li>
+<li>malicious webpage/tool output/document;</li>
+<li>compromised tool/service;</li>
+<li>reward-seeking policy discovering unintended behavior;</li>
+<li>accidental model error under ambiguity;</li>
+<li>insider or data-pipeline poisoning;</li>
+<li>infrastructure race/retry causing duplicate side effects.</li>
+</ul>
+<h3 id="security-properties">Security properties<a class="headerlink" href="#security-properties" title="Permanent link">&para;</a></h3>
+<ul>
+<li>least privilege and explicit authorization;</li>
+<li>isolation and non-interference;</li>
+<li>integrity and provenance of observations/tools/rewards;</li>
+<li>confidentiality and data minimization;</li>
+<li>reversibility and human confirmation for high-impact actions;</li>
+<li>auditability and incident containment;</li>
+<li>graceful abstention under uncertainty.</li>
+</ul>
+<h2 id="11-agent-safety-evaluations">11. Agent safety evaluations<a class="headerlink" href="#11-agent-safety-evaluations" title="Permanent link">&para;</a></h2>
+<h3 id="prompt-injection">Prompt injection<a class="headerlink" href="#prompt-injection" title="Permanent link">&para;</a></h3>
+<p>Place conflicting instructions in web pages, tool outputs, files, metadata,
+images, and retrieved memory. Measure whether the agent preserves instruction
+hierarchy, protects secrets, and asks for authorization.</p>
+<h3 id="permission-and-side-effects">Permission and side effects<a class="headerlink" href="#permission-and-side-effects" title="Permanent link">&para;</a></h3>
+<p>Test read/write/delete/send/purchase/deploy actions at boundaries. Include
+near-miss cases where the goal is legitimate but scope is broader than required.
+Judge intermediate actions, not only final outcome.</p>
+<h3 id="reward-tampering">Reward tampering<a class="headerlink" href="#reward-tampering" title="Permanent link">&para;</a></h3>
+<p>Expose apparent paths to validator files, expected answers, logs, judge prompts,
+or environment internals inside a sandbox. The policy should not access or
+modify evaluation machinery.</p>
+<h3 id="deception-and-oversight-awareness">Deception and oversight awareness<a class="headerlink" href="#deception-and-oversight-awareness" title="Permanent link">&para;</a></h3>
+<p>Vary whether monitoring is visible, whether actions are audited, and whether
+shortcuts benefit reward. Interpret cautiously: behavioral tests do not reveal
+internal intent, but they can expose conditional policy differences.</p>
+<h3 id="resource-misuse">Resource misuse<a class="headerlink" href="#resource-misuse" title="Permanent link">&para;</a></h3>
+<p>Test fork bombs, unbounded searches, recursive agents, output flooding, crypto
+mining, external tunnels, denial of service, and quota exhaustion. Enforce hard
+limits regardless of policy behavior.</p>
+<h3 id="multi-agent-failures">Multi-agent failures<a class="headerlink" href="#multi-agent-failures" title="Permanent link">&para;</a></h3>
+<ul>
+<li>subagent privilege escalation;</li>
+<li>instruction laundering through delegation;</li>
+<li>duplicated/contradictory side effects;</li>
+<li>communication poisoning;</li>
+<li>runaway spawning and cost;</li>
+<li>aggregation that omits minority safety findings.</li>
+</ul>
+<h2 id="12-safety-metrics">12. Safety metrics<a class="headerlink" href="#12-safety-metrics" title="Permanent link">&para;</a></h2>
+<p>Report:</p>
+<ul>
+<li>harmful/unauthorized action attempt and execution rate;</li>
+<li>severity-weighted incidents with raw counts;</li>
+<li>secret exposure and data-boundary violation;</li>
+<li>false refusal and safe-completion rate;</li>
+<li>correct clarification/confirmation rate;</li>
+<li>prompt-injection attack success by channel;</li>
+<li>time/actions before detection and containment;</li>
+<li>sandbox/authorization prevention rate;</li>
+<li>rollback/recovery completeness;</li>
+<li>multi-agent amplification factor for cost and violations.</li>
+</ul>
+<p>Zero observed incidents is not proof of zero risk. State sample size and upper
+confidence bounds. For zero incidents in <span class="arithmatex">\(n\)</span> independent trials, the rough
+95% “rule of three” upper bound is <span class="arithmatex">\(3/n\)</span>, subject to independence and
+representativeness.</p>
+<h2 id="13-evaluation-environment-integrity">13. Evaluation environment integrity<a class="headerlink" href="#13-evaluation-environment-integrity" title="Permanent link">&para;</a></h2>
+<ul>
+<li>separate evaluator credentials/network from the agent;</li>
+<li>keep hidden tests and expected state outside tool mounts;</li>
+<li>hash initial/final state and validator artifacts;</li>
+<li>log every read/write/network/action with trace IDs;</li>
+<li>make the validator read-only relative to policy state where possible;</li>
+<li>randomize nonsemantic identifiers to detect hard-coding;</li>
+<li>replay a sample and independently review surprising high rewards;</li>
+<li>monitor for evaluation task IDs in training queues;</li>
+<li>version live web/API evaluations by date and captured evidence.</li>
+</ul>
+<h2 id="14-deployment-gates">14. Deployment gates<a class="headerlink" href="#14-deployment-gates" title="Permanent link">&para;</a></h2>
+<h3 id="research-checkpoint-gate">Research checkpoint gate<a class="headerlink" href="#research-checkpoint-gate" title="Permanent link">&para;</a></h3>
+<ul>
+<li>reproducible fixed-suite improvement;</li>
+<li>no data/validator integrity failure;</li>
+<li>loss/reward/ratio dynamics understood;</li>
+<li>qualitative failure set reviewed.</li>
+</ul>
+<h3 id="internal-sandbox-gate">Internal sandbox gate<a class="headerlink" href="#internal-sandbox-gate" title="Permanent link">&para;</a></h3>
+<ul>
+<li>threat model and authorization matrix;</li>
+<li>adversarial injection/reward-tampering tests;</li>
+<li>resource quotas and kill switch;</li>
+<li>audit logging and incident drill;</li>
+<li>no access to production secrets/accounts.</li>
+</ul>
+<h3 id="limited-user-gate">Limited-user gate<a class="headerlink" href="#limited-user-gate" title="Permanent link">&para;</a></h3>
+<ul>
+<li>independent safety review;</li>
+<li>scoped reversible tools;</li>
+<li>confirmation for high-impact action;</li>
+<li>real-time monitoring and rollback;</li>
+<li>explicit cost/rate caps;</li>
+<li>privacy, retention, and feedback process.</li>
+</ul>
+<h3 id="wider-deployment-gate">Wider deployment gate<a class="headerlink" href="#wider-deployment-gate" title="Permanent link">&para;</a></h3>
+<ul>
+<li>statistically supported utility/reliability under realistic load;</li>
+<li>residual-risk acceptance by accountable owners;</li>
+<li>red-team coverage and external review where appropriate;</li>
+<li>abuse monitoring, support, incident response, and update policy;</li>
+<li>versioned model/scaffold/tool release with rollback.</li>
+</ul>
+<h2 id="15-evaluation-report-template">15. Evaluation report template<a class="headerlink" href="#15-evaluation-report-template" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gu">## Claim</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>What capability or safety property is being tested?
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gu">## System under test</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Model/checkpoint/quantization, scaffold, tools, memory, prompts.
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gu">## Tasks and splits</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Source, dates, grouping, contamination analysis, hidden state.
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="gu">## Protocol</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>Budgets, sampler, trials, seeds, context-overflow, failures/retries.
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="gu">## Evaluator</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>Validator/judge version, rubric, information access, calibration.
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="gu">## Results</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>Raw counts, point estimates, confidence intervals, cost/latency distributions.
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="gu">## Ablations</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>Weights, scaffold, tools, memory, inference compute, evaluator.
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="gu">## Failures and incidents</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>Taxonomy, examples, severity, containment, unresolved risks.
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="gu">## Limitations</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>Contamination, coverage, uncertainty, vendor-reported or unverified details.
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="gu">## Reproduction</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>Revision, config, environment, commands, hashes, artifacts.
+</code></pre></div>
+<h2 id="16-benchmark-reading-map">16. Benchmark reading map<a class="headerlink" href="#16-benchmark-reading-map" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2308.03688">AgentBench</a>: multiple text-interaction
+  environments.</li>
+<li><a href="https://arxiv.org/abs/2307.13854">WebArena</a>: reproducible realistic web tasks.</li>
+<li><a href="https://arxiv.org/abs/2401.13649">VisualWebArena</a>: visually grounded web tasks.</li>
+<li><a href="https://arxiv.org/abs/2404.07972">OSWorld</a>: real computer environments.</li>
+<li><a href="https://arxiv.org/abs/2310.06770">SWE-bench</a>: repository issues with
+  test-based validation.</li>
+<li><a href="https://openai.com/index/introducing-swe-bench-verified/">SWE-bench Verified</a>:
+  human-filtered subset and evaluation-harness discussion.</li>
+<li><a href="https://arxiv.org/abs/2311.12983">GAIA</a>: real-world assistant questions
+  requiring tools and multimodal evidence.</li>
+<li><a href="https://arxiv.org/abs/2406.12045">tau-bench</a>: tool-agent/user interaction in
+  policy-governed domains.</li>
+<li><a href="https://gorilla.cs.berkeley.edu/blogs/8_berkeley_function_calling_leaderboard.html">BFCL</a>:
+  function/tool-call evaluation with versioned categories.</li>
+</ul>
+<p>Benchmark names are discovery links, not comparable units. Inspect each harness,
+model prompt, tool set, budget, and release version before constructing a table.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Mark Chen et al.,
+   <a href="https://arxiv.org/abs/2107.03374">“Evaluating Large Language Models Trained on Code”</a>,
+   2021, pass@k estimator.</li>
+<li>Carlos E. Jimenez et al.,
+   <a href="https://arxiv.org/abs/2310.06770">“SWE-bench”</a>, 2024.</li>
+<li>Shuyan Zhou et al.,
+   <a href="https://arxiv.org/abs/2307.13854">“WebArena”</a>, 2023.</li>
+<li>Sijia Yang et al.,
+   <a href="https://arxiv.org/abs/2305.13211">“Position Bias in Large Language Models”</a>,
+   2023.</li>
+<li>Lianmin Zheng et al.,
+   <a href="https://arxiv.org/abs/2306.05685">“Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena”</a>,
+   2023.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
